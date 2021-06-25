@@ -25,7 +25,7 @@ namespace NexenHub.Pages
                 
         public void OnGet()
         {
-            Epaper epaper = new Epaper();
+            Esl epaper = new Esl();
             epaper.CART_ID = "E1080";
         }
 

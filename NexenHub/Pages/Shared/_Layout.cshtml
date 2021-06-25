@@ -9,22 +9,23 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a asp-area="" asp-page="/Index"><img src="/lib/Images/logo_light.png" width="200"/></a>
-                @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+
+                <a class="navbar-brand" asp-area="" asp-page="/Index">
+                    <img src="/lib/Images/logo_light.png" width="200"/>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
-                </button>*@
+                </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <!--<ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>-->
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>*@
-                    <!--</ul>-->
+                            <a class="nav-link text-light" asp-area="" asp-page="/ApiDoc">API</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -35,10 +36,13 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        @*<div class="container">
-            &copy; 2021 - NexenHub - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>*@
+    <footer class="border-top footer text-muted bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col">Version: 25.06.2021</div>
+                <div class="col col-md-auto">&copy; 2021 - NexenHub</div>
+            </div>
+        </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

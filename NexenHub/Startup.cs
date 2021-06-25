@@ -25,9 +25,10 @@ namespace NexenHub
         {
             services.AddRazorPages(); 
             services.AddControllers();
-            services.AddMvcCore().AddJsonOptions(opt => { 
-                opt.JsonSerializerOptions.PropertyNamingPolicy = null; 
-            } ).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+            services.AddMvcCore().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.PropertyNamingPolicy = null;
+            }).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 
             GlobalSettings.Test = Configuration.GetSection("AppSettings").GetValue<bool>("Test");
             GlobalSettings.DatabaseConnection = Configuration.GetConnectionString("NXMESEP");
