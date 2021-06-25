@@ -23,7 +23,11 @@ namespace NexenHub
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddRazorPages(); 
+            services.AddControllers();
+            services.AddMvcCore().AddJsonOptions(opt => { 
+                opt.JsonSerializerOptions.PropertyNamingPolicy = null; 
+            } ).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 
             GlobalSettings.Test = Configuration.GetSection("AppSettings").GetValue<bool>("Test");
             GlobalSettings.DatabaseConnection = Configuration.GetConnectionString("NXMESEP");
@@ -51,6 +55,7 @@ namespace NexenHub
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using NexenHub.Class;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
+using NexenHub.Models;
 
 namespace NexenHub.Pages
 {
@@ -20,22 +21,12 @@ namespace NexenHub.Pages
             _logger = logger;
         }
 
-        [BindProperty]
         public string Production { get; set; }
                 
         public void OnGet()
-        { 
-            DBOra db = new DBOra("select count(*) from TB_PR_M_PROD where WC_ID = 'U' and PLANT_ID = 'P500' and SHIFT is not null and to_char(SYSDATE, 'YYYYMMDD') = PROD_DATE");
-            try
-            {
-                DataTable dt = db.ExecTable();
-                Production = "Today´s production: " + dt.Rows[0][0].ToString();
-
-            } 
-            catch (Exception ex)
-            {
-                Production = "Unable to load from DB";
-            }
+        {
+            Epaper epaper = new Epaper();
+            epaper.CART_ID = "E1080";
         }
 
 
