@@ -18,7 +18,7 @@ namespace NexenHub.Models
             get { return _CART_ID; } 
             set 
             { 
-                _CART_ID = value;
+                _CART_ID = value.ToUpper();
                 LoadFromDb();
             }
         }
@@ -39,9 +39,9 @@ namespace NexenHub.Models
         public string ENT_DT { get; set; }
         public string ENT_USER_ID { get; set; }
         public string ITEM_NAME { get; set; }
+        public bool VALID { get; set; }
 
         #endregion
-
 
         private GlobalDatabase _Database = new GlobalDatabase();
 
@@ -53,12 +53,14 @@ namespace NexenHub.Models
 
         private void LoadFromDb()
         {
+            VALID = false;
             if (CheckInput())
             {
                 DataTable dt = _Database.SP_DC_H_PROD_API_ESL(_CART_ID);
 
                 if (dt.Rows.Count > 0)
                 {
+                    VALID = true;
                     LOT_ID = dt.Rows[0]["LOT_ID"].ToString();
                     EVENT_TIME = dt.Rows[0]["EVENT_TIME"].ToString();
                     ITEM_ID = dt.Rows[0]["ITEM_ID"].ToString();
