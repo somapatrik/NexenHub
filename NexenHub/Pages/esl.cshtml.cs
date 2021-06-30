@@ -18,15 +18,17 @@ namespace NexenHub.Pages
         public Esl EslModel;
         public GlobalDatabase globalDatabase = new GlobalDatabase();
 
-        public void OnGet(string cartid)
+        public async Task<IActionResult> OnGet(string cartid)
         {
             if (cartid.Length == 5)
             {
                 cartid = cartid.ToUpper();
                 EslModel = new Esl(cartid);
                 if (EslModel.VALID)
-                    GeneratedLayout = ReplaceLabels(GetLayout(cartid));
+                    await Task.Run(() => { GeneratedLayout =  ReplaceLabels(GetLayout(cartid)); } );
             }
+
+            return Page();
         }
 
         private string ReplaceLabels(string layout)
@@ -41,8 +43,8 @@ namespace NexenHub.Pages
 
         private string GetLayout(string cartid)
         {
-            DataTable dt = globalDatabase.SP_IN_H_PROD_LAYOUT(cartid);
-            return dt.Rows[0]["LAYOUT"].ToString();
+           DataTable dt = globalDatabase.SP_IN_H_PROD_LAYOUT(cartid);
+           return dt.Rows[0]["LAYOUT"].ToString();
         }
     }
 }
