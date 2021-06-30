@@ -13,86 +13,36 @@ namespace NexenHub.Pages
 {
     public class eslModel : PageModel
     {
-
         public string GeneratedLayout { get; set; }
 
-        public Esl esldata;
+        public Esl EslModel;
+        public GlobalDatabase globalDatabase = new GlobalDatabase();
 
         public void OnGet(string cartid)
         {
             if (cartid.Length == 5)
             {
-                esldata = new Esl(cartid);
-                if (esldata.VALID)
-                    GeneratedLayout = ReplaceLabels(GetLayout());
+                cartid = cartid.ToUpper();
+                EslModel = new Esl(cartid);
+                if (EslModel.VALID)
+                    GeneratedLayout = ReplaceLabels(GetLayout(cartid));
             }
-
-            DBOra db = new DBOra("select * from TB_IN_H_PROD_ESL_LAYOUT");
-            DataTable dt = db.ExecTable();
-            string nevim = dt.Rows[0]["LAYOUT"].ToString();
-
         }
 
         private string ReplaceLabels(string layout)
         {
-            layout = layout.Contains("{{LOT_ID}}") ? layout.Replace("{{LOT_ID}}", esldata.LOT_ID) : layout;
-            layout = layout.Contains("{{CART_ID}}") ? layout.Replace("{{CART_ID}}", esldata.CART_ID) : layout;
-            layout = layout.Contains("{{ITEM_NAME}}") ? layout.Replace("{{ITEM_NAME}}", esldata.ITEM_NAME) : layout;
-            layout = layout.Contains("{{ITEM_ID}}") ? layout.Replace("{{ITEM_ID}}", esldata.ITEM_ID) : layout;
-            layout = layout.Contains("{{PROD_TIME}}") ? layout.Replace("{{PROD_TIME}}", esldata.PROD_TIME) : layout;
+            layout = layout.Contains("{{LOT_ID}}") ? layout.Replace("{{LOT_ID}}", EslModel.LOT_ID) : layout;
+            layout = layout.Contains("{{CART_ID}}") ? layout.Replace("{{CART_ID}}", EslModel.CART_ID) : layout;
+            layout = layout.Contains("{{ITEM_NAME}}") ? layout.Replace("{{ITEM_NAME}}", EslModel.ITEM_NAME) : layout;
+            layout = layout.Contains("{{ITEM_ID}}") ? layout.Replace("{{ITEM_ID}}", EslModel.ITEM_ID) : layout;
+            layout = layout.Contains("{{PROD_TIME}}") ? layout.Replace("{{PROD_TIME}}", EslModel.PROD_TIME) : layout;
             return layout;
         }
 
-
-        private string GetLayout()
+        private string GetLayout(string cartid)
         {
-            return "<div class=\"container-fluid h-auto border text-center\" style=\"font-size:larger\"> "
-                    + "        <div class=\"row\"> "
-                    + "            <div class=\"col-8\"> "
-                    + "                <div class=\"row\"> "
-                    + "                    <div class=\"col\">{{Barcode LOT_ID}}</div> "
-                    + "                </div> "
-                    + "                <div class=\"row\"> "
-                    + "                    <div class=\"col\">{{LOT_ID}}</div> "
-                    + "                </div> "
-                    + "            </div> "
-                    + "            <div class=\"col-4 bg-dark\"> "
-                    + "                <span class=\"text-light\" style=\"font-size:xx-large\">{{CART_ID}}</span> "
-                    + "            </div> "
-                    + "        </div> "
-                    + "        <div class=\"row\"> "
-                    + "            <div class=\"col font-weight-bold\"> "
-                    + "                <span style=\"font-size:xx-large;\">{{ITEM_NAME}}</span> "
-                    + "            </div> "
-                    + "        </div> "
-                    + "        <div class=\"row\"> "
-                    + "            <div class=\"col font-weight-bold\"> "
-                    + "                <span style=\"font-size:x-large;\">{{COMPOUND}}</span> "
-                    + "            </div> "
-                    + "        </div> "
-                    + "        <div class=\"row\"> "
-                    + "            <div class=\"col border font-weight-bold\"><span style=\"font-size:xx-large;\">{{ITEM_ID}}</span></div> "
-                    + "            <div class=\"col border font-weight-bold\"><span style=\"font-size:xx-large;\">{{QTY}}</span></div> "
-                    + "            <div class=\"col border font-weight-bold\"><span style=\"font-size:xx-large;\">{{PROD_TYPE}}</span></div> "
-                    + "        </div> "
-                    + "        <div class=\"row\"> "
-                    + "            <div class=\"col border\"> "
-                    + "                <span style=\"font-size:xx-large\">{{PROD_TIME}}</span> "
-                    + "            </div> "
-                    + "            <div class=\"col\"> "
-                    + "                <div class=\"row\"> "
-                    + "                    <div class=\"col border\">{{TIME1}}</div> "
-                    + "                </div> "
-                    + "                <div class=\"row\"> "
-                    + "                    <div class=\"col border\">{{TIME2}}</div> "
-                    + "                </div> "
-                    + "            </div> "
-                    + "        </div> "
-                    + "        <div class=\"row\"> "
-                    + "            <div class=\"col\"></div> "
-                    + "            <div class=\"col border font-weight-bold\"><span style=\"font-size:xx-large;\">{{Size?}}</span></div> "
-                    + "        </div> "
-                    + "    </div> ";
+            DataTable dt = globalDatabase.SP_IN_H_PROD_LAYOUT(cartid);
+            return dt.Rows[0]["LAYOUT"].ToString();
         }
     }
 }

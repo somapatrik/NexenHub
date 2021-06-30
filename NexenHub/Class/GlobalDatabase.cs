@@ -10,6 +10,28 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        /// <summary>
+        /// Gets HTML layout for ESL
+        /// </summary>
+        /// <param name="CART_ID"></param>
+        /// <returns></returns>
+        public DataTable SP_IN_H_PROD_LAYOUT(string CART_ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_IN_H_PROD_LAYOUT");
+                db.AddParameter("AS_CART_ID", CART_ID, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+                return db.ExecProcedure();
+            } 
+            catch(Exception ex)
+            {
+                return new DataTable();
+            }
+        }
 
         /// <summary>
         /// Loads basic info from ESL inerface table
