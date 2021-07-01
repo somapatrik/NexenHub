@@ -14,6 +14,7 @@ namespace NexenHub.Pages
     public class eslModel : PageModel
     {
         public string GeneratedLayout { get; set; }
+        public string GeneratedLayout2 { get; set; }
 
         public Esl EslModel;
         public GlobalDatabase globalDatabase = new GlobalDatabase();
@@ -22,29 +23,33 @@ namespace NexenHub.Pages
         {
             if (cartid.Length == 5)
             {
-                cartid = cartid.ToUpper();
+                //cartid = cartid.ToUpper();
                 EslModel = new Esl(cartid);
                 if (EslModel.VALID)
-                    await Task.Run(() => { GeneratedLayout =  ReplaceLabels(GetLayout(cartid)); } );
+                {
+                    EslModel.LoadLayout();
+                    await Task.Run(() => 
+                    { 
+                        GeneratedLayout = EslModel.GetLayout();
+                        GeneratedLayout2 = EslModel.GetLayoutBack();
+                    });
+                }
+                    
             }
 
             return Page();
         }
 
-        private string ReplaceLabels(string layout)
+
+        public void SetNotFoundHtml()
         {
-            layout = layout.Contains("{{LOT_ID}}") ? layout.Replace("{{LOT_ID}}", EslModel.LOT_ID) : layout;
-            layout = layout.Contains("{{CART_ID}}") ? layout.Replace("{{CART_ID}}", EslModel.CART_ID) : layout;
-            layout = layout.Contains("{{ITEM_NAME}}") ? layout.Replace("{{ITEM_NAME}}", EslModel.ITEM_NAME) : layout;
-            layout = layout.Contains("{{ITEM_ID}}") ? layout.Replace("{{ITEM_ID}}", EslModel.ITEM_ID) : layout;
-            layout = layout.Contains("{{PROD_TIME}}") ? layout.Replace("{{PROD_TIME}}", EslModel.PROD_TIME) : layout;
-            return layout;
+
         }
 
-        private string GetLayout(string cartid)
+        public void SetWrongInputHtml(string input)
         {
-           DataTable dt = globalDatabase.SP_IN_H_PROD_LAYOUT(cartid);
-           return dt.Rows[0]["LAYOUT"].ToString();
+
         }
+
     }
 }
