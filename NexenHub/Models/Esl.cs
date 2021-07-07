@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Net.ConnectCode.Barcode;
 using NexenHub.Class;
 using Oracle.ManagedDataAccess.Client;
 
@@ -16,9 +17,10 @@ namespace NexenHub.Models
 
         private string _LAYOUT;
 
-        private string _LAYOUT_BACK;
+        private List<String> _COMMON_ITEM_ID = new List<string>();
 
         #region Public properties used for API
+
         public string CART_ID 
         {
             get { return _CART_ID; } 
@@ -29,6 +31,7 @@ namespace NexenHub.Models
             }
         }
         public string LOT_ID { get; set; }
+        public string LOT_ID_BARCODE_128 { get; set; }
         public string EVENT_TIME { get; set; }
         public string ITEM_ID { get; set; }
         public string WC_ID { get; set; }
@@ -53,6 +56,20 @@ namespace NexenHub.Models
         public string IO_POSID { get; set; }
         public string EQ_NAME { get; set; }
         public string RCV_DT { get; set; }
+        public string TEMP01 { get; set; }
+        public List<string> COMMON_ITEM_ID
+        {
+            get
+            {
+                return _COMMON_ITEM_ID;
+            }
+
+            set
+            {
+                _COMMON_ITEM_ID = value;
+            }
+        }
+
         public bool VALID { get; set; }
 
         #endregion
@@ -102,8 +119,38 @@ namespace NexenHub.Models
                     IO_POSID = dt.Rows[0]["IO_POSID"].ToString();
                     EQ_NAME = dt.Rows[0]["EQ_NAME"].ToString();
                     RCV_DT = dt.Rows[0]["RCV_DT"].ToString();
+                    TEMP01 = dt.Rows[0]["TEMP01"].ToString();
+
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        if (!string.IsNullOrEmpty(dt.Rows[0]["COMMON_ITEM_ID_" + i].ToString()))
+                            _COMMON_ITEM_ID.Add(dt.Rows[0]["COMMON_ITEM_ID_" + i].ToString());
+                    }
+
+                    
+
+                    if (!string.IsNullOrEmpty(LOT_ID))
+                        GenerateBarcode();
+                    else
+                        LOT_ID_BARCODE_128 = "";
                 }
                 
+            }
+        }
+
+        private void GenerateBarcode()
+        {
+            try
+            {
+                BarcodeFonts bcf = new BarcodeFonts();
+                bcf.Data = LOT_ID;
+                bcf.BarcodeType = BarcodeFonts.BarcodeEnum.Code128A;
+                bcf.encode();
+                LOT_ID_BARCODE_128 = bcf.EncodedData;
+            } 
+            catch (Exception ex)
+            {
+                LOT_ID_BARCODE_128 = "";
             }
         }
 
@@ -124,8 +171,8 @@ namespace NexenHub.Models
                         if (row["PAGENUM"].ToString() == "1")
                             _LAYOUT = ReplaceLabels(row["LAYOUT"].ToString());
 
-                        if (row["PAGENUM"].ToString() == "2")
-                            _LAYOUT_BACK = ReplaceLabels(row["LAYOUT"].ToString());
+                        //if (row["PAGENUM"].ToString() == "2")
+                        //    _LAYOUT_BACK = ReplaceLabels(row["LAYOUT"].ToString());
                     }  
                 }
             }
@@ -144,16 +191,16 @@ namespace NexenHub.Models
         /// <summary>
         /// Returns already loaded HTML layout. First use LoadLayout() to load it
         /// </summary>
-        public string GetLayoutBack()
-        {
-            string layout = _LAYOUT_BACK;
-            return layout;
-        }
+        //public string GetLayoutBack()
+        //{
+        //    string layout = _LAYOUT_BACK;
+        //    return layout;
+        //}
 
         private string ReplaceLabels(string LayoutRaw)
         {
             LayoutRaw = LayoutRaw.Replace("{{LOT_ID}}", LOT_ID);
-            LayoutRaw = LayoutRaw.Replace("{{LOT_ID_BARCODE}}", LOT_ID);
+            LayoutRaw = LayoutRaw.Replace("{{LOT_ID_BARCODE}}", LOT_ID_BARCODE_128);
             LayoutRaw = LayoutRaw.Replace("{{CART_ID}}", CART_ID);
             LayoutRaw = LayoutRaw.Replace("{{ITEM_NAME}}", ITEM_NAME);
             LayoutRaw = LayoutRaw.Replace("{{ITEM_ID}}", ITEM_ID) ;
@@ -163,14 +210,24 @@ namespace NexenHub.Models
             LayoutRaw = LayoutRaw.Replace("{{COMPOUND}}", COMPOUND);
             LayoutRaw = LayoutRaw.Replace("{{AGING_TIME}}", AGING_TIME);
             LayoutRaw = LayoutRaw.Replace("{{EXPIRY_DATE}}", EXPIRY_DATE);
-            LayoutRaw = LayoutRaw.Replace("{{TREAD_WIDTH}}", TREAD_WIDTH);
+
+            string width = string.IsNullOrEmpty(TREAD_WIDTH) ? "" : TREAD_WIDTH + "mm";
+            LayoutRaw = LayoutRaw.Replace("{{TREAD_WIDTH}}", width);
+            
             LayoutRaw = LayoutRaw.Replace("{{IO_POSID}}", IO_POSID);
             LayoutRaw = LayoutRaw.Replace("{{EQ_NAME}}", EQ_NAME);
             LayoutRaw = LayoutRaw.Replace("{{RCV_DT}}", RCV_DT);
             LayoutRaw = LayoutRaw.Replace("{{USER_NAME}}", USER_NAME);
+            LayoutRaw = LayoutRaw.Replace("{{TEMP01}}", TEMP01);
+
+            string commonAll = "";
+            foreach (string common in _COMMON_ITEM_ID)
+                commonAll += common + " ";
+                
+            LayoutRaw = LayoutRaw.Replace("{{COMMON_ITEM_ID}}", commonAll);
+
             return LayoutRaw;
         }
-
 
         private bool CheckInput()
         {

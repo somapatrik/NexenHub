@@ -14,7 +14,6 @@ namespace NexenHub.Pages
     public class eslModel : PageModel
     {
         public string GeneratedLayout { get; set; }
-        public string GeneratedLayout2 { get; set; }
 
         public Esl EslModel;
         public GlobalDatabase globalDatabase = new GlobalDatabase();
@@ -31,7 +30,6 @@ namespace NexenHub.Pages
                     await Task.Run(() => 
                     { 
                         GeneratedLayout = EslModel.GetLayout();
-                        GeneratedLayout2 = EslModel.GetLayoutBack();
                     });
                 }
                     
