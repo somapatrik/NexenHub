@@ -156,7 +156,7 @@ namespace NexenHub.Models
             }
             catch (Exception ex)
             {
-                LOT_ID_BARCODE_128 = "";
+                LOT_ID_BARCODE_128 = "";//ex.Message + ex.StackTrace;
             }
         }
 
@@ -218,9 +218,10 @@ namespace NexenHub.Models
             LayoutRaw = LayoutRaw.Replace("{{EXPIRY_DATE}}", EXPIRY_DATE);
 
             string width;
-            if (string.IsNullOrEmpty(TREAD_WIDTH) || TREAD_WIDTH.ToLower() != "none")
+            if (TREAD_WIDTH.ToLower() != "none" && !string.IsNullOrEmpty(TREAD_WIDTH))
                 width = TREAD_WIDTH + "mm";
-            else width = "";
+            else 
+                width = "";
             
             LayoutRaw = LayoutRaw.Replace("{{TREAD_WIDTH}}", width);
             
