@@ -72,9 +72,10 @@ body {
 
 @font-face {
     font-family: CCode128_S3_Trial;
-    src: url(../lib/fonts/ConnectCode128_S3_Trial.ttf);
+    src: url(fonts/ConnectCode128_S3_Trial.ttf);
 }
 
-.barfont {
-    font-family: CCode128_S3_Trial;
+@font-face {
+    font-family: IDAutomationSC;
+    src: url(fonts/IDAutomationSC128XL.ttf) format('truetype');
 }

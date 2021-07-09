@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Net.ConnectCode.Barcode;
+using NetBarcode;
 using NexenHub.Class;
 using Oracle.ManagedDataAccess.Client;
 
@@ -142,12 +143,17 @@ namespace NexenHub.Models
         {
             try
             {
-                BarcodeFonts bcf = new BarcodeFonts();
-                bcf.Data = LOT_ID;
-                bcf.BarcodeType = BarcodeFonts.BarcodeEnum.Code128A;
-                bcf.encode();
-                LOT_ID_BARCODE_128 = bcf.EncodedData;
-            } 
+                //BarcodeFonts bcf = new BarcodeFonts();
+                //bcf.Data = LOT_ID;
+                //bcf.BarcodeType = BarcodeFonts.BarcodeEnum.Code128B;
+                //bcf.encode();
+                //LOT_ID_BARCODE_128 = bcf.EncodedData;
+
+                var bar = new Barcode(LOT_ID,NetBarcode.Type.Code128B);
+                //LOT_ID_BARCODE_128 = Convert.ToBase64String(bar.GetByteArray());
+                LOT_ID_BARCODE_128 = bar.GetBase64Image();
+
+            }
             catch (Exception ex)
             {
                 LOT_ID_BARCODE_128 = "";
@@ -211,7 +217,11 @@ namespace NexenHub.Models
             LayoutRaw = LayoutRaw.Replace("{{AGING_TIME}}", AGING_TIME);
             LayoutRaw = LayoutRaw.Replace("{{EXPIRY_DATE}}", EXPIRY_DATE);
 
-            string width = string.IsNullOrEmpty(TREAD_WIDTH) ? "" : TREAD_WIDTH + "mm";
+            string width;
+            if (string.IsNullOrEmpty(TREAD_WIDTH) || TREAD_WIDTH.ToLower() != "none")
+                width = TREAD_WIDTH + "mm";
+            else width = "";
+            
             LayoutRaw = LayoutRaw.Replace("{{TREAD_WIDTH}}", width);
             
             LayoutRaw = LayoutRaw.Replace("{{IO_POSID}}", IO_POSID);

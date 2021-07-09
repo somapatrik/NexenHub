@@ -15,6 +15,13 @@
     <link rel="stylesheet" href="/css/site.css" />
 </head>
 <body>
+
+    <style>
+        .barcodefont {
+            font-family: IDAutomationSC;
+        }
+    </style>
+
     @Html.Raw(Model.GeneratedLayout)
     @*<div class="container-fluid text-center " style="font-size:larger">
         <div class="row fixed-top">
@@ -44,7 +51,7 @@
         </div>
         <div class="row">
             <div class="col pt-3">
-                <span style="font-family:CCode128_S3_Trial;font-size:xx-large;">{{LOT_ID_BARCODE}}></span>
+                <img src="data:image/png;base64,{{LOT_ID_BARCODE}}" class="img-fluid"/>
             </div>
         </div>
         <div class="row">
