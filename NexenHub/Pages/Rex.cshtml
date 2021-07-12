@@ -3,15 +3,28 @@
 @{
 }
 <div class="card">
-    <h5 class="card-header">ReX</h5>
+    <h5 class="card-header"><b>ReX</b> - Cart information reader for Android</h5>
     <div class="card-body">
-        <h5 class="card-title">Cart information reader for Android</h5>
+        @*<h5 class="card-title">Cart information reader for Android</h5>*@
         <div class="card-text">
-            Minimum Android version: Oreo 8.0 
+            <ul class="list-group">
+                <li class="list-group-item">Minimum Android version: <b>Oreo 8.0</b></li>
+                <li class="list-group-item">Enable installation from unknown sources</li>
+                <li class="list-group-item">NFC is not required</li>
+            </ul>
         </div>
-        <a href="#" class="btn btn-primary float-right">Download</a>
     </div>
     <div class="card-footer text-muted ">
-        Version
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <span>Version: 2021-07-09</span>
+                </div>
+                <div class="col col-md-auto">
+                    <a href="@Url.Page("rex", "Download")" class="btn btn-primary float-right m-1">Download</a>
+                </div>
+            </div>
+            </div>
+        
     </div>
 </div>

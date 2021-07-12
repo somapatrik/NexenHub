@@ -11,6 +11,14 @@ namespace NexenHub.Pages
     {
         public void OnGet()
         {
+
+        }
+
+        public ActionResult OnGetDownload()
+        {
+            var contentType = "application/vnd.android.package-archive";
+            var fileName = "rex.apk";
+            return File("/lib/download/com.nexentire.rex-Signed.apk", contentType, fileName);
         }
     }
 }

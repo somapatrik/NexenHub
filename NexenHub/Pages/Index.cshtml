@@ -4,9 +4,38 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">@Model.Production / @Model.MaxValue</h1>
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" style="width: @Model.ActValue%" aria-valuenow=@Model.ActValue aria-valuemin="0" aria-valuemax="100"></div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <h5 class="card-header">GT production</h5>
+                <div class="card-body">
+                    <h5 class="card-title">@Model.ProductionGT / @Model.MaxValue</h5>
+                    <p class="card-text">
+                        <div class="progress-bar" role="progressbar" style="width: @Model.ActValueGT%" aria-valuenow=@Model.ActValueGT aria-valuemin="0" aria-valuemax="100" />
+                    </p>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
-</div>
+
+        <div class="container mt-1">
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h5 class="card-header">Tire production</h5>
+                        <div class="card-body">
+                            <h5 class="card-title">@Model.ProductionTire / @Model.MaxValue</h5>
+                            <p class="card-text">
+                                <div class="progress-bar" role="progressbar" style="width: @Model.ActValueTire%" aria-valuenow=@Model.ActValueTire aria-valuemin="0" aria-valuemax="100" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+

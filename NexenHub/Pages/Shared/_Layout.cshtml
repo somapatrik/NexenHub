@@ -20,12 +20,17 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-page="/ApiDoc">API</a>
+                    <ul class="navbar-nav justify-content-center"> @*flex-grow-1">*@
+                        <li class="nav-item ">
+                                <a class="nav-link" asp-area="" asp-page="/Rex">Download</a>
                         </li>
+                        @*<li class="nav-item ">
+                            <a class="nav-link text-light" asp-area="" asp-page="/ApiDoc">API</a>
+                        </li>*@
                     </ul>
+                    
                 </div>
             </div>
         </nav>
@@ -39,7 +44,7 @@
     <footer class="border-top footer text-muted bg-dark">
         <div class="container">
             <div class="row">
-                <div class="col">Version: 2021-07-09</div>
+                <div class="col">2021-07-12</div>
                 <div class="col col-md-auto">&copy; 2021 - NexenHub</div>
             </div>
         </div>
