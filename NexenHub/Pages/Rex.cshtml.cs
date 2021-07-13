@@ -18,7 +18,7 @@ namespace NexenHub.Pages
         {
             var contentType = "application/vnd.android.package-archive";
             var fileName = "rex.apk";
-            return File("/lib/download/com.nexentire.rex-Signed.apk", contentType, fileName);
+            return File("/lib/download/com.nexentire.rex.apk", contentType, fileName);
         }
     }
 }
