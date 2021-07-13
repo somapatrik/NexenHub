@@ -22,7 +22,6 @@ namespace NexenHub.Pages
         {
             if (cartid.Length == 5)
             {
-                //cartid = cartid.ToUpper();
                 EslModel = new Esl(cartid);
                 if (EslModel.VALID)
                 {
@@ -32,22 +31,30 @@ namespace NexenHub.Pages
                         GeneratedLayout = EslModel.GetLayout();
                     });
                 }
+                else
+                {
+                    GeneratedLayout = SetNotFoundHtml(cartid);
+                }
                     
+            }
+            else
+            {
+                GeneratedLayout = SetWrongInputHtml(cartid);
             }
 
             return Page();
         }
 
 
-        public void SetNotFoundHtml()
+        public string SetNotFoundHtml(string input)
         {
-
+            return "<div class=\"p-3 mb-2 bg-danger text-white text-center\">Unable to find: " + input + "</div>";
         }
 
-        public void SetWrongInputHtml(string input)
+        public string SetWrongInputHtml(string input)
         {
-
-        }
+            return "<div class=\"p-3 mb-2 bg-warning text-dark text-center\">Wrong input: " + input + "</div>";
+    }
 
     }
 }
