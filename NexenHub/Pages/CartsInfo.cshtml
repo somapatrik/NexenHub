@@ -1,0 +1,22 @@
+﻿@page
+@model NexenHub.Pages.CartsInfoModel
+@{
+}
+
+<form method="post">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="CART ID" aria-label="CART ID" asp-for="CartID">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit" asp-page-handler="Show">Generate layout</button>
+        </div>
+    </div>
+</form>
+
+
+@if (Model.ShowFrame)
+{
+    <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="~/esl/@Model.CartID"></iframe>
+    </div>
+}
+

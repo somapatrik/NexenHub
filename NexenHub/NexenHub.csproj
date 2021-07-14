@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\css\fonts\ConnectCode128_S3_Trial.ttf" />
     <None Include="wwwroot\lib\Images\logo_light.png" />
   </ItemGroup>
 
