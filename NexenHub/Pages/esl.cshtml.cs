@@ -14,12 +14,15 @@ namespace NexenHub.Pages
     public class eslModel : PageModel
     {
         public string GeneratedLayout { get; set; }
+        public int LoadStatus { get; set; }
+        public string Argument { get; set; }
 
         public Esl EslModel;
         public GlobalDatabase globalDatabase = new GlobalDatabase();
 
         public async Task<IActionResult> OnGet(string cartid)
         {
+            Argument = cartid;
             if (cartid.Length == 5)
             {
                 EslModel = new Esl(cartid);
@@ -33,28 +36,16 @@ namespace NexenHub.Pages
                 }
                 else
                 {
-                    GeneratedLayout = SetNotFoundHtml(cartid);
+                    LoadStatus = 1;
                 }
                     
             }
             else
             {
-                GeneratedLayout = SetWrongInputHtml(cartid);
+                LoadStatus = 2;
             }
 
             return Page();
         }
-
-
-        public string SetNotFoundHtml(string input)
-        {
-            return "<div class=\"p-3 mb-2 bg-danger text-white text-center\">Unable to find: " + input + "</div>";
-        }
-
-        public string SetWrongInputHtml(string input)
-        {
-            return "<div class=\"p-3 mb-2 bg-warning text-dark text-center\">Wrong input: " + input + "</div>";
-    }
-
     }
 }

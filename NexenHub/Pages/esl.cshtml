@@ -15,6 +15,31 @@
     <link rel="stylesheet" href="/css/site.css" />
 </head>
 <body>
-    @Html.Raw(Model.GeneratedLayout)
+    @*@Html.Raw(Model.GeneratedLayout)*@
+
+    @if (Model.LoadStatus == 1)
+    {
+        <div class="vh-100 w-100 bg-danger">
+            <div class="h-25"></div>
+            <div class="text-center">
+                <span class="text-white" style="font-size:xx-large">Unable to find @Model.Argument</span>
+            </div>
+        </div>
+    }
+    else if (Model.LoadStatus == 2)
+    {
+        <div class="vh-100 w-100 bg-warning">
+            <div class="h-25"></div>
+            <div class="text-center">
+                <span class="text-dark" style="font-size:xx-large">Wrong input: @Model.Argument</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        @Html.Raw(Model.GeneratedLayout)
+    }
+
+
 </body>
 </html>
