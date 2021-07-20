@@ -9,7 +9,9 @@ using NexenHub.Models;
 namespace NexenHub.Pages
 {
     public class RexModel : PageModel
-    {
+    {             
+        public RexVersion version = new RexVersion();
+
         public void OnGet()
         {
 
@@ -17,7 +19,7 @@ namespace NexenHub.Pages
 
         public ActionResult OnGetDownload()
         {
-            RexVersion version = new RexVersion();
+            
             return File(version.GetRelativeFilePath(), version.GetContentType(), version.GetFileName());
         }
     }
