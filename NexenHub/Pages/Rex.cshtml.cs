@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NexenHub.Models;
 
 namespace NexenHub.Pages
 {
@@ -16,9 +17,8 @@ namespace NexenHub.Pages
 
         public ActionResult OnGetDownload()
         {
-            var contentType = "application/vnd.android.package-archive";
-            var fileName = "rex.apk";
-            return File("/lib/download/com.nexentire.rex.apk", contentType, fileName);
+            RexVersion version = new RexVersion();
+            return File(version.GetRelativeFilePath(), version.GetContentType(), version.GetFileName());
         }
     }
 }
