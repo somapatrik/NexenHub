@@ -38,12 +38,13 @@ namespace NexenHub.Class
         /// </summary>
         /// <param name="CART_ID"></param>
         /// <returns></returns>
-        public DataTable SP_DC_H_PROD_API_ESL(string CART_ID)
+        public DataTable SP_DC_H_PROD_API_ESL(string CART_ID, string LOT_ID)
         {
             try
             {
                 DBOra db = new DBOra("SP_DC_H_PROD_API_ESL");
                 db.AddParameter("AS_CART_ID", CART_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
 
                 db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
                 db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);

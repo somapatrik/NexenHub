@@ -25,20 +25,21 @@ namespace NexenHub.Pages
             Argument = cartid;
             if (cartid.Length == 5)
             {
-                EslModel = new Esl(cartid);
+                EslModel = new Esl();
+                await Task.Run(() =>
+                {
+                    EslModel.CART_ID = cartid;
+                });
+
                 if (EslModel.VALID)
                 {
                     EslModel.LoadLayout();
-                    await Task.Run(() => 
-                    { 
-                        GeneratedLayout = EslModel.GetLayout();
-                    });
+                    GeneratedLayout = EslModel.GetLayout();
                 }
                 else
                 {
                     LoadStatus = 1;
-                }
-                    
+                }   
             }
             else
             {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Net.ConnectCode.Barcode;
 using NetBarcode;
 using NexenHub.Class;
 using Oracle.ManagedDataAccess.Client;
@@ -15,6 +14,8 @@ namespace NexenHub.Models
         private GlobalDatabase _Database = new GlobalDatabase();
 
         private string _CART_ID;
+
+        private string _LOT_ID;
 
         private string _LAYOUT;
 
@@ -31,7 +32,15 @@ namespace NexenHub.Models
                 LoadFromDb();
             }
         }
-        public string LOT_ID { get; set; }
+        public string LOT_ID 
+        { 
+            get { return _LOT_ID; } 
+            set
+            {
+                _LOT_ID = value;
+                LoadFromDb();
+            } 
+        }
         public string LOT_ID_BARCODE_128 { get; set; }
         public string EVENT_TIME { get; set; }
         public string ITEM_ID { get; set; }
@@ -77,10 +86,9 @@ namespace NexenHub.Models
 
         #region Constructors
 
-        public Esl(){ }
-        public Esl(string CART_ID)
-        {
-            this.CART_ID = CART_ID;
+        public Esl()
+        { 
+
         }
 
         #endregion
@@ -90,12 +98,17 @@ namespace NexenHub.Models
             VALID = false;
             if (CheckInput())
             {
-                DataTable dt = _Database.SP_DC_H_PROD_API_ESL(_CART_ID);
+                DataTable dt = _Database.SP_DC_H_PROD_API_ESL(_CART_ID,_LOT_ID);
 
                 if (dt.Rows.Count > 0)
                 {
                     VALID = true;
-                    LOT_ID = dt.Rows[0]["LOT_ID"].ToString();
+                    
+                    if (!string.IsNullOrEmpty(_CART_ID))
+                        _LOT_ID = dt.Rows[0]["LOT_ID"].ToString();
+                    else
+                        _CART_ID = dt.Rows[0]["CART_ID"].ToString();
+
                     EVENT_TIME = dt.Rows[0]["EVENT_TIME"].ToString();
                     ITEM_ID = dt.Rows[0]["ITEM_ID"].ToString();
                     WC_ID = dt.Rows[0]["WC_ID"].ToString();
@@ -143,12 +156,6 @@ namespace NexenHub.Models
         {
             try
             {
-                //BarcodeFonts bcf = new BarcodeFonts();
-                //bcf.Data = LOT_ID;
-                //bcf.BarcodeType = BarcodeFonts.BarcodeEnum.Code128B;
-                //bcf.encode();
-                //LOT_ID_BARCODE_128 = bcf.EncodedData;
-
                 var bar = new Barcode(LOT_ID,NetBarcode.Type.Code128B);
                 //LOT_ID_BARCODE_128 = Convert.ToBase64String(bar.GetByteArray());
                 LOT_ID_BARCODE_128 = bar.GetBase64Image();
@@ -156,7 +163,7 @@ namespace NexenHub.Models
             }
             catch (Exception ex)
             {
-                LOT_ID_BARCODE_128 = "";//ex.Message + ex.StackTrace;
+                LOT_ID_BARCODE_128 = "";
             }
         }
 
@@ -170,16 +177,7 @@ namespace NexenHub.Models
                 DataTable dt = _Database.SP_IN_H_PROD_LAYOUT(_CART_ID);
                 if (dt.Rows.Count > 0)
                 {
-                   // _LAYOUT = dt.Rows[0]["LAYOUT"].ToString();
-                    
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        if (row["PAGENUM"].ToString() == "1")
-                            _LAYOUT = ReplaceLabels(row["LAYOUT"].ToString());
-
-                        //if (row["PAGENUM"].ToString() == "2")
-                        //    _LAYOUT_BACK = ReplaceLabels(row["LAYOUT"].ToString());
-                    }  
+                    _LAYOUT = ReplaceLabels(dt.Rows[0]["LAYOUT"].ToString());
                 }
             }
 
@@ -193,15 +191,6 @@ namespace NexenHub.Models
             string layout = _LAYOUT;
             return layout;
         }
-
-        /// <summary>
-        /// Returns already loaded HTML layout. First use LoadLayout() to load it
-        /// </summary>
-        //public string GetLayoutBack()
-        //{
-        //    string layout = _LAYOUT_BACK;
-        //    return layout;
-        //}
 
         private string ReplaceLabels(string LayoutRaw)
         {
@@ -242,10 +231,10 @@ namespace NexenHub.Models
 
         private bool CheckInput()
         {
-            if (!string.IsNullOrWhiteSpace(_CART_ID))
-                return true;
-            else
+            if (string.IsNullOrEmpty(_CART_ID) && string.IsNullOrEmpty(_LOT_ID))
                 return false;
+            else
+                return true;
         }
 
     }
