@@ -16,18 +16,21 @@ namespace NexenHub.Controllers
         {
             Esl epaper = new Esl();
 
-            if (id.Length != 5)
-            {
-                return BadRequest();
-            }
-            else
+            if (id.Length == 5 || id.Length ==15)
             {
                 await Task.Run(() =>
                 {
-                    epaper.CART_ID = id.ToUpper();
+                    if (id.Length == 5)
+                        epaper.CART_ID = id;
+                    else if (id.Length == 15)
+                        epaper.LOT_ID = id;
                 });
 
                 return epaper;
+            }
+            else
+            {
+                return BadRequest();
             }
 
         }

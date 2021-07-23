@@ -37,7 +37,7 @@ namespace NexenHub.Models
             get { return _LOT_ID; } 
             set
             {
-                _LOT_ID = value;
+                _LOT_ID = value.ToUpper();
                 LoadFromDb();
             } 
         }
@@ -141,12 +141,13 @@ namespace NexenHub.Models
                             _COMMON_ITEM_ID.Add(dt.Rows[0]["COMMON_ITEM_ID_" + i].ToString());
                     }
 
-                    
 
                     if (!string.IsNullOrEmpty(LOT_ID))
                         GenerateBarcode();
                     else
                         LOT_ID_BARCODE_128 = "";
+
+                   // LoadLayout();
                 }
                 
             }
@@ -188,8 +189,7 @@ namespace NexenHub.Models
         /// </summary>
         public string GetLayout()
         {
-            string layout = _LAYOUT;
-            return layout;
+            return _LAYOUT;
         }
 
         private string ReplaceLabels(string LayoutRaw)
