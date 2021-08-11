@@ -59,6 +59,7 @@ namespace NexenHub.Models
         public string ENT_DT { get; set; }
         public string ENT_USER_ID { get; set; }
         public string ITEM_NAME { get; set; }
+        public string CART_STATE { get; set; }
         public string EXPIRY_DATE { get; set; }
         public string AGING_TIME { get; set; }
         public string TREAD_WIDTH { get; set; }
@@ -114,6 +115,7 @@ namespace NexenHub.Models
                     WC_ID = dt.Rows[0]["WC_ID"].ToString();
                     PROC_ID = dt.Rows[0]["PROC_ID"].ToString();
                     ITEM_STATE = dt.Rows[0]["ITEM_STATE"].ToString();
+                    CART_STATE = dt.Rows[0]["CART_STATE"].ToString();
                     PROD_TIME = dt.Rows[0]["PROD_TIME"].ToString();
                     USER_NAME = dt.Rows[0]["USER_NAME"].ToString();
                     WO_NO = dt.Rows[0]["WO_NO"].ToString();
@@ -178,7 +180,7 @@ namespace NexenHub.Models
                 DataTable dt = _Database.SP_IN_H_PROD_LAYOUT(_CART_ID);
                 if (dt.Rows.Count > 0)
                 {
-                    _LAYOUT = ReplaceLabels(dt.Rows[0]["LAYOUT"].ToString());
+                    _LAYOUT = ReplaceClass(ReplaceLabels(dt.Rows[0]["LAYOUT"].ToString()));
                 }
             }
 
@@ -225,6 +227,17 @@ namespace NexenHub.Models
                 commonAll += common + " ";
                 
             LayoutRaw = LayoutRaw.Replace("{{COMMON_ITEM_ID}}", commonAll);
+
+            return LayoutRaw;
+        }
+
+        private string ReplaceClass(string LayoutRaw)
+        {
+
+            if (CART_STATE == "E")
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_DIV_CART_STATE}}", "bg-danger text-light");
+            else
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_DIV_CART_STATE}}", "");
 
             return LayoutRaw;
         }

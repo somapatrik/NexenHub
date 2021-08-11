@@ -8,12 +8,18 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
+
+    <script src="~/lib/chart/dist/chart.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
 
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
-                    <img src="/lib/Images/logo_light.png" width="200"/>
+                    <img src="/lib/Images/logo_light.png" width="200" />
                 </a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -24,8 +30,8 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex">
                     <ul class="navbar-nav flex-grow-1">
                         @*<li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/CartsInfo">Carts</a>
-                        </li>*@
+                                <a class="nav-link" asp-area="" asp-page="/CartsInfo">Carts</a>
+                            </li>*@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Carts
@@ -58,10 +64,6 @@
             </div>
         </div>
     </footer>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
