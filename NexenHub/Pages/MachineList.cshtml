@@ -10,51 +10,54 @@
     </button>
 </div>
 
+<div class="btn-toolbar mb-3 justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button type="button" class="btn btn-secondary" value="M" asp->MIX</button>
+        <button type="button" class="btn btn-secondary" value="E">EXT</button>
+        <button type="button" class="btn btn-secondary" value="C">CAL</button>
+        <button type="button" class="btn btn-secondary" value="P">CUT</button>
+        <button type="button" class="btn btn-secondary" value="T">TBM</button>
+        <button type="button" class="btn btn-secondary" value="U">CUR</button>
+    </div>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text" id="btnGroupAddon">EQ_ID</div>
+        </div>
+        <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="btnGroupAddon">
+    </div>
+</div>
+
+
 <div>
     <table class="table table-sm table-striped table-hover table-dark">
 
         <thead>
             <tr>
-                @{ foreach (var columnname in Model.DbList.Columns)
+                @{ foreach (var columnname in Model.DbData.Columns)
                     {
-                        <th scope="col">@columnname.ToString()</th>
+                    <th scope="col">@columnname.ToString()</th>
                     }
                 }
+                
             </tr>
         </thead>
         <tbody>
 
-            @{ foreach (System.Data.DataRow row in Model.DbList.Rows)
+            @{ foreach (System.Data.DataRow row in Model.DbData.Rows)
                 {
-                    
-                    <tr>
-                        <th scope="row">
-                            <a class="btn-link" href="/MachineProfile/@row[0].ToString()">@row[0].ToString()</a>
-                        </th>
-                        <td>@row[1].ToString()</td>
-                        <td>@row[2].ToString()</td>
-                        <td>@row[3].ToString()</td>
-                    </tr>
+
+                <tr>
+                    <th scope="row">@row[0].ToString()</th>
+                    <td>@row[1].ToString()</td>
+                    <td>@row[2].ToString()</td>
+                    <td>@row[3].ToString()</td>
+                    <td>
+                        <a class="btn btn-success" href="/MachineProfile/@row[0].ToString()">Detail</a>
+                    </td>
+                </tr>
                 }
             }
 
-            @*<tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>twitter</td>
-        </tr>*@
         </tbody>
     </table>
 </div>
