@@ -11,6 +11,34 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetNonWorkSum(string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT  ");
+                query.AppendLine("NON.NTIME as NONWRK_TIME, ");
+                query.AppendLine("CODE.NONWRK_NAME_1033 as NONWRK_NAME ");
+                query.AppendLine("FROM ( ");
+                query.AppendLine("        SELECT  ");
+                query.AppendLine("        ROUND(SUM((NONWRK_ETIME - NONWRK_STIME))/60, 1) AS NTIME,  ");
+                query.AppendLine("        NONWRK_CODE ");
+                query.AppendLine("        FROM TB_CM_M_NONWRK ");
+                query.AppendLine("        WHERE NONWRK_DATE = (SELECT TO_CHAR(SYSDATE - 6/24, 'YYYYMMDD') FROM DUAL) ");
+                query.AppendLine("        AND EQ_ID=:eqid ");
+                query.AppendLine("        AND NONWRK_ETIME is not null ");
+                query.AppendLine("        GROUP BY NONWRK_CODE ");
+                query.AppendLine("    ) NON ");
+                query.AppendLine("LEFT JOIN TB_CM_M_NONWRKCODE CODE ON CODE.NONWRK_CODE=NON.NONWRK_CODE ");
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
 
         public DataTable GetMachineList()
         {
