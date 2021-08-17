@@ -24,9 +24,6 @@ namespace NexenHub.Pages
         private List<string> _borderColor = new List<string>();
 
         private bool _AddFirst;
-        private List<int> _r = new List<int>();
-        private List<int> _g = new List<int>();
-        private List<int> _b = new List<int>();
 
         // 28 - 168
         private KnownColor LastColor = 0;
@@ -119,10 +116,6 @@ namespace NexenHub.Pages
             string background_color = string.Format("rgba({0},{1},{2},0.2)", r, g, b);
             string border_color = string.Format("rgba({0},{1},{2},1)", r, g, b);
 
-            _r.Add(r);
-            _g.Add(g);
-            _b.Add(b);
-
             if (_AddFirst)
             {
                 this.backgroundColor.Insert(0,background_color);
@@ -139,7 +132,6 @@ namespace NexenHub.Pages
     public class MachineProfileModel : PageModel
     {
         public string IArg { get; set; }
-        public string chartdata { get; set; }
         public string chartlabels { get; set; }
         public string chartdataset { get; set; }
 
@@ -164,8 +156,6 @@ namespace NexenHub.Pages
                 chartdataset = JsonConvert.SerializeObject(ChartDataScript, Formatting.Indented);
                 chartlabels = JsonConvert.SerializeObject(labels, Formatting.Indented);
 
-                //chartdata = GetChartData(dt).ToString();
-                //chartlabels = GetChartLabels(dt).ToString();
             }
         }
 
@@ -188,40 +178,6 @@ namespace NexenHub.Pages
             ChartDataScript.AddFirst(((12*60)-sumtime).ToString(), KnownColor.LimeGreen);
             labels.Insert(0,"Work");
 
-        }
-
-        public JProperty GetChartData(DataTable dt)
-        {
-            JArray array = new JArray();
-            float sumtime = 0;
-            foreach (DataRow row in dt.Rows)
-            {
-                float time = float.Parse(row[0].ToString());
-                sumtime += time;
-                array.Add(new JValue(time));
-            }
-            array.AddFirst((12*60) - sumtime);
-            JProperty jlabels = new JProperty("data", array);
-            return jlabels;
-        }
-
-        public JProperty GetChartLabels(DataTable dt)
-        {
-            JArray array = new JArray();
-            foreach (DataRow row in dt.Rows)
-            {
-                array.Add(new JValue(row[1].ToString()));
-            }
-            array.AddFirst("Work");
-            JProperty jlabels = new JProperty("labels", array);
-            return jlabels;
-        }
-
-        public JProperty GetChartName()
-        {
-            JProperty plabel = new JProperty("label", "Nonwork");
-            return plabel;
-            //jdata.Add(plabel);
         }
 
     }
