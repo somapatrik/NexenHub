@@ -3,22 +3,46 @@
 @{
 }
 
-<span class="display-4">This argument is @Model.IArg</span>
-
 <div class="container">
     <div class="row">
         <div class="col-7">
+            
+
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">Workorder information</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">Inputed material</div>
+                            <div class="card-body">
+                                @*@await Component.InvokeAsync("ChartCard", new { name = Model.IArg })*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
         </div>
         <div class="col-5">
             <div class="card">
+                <div class="card-header">
+                    Shift downtimes
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title text-center">Shift downtimes</h5>
                     <canvas id="myChart" width="400" height="400"></canvas>
                 </div>
             </div>
         </div>
     </div>
+    
 </div>
 
 <script>
@@ -58,4 +82,4 @@
         responsive: true
     }
 });
-</script>
+        </script>

@@ -12,124 +12,7 @@ using NexenHub.Class;
 
 namespace NexenHub.Pages
 {
-    public class ChartDataSet
-    {        
-        public List<string> data { get { return _data; } set { _data = value; } }
-        public List<string> backgroundColor { get { return _backgroundColor; } set { _backgroundColor = value; } }
-        public List<string> borderColor { get { return _borderColor; } set { _borderColor = value; } }
-        public int borderWidth { get; set; }
-
-        private List<string> _data = new List<string>();
-        private List<string> _backgroundColor = new List<string>();
-        private List<string> _borderColor = new List<string>();
-
-        private bool _AddFirst;
-
-        // 28 - 168
-        private KnownColor LastColor = 0;
-
-        private KnownColor StartColor = KnownColor.DarkMagenta;
-
-        public ChartDataSet()
-        {
-            borderWidth = 1;
-        }
-
-        public void AddFirst(string data, KnownColor color)
-        {
-            _AddFirst = true;
-            Add(data, color);
-            _AddFirst = false;
-        }
-
-        public void AddFirst(string data, int r, int g, int b)
-        {
-            _AddFirst = true;
-            Add(data, r, g, b);
-            _AddFirst = false;
-        }
-
-        public void AddFirst(string data)
-        {
-            _AddFirst = true;
-            Add(data);
-            _AddFirst = false;
-        }
-
-        public void Add(string data, KnownColor color)
-        {
-            Color col = Color.FromKnownColor(color);
-            AddData(data);
-            AddDefinedColor(col.R, col.G, col.B);
-        }
-
-        public void Add(string data, int r, int g, int b)
-        {
-            AddData(data);
-            AddDefinedColor(r, g, b);
-        }
-
-        public void Add(string data)
-        {
-            AddRandomColor();
-            AddData(data);
-        }
-
-        private void AddData(string data)
-        {
-            if (_AddFirst)
-                this.data.Insert(0, data);
-            else
-                this.data.Add(data);
-        }
-
-        private void AddRandomColor()
-        {
-            int r;
-            int g;
-            int b;
-
-            if (LastColor > 0)
-            {
-                LastColor += 7;
-                LastColor = (int)LastColor > 168 ? LastColor - 140 : LastColor;
-
-                Color NewColor = Color.FromKnownColor(LastColor);
-                r = NewColor.R;
-                g = NewColor.G;
-                b = NewColor.B;
-            }
-            else
-            {
-                Color FirstColor = Color.FromKnownColor(StartColor);
-                r = FirstColor.R;
-                g = FirstColor.G;
-                b = FirstColor.B;
-                LastColor = StartColor;
-            }
-
-                AddDefinedColor(r, g, b);
-        }
-
-        private void AddDefinedColor(int r, int g, int b)
-        {
-            string background_color = string.Format("rgba({0},{1},{2},0.2)", r, g, b);
-            string border_color = string.Format("rgba({0},{1},{2},1)", r, g, b);
-
-            if (_AddFirst)
-            {
-                this.backgroundColor.Insert(0,background_color);
-                this.borderColor.Insert(0,border_color);
-            }
-            else
-            {
-                this.backgroundColor.Add(background_color);
-                this.borderColor.Add(border_color);
-            }
-        }
-    }
-
-    public class MachineProfileModel : PageModel
+   public class MachineProfileModel : PageModel
     {
         public string IArg { get; set; }
         public string chartlabels { get; set; }
@@ -150,9 +33,12 @@ namespace NexenHub.Pages
             if (EQ_ID != null)
             {
                 IArg = EQ_ID;
-                DataTable dt = dbglob.GetNonWorkSum(EQ_ID);
 
+                // Get downtimes
+                DataTable dt = dbglob.GetNonWorkSum(EQ_ID);
+                ChartDataScript = new ChartDataSet();
                 FillDataScript(dt);
+
                 chartdataset = JsonConvert.SerializeObject(ChartDataScript, Formatting.Indented);
                 chartlabels = JsonConvert.SerializeObject(labels, Formatting.Indented);
 
@@ -161,7 +47,6 @@ namespace NexenHub.Pages
 
         public void FillDataScript(DataTable dt)
         {
-            ChartDataScript = new ChartDataSet();
             labels = new List<string>();
 
             float sumtime = 0;

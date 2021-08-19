@@ -11,6 +11,30 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetProductionMonthDays()
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT /*+INDEX(TB_PR_M_PROD IX_PR_M_PROD_5)*/  ");
+                query.AppendLine("TO_DATE(PROD_DATE,'YYYYMMDD') AS DATETIME,SUM(PROD_QTY) AS QTY, WC_ID ");
+                query.AppendLine("FROM TB_PR_M_PROD  ");
+                query.AppendLine("WHERE PLANT_ID='P500' ");
+                query.AppendLine("AND WC_ID IN ('T','U') ");
+                query.AppendLine("AND USE_YN='Y' ");
+                query.AppendLine("AND SHIFT IS NOT NULL ");
+                query.AppendLine("AND PROD_DATE LIKE TO_CHAR(SYSDATE,'YYYYMM') || '%' ");
+                query.AppendLine("GROUP BY PROD_DATE, WC_ID ");
+                query.AppendLine("ORDER BY PROD_DATE ");
+                DBOra db = new DBOra(query.ToString());
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetNonWorkSum(string EQ_ID)
         {
             try

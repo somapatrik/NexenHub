@@ -4,38 +4,60 @@
     ViewData["Title"] = "Home page";
 }
 
+
 <div class="container">
     <div class="row">
         <div class="col">
-            <div class="card">
-                <h5 class="card-header">GT production</h5>
-                <div class="card-body">
-                    <h5 class="card-title">@Model.ProductionGT / @Model.MaxValue</h5>
-                    <p class="card-text">
-                        <div class="progress-bar" role="progressbar" style="width: @Model.ActValueGT%" aria-valuenow=@Model.ActValueGT aria-valuemin="0" aria-valuemax="100" />
-                    </p>
-                </div>
-            </div>
+            <canvas id="myChart" />
         </div>
     </div>
 </div>
 
-<div class="container mt-1">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <h5 class="card-header">Tire production</h5>
-                <div class="card-body">
-                    <h5 class="card-title">@Model.ProductionTire / @Model.MaxValue</h5>
-                    <p class="card-text">
-                        <div class="progress-bar" role="progressbar" style="width: @Model.ActValueTire%" aria-valuenow=@Model.ActValueTire aria-valuemin="0" aria-valuemax="100" />
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="~/lib/chart/dist/chart.min.js"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Model.DaysInMonth),
+            datasets: [
+                {
+                label: 'GreenTire',
+                data: @Html.Raw(Model.GTDays),
+                backgroundColor: ['rgba(50, 205, 50, 0.2)'],
+                borderColor: ['rgba(50, 205, 50, 1)'],
+                borderWidth: 1
+                },
+                {
+                label: 'Finished Tire',
+                data: @Html.Raw(Model.TireDays),
+                backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+                borderColor: ['rgba(54, 162, 235, 1)'],
+                borderWidth: 1
+                },
+                {
+                label: 'Daily goal',
+                data: @Html.Raw(Model.GoalDay),
+                    backgroundColor: ['rgba(255, 140, 0, 0.2)'],
+                    borderColor: ['rgba(255, 140, 0, 1)'],
+                borderWidth: 1,
+                type:'line'
+                }
+            ]
+        },
+        options: {
+            elements: {
+                point: {
+                    radius: 0
+                }
+            },
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 
 
