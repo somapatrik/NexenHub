@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NexenHub.Class;
+using NexenHub.Models;
 
 namespace NexenHub.Pages
 {
@@ -18,12 +19,13 @@ namespace NexenHub.Pages
         public string chartlabels { get; set; }
         public string chartdataset { get; set; }
 
+        public WorkOrder WO { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
         private JObject jdata = new JObject();
 
-        private ChartDataSet ChartDataScript;
+        private ChartDownTimeDataSet ChartDataScript;
 
         private List<string> labels;
 
@@ -36,11 +38,16 @@ namespace NexenHub.Pages
 
                 // Get downtimes
                 DataTable dt = dbglob.GetNonWorkSum(EQ_ID);
-                ChartDataScript = new ChartDataSet();
+                ChartDataScript = new ChartDownTimeDataSet();
+
                 FillDataScript(dt);
 
                 chartdataset = JsonConvert.SerializeObject(ChartDataScript, Formatting.Indented);
                 chartlabels = JsonConvert.SerializeObject(labels, Formatting.Indented);
+
+                // Get WO
+                WO = new WorkOrder();
+                WO.LoadFromMachine(EQ_ID);
 
             }
         }

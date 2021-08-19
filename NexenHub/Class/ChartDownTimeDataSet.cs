@@ -6,26 +6,7 @@ using System.Threading.Tasks;
 
 namespace NexenHub.Class
 {
-    //public class ChartScript
-    //{
-    //    public string type { get; set; }
-
-    //    public ChartDataObject data { get; set; }
-
-    //    public ChartScript()
-    //    {
-    //        data = new ChartDataObject();
-    //    }
-    //}
-
-    //public class ChartDataObject
-    //{
-    //    public List<string> labels { get; set; }
-
-    //    public List<ChartDataSet> datasets { get; set; }
-    //}
-
-    public class ChartDataSet
+    public class ChartDownTimeDataSet
     {
         public List<string> data { get { return _data; } set { _data = value; } }
         public List<string> backgroundColor { get { return _backgroundColor; } set { _backgroundColor = value; } }
@@ -43,7 +24,7 @@ namespace NexenHub.Class
 
         private KnownColor StartColor = KnownColor.DarkMagenta;
 
-        public ChartDataSet()
+        public ChartDownTimeDataSet()
         {
             borderWidth = 1;
         }
@@ -106,7 +87,7 @@ namespace NexenHub.Class
 
             if (LastColor > 0)
             {
-                LastColor += 4;
+                LastColor += 1;
                 LastColor = (int)LastColor > 168 ? LastColor - 140 : LastColor;
                 SetColor = Color.FromKnownColor(LastColor);
             }

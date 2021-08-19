@@ -12,7 +12,31 @@
                 <div class="row">
                     <div class="col">
                         <div class="card">
-                            <div class="card-header">Workorder information</div>
+                            <div class="card-header">Workorder</div>
+                            <div class="card-body">
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">@Model.WO.WO_NO</div>
+                                        <div class="col">@Model.WO.WO_STIME</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">Type: @Model.WO.PROD_TYPE</div>
+                                        @*<div class="col">Test: @Model.WO.TEST_YN</div>*@
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">Item: @Model.WO.ITEM_ID / @Model.WO.ITEM_NAME</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">Quantity: @Model.WO.PROD_QTY / @Model.WO.WO_QTY</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">Test: @Model.WO.TEST_YN</div>
+                                        <div class="col">PROTOTYPE_ID: @Model.WO.PROTOTYPE_ID</div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -50,36 +74,12 @@
     var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            /*labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']*/
             labels: @Html.Raw(Model.chartlabels),
-        datasets: [
-             @Html.Raw(Model.chartdataset)
-            @*{
-
-                data: [12, 19, 3, 5, 2, 3]
-                @Html.Raw(Model.chartdata),
-                backgroundColor: [
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }*@]
+            datasets: [@Html.Raw(Model.chartdataset)]
         },
     options:
     {
         responsive: true
     }
 });
-        </script>
+</script>

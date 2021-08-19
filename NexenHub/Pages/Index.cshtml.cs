@@ -77,7 +77,13 @@ namespace NexenHub.Pages
             }
 
             // Format to JSON
-            DaysInMonth = JsonConvert.SerializeObject(ProdDaysInMonth, Formatting.Indented);
+           // DaysInMonth = JsonConvert.SerializeObject(ProdDaysInMonth, Formatting.Indented);
+            List<string> FormatedDays = new List<string>();
+
+            foreach (var DayMonth in ProdDaysInMonth)
+                FormatedDays.Add(DayMonth.ToString("dd"));
+
+            DaysInMonth = JsonConvert.SerializeObject(FormatedDays, Formatting.Indented);
 
             List<string> gtlist = new List<string>();
             List<string> tirelist = new List<string>();

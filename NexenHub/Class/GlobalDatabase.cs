@@ -11,6 +11,30 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetWorkOrderFromEQ(string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT ");
+                query.AppendLine("WO_NO,  ");
+                query.AppendLine("TO_DATE(WO_STIME,'YYYYMMDDHH24MISS') AS WO_STIME, ");
+                query.AppendLine("PROD_TYPE,  ");
+                query.AppendLine("WRK.ITEM_ID AS ITEM_ID, ");
+                query.AppendLine("ITEM_NAME, WO_QTY, PROD_QTY, UNIT, TEST_YN, PROTOTYPE_ID ");
+                query.AppendLine("FROM TB_PL_M_WRKORD WRK ");
+                query.AppendLine("LEFT JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID=WRK.ITEM_ID ");
+                query.AppendLine("WHERE WRK.EQ_ID=:eqid AND WRK.USE_YN='Y' AND WRK.WO_PROC_STATE = 'S' ");
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetProductionMonthDays()
         {
             try
