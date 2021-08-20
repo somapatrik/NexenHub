@@ -11,6 +11,29 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public DataTable GetInputedMaterial(string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT IO_POSID, LOT_ID, POS.ITEM_ID as ITEM_ID,ITEM_NAME,CART_ID  ");
+                query.AppendLine("FROM TB_EQ_M_EQPOS POS ");
+                query.AppendLine("LEFT JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID=POS.ITEM_ID ");
+                query.AppendLine("WHERE POS.EQ_ID=:eqid  ");
+                query.AppendLine("AND POS.IO_POSGB='I' ");
+                query.AppendLine("AND POS.USE_YN='Y' ");
+                query.AppendLine("ORDER BY IO_POSID ");
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetWorkOrderFromEQ(string EQ_ID)
         {
             try

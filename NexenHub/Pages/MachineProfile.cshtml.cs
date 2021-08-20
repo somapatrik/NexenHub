@@ -13,17 +13,26 @@ using NexenHub.Models;
 
 namespace NexenHub.Pages
 {
+
+    public class InputedMaterial
+    {
+        public string IO_POSID { get; set; }
+        public string LOT_ID { get; set; }
+        public string ITEM_ID { get; set; }
+        public string ITEM_NAME { get; set; }
+        public string CART_ID { get; set; }
+        public string EQ_ID { get; set; }     
+
+    }
+
    public class MachineProfileModel : PageModel
     {
-        public string IArg { get; set; }
         public string chartlabels { get; set; }
         public string chartdataset { get; set; }
-
         public WorkOrder WO { get; set; }
+        public List<InputedMaterial> Inputed { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
-
-        private JObject jdata = new JObject();
 
         private ChartDownTimeDataSet ChartDataScript;
 
@@ -34,8 +43,6 @@ namespace NexenHub.Pages
         {
             if (EQ_ID != null)
             {
-                IArg = EQ_ID;
-
                 // Get downtimes
                 DataTable dt = dbglob.GetNonWorkSum(EQ_ID);
                 ChartDataScript = new ChartDownTimeDataSet();
@@ -49,7 +56,27 @@ namespace NexenHub.Pages
                 WO = new WorkOrder();
                 WO.LoadFromMachine(EQ_ID);
 
+                // Get inputed material
+                LoadInputedMaterial(EQ_ID);    
             }
+        }
+
+        public void LoadInputedMaterial(string EQ_ID)
+        {
+            Inputed = new List<InputedMaterial>();
+            DataTable dt = dbglob.GetInputedMaterial(EQ_ID);
+            foreach (DataRow row in dt.Rows)
+            {
+                InputedMaterial material = new InputedMaterial();
+                material.EQ_ID = EQ_ID;
+                material.LOT_ID = row["LOT_ID"].ToString();
+                material.IO_POSID = row["IO_POSID"].ToString();
+                material.ITEM_ID = row["ITEM_ID"].ToString();
+                material.ITEM_NAME = row["ITEM_NAME"].ToString();
+                material.CART_ID = row["CART_ID"].ToString();
+                Inputed.Add(material);
+            }
+            
         }
 
         public void FillDataScript(DataTable dt)

@@ -17,18 +17,15 @@
 
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col">@Model.WO.WO_NO</div>
-                                        <div class="col">@Model.WO.WO_STIME</div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">Type: @Model.WO.PROD_TYPE</div>
-                                        @*<div class="col">Test: @Model.WO.TEST_YN</div>*@
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">Item: @Model.WO.ITEM_ID / @Model.WO.ITEM_NAME</div>
+                                        <div class="col"><b>@Model.WO.WO_NO</b></div>
+                                        <div class="col"><b>@Model.WO.WO_STIME</b></div>
                                     </div>
                                     <div class="row">
                                         <div class="col">Quantity: @Model.WO.PROD_QTY / @Model.WO.WO_QTY</div>
+                                        <div class="col">Type: @Model.WO.PROD_TYPE</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">Item: @Model.WO.ITEM_ID / @Model.WO.ITEM_NAME</div>
                                     </div>
                                     <div class="row">
                                         <div class="col">Test: @Model.WO.TEST_YN</div>
@@ -46,7 +43,32 @@
                         <div class="card">
                             <div class="card-header">Inputed material</div>
                             <div class="card-body">
-                                @*@await Component.InvokeAsync("ChartCard", new { name = Model.IArg })*@
+
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">POS</th>
+                                            <th scope="col">CART ID</th>
+                                            <th scope="col">ITEM ID</th>
+                                            <th scope="col">ITEM NAME</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{ foreach(var material in Model.Inputed)
+                                        {
+                                            <tr>
+                                                <th scope="row">@material.IO_POSID</th>
+                                                <td>@material.CART_ID</td>
+                                                <td>@material.ITEM_ID</td>
+                                                <td>@material.ITEM_NAME</td>
+                                            </tr>
+                                        }
+                                        }
+                                    </tbody>
+                                </table>
+
+
                             </div>
                         </div>
                     </div>
@@ -61,7 +83,7 @@
                     Shift downtimes
                 </div>
                 <div class="card-body">
-                    <canvas id="myChart" width="400" height="400"></canvas>
+                    <canvas id="myChart" ></canvas>
                 </div>
             </div>
         </div>
