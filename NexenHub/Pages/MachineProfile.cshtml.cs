@@ -94,7 +94,24 @@ namespace NexenHub.Pages
                 labels.Add(row[1].ToString());
             }
 
-            ChartDataScript.AddFirst(((12*60)-sumtime).ToString(), KnownColor.LimeGreen);
+            DateTime NowTime = DateTime.Now;
+            int NowHour = NowTime.Hour;
+            int Minutes = NowTime.Minute;
+            int FinalMinutes;
+
+            if (NowHour >= 6 && NowHour < 18) 
+                FinalMinutes = ((NowHour * 60) + Minutes) - (6 * 60);
+            else
+            {
+                if (NowHour >= 0)
+                    FinalMinutes = ((NowHour * 60) + Minutes) + (6 * 60);
+                else
+                    FinalMinutes = ((NowHour * 60) + Minutes) - (18 * 60);
+
+            }
+                
+            
+                ChartDataScript.AddFirst((FinalMinutes-sumtime).ToString(), KnownColor.LimeGreen);
             labels.Insert(0,"Work");
 
         }
