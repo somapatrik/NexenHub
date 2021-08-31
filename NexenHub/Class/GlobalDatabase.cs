@@ -92,7 +92,7 @@ namespace NexenHub.Class
                 query.AppendLine("CODE.NONWRK_NAME_1033 as NONWRK_NAME ");
                 query.AppendLine("FROM ( ");
                 query.AppendLine("        SELECT  ");
-                query.AppendLine("        ROUND(SUM((NONWRK_ETIME - NONWRK_STIME))/60, 1) AS NTIME,  ");
+                query.AppendLine("        ROUND(SUM(to_date(NONWRK_ETIME,'YYYYMMDDHH24MISS') - to_date(NONWRK_STIME,'YYYYMMDDHH24MISS'))*24*60,1) AS NTIME,  ");
                 query.AppendLine("        NONWRK_CODE ");
                 query.AppendLine("        FROM TB_CM_M_NONWRK ");
                 query.AppendLine("        WHERE NONWRK_DATE = (SELECT TO_CHAR(SYSDATE - 6/24, 'YYYYMMDD') FROM DUAL) ");

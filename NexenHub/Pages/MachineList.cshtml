@@ -3,56 +3,70 @@
 @{
 }
 
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Not called by a procedure
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+<div class="btn-toolbar mb-3" role="toolbar">
 
-<div class="btn-toolbar mb-3 justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
-    <div class="btn-group mr-2" role="group" aria-label="First group">
-        <button type="button" class="btn btn-secondary" value="M" asp->MIX</button>
-        <button type="button" class="btn btn-secondary" value="E">EXT</button>
-        <button type="button" class="btn btn-secondary" value="C">CAL</button>
-        <button type="button" class="btn btn-secondary" value="P">CUT</button>
-        <button type="button" class="btn btn-secondary" value="T">TBM</button>
-        <button type="button" class="btn btn-secondary" value="U">CUR</button>
-    </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <div class="input-group-text" id="btnGroupAddon">EQ_ID</div>
-        </div>
-        <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="btnGroupAddon">
+    <div class="btn-group " role="group">
+
+        <form method="get">
+            <button class="btn btn-outline-primary btn-sm mr-1">ALL</button>
+        </form>
+
+        <form method="post" asp-page-handler="filter" asp-route-id="M">
+            <button class="btn btn-outline-primary btn-sm mr-1">MIX</button>
+        </form>
+
+        <form method="post" asp-page-handler="filter" asp-route-id="C">
+            <button class="btn btn-outline-primary btn-sm mr-1">CAL</button>
+        </form>
+
+        <form method="post" asp-page-handler="filter" asp-route-id="B">
+            <button class="btn btn-outline-primary btn-sm mr-1">BEAD</button>
+        </form>
+
+        <form method="post" asp-page-handler="filter" asp-route-id="E">
+            <button class="btn btn-outline-primary btn-sm mr-1">EXT</button>
+        </form>
+
+        <form method="post" asp-page-handler="filter" asp-route-id="P">
+            <button class="btn btn-outline-primary btn-sm mr-1">CUT</button>
+        </form>
+
+        <form method="post" asp-page-handler="filter" asp-route-id="T">
+            <button class="btn btn-outline-primary btn-sm mr-1">TBM</button>
+        </form>
+
+        <form method="post" asp-page-handler="filter" asp-route-id="U">
+            <button class="btn btn-outline-primary btn-sm mr-1">CUR</button>
+        </form>
+
     </div>
 </div>
 
 
 <div>
-    <table class="table table-sm table-striped table-hover table-dark">
+    <table class="table table-sm table-striped table-hover table-dark text-center">
 
         <thead>
             <tr>
-                @{ foreach (var columnname in Model.DbData.Columns)
-                    {
-                    <th scope="col">@columnname.ToString()</th>
-                    }
-                }
-                
+                <th scope="col">ID</th>
+                <th scope="col" class="text-left">NAME</th>
+                <th scope="col">WC</th>
+                <th scope="col">PROC</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
 
-            @{ foreach (System.Data.DataRow row in Model.DbData.Rows)
+            @{ foreach (var machine in Model.DbList)
                 {
 
                 <tr>
-                    <th scope="row">@row[0].ToString()</th>
-                    <td>@row[1].ToString()</td>
-                    <td>@row[2].ToString()</td>
-                    <td>@row[3].ToString()</td>
-                    <td>
-                        <a class="btn btn-success" href="/MachineProfile/@row[0].ToString()">Detail</a>
+                    <th scope="row">@machine.EQ_ID</th>
+                    <td class="text-left">@machine.Name</td>
+                    <td>@machine.WC_ID</td>
+                    <td>@machine.PROC_ID</td>
+                    <td> 
+                        <a class="btn btn-success btn-sm" href="/MachineProfile/@machine.EQ_ID">Detail</a>
                     </td>
                 </tr>
                 }

@@ -19,13 +19,19 @@ namespace NexenHub.Pages
 
         public void OnGet()
         {
-            DbData = dbglobal.GetMachineList();
             CreateList();
+        }
+
+        public void OnPostFilter(string id)
+        {
+            CreateList();
+            DbList = DbList.FindAll(m => { return m.WC_ID == id; });
         }
 
         private void CreateList()
         {
-            DataTable dt = DbData;
+
+            DataTable dt = dbglobal.GetMachineList(); ;
             DbList = new List<MachineListObject>();
             foreach (DataRow r in dt.Rows)
             {
