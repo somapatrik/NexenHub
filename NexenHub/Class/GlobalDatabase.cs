@@ -111,7 +111,7 @@ namespace NexenHub.Class
             }
         }
 
-        public DataTable GetMachineList()
+        public DataTable GetMachineList(string EQ_ID = "")
         {
             try
             {
@@ -122,8 +122,17 @@ namespace NexenHub.Class
                 query.AppendLine("AND USE_YN='Y' ");
                 query.AppendLine("AND PLANT_ID='P500' ");
                 query.AppendLine("AND FACT_ID='NEX1' ");
-                query.AppendLine("ORDER BY EQ_ID");
+
+                if (!string.IsNullOrEmpty(EQ_ID))
+                    query.AppendLine("AND EQ_ID=:eqid ");
+                else
+                    query.AppendLine("ORDER BY EQ_ID");
+                
                 DBOra db = new DBOra(query.ToString());
+
+                if (!string.IsNullOrEmpty(EQ_ID))
+                    db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+
                 return db.ExecTable();
             }
             catch (Exception ex)

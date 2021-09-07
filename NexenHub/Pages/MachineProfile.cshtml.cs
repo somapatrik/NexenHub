@@ -25,6 +25,28 @@ namespace NexenHub.Pages
 
     }
 
+    public class MachineBasicInfo
+    {
+        public string Name { get; set; }
+        public string EQ_ID { get; set; }
+        public string WC_ID { get; set; }
+        public string PROC_ID { get; set; }
+
+        private GlobalDatabase db = new GlobalDatabase();
+
+        public MachineBasicInfo(string EQID)
+        {
+            EQ_ID = EQID;
+            DataTable dt = db.GetMachineList(EQ_ID);
+            if (dt.Rows.Count > 0)
+            {
+                Name = dt.Rows[0]["Name"].ToString();
+                WC_ID = dt.Rows[0]["WC_ID"].ToString();
+                PROC_ID = dt.Rows[0]["PROC_ID"].ToString();
+            }
+        }
+    }
+
    public class MachineProfileModel : PageModel
     {
         public string chartlabels { get; set; }
@@ -32,10 +54,10 @@ namespace NexenHub.Pages
         public WorkOrder WO { get; set; }
         public List<InputedMaterial> Inputed { get; set; }
 
+        public MachineBasicInfo machineBasic { get; set; }
+
         private GlobalDatabase dbglob = new GlobalDatabase();
-
         private ChartDownTimeDataSet ChartDataScript;
-
         private List<string> labels;
 
 
@@ -43,6 +65,9 @@ namespace NexenHub.Pages
         {
             if (EQ_ID != null)
             {
+                // Machine info
+                machineBasic = new MachineBasicInfo(EQ_ID);
+
                 // Get downtimes
                 DataTable dt = dbglob.GetNonWorkSum(EQ_ID);
                 ChartDataScript = new ChartDownTimeDataSet();
