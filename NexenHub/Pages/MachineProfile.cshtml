@@ -40,10 +40,15 @@
                                     <div class="row">
                                         <div class="col">Item: @Model.WO.ITEM_ID / @Model.WO.ITEM_NAME</div>
                                     </div>
+                                    @{
+                                    if (@Model.WO.TEST_YN == "Y")
+                                    {
                                     <div class="row">
-                                        <div class="col">@*Test: @Model.WO.TEST_YN*@</div>
-                                        <div class="col">PROTOTYPE_ID: @Model.WO.PROTOTYPE_ID</div>
+                                        <div class="col">PROTOTYPE ID: @Model.WO.PROTOTYPE_ID</div>
+                                        <div class="col"></div>
                                     </div>
+                                    }
+                                    }
                                 </div>
 
                             </div>
