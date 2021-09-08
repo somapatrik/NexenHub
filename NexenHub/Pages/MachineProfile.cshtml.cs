@@ -48,11 +48,13 @@ namespace NexenHub.Pages
     }
 
    public class MachineProfileModel : PageModel
-    {
+   {
         public string chartlabels { get; set; }
         public string chartdataset { get; set; }
         public WorkOrder WO { get; set; }
         public List<InputedMaterial> Inputed { get; set; }
+
+        public List<InputedMaterial> BOM { get; set; }
 
         public MachineBasicInfo machineBasic { get; set; }
 
@@ -82,7 +84,39 @@ namespace NexenHub.Pages
                 WO.LoadFromMachine(EQ_ID);
 
                 // Get inputed material
-                LoadInputedMaterial(EQ_ID);    
+                LoadInputedMaterial(EQ_ID);
+
+                // BOM
+                if (WO.TEST_YN == "N")
+                    LoadBOM(WO.ITEM_ID);
+                else
+                    LoadTestBOM(WO.ITEM_ID, WO.PROTOTYPE_ID, WO.PROTOTYPE_VER);
+            }
+        }
+
+        public void LoadTestBOM(string ITEM_ID,string PROTOTYPE_ID, string PROTOTYPE_VER)
+        {
+            BOM = new List<InputedMaterial>();
+            DataTable dt = dbglob.GetPrototypeBOM(ITEM_ID, PROTOTYPE_ID, PROTOTYPE_VER);
+            foreach (DataRow row in dt.Rows)
+            {
+                InputedMaterial material = new InputedMaterial();
+                material.ITEM_ID = row["ITEM_ID"].ToString();
+                material.ITEM_NAME = row["ITEM_NAME"].ToString();
+                BOM.Add(material);
+            }
+        }
+
+        public void LoadBOM(string ITEM_ID)
+        {
+            BOM = new List<InputedMaterial>();
+            DataTable dt = dbglob.GetBOM(ITEM_ID);
+            foreach (DataRow row in dt.Rows)
+            {
+                InputedMaterial material = new InputedMaterial();
+                material.ITEM_ID = row["ITEM_ID"].ToString();
+                material.ITEM_NAME = row["ITEM_NAME"].ToString();
+                BOM.Add(material);
             }
         }
 
@@ -140,5 +174,5 @@ namespace NexenHub.Pages
 
         }
 
-    }
+   }
 }

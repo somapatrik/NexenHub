@@ -41,13 +41,17 @@
                                         <div class="col">Item: @Model.WO.ITEM_ID / @Model.WO.ITEM_NAME</div>
                                     </div>
                                     @{
-                                    if (@Model.WO.TEST_YN == "Y")
-                                    {
-                                    <div class="row">
-                                        <div class="col">PROTOTYPE ID: @Model.WO.PROTOTYPE_ID</div>
-                                        <div class="col"></div>
-                                    </div>
-                                    }
+                                        if (@Model.WO.TEST_YN == "Y")
+                                        {
+                                            <div class="row">
+                                                <div class="col">Prototype ID: @Model.WO.PROTOTYPE_ID</div>
+                                                <div class="col"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">Version: @Model.WO.PROTOTYPE_VER</div>
+                                                <div class="col"></div>
+                                            </div>
+                                        }
                                     }
                                 </div>
 
@@ -74,14 +78,14 @@
                                     <tbody>
 
                                         @{ foreach(var material in Model.Inputed)
-                                        {
+                                            {
                                             <tr>
                                                 <th scope="row">@material.IO_POSID</th>
                                                 <td>@material.CART_ID</td>
                                                 <td>@material.ITEM_ID</td>
                                                 <td>@material.ITEM_NAME</td>
                                             </tr>
-                                        }
+                                            }
                                         }
                                     </tbody>
                                 </table>
@@ -99,6 +103,26 @@
                                 BOM
                             </div>
                             <div class="card-body">
+
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ITEM_ID</th>
+                                            <th scope="col">ITEM_NAME</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{ foreach (var material in Model.BOM)
+                                            {
+                                                <tr>
+                                                    <th scope="row">@material.ITEM_ID</th>
+                                                    <td>@material.ITEM_NAME</td>
+                                                </tr>
+                                            } 
+                                        }
+                                    </tbody>
+                                </table>
 
                             </div>
                         </div>

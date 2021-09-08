@@ -19,6 +19,7 @@ namespace NexenHub.Models
         public string UNIT { get; set; }
         public string TEST_YN { get; set; }
         public string PROTOTYPE_ID { get; set; }
+        public string PROTOTYPE_VER { get; set; }
 
 
         private GlobalDatabase dbglob = new GlobalDatabase();
@@ -37,6 +38,7 @@ namespace NexenHub.Models
                 UNIT = dt.Rows[0]["UNIT"].ToString();
                 TEST_YN = dt.Rows[0]["TEST_YN"].ToString();
                 PROTOTYPE_ID = dt.Rows[0]["PROTOTYPE_ID"].ToString();
+                PROTOTYPE_VER = dt.Rows[0]["PROTOTYPE_VER"].ToString();
             }
         }
 

@@ -12,6 +12,54 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetPrototypeBOM(string ITEM_ID, string PROTOTYPE_ID, string PROTOTYPE_VER)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+
+                query.AppendLine("SELECT ITEM.ITEM_ID AS ITEM_ID, ITEM.ITEM_NAME AS ITEM_NAME ");
+                query.AppendLine("FROM TB_CM_M_PROTOTYPE_BOM BOM ");
+                query.AppendLine("JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID = BOM.CHILD_ITEM_ID ");
+                query.AppendLine("WHERE ITEM.USE_YN = 'Y' ");
+                query.AppendLine("AND BOM.USE_YN = 'Y' ");
+                query.AppendLine("AND BOM.ITEM_ID = :itemid ");
+                query.AppendLine("AND BOM.PROTOTYPE_ID = :protoid ");
+                query.AppendLine("AND BOM.PROTOTYPE_VER = :protover ");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("itemid", ITEM_ID, OracleDbType.Varchar2);
+                db.AddParameter("protoid", PROTOTYPE_ID, OracleDbType.Varchar2);
+                db.AddParameter("protover", PROTOTYPE_VER, OracleDbType.Varchar2);
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetBOM(string ITEM_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT ITEM.ITEM_ID AS ITEM_ID, ITEM.ITEM_NAME AS ITEM_NAME ");
+                query.AppendLine("FROM TB_CM_M_BOM BOM ");
+                query.AppendLine("JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID = BOM.CHILD_ITEM_ID ");
+                query.AppendLine("WHERE ITEM.USE_YN = 'Y' ");
+                query.AppendLine("AND BOM.USE_YN = 'Y' ");
+                query.AppendLine("AND BOM.ITEM_ID = :itemid");
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("itemid", ITEM_ID, OracleDbType.Varchar2);
+                return db.ExecTable();
+            }
+            catch(Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetInputedMaterial(string EQ_ID)
         {
             try
@@ -44,7 +92,7 @@ namespace NexenHub.Class
                 query.AppendLine("TO_DATE(WO_STIME,'YYYYMMDDHH24MISS') AS WO_STIME, ");
                 query.AppendLine("PROD_TYPE,  ");
                 query.AppendLine("WRK.ITEM_ID AS ITEM_ID, ");
-                query.AppendLine("ITEM_NAME, WO_QTY, PROD_QTY, UNIT, TEST_YN, PROTOTYPE_ID ");
+                query.AppendLine("ITEM_NAME, WO_QTY, PROD_QTY, UNIT, TEST_YN, PROTOTYPE_ID, PROTOTYPE_VER ");
                 query.AppendLine("FROM TB_PL_M_WRKORD WRK ");
                 query.AppendLine("LEFT JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID=WRK.ITEM_ID ");
                 query.AppendLine("WHERE WRK.EQ_ID=:eqid AND WRK.USE_YN='Y' AND WRK.WO_PROC_STATE = 'S' ");
