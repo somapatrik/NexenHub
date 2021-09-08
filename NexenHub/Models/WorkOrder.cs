@@ -20,6 +20,16 @@ namespace NexenHub.Models
         public string TEST_YN { get; set; }
         public string PROTOTYPE_ID { get; set; }
         public string PROTOTYPE_VER { get; set; }
+        public string XCHPF { get; set; }
+
+        public bool OE
+        {
+            get
+            {
+                bool x = this.XCHPF == "X" ? true : false;
+                return x;
+            }
+        }
 
 
         private GlobalDatabase dbglob = new GlobalDatabase();
@@ -39,6 +49,7 @@ namespace NexenHub.Models
                 TEST_YN = dt.Rows[0]["TEST_YN"].ToString();
                 PROTOTYPE_ID = dt.Rows[0]["PROTOTYPE_ID"].ToString();
                 PROTOTYPE_VER = dt.Rows[0]["PROTOTYPE_VER"].ToString();
+                XCHPF = dt.Rows[0]["XCHPF"].ToString();
             }
         }
 

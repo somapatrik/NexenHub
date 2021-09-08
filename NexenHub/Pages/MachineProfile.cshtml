@@ -18,12 +18,25 @@
                         <div class="card">
                             <div class="card-header">
                                 Workorder
-                                @{
+                                <span class="float-right">
+                                    @{
+
+                                    if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
+                                    {
+                                        <span class="badge badge-secondary">@Model.WO.PROD_TYPE</span>
+                                    }
+
+                                    if (@Model.WO.OE)
+                                    {
+                                        <span class="badge badge-primary">OE</span>
+                                    }
+
                                     if (@Model.WO.TEST_YN == "Y")
                                     {
-                                        <span class="badge badge-warning">Test</span>
+                                        <span class="badge badge-warning">Prototype</span>
                                     }
-                                }
+                                    }
+                                </span>
 
                             </div>
                             <div class="card-body">
@@ -35,7 +48,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col">Quantity: @Model.WO.PROD_QTY / @Model.WO.WO_QTY</div>
-                                        <div class="col">Type: @Model.WO.PROD_TYPE</div>
+                                        <div class="col"></div>
                                     </div>
                                     <div class="row">
                                         <div class="col">Item: @Model.WO.ITEM_ID / @Model.WO.ITEM_NAME</div>
