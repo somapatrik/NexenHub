@@ -26,7 +26,7 @@ namespace NexenHub.Models
         {
             get
             {
-                bool x = this.XCHPF == "X" ? true : false;
+                bool x = this.XCHPF == "OE" ? true : false;
                 return x;
             }
         }
