@@ -52,6 +52,7 @@ namespace NexenHub.Pages
         public string chartlabels { get; set; }
         public string chartdataset { get; set; }
         public WorkOrder WO { get; set; }
+        public double QuantityPrc;
         public List<InputedMaterial> Inputed { get; set; }
 
         public List<InputedMaterial> BOM { get; set; }
@@ -82,6 +83,7 @@ namespace NexenHub.Pages
                 // Get WO
                 WO = new WorkOrder();
                 WO.LoadFromMachine(EQ_ID);
+                QuantityPrc = Math.Round(((Double.Parse(WO.PROD_QTY) / Double.Parse(WO.WO_QTY)) * 100), 0);
 
                 // Get inputed material
                 LoadInputedMaterial(EQ_ID);

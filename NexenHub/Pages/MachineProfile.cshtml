@@ -33,7 +33,7 @@
 
                                     if (@Model.WO.TEST_YN == "Y")
                                     {
-                                        <span class="badge badge-warning">Prototype</span>
+                                        <span class="badge badge-warning">PROTOTYPE</span>
                                     }
                                     }
                                 </span>
@@ -44,28 +44,30 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col"><b>@Model.WO.WO_NO</b></div>
-                                        <div class="col"><b>@Model.WO.WO_STIME</b></div>
+                                        <div class="col text-right">@Model.WO.WO_STIME</div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col">Quantity: @Model.WO.PROD_QTY / @Model.WO.WO_QTY</div>
-                                        <div class="col"></div>
+
+                                    <div class="row mt-3 mb-3">
+                                        <div class="col text-center">@Model.WO.ITEM_ID / @Model.WO.ITEM_NAME</div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col">Item: @Model.WO.ITEM_ID / @Model.WO.ITEM_NAME</div>
-                                    </div>
+
                                     @{
                                         if (@Model.WO.TEST_YN == "Y")
                                         {
                                             <div class="row">
-                                                <div class="col">Prototype ID: @Model.WO.PROTOTYPE_ID</div>
-                                                <div class="col"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col">Version: @Model.WO.PROTOTYPE_VER</div>
-                                                <div class="col"></div>
+                                                <div class="col text-center">@Model.WO.PROTOTYPE_ID / @Model.WO.PROTOTYPE_VER </div>
                                             </div>
                                         }
                                     }
+
+                                    <div class="row mt-3">
+                                        <div class="col">
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: @Model.QuantityPrc%;">@Model.WO.PROD_QTY / @Model.WO.WO_QTY</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -120,8 +122,8 @@
                                 <table class="table table-sm">
                                     <thead>
                                         <tr>
-                                            <th scope="col">ITEM_ID</th>
-                                            <th scope="col">ITEM_NAME</th>
+                                            <th scope="col">ITEM ID</th>
+                                            <th scope="col">ITEM NAME</th>
                                         </tr>
                                     </thead>
                                     <tbody>
