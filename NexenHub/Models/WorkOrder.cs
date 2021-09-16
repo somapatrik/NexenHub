@@ -49,7 +49,11 @@ namespace NexenHub.Models
                 TEST_YN = dt.Rows[0]["TEST_YN"].ToString();
                 PROTOTYPE_ID = dt.Rows[0]["PROTOTYPE_ID"].ToString();
                 PROTOTYPE_VER = dt.Rows[0]["PROTOTYPE_VER"].ToString();
-                XCHPF = dt.Rows[0]["XCHPF"].ToString();
+
+                if (TEST_YN == "N")
+                    XCHPF = dt.Rows[0]["XCHPF"].ToString();
+                else
+                    XCHPF = "RE";
             }
         }
 

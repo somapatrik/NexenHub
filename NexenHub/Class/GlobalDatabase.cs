@@ -12,6 +12,31 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetActNonWrk(string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT /*+INDEX (WRK IX_CM_M_NONWRK_4)*/");
+                query.AppendLine("CODE.NONWRK_NAME_1033 AS NON_NAME ");
+                query.AppendLine("FROM TB_CM_M_NONWRK WRK ");
+                query.AppendLine("LEFT JOIN TB_CM_M_NONWRKCODE CODE ON CODE.NONWRK_CODE = WRK.NONWRK_CODE ");
+                query.AppendLine("WHERE WRK.NONWRK_STIME IS NOT NULL ");
+                query.AppendLine("AND WRK.NONWRK_ETIME IS NULL ");
+                query.AppendLine("AND WRK.NONWRK_DATE IS NOT NULL ");
+                query.AppendLine("AND WRK.EQ_ID = :eqid ");
+                query.AppendLine("AND WRK.PLANT_ID = 'P500' ");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetPrototypeBOM(string ITEM_ID, string PROTOTYPE_ID, string PROTOTYPE_VER)
         {
             try

@@ -5,11 +5,12 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-12">
             <div class="h4">@Model.machineBasic.Name</div>
         </div>
     </div>
     <div class="row">
+
         <div class="col-7">
             
             <div class="container">
@@ -21,20 +22,20 @@
                                 <span class="float-right">
                                     @{
 
-                                    if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
-                                    {
+                                        if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
+                                        {
                                         <span class="badge badge-secondary">@Model.WO.PROD_TYPE</span>
-                                    }
+                                        }
 
-                                    if (@Model.WO.OE)
-                                    {
+                                        if (@Model.WO.OE)
+                                        {
                                         <span class="badge badge-primary">OE</span>
-                                    }
+                                        }
 
-                                    if (@Model.WO.TEST_YN == "Y")
-                                    {
+                                        if (@Model.WO.TEST_YN == "Y")
+                                        {
                                         <span class="badge badge-warning">PROTOTYPE</span>
-                                    }
+                                        }
                                     }
                                 </span>
 
@@ -63,7 +64,7 @@
                                     <div class="row mt-3">
                                         <div class="col">
                                             <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: @Model.QuantityPrc%;">@Model.WO.PROD_QTY / @Model.WO.WO_QTY</div>
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: @Model.QuantityPrc.ToString()%;">@Model.WO.PROD_QTY / @Model.WO.WO_QTY</div>
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +93,7 @@
                                     </thead>
                                     <tbody>
 
-                                        @{ foreach(var material in Model.Inputed)
+                                        @{ foreach (var material in Model.Inputed)
                                             {
                                             <tr>
                                                 <th scope="row">@material.IO_POSID</th>
@@ -134,7 +135,7 @@
                                                     <th scope="row">@material.ITEM_ID</th>
                                                     <td>@material.ITEM_NAME</td>
                                                 </tr>
-                                            } 
+                                            }
                                         }
                                     </tbody>
                                 </table>
@@ -148,15 +149,43 @@
         </div>
         
         <div class="col-5">
-            <div class="card">
-                <div class="card-header">
-                    Shift downtimes
+
+            <div class="container">
+
+                @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
+                   {
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card text-white bg-danger">
+
+                                <div class="card-header text-center">
+                                    @Model.ActNonWork
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                   } 
+                }
+
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                Shift downtimes
+                            </div>
+                            <div class="card-body">
+                                <canvas id="myChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <canvas id="myChart" ></canvas>
-                </div>
+
             </div>
         </div>
+
     </div>
     
 </div>
@@ -173,5 +202,5 @@
     {
         responsive: true
     }
-});
+    });
 </script>

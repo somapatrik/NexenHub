@@ -59,10 +59,11 @@ namespace NexenHub.Pages
 
         public MachineBasicInfo machineBasic { get; set; }
 
+        public string ActNonWork = "";
+
         private GlobalDatabase dbglob = new GlobalDatabase();
         private ChartDownTimeDataSet ChartDataScript;
         private List<string> labels;
-
 
         public void OnGet(string EQ_ID)
         {
@@ -74,8 +75,12 @@ namespace NexenHub.Pages
                 // Get downtimes
                 DataTable dt = dbglob.GetNonWorkSum(EQ_ID);
                 ChartDataScript = new ChartDownTimeDataSet();
-
                 FillDataScript(dt);
+
+                // Act downtime
+                dt = dbglob.GetActNonWrk(EQ_ID);
+                if (dt.Rows.Count > 0)
+                    ActNonWork = dt.Rows[0][0].ToString();
 
                 chartdataset = JsonConvert.SerializeObject(ChartDataScript, Formatting.Indented);
                 chartlabels = JsonConvert.SerializeObject(labels, Formatting.Indented);
@@ -83,7 +88,11 @@ namespace NexenHub.Pages
                 // Get WO
                 WO = new WorkOrder();
                 WO.LoadFromMachine(EQ_ID);
-                QuantityPrc = Math.Round(((Double.Parse(WO.PROD_QTY) / Double.Parse(WO.WO_QTY)) * 100), 0);
+
+                if (string.IsNullOrEmpty(WO.PROD_QTY) || string.IsNullOrEmpty(WO.WO_QTY))
+                    QuantityPrc = 0;
+                else
+                    QuantityPrc = Math.Round(((Double.Parse(WO.PROD_QTY) / Double.Parse(WO.WO_QTY)) * 100), 0);
 
                 // Get inputed material
                 LoadInputedMaterial(EQ_ID);
@@ -93,6 +102,8 @@ namespace NexenHub.Pages
                     LoadBOM(WO.ITEM_ID);
                 else
                     LoadTestBOM(WO.ITEM_ID, WO.PROTOTYPE_ID, WO.PROTOTYPE_VER);
+
+
             }
         }
 
