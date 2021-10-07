@@ -127,14 +127,14 @@
                 <div class="card-body">
 
                     <table class="table table-sm table-borderless table-hover">
-                        <thead>
+                        @*<thead>
                             <tr>
                                 <th scope="col">POS</th>
                                 <th scope="col">CART ID</th>
                                 <th scope="col">ITEM ID</th>
                                 <th scope="col">ITEM NAME</th>
                             </tr>
-                        </thead>
+                        </thead>*@
                         <tbody>
 
                             @{ foreach (var material in Model.Inputed)
@@ -142,7 +142,7 @@
                                     <tr>
                                         <td>@material.IO_POSID</td>
                                         <td>@material.CART_ID</td>
-                                        <td>@material.ITEM_ID</td>
+                                        <td class="font-weight-bold">@material.ITEM_ID</td>
                                         <td>@material.ITEM_NAME</td>
                                     </tr>
                                 }

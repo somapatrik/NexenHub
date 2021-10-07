@@ -51,6 +51,7 @@ namespace NexenHub.Class
                 query.AppendLine("AND BOM.ITEM_ID = :itemid ");
                 query.AppendLine("AND BOM.PROTOTYPE_ID = :protoid ");
                 query.AppendLine("AND BOM.PROTOTYPE_VER = :protover ");
+                query.AppendLine("ORDER BY ITEM.ITEM_ID DESC ");
 
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("itemid", ITEM_ID, OracleDbType.Varchar2);
@@ -75,6 +76,7 @@ namespace NexenHub.Class
                 query.AppendLine("WHERE ITEM.USE_YN = 'Y' ");
                 query.AppendLine("AND BOM.USE_YN = 'Y' ");
                 query.AppendLine("AND BOM.ITEM_ID = :itemid");
+                query.AppendLine("ORDER BY ITEM.ITEM_ID DESC ");
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("itemid", ITEM_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
@@ -96,7 +98,7 @@ namespace NexenHub.Class
                 query.AppendLine("WHERE POS.EQ_ID=:eqid  ");
                 query.AppendLine("AND POS.IO_POSGB='I' ");
                 query.AppendLine("AND POS.USE_YN='Y' ");
-                query.AppendLine("ORDER BY IO_POSID ");
+                query.AppendLine("ORDER BY POS.ITEM_ID DESC ");
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
