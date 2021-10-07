@@ -26,8 +26,9 @@ namespace NexenHub.Pages
         public string DaysInMonth { get; set; }
         public string TireDays { get; set; }
         public string GTDays { get; set; }
-
         public string GoalDay { get; set; }
+
+        public int SelectedMonth;
 
         private int ProdGoal = 15000;
 
@@ -57,9 +58,15 @@ namespace NexenHub.Pages
             // Get number of days in a month
             int NumberOfDays;
             if (FilterMonth == 0)
+            {
+                SelectedMonth = DateTime.Now.Month;
                 NumberOfDays = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+            }
             else
+            {
+                SelectedMonth = FilterMonth;
                 NumberOfDays = DateTime.DaysInMonth(DateTime.Now.Year, FilterMonth);
+            }
 
             int Year = DateTime.Now.Year;
             int Month = DateTime.Now.Month;

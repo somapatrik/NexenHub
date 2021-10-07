@@ -8,34 +8,35 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <div class="card">
+            <div class="card mb-3">
                 <div class="card-header">
                     Monthly report
                 </div>
                 <div class="card-body">
                     <canvas id="myChart" />
                 </div>
-                <div class="card-footer text-muted text-center">
+                @*<div class="card-footer">*@
+            </div>
                     <form method="post">
                         <nav>
                             <ul class="pagination justify-content-center">
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="1">1</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="2">2</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="3">3</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="4">4</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="5">5</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="6">6</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="7">7</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="8">8</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="9">9</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="10">10</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="11">11</button></li>
-                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="12">12</button></li>
+                                @{ for (int i=1; i < 13;i++)
+                                   {
+                                     if (Model.SelectedMonth == i)
+                                     {
+                                        <li class="page-item active"><button class="page-link" asp-page-handler="filter" asp-route-id="@i">@i</button></li>  
+                                     }
+                                     else
+                                     {
+                                        <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="@i">@i</button></li>
+                                     }
+                                   }
+                                }
                             </ul>
                         </nav>
                     </form>
-                </div>
-            </div>
+                @*</div>*@
+            
         </div>
     </div>
 </div>
