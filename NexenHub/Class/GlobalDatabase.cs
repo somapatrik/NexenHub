@@ -134,7 +134,7 @@ namespace NexenHub.Class
             }
         }
 
-        public DataTable GetProductionMonthDays()
+        public DataTable GetProductionMonthDays(int month = 0)
         {
             try
             {
@@ -146,7 +146,17 @@ namespace NexenHub.Class
                 query.AppendLine("AND WC_ID IN ('T','U') ");
                 query.AppendLine("AND USE_YN='Y' ");
                 query.AppendLine("AND SHIFT IS NOT NULL ");
-                query.AppendLine("AND PROD_DATE LIKE TO_CHAR(SYSDATE,'YYYYMM') || '%' ");
+
+                if (month == 0)
+                {
+                    query.AppendLine("AND PROD_DATE LIKE TO_CHAR(SYSDATE,'YYYYMM') || '%' ");
+                }
+                else
+                {
+                    string m = month.ToString().PadLeft(2,'0');
+                    query.AppendLine("AND PROD_DATE LIKE TO_CHAR(SYSDATE,'YYYY') || '" + m + "%' ");
+                }
+
                 query.AppendLine("GROUP BY PROD_DATE, WC_ID ");
                 query.AppendLine("ORDER BY PROD_DATE ");
                 DBOra db = new DBOra(query.ToString());

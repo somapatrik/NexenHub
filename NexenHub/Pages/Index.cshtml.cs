@@ -29,32 +29,50 @@ namespace NexenHub.Pages
 
         public string GoalDay { get; set; }
 
-        private int ProdGoal;
+        private int ProdGoal = 15000;
 
 
         private GlobalDatabase GlobalDb = new GlobalDatabase();
 
         public void OnGet()
         {
-            ProdGoal = 15000;
             FillChart();
         }
 
-        private void FillChart()
+        public void OnPostFilter(string id)
+        {
+            int MonthNum;
+            if (int.TryParse(id, out MonthNum) && MonthNum >= 1 && MonthNum <= 12)
+                FillChart(MonthNum);
+            else
+                FillChart();
+        }
+
+        private void FillChart(int FilterMonth = 0)
         {
             List<DateTime> ProdDaysInMonth = new List<DateTime>();
             List<ChartXYDate> GTprod = new List<ChartXYDate>();
             List<ChartXYDate> Tireprod = new List<ChartXYDate>();
 
             // Get number of days in a month
-            int NumberOfDays = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+            int NumberOfDays;
+            if (FilterMonth == 0)
+                NumberOfDays = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+            else
+                NumberOfDays = DateTime.DaysInMonth(DateTime.Now.Year, FilterMonth);
+
             int Year = DateTime.Now.Year;
             int Month = DateTime.Now.Month;
 
             // Default values = 0, to fill days that are missing in database (in case some days do not produce tires)
             for (int Day = 1; Day <= NumberOfDays; Day++)
             {
-                DateTime DayDate = new DateTime(Year, Month, Day);
+                DateTime DayDate;
+
+                if (FilterMonth == 0)
+                    DayDate = new DateTime(Year, Month, Day);
+                else
+                    DayDate = new DateTime(Year, FilterMonth, Day);
 
                 ProdDaysInMonth.Add(DayDate);
                 GTprod.Add(new ChartXYDate() { Date = DayDate, Value = "0" }); 
@@ -62,7 +80,7 @@ namespace NexenHub.Pages
             }
 
             // Rewrtite list with default values with dates we have
-            DataTable dt = GlobalDb.GetProductionMonthDays();
+            DataTable dt = GlobalDb.GetProductionMonthDays(FilterMonth);
             foreach (DataRow row in dt.Rows)
             {
                 DateTime prodtime = Convert.ToDateTime(row["DATETIME"].ToString());

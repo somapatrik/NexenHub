@@ -16,7 +16,24 @@
                     <canvas id="myChart" />
                 </div>
                 <div class="card-footer text-muted text-center">
-                    1 2 3 4 5 6 7 8 9 10 11 12
+                    <form method="post">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="1">1</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="2">2</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="3">3</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="4">4</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="5">5</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="6">6</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="7">7</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="8">8</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="9">9</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="10">10</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="11">11</button></li>
+                                <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="12">12</button></li>
+                            </ul>
+                        </nav>
+                    </form>
                 </div>
             </div>
         </div>
