@@ -46,7 +46,12 @@ namespace NexenHub.Models
                 WO_QTY = dt.Rows[0]["WO_QTY"].ToString();
                 PROD_QTY = dt.Rows[0]["PROD_QTY"].ToString();
                 UNIT = dt.Rows[0]["UNIT"].ToString();
-                TEST_YN = dt.Rows[0]["TEST_YN"].ToString();
+
+                if (dt.Rows[0]["TEST_YN"].ToString() == "Y")
+                    TEST_YN = "Y";
+                else
+                    TEST_YN = "N";
+
                 PROTOTYPE_ID = dt.Rows[0]["PROTOTYPE_ID"].ToString();
                 PROTOTYPE_VER = dt.Rows[0]["PROTOTYPE_VER"].ToString();
 

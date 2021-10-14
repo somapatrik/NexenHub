@@ -98,10 +98,10 @@ namespace NexenHub.Pages
                 LoadInputedMaterial(EQ_ID);
 
                 // BOM
-                if (WO.TEST_YN == "N")
-                    LoadBOM(WO.ITEM_ID);
-                else
+                if (WO.TEST_YN == "Y") 
                     LoadTestBOM(WO.ITEM_ID, WO.PROTOTYPE_ID, WO.PROTOTYPE_VER);
+                else
+                    LoadBOM(WO.ITEM_ID);
 
 
             }
