@@ -30,8 +30,11 @@ namespace NexenHub.Pages
 
         public int SelectedMonth;
 
-        private int ProdGoal = 15000;
+        public int MinGt;
+        public int MaxGt;
+        public double AvgGt;
 
+        private int ProdGoal = 15000;
 
         private GlobalDatabase GlobalDb = new GlobalDatabase();
 
@@ -128,7 +131,11 @@ namespace NexenHub.Pages
 
             GoalDay = JsonConvert.SerializeObject(goal, Formatting.Indented);
 
-
+            // Set min,max,avg
+            List<ChartXYDate> ProdValues = GTprod.FindAll(gt => gt.Date <= DateTime.Now); // only past
+            MinGt = ProdValues.Min(gt => int.Parse(gt.Value));
+            MaxGt = ProdValues.Max(gt => int.Parse(gt.Value));
+            AvgGt = ProdValues.Average(gt => int.Parse(gt.Value));
         }
     }
 }

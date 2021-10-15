@@ -6,8 +6,47 @@
 
 
 <div class="container">
+
+    <div class="row mb-3">
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Minimum GT
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="card-title">@Model.MinGt.ToString("### ###")</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Maximum GT
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="card-title">@Model.MaxGt.ToString("### ###")</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Average GT
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="card-title">@Model.AvgGt.ToString("### ###.#")</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <div class="row">
         <div class="col">
+
             <div class="card mb-3">
                 <div class="card-header">
                     Monthly report
@@ -15,7 +54,6 @@
                 <div class="card-body">
                     <canvas id="myChart" />
                 </div>
-                @*<div class="card-footer">*@
             </div>
                     <form method="post">
                         <nav>
@@ -35,8 +73,7 @@
                             </ul>
                         </nav>
                     </form>
-                @*</div>*@
-            
+        
         </div>
     </div>
 </div>

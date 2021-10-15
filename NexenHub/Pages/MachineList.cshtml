@@ -8,35 +8,35 @@
     <div class="btn-group " role="group">
 
         <form method="get">
-            <button class="btn btn-outline-primary btn-sm mr-1">ALL</button>
+            <button class="page-link mr-3">ALL</button>
         </form>
 
-        <form method="post" asp-page-handler="filter" asp-route-id="M">
-            <button class="btn btn-outline-primary btn-sm mr-1">MIX</button>
-        </form>
-
-        <form method="post" asp-page-handler="filter" asp-route-id="C">
-            <button class="btn btn-outline-primary btn-sm mr-1">CAL</button>
-        </form>
-
-        <form method="post" asp-page-handler="filter" asp-route-id="B">
-            <button class="btn btn-outline-primary btn-sm mr-1">BEAD</button>
-        </form>
-
-        <form method="post" asp-page-handler="filter" asp-route-id="E">
-            <button class="btn btn-outline-primary btn-sm mr-1">EXT</button>
-        </form>
-
-        <form method="post" asp-page-handler="filter" asp-route-id="P">
-            <button class="btn btn-outline-primary btn-sm mr-1">CUT</button>
-        </form>
-
-        <form method="post" asp-page-handler="filter" asp-route-id="T">
-            <button class="btn btn-outline-primary btn-sm mr-1">TBM</button>
-        </form>
-
-        <form method="post" asp-page-handler="filter" asp-route-id="U">
-            <button class="btn btn-outline-primary btn-sm mr-1">CUR</button>
+        <form method="post">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <button class="page-link" asp-page-handler="filter" asp-route-id="M">MIX</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" asp-page-handler="filter" asp-route-id="C">CAL</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" asp-page-handler="filter" asp-route-id="B">BEAD</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" asp-page-handler="filter" asp-route-id="E">EXT</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" asp-page-handler="filter" asp-route-id="P">CUT</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" asp-page-handler="filter" asp-route-id="T">TBM</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" asp-page-handler="filter" asp-route-id="U">CUR</button>
+                    </li>
+                </ul>
+            </nav>
         </form>
 
     </div>
