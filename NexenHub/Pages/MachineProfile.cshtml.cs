@@ -22,6 +22,7 @@ namespace NexenHub.Pages
         public string ITEM_NAME { get; set; }
         public string CART_ID { get; set; }
         public string EQ_ID { get; set; }     
+        public Boolean IsInBom { get; set; }
 
     }
 
@@ -94,16 +95,14 @@ namespace NexenHub.Pages
                 else
                     QuantityPrc = Math.Round(((Double.Parse(WO.PROD_QTY) / Double.Parse(WO.WO_QTY)) * 100), 0);
 
-                // Get inputed material
-                LoadInputedMaterial(EQ_ID);
-
                 // BOM
                 if (WO.TEST_YN == "Y") 
                     LoadTestBOM(WO.ITEM_ID, WO.PROTOTYPE_ID, WO.PROTOTYPE_VER);
                 else
                     LoadBOM(WO.ITEM_ID);
 
-
+                // Get inputed material
+                LoadInputedMaterial(EQ_ID);
             }
         }
 
@@ -149,6 +148,8 @@ namespace NexenHub.Pages
                 Inputed.Add(material);
             }
             
+            foreach (InputedMaterial input in Inputed)
+                input.IsInBom = BOM.Find(x => x.ITEM_ID == input.ITEM_ID) != null ? true : false;
         }
 
         public void FillDataScript(DataTable dt)

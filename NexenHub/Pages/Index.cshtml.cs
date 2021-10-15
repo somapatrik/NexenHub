@@ -30,9 +30,9 @@ namespace NexenHub.Pages
 
         public int SelectedMonth;
 
-        public int MinGt;
-        public int MaxGt;
-        public double AvgGt;
+        public string MinGt = " ";
+        public string MaxGt = " ";
+        public string AvgGt = " ";
 
         private int ProdGoal = 15000;
 
@@ -132,10 +132,22 @@ namespace NexenHub.Pages
             GoalDay = JsonConvert.SerializeObject(goal, Formatting.Indented);
 
             // Set min,max,avg
-            List<ChartXYDate> ProdValues = GTprod.FindAll(gt => gt.Date <= DateTime.Now); // only past
-            MinGt = ProdValues.Min(gt => int.Parse(gt.Value));
-            MaxGt = ProdValues.Max(gt => int.Parse(gt.Value));
-            AvgGt = ProdValues.Average(gt => int.Parse(gt.Value));
+            DateTime compareTo = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 1, 23, 59, 59);
+            
+            List<ChartXYDate> ProdValues = GTprod.FindAll(gt => gt.Date <= compareTo); // only past
+            List<ChartXYDate> ProdMinMax = ProdValues.FindAll(gt => gt.Value !="0");
+
+            if (ProdMinMax.Count > 0)
+            {
+                MinGt = ProdMinMax.Min(gt => int.Parse(gt.Value)).ToString("### ###");
+                MaxGt = ProdMinMax.Max(gt => int.Parse(gt.Value)).ToString("### ###");
+                AvgGt = ProdMinMax.Average(gt => int.Parse(gt.Value)).ToString("### ###.#");
+            }
+
+            //if (ProdValues.Count > 0)
+            //{
+            //    AvgGt = ProdMinMax.Average(gt => int.Parse(gt.Value)).ToString("### ###.#");
+            //}
         }
     }
 }
