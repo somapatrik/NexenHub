@@ -141,13 +141,8 @@ namespace NexenHub.Pages
             {
                 MinGt = ProdMinMax.Min(gt => int.Parse(gt.Value)).ToString("### ###");
                 MaxGt = ProdMinMax.Max(gt => int.Parse(gt.Value)).ToString("### ###");
-                AvgGt = ProdMinMax.Average(gt => int.Parse(gt.Value)).ToString("### ###.#");
+                AvgGt = ProdMinMax.Average(gt => int.Parse(gt.Value)).ToString("### ###");
             }
-
-            //if (ProdValues.Count > 0)
-            //{
-            //    AvgGt = ProdMinMax.Average(gt => int.Parse(gt.Value)).ToString("### ###.#");
-            //}
         }
     }
 }
