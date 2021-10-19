@@ -50,12 +50,14 @@ namespace NexenHub.Pages
 
    public class MachineProfileModel : PageModel
    {
+        public MachineProduction MP = new MachineProduction();
+
         public string chartlabels { get; set; }
         public string chartdataset { get; set; }
         public WorkOrder WO { get; set; }
         public double QuantityPrc;
         public List<InputedMaterial> Inputed { get; set; }
-
+        +
         public List<InputedMaterial> BOM { get; set; }
 
         public MachineBasicInfo machineBasic { get; set; }

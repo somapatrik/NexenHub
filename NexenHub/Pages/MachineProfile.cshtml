@@ -11,10 +11,9 @@
     </div>
     <div class="row">
 
-        <div class="col-7">
+        <div class="col-12 col-lg-7 mb-3">
             
-            @*<div class="container">*@
-                <div class="row">
+                <div class="row mb-3">
                     <div class="col">
                         <div class="card">
                             <div class="card-header bg-secondary text-light">
@@ -61,27 +60,23 @@
                                         }
                                     }
 
-                                    @*<div class="row mt-3">
-                                        <div class="col">
-                                            <div class="progress" style="height: 20px;">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: @Model.QuantityPrc.ToString()%;">@Model.WO.PROD_QTY / @Model.WO.WO_QTY</div>
-                                            </div>
-                                        </div>
-                                    </div>*@
-
                                 </div>
 
                             </div>
                         </div>
                     </div>
                 </div>
-            @*</div>*@
+
+                <div class="row">
+                    <div class="col">
+                        @await Html.PartialAsync("_MachineProdChart", @Model.MP)
+                    </div>
+                </div>
 
         </div>
         
-        <div class="col-5">
+        <div class="col-12 col-lg-5 mb-3">
 
-            @*<div class="container">*@
 
                 @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
                    {
@@ -114,14 +109,12 @@
                     </div>
                 </div>
 
-            @*</div>*@
-
         </div>
 
     </div>
 
-    <div class="row mt-3">
-        <div class="col-7">
+    <div class="row ">
+        <div class="col-lg-7 mb-3">
             <div class="card">
                 <div class="card-header bg-secondary text-light">Material in use</div>
                 <div class="card-body">
@@ -167,7 +160,7 @@
             </div>
         </div>
 
-        <div class="col-5">
+        <div class="col-lg-5 mb-3">
             <div class="card">
 
                 @{ if (Model.WO.TEST_YN == "Y")
@@ -205,6 +198,7 @@
     </div>
     
 </div>
+
 
 <script>
     var ctx = document.getElementById('myChart');
