@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NexenHub.Class;
+using NexenHub.Controllers;
 using NexenHub.Models;
 
 namespace NexenHub.Pages
@@ -57,7 +58,7 @@ namespace NexenHub.Pages
         public WorkOrder WO { get; set; }
         public double QuantityPrc;
         public List<InputedMaterial> Inputed { get; set; }
-        +
+        
         public List<InputedMaterial> BOM { get; set; }
 
         public MachineBasicInfo machineBasic { get; set; }
