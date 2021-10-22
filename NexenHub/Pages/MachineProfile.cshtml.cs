@@ -51,7 +51,6 @@ namespace NexenHub.Pages
 
    public class MachineProfileModel : PageModel
    {
-        public MachineProduction MP = new MachineProduction();
 
         public string chartlabels { get; set; }
         public string chartdataset { get; set; }

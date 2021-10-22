@@ -12,6 +12,29 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable MachineProdAct(string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT SUBSTR(PROD_TIME,9,2) AS HOURPROD,SUM(PROD_QTY) AS PROD");
+                query.AppendLine("FROM TB_PR_M_PROD ");
+                query.AppendLine("WHERE PROD_DATE = (SELECT TO_CHAR(SYSDATE - 6/24, 'YYYYMMDD') FROM DUAL)");
+                query.AppendLine("AND USE_YN='Y'");
+                query.AppendLine("AND EQ_ID=:EQID");
+                query.AppendLine("GROUP BY SUBSTR(PROD_TIME,9,2)");
+                query.AppendLine("ORDER BY HOURPROD");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("EQID", EQ_ID, OracleDbType.Varchar2);
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetActNonWrk(string EQ_ID)
         {
             try

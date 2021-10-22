@@ -1,3 +1,44 @@
 ﻿@model NexenHub.Models.MachineProduction
 
-<i>Komponenta @Model.Name</i>
+<div class="card">
+    <div class="card-header text-light bg-secondary">
+        Production
+    </div>
+    <div class="card-body">
+        <canvas id="@Html.Raw(Model.Name)ProdChart" style="display: block; box-sizing: border-box; height: 429px; width: 858px;" width="858" height="429"/>
+    </div>
+</div>
+
+<script>
+
+    var ctx = document.getElementById('@Html.Raw(Model.Name)ProdChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Model.HoursFormat),
+            datasets: [
+                {
+                    
+                    data: @Html.Raw(Model.ProductionFormat),
+                    backgroundColor: ['rgba(0, 130, 255, 0.2)'],
+                    borderColor: ['rgba(0, 130, 255, 1)'],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+</script>

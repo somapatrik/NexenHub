@@ -11,7 +11,10 @@ namespace NexenHub.Pages.Shared.Components.MachineProdChart
     {
         public IViewComponentResult Invoke(string EQ_ID)
         {
-            return View("Default", new MachineProduction());
+            MachineProduction machProd = new MachineProduction(EQ_ID);
+            machProd.LoadActProd();
+            return View("Default", machProd);
         }
+
     }
 }

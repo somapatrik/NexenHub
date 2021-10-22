@@ -69,7 +69,13 @@
 
                 <div class="row">
                     <div class="col">
-                        @await Component.InvokeAsync("MachineProdChart", new { EQ_ID=Model.machineBasic.EQ_ID }); 
+                        @{ 
+                            if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
+                            {
+                                @await Component.InvokeAsync("MachineProdChart", new { EQ_ID = Model.machineBasic.EQ_ID })
+                            }
+                        }
+                        
                     </div>
                 </div>
 
@@ -93,8 +99,8 @@
                         </div>
                     </div>
 
-                   } 
-                }
+                   }
+                            }
 
                 <div class="row">
                     <div class="col">
@@ -195,6 +201,10 @@
                         </div>
                     </div>
         </div>
+    </div>
+
+    <div class="row">
+
     </div>
     
 </div>
