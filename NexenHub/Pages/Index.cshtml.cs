@@ -34,7 +34,7 @@ namespace NexenHub.Pages
         public string MaxGt = " ";
         public string AvgGt = " ";
 
-        private int ProdGoal = 15000;
+        private int ProdGoal = 15600;
 
         private GlobalDatabase GlobalDb = new GlobalDatabase();
 
@@ -127,7 +127,23 @@ namespace NexenHub.Pages
 
             List<string> goal = new List<string>();
             foreach (var day in ProdDaysInMonth)
-                goal.Add(ProdGoal.ToString());
+            {
+                if (day.Year <= 2021)
+                {
+                    if (day.Month < 9)
+                        goal.Add("14000");
+                    else if (day.Month == 9 || day.Month == 10)
+                        goal.Add("15000");
+                    else
+                        goal.Add(ProdGoal.ToString());
+                }
+                else
+                {
+                    goal.Add(ProdGoal.ToString());
+                }
+                
+            }
+                
 
             GoalDay = JsonConvert.SerializeObject(goal, Formatting.Indented);
 

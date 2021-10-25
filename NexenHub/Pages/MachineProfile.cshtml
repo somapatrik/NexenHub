@@ -43,19 +43,19 @@
 
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col"><b>@Model.WO.WO_NO</b></div>
+                                        <div class="col">@Model.WO.WO_NO</div>
                                         <div class="col text-right">@Model.WO.WO_STIME</div>
                                     </div>
 
                                     <div class="row mt-3 mb-3">
-                                        <div class="col text-center">@Model.WO.ITEM_ID / @Model.WO.ITEM_NAME</div>
+                                        <div class="col text-center"><h3>@Model.WO.ITEM_ID <br/> @Model.WO.ITEM_NAME</h3></div>
                                     </div>
 
                                     @{
                                         if (@Model.WO.TEST_YN == "Y")
                                         {
                                             <div class="row">
-                                                <div class="col text-center">@Model.WO.PROTOTYPE_ID / @Model.WO.PROTOTYPE_VER </div>
+                                                <div class="col text-center">@Model.WO.PROTOTYPE_ID <br/> @Model.WO.PROTOTYPE_VER </div>
                                             </div>
                                         }
                                     }
