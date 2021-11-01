@@ -3,75 +3,78 @@
 @{
 }
 
-<div class="btn-toolbar mb-3" role="toolbar">
+<div class="container">
 
-    <div class="btn-group " role="group">
+    <div class="btn-toolbar mb-3" role="toolbar">
 
-        <form method="get">
-            <button class="page-link mr-3">ALL</button>
-        </form>
+        <div class="btn-group " role="group">
 
-        <form method="post">
-            <nav>
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <button class="page-link" asp-page-handler="filter" asp-route-id="M">MIX</button>
-                    </li>
-                    <li class="page-item">
-                        <button class="page-link" asp-page-handler="filter" asp-route-id="C">CAL</button>
-                    </li>
-                    <li class="page-item">
-                        <button class="page-link" asp-page-handler="filter" asp-route-id="B">BEAD</button>
-                    </li>
-                    <li class="page-item">
-                        <button class="page-link" asp-page-handler="filter" asp-route-id="E">EXT</button>
-                    </li>
-                    <li class="page-item">
-                        <button class="page-link" asp-page-handler="filter" asp-route-id="P">CUT</button>
-                    </li>
-                    <li class="page-item">
-                        <button class="page-link" asp-page-handler="filter" asp-route-id="T">TBM</button>
-                    </li>
-                    <li class="page-item">
-                        <button class="page-link" asp-page-handler="filter" asp-route-id="U">CUR</button>
-                    </li>
-                </ul>
-            </nav>
-        </form>
+            <form method="get">
+                <button class="page-link mr-3">ALL</button>
+            </form>
 
+            <form method="post">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <button class="page-link" asp-page-handler="filter" asp-route-id="M">MIX</button>
+                        </li>
+                        <li class="page-item">
+                            <button class="page-link" asp-page-handler="filter" asp-route-id="C">CAL</button>
+                        </li>
+                        <li class="page-item">
+                            <button class="page-link" asp-page-handler="filter" asp-route-id="B">BEAD</button>
+                        </li>
+                        <li class="page-item">
+                            <button class="page-link" asp-page-handler="filter" asp-route-id="E">EXT</button>
+                        </li>
+                        <li class="page-item">
+                            <button class="page-link" asp-page-handler="filter" asp-route-id="P">CUT</button>
+                        </li>
+                        <li class="page-item">
+                            <button class="page-link" asp-page-handler="filter" asp-route-id="T">TBM</button>
+                        </li>
+                        <li class="page-item">
+                            <button class="page-link" asp-page-handler="filter" asp-route-id="U">CUR</button>
+                        </li>
+                    </ul>
+                </nav>
+            </form>
+
+        </div>
     </div>
-</div>
 
+    <div>
+        <table class="table table-sm table-striped table-hover table-dark text-center">
 
-<div>
-    <table class="table table-sm table-striped table-hover table-dark text-center">
-
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col" class="text-left">NAME</th>
-                <th scope="col">WC</th>
-                <th scope="col">PROC</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @{ foreach (var machine in Model.DbList)
-                {
-
+            <thead>
                 <tr>
-                    <th scope="row">@machine.EQ_ID</th>
-                    <td class="text-left">@machine.Name</td>
-                    <td>@machine.WC_ID</td>
-                    <td>@machine.PROC_ID</td>
-                    <td> 
-                        <a class="btn btn-success btn-sm" href="/MachineProfile/@machine.EQ_ID">Detail</a>
-                    </td>
+                    <th scope="col">ID</th>
+                    <th scope="col" class="text-left">NAME</th>
+                    <th scope="col">WC</th>
+                    <th scope="col">PROC</th>
+                    <th scope="col"></th>
                 </tr>
-                }
-            }
+            </thead>
+            <tbody>
 
-        </tbody>
-    </table>
+                @{ foreach (var machine in Model.DbList)
+                    {
+
+                        <tr>
+                            <th scope="row">@machine.EQ_ID</th>
+                            <td class="text-left">@machine.Name</td>
+                            <td>@machine.WC_ID</td>
+                            <td>@machine.PROC_ID</td>
+                            <td>
+                                <a class="btn btn-success btn-sm" href="/MachineProfile/@machine.EQ_ID">Detail</a>
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+
 </div>

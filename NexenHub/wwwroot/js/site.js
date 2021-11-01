@@ -2,3 +2,12 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your Javascript code.
+
+function SwitchButtons(activate, deactivate) {
+
+    var on = document.getElementById(activate);
+    var off = document.getElementById(deactivate);
+
+    off.classList.remove("active");
+    on.classList.add("active");
+}

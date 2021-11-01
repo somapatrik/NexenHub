@@ -22,7 +22,7 @@ namespace NexenHub.Pages
         public string ITEM_ID { get; set; }
         public string ITEM_NAME { get; set; }
         public string CART_ID { get; set; }
-        public string EQ_ID { get; set; }     
+        public string EQ_ID { get; set; }
         public Boolean IsInBom { get; set; }
 
     }
@@ -49,18 +49,38 @@ namespace NexenHub.Pages
         }
     }
 
-   public class MachineProfileModel : PageModel
-   {
+    public class DownTimeInfoScript
+    {
+        public string id { get; set; }
 
+        public string content { get; set; }
+        public string start { get; set; }
+        public string end { get; set; }
+        public string type => "background";
+        public string className => "negative";
+    }
+
+    public class MachineProfileModel : PageModel
+    {
         public string chartlabels { get; set; }
         public string chartdataset { get; set; }
         public WorkOrder WO { get; set; }
         public double QuantityPrc;
         public List<InputedMaterial> Inputed { get; set; }
-        
+
         public List<InputedMaterial> BOM { get; set; }
 
         public MachineBasicInfo machineBasic { get; set; }
+
+        public List<DownTimeInfoScript> downInfo { get; set; }
+        public string downScript {get;set;}
+
+        [BindProperty]
+        public DateTime FilterDate { get; set; }
+
+        [BindProperty]
+        public bool IsA { get; set; }
+
 
         public string ActNonWork = "";
 
@@ -79,6 +99,9 @@ namespace NexenHub.Pages
                 DataTable dt = dbglob.GetNonWorkSum(EQ_ID);
                 ChartDataScript = new ChartDownTimeDataSet();
                 FillDataScript(dt);
+
+                // Get last nonworks
+                FillDownTimeInfo(EQ_ID);
 
                 // Act downtime
                 dt = dbglob.GetActNonWrk(EQ_ID);
@@ -105,7 +128,36 @@ namespace NexenHub.Pages
 
                 // Get inputed material
                 LoadInputedMaterial(EQ_ID);
+
+                
+
+                SetFilterDate();
             }
+        }
+
+        public void FillDownTimeInfo(string EQ_ID)
+        {
+            downInfo = new List<DownTimeInfoScript>();
+            DataTable dt = dbglob.GetLastNonWorkSum(EQ_ID, DateTime.Now.AddHours(-12));
+            int i = 0;
+            foreach (DataRow row in dt.Rows)
+            {
+                DownTimeInfoScript di = new DownTimeInfoScript();
+                di.start = DateTime.Parse(row["STIME"].ToString()).ToString("yyyy-MM-ddTHH:mm:ss");
+                di.end = !string.IsNullOrEmpty(row["ETIME"].ToString()) ? DateTime.Parse(row["ETIME"].ToString()).ToString("yyyy-MM-ddTHH:mm:ss") : null;
+                di.id = "id_" + row["NON_NAME"].ToString() + "_"+i;
+                di.content = row["NON_NAME"].ToString();
+                downInfo.Add(di);
+                i++;
+            }
+            downScript = JsonConvert.SerializeObject(downInfo, Formatting.Indented);
+        }
+        public void SetFilterDate()
+        {
+            DateTime now = DateTime.Now;
+            IsA = now.Hour >= 6 && now.Hour < 18 ? true : false;
+
+            FilterDate = now.AddHours(-6);
         }
 
         public void LoadTestBOM(string ITEM_ID,string PROTOTYPE_ID, string PROTOTYPE_VER)
@@ -188,6 +240,11 @@ namespace NexenHub.Pages
             ChartDataScript.AddFirst((Math.Abs(FinalMinutes-sumtime)).ToString(), KnownColor.LimeGreen);
             labels.Insert(0,"Work");
 
+        }
+
+        public void OnPost(string EQ_ID)
+        {
+            OnGet(EQ_ID);
         }
 
    }

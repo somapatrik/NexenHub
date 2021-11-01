@@ -143,12 +143,13 @@ namespace NexenHub.Pages
                 }
                 
             }
-                
 
             GoalDay = JsonConvert.SerializeObject(goal, Formatting.Indented);
 
             // Set min,max,avg
-            DateTime compareTo = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 1, 23, 59, 59);
+            DateTime yesterday = DateTime.Now.AddDays(-1);
+            DateTime compareTo = new DateTime(yesterday.Year, yesterday.Month, yesterday.Day, 23, 59, 59);
+            //DateTime compareTo = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 1, 23, 59, 59);
             
             List<ChartXYDate> ProdValues = GTprod.FindAll(gt => gt.Date <= compareTo); // only past
             List<ChartXYDate> ProdMinMax = ProdValues.FindAll(gt => gt.Value !="0");

@@ -4,88 +4,90 @@
 }
 
 <div class="container">
+
     <div class="row">
-        <div class="col-12">
-            <div class="h4">@Model.machineBasic.Name</div>
+        <div class="col-12 mb-3">
+            <div class="h3">@Model.machineBasic.Name</div>
         </div>
     </div>
+
     <div class="row">
 
-        <div class="col-12 col-lg-7 mb-3">
-            
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header bg-secondary text-light">
-                                Workorder
-                                <span class="float-right">
-                                    @{
+        <div class="col-12 col-lg-7">
 
-                                        if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
-                                        {
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-light">
+                            Workorder
+                            <span class="float-right">
+                                @{
+
+                                    if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
+                                    {
                                         <span class="badge badge-dark">@Model.WO.PROD_TYPE</span>
-                                        }
+                                    }
 
-                                        if (@Model.WO.OE)
-                                        {
+                                    if (@Model.WO.OE)
+                                    {
                                         <span class="badge badge-primary">OE</span>
-                                        }
+                                    }
 
-                                        if (@Model.WO.TEST_YN == "Y")
-                                        {
+                                    if (@Model.WO.TEST_YN == "Y")
+                                    {
                                         <span class="badge badge-warning">PROTOTYPE</span>
-                                        }
                                     }
-                                </span>
+                                }
+                            </span>
 
-                            </div>
-                            <div class="card-body">
+                        </div>
+                        <div class="card-body">
 
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col">@Model.WO.WO_NO</div>
-                                        <div class="col text-right">@Model.WO.WO_STIME</div>
-                                    </div>
-
-                                    <div class="row mt-3 mb-3">
-                                        <div class="col text-center"><h3>@Model.WO.ITEM_ID <br/> @Model.WO.ITEM_NAME</h3></div>
-                                    </div>
-
-                                    @{
-                                        if (@Model.WO.TEST_YN == "Y")
-                                        {
-                                            <div class="row">
-                                                <div class="col text-center">@Model.WO.PROTOTYPE_ID <br/> @Model.WO.PROTOTYPE_VER </div>
-                                            </div>
-                                        }
-                                    }
-
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">@Model.WO.WO_NO</div>
+                                    <div class="col text-right">@Model.WO.WO_STIME</div>
                                 </div>
 
+                                <div class="row mt-3 mb-3">
+                                    <div class="col text-center"><h3>@Model.WO.ITEM_ID <br /> @Model.WO.ITEM_NAME</h3></div>
+                                </div>
+
+                                @{
+                                    if (@Model.WO.TEST_YN == "Y")
+                                    {
+                                        <div class="row">
+                                            <div class="col text-center">@Model.WO.PROTOTYPE_ID <br /> @Model.WO.PROTOTYPE_VER </div>
+                                        </div>
+                                    }
+                                }
+
                             </div>
+
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col">
-                        @{ 
-                            if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
-                            {
-                                @await Component.InvokeAsync("MachineProdChart", new { EQ_ID = Model.machineBasic.EQ_ID })
-                            }
+            <div class="row">
+                <div class="col">
+                    @{
+                        if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
+                        {
+                            @await Component.InvokeAsync("MachineProdChart", new { EQ_ID = Model.machineBasic.EQ_ID })
                         }
-                        
-                    </div>
+                    }
+
                 </div>
+            </div>
 
         </div>
-        
-        <div class="col-12 col-lg-5 mb-3">
+
+        <div class="col-12 col-lg-5">
 
 
-                @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
-                   {
+            @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
+                {
 
                     <div class="row mb-3">
                         <div class="col">
@@ -99,21 +101,21 @@
                         </div>
                     </div>
 
-                   }
-                            }
+                }
+            }
 
-                <div class="row">
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-header bg-secondary text-light">
-                                Shift downtimes
-                            </div>
-                            <div class="card-body">
-                                <canvas id="myChart"></canvas>
-                            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-light">
+                            Shift downtimes
+                        </div>
+                        <div class="card-body">
+                            <canvas id="myChart"></canvas>
                         </div>
                     </div>
                 </div>
+            </div>
 
         </div>
 
@@ -127,36 +129,36 @@
 
                     <table class="table table-sm table-borderless table-hover">
                         @*<thead>
-                            <tr>
-                                <th scope="col">POS</th>
-                                <th scope="col">CART ID</th>
-                                <th scope="col">ITEM ID</th>
-                                <th scope="col">ITEM NAME</th>
-                            </tr>
-                        </thead>*@
+                                <tr>
+                                    <th scope="col">POS</th>
+                                    <th scope="col">CART ID</th>
+                                    <th scope="col">ITEM ID</th>
+                                    <th scope="col">ITEM NAME</th>
+                                </tr>
+                            </thead>*@
                         <tbody>
 
                             @{ foreach (var material in Model.Inputed)
                                 {
-                                    if (material.IsInBom) 
-                                    { 
-                                    <tr class="table-success"> 
-                                        <td>@material.IO_POSID</td>
-                                        <td>@material.CART_ID</td>
-                                        <td>@material.LOT_ID</td>
-                                        <td class="font-weight-bold">@material.ITEM_ID</td>
-                                        <td>@material.ITEM_NAME</td>
-                                    </tr>
-                                    } 
-                                    else 
+                                    if (material.IsInBom)
                                     {
-                                    <tr>
-                                        <td>@material.IO_POSID</td>
-                                        <td>@material.CART_ID</td>
-                                        <td>@material.LOT_ID</td>
-                                        <td class="font-weight-bold">@material.ITEM_ID</td>
-                                        <td>@material.ITEM_NAME</td>
-                                    </tr>
+                                        <tr class="table-success">
+                                            <td>@material.IO_POSID</td>
+                                            <td>@material.CART_ID</td>
+                                            <td>@material.LOT_ID</td>
+                                            <td class="font-weight-bold">@material.ITEM_ID</td>
+                                            <td>@material.ITEM_NAME</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>@material.IO_POSID</td>
+                                            <td>@material.CART_ID</td>
+                                            <td>@material.LOT_ID</td>
+                                            <td class="font-weight-bold">@material.ITEM_ID</td>
+                                            <td>@material.ITEM_NAME</td>
+                                        </tr>
                                     }
                                 }
                             }
@@ -171,46 +173,72 @@
 
                 @{ if (Model.WO.TEST_YN == "Y")
                     {
-                      <div class="card-header bg-warning text-dark">
-                       @Html.Raw("Prototype BOM")
-                      </div>
+                        <div class="card-header bg-warning text-dark">
+                            @Html.Raw("Prototype BOM")
+                        </div>
                     }
                     else
                     {
                         <div class="card-header bg-secondary text-light">
                             @Html.Raw("BOM")
                         </div>
-                    }                        
-                  }
-                        <div class="card-body">
+                    }
+                }
+                <div class="card-body">
 
-                            <table class="table table-sm table-hover table-borderless">
-                                <tbody>
+                    <table class="table table-sm table-hover table-borderless">
+                        <tbody>
 
-                                    @{ foreach (var material in Model.BOM)
-                                        {
-                                            <tr>
-                                                <th scope="row">@material.ITEM_ID</th>
-                                                <td>@material.ITEM_NAME</td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
+                            @{ foreach (var material in Model.BOM)
+                                {
+                                    <tr>
+                                        <th scope="row">@material.ITEM_ID</th>
+                                        <td>@material.ITEM_NAME</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
 
-                        </div>
-                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="row">
-
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-secondary text-light">
+                    Downtime visualization
+                </div>
+                <div class="card-body">
+                    <div id="visualization" />
+                </div>
+            </div>
+        </div>
     </div>
-    
+
+    @*<div class="row">
+                <div class="col-auto">
+                    <form class="form-inline mx-1" method="post">
+                        <div class="input-group" role="group">
+                            <input name="FilterDate" class="form-control" type="date" value="@Model.FilterDate.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="btn-group mx-1" role="group">
+                            @{ string stl = Model.IsA ? " active" : ""; string stl2 = Model.IsA ? "" : " active";
+                                <button id="btnA" class="btn btn-outline-primary @stl" type="button" onclick="SwitchButtons(this.id, 'btnC')">A</button>
+                                <button id="btnC" class="btn btn-outline-primary @stl2" type="button" onclick="SwitchButtons(this.id,'btnA')">C</button>
+                            }
+                        </div>
+                        <button class="btn btn-primary mx-1" type="submit">Search</button>
+                    </form>
+                </div>
+        </div>*@
 </div>
 
 
 <script>
+
     var ctx = document.getElementById('myChart');
     var myChart = new Chart(ctx, {
         type: 'doughnut',
@@ -223,4 +251,22 @@
         responsive: true
     }
     });
+
+
+var items = new vis.DataSet(@Html.Raw(Model.downScript));
+
+var container = document.getElementById("visualization");
+var options = {
+                start: "@DateTime.Now.AddMinutes(-30).ToString("yyyy-MM-ddTHH:mm:ss")",
+                end:  "@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")"
+              };
+
+var timeline = new vis.Timeline(container, items, options);
+
 </script>
+
+<style>
+    .vis-item.vis-background.negative {
+        background-color: rgba(255, 0, 0, .7);
+    }
+</style>

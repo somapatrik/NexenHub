@@ -12,6 +12,39 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetDashboardStatus()
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT");
+                query.AppendLine("EQ.EQ_ID,");
+                query.AppendLine("EQ.EQ_NAME, ");
+                query.AppendLine("CODE.NONWRK_CODE,");
+                query.AppendLine("CODE.NONWRK_NAME_1033 as NON_NAME, ");
+                query.AppendLine("NVL(REPLACE(CODE.REL05,'000','0'),'0,0,0') as FRCOLOR,  ");
+                query.AppendLine("NVL(REPLACE(CODE.DISP_COLOR,'000','0'),'255,255,255') as BGCOLOR, ");
+                query.AppendLine("WRK.ITEM_ID");
+                query.AppendLine("FROM TB_EQ_M_EQUIP EQ");
+                query.AppendLine("LEFT JOIN TB_CM_M_NONWRK NON ON NON.EQ_ID = EQ.EQ_ID AND NON.NONWRK_ETIME is null");
+                query.AppendLine("LEFT JOIN TB_CM_M_NONWRKCODE CODE on CODE.NONWRK_CODE = NON.NONWRK_CODE");
+                query.AppendLine("LEFT JOIN TB_PL_M_WRKORD WRK ON WRK.EQ_ID = EQ.EQ_ID AND WRK.USE_YN = 'Y' AND WRK.DEL_FLAG = 'N' AND WO_PROC_STATE = 'S'");
+                query.AppendLine("WHERE EQ.EQ_TYPE = 'P'");
+                query.AppendLine("AND EQ.USE_YN = 'Y'");
+                query.AppendLine("AND EQ.FACT_ID = 'NEX1'");
+                query.AppendLine("AND EQ.WC_ID = 'T'");
+                query.AppendLine("ORDER BY EQ.EQ_ID");
+
+
+                DBOra db = new DBOra(query.ToString());
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable MachineProdAct(string EQ_ID)
         {
             try
@@ -110,6 +143,7 @@ namespace NexenHub.Class
             }
         }
 
+        // TODO: CART_SELECT
         public DataTable GetInputedMaterial(string EQ_ID)
         {
             try
@@ -121,6 +155,7 @@ namespace NexenHub.Class
                 query.AppendLine("WHERE POS.EQ_ID=:eqid  ");
                 query.AppendLine("AND POS.IO_POSGB='I' ");
                 query.AppendLine("AND POS.USE_YN='Y' ");
+                query.AppendLine("AND POS.CART_SELECT='Y' ");
                 query.AppendLine("ORDER BY POS.ITEM_ID DESC ");
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
@@ -183,6 +218,35 @@ namespace NexenHub.Class
                 query.AppendLine("GROUP BY PROD_DATE, WC_ID ");
                 query.AppendLine("ORDER BY PROD_DATE ");
                 DBOra db = new DBOra(query.ToString());
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetLastNonWorkSum(string EQ_ID, DateTime FromDate)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+
+                query.AppendLine("SELECT");
+                query.AppendLine("to_date(NONWRK.NONWRK_STIME, 'YYYYMMDDHH24MISS') STIME, ");
+                query.AppendLine("to_date(NONWRK.NONWRK_ETIME, 'YYYYMMDDHH24MISS') ETIME, ");
+                query.AppendLine("CODE.NONWRK_NAME_1033 NON_NAME,");
+                query.AppendLine("DISP_COLOR BG_COLOR, ");
+                query.AppendLine("REL05 FR_COLOR");
+                query.AppendLine("from TB_CM_M_NONWRK NONWRK");
+                query.AppendLine("join TB_CM_M_NONWRKCODE CODE on CODE.NONWRK_CODE = NONWRK.NONWRK_CODE");
+                query.AppendLine("WHERE EQ_ID = :eqid");
+                query.AppendLine("AND NONWRK.ENT_DT >= :fromdate");
+                query.AppendLine("ORDER BY NONWRK.ENT_DT");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("fromdate", FromDate, OracleDbType.Date);
                 return db.ExecTable();
             }
             catch (Exception ex)
