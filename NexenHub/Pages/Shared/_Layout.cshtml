@@ -41,8 +41,14 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/CartsInfo">Cart e-paper</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/status">TBM status</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                                Dashboards
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/status">TBM</a>
+                                <a class="dropdown-item" href="/StatusExtruder">Extruder</a>
+                            </div>
                         </li>
                     </ul>
 

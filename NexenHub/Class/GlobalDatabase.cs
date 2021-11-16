@@ -12,7 +12,7 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
-        public DataTable GetDashboardStatus()
+        public DataTable GetDashboardStatus(string WC_ID)
         {
             try
             {
@@ -32,11 +32,12 @@ namespace NexenHub.Class
                 query.AppendLine("WHERE EQ.EQ_TYPE = 'P'");
                 query.AppendLine("AND EQ.USE_YN = 'Y'");
                 query.AppendLine("AND EQ.FACT_ID = 'NEX1'");
-                query.AppendLine("AND EQ.WC_ID = 'T'");
+                query.AppendLine("AND EQ.WC_ID = :wc");
                 query.AppendLine("ORDER BY EQ.EQ_ID");
 
 
                 DBOra db = new DBOra(query.ToString());
+                db.AddParameter("wc", WC_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
             catch (Exception ex)

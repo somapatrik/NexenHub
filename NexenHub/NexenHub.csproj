@@ -16,4 +16,8 @@
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\Images\best\" />
+  </ItemGroup>
+
 </Project>

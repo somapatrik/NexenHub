@@ -9,18 +9,16 @@ using NexenHub.Class;
 
 namespace NexenHub.Pages
 {
-
-    public class StatusModel : PageModel
+    public class StatusExtruderModel : PageModel
     {
 
         GlobalDatabase dbglob = new GlobalDatabase();
         public List<StatusEq> statuses;
 
-
         public void OnGet()
         {
-            DataTable dt = dbglob.GetDashboardStatus("T");
-            
+            DataTable dt = dbglob.GetDashboardStatus("E");
+
             statuses = new List<StatusEq>();
 
             foreach (DataRow row in dt.Rows)
