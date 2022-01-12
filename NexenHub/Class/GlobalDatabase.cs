@@ -227,34 +227,34 @@ namespace NexenHub.Class
             }
         }
 
-        public DataTable GetLastNonWorkSum(string EQ_ID, DateTime FromDate)
-        {
-            try
-            {
-                StringBuilder query = new StringBuilder();
+        //public DataTable GetLastNonWorkSum(string EQ_ID, DateTime FromDate)
+        //{
+        //    try
+        //    {
+        //        StringBuilder query = new StringBuilder();
 
-                query.AppendLine("SELECT");
-                query.AppendLine("to_date(NONWRK.NONWRK_STIME, 'YYYYMMDDHH24MISS') STIME, ");
-                query.AppendLine("to_date(NONWRK.NONWRK_ETIME, 'YYYYMMDDHH24MISS') ETIME, ");
-                query.AppendLine("CODE.NONWRK_NAME_1033 NON_NAME,");
-                query.AppendLine("DISP_COLOR BG_COLOR, ");
-                query.AppendLine("REL05 FR_COLOR");
-                query.AppendLine("from TB_CM_M_NONWRK NONWRK");
-                query.AppendLine("join TB_CM_M_NONWRKCODE CODE on CODE.NONWRK_CODE = NONWRK.NONWRK_CODE");
-                query.AppendLine("WHERE EQ_ID = :eqid");
-                query.AppendLine("AND NONWRK.ENT_DT >= :fromdate");
-                query.AppendLine("ORDER BY NONWRK.ENT_DT");
+        //        query.AppendLine("SELECT");
+        //        query.AppendLine("to_date(NONWRK.NONWRK_STIME, 'YYYYMMDDHH24MISS') STIME, ");
+        //        query.AppendLine("to_date(NONWRK.NONWRK_ETIME, 'YYYYMMDDHH24MISS') ETIME, ");
+        //        query.AppendLine("CODE.NONWRK_NAME_1033 NON_NAME,");
+        //        query.AppendLine("DISP_COLOR BG_COLOR, ");
+        //        query.AppendLine("REL05 FR_COLOR");
+        //        query.AppendLine("from TB_CM_M_NONWRK NONWRK");
+        //        query.AppendLine("join TB_CM_M_NONWRKCODE CODE on CODE.NONWRK_CODE = NONWRK.NONWRK_CODE");
+        //        query.AppendLine("WHERE EQ_ID = :eqid");
+        //        query.AppendLine("AND NONWRK.ENT_DT >= :fromdate");
+        //        query.AppendLine("ORDER BY NONWRK.ENT_DT");
 
-                DBOra db = new DBOra(query.ToString());
-                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
-                db.AddParameter("fromdate", FromDate, OracleDbType.Date);
-                return db.ExecTable();
-            }
-            catch (Exception ex)
-            {
-                return new DataTable();
-            }
-        }
+        //        DBOra db = new DBOra(query.ToString());
+        //        db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+        //        db.AddParameter("fromdate", FromDate, OracleDbType.Date);
+        //        return db.ExecTable();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new DataTable();
+        //    }
+        //}
 
         public DataTable GetNonWorkSum(string EQ_ID)
         {

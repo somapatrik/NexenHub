@@ -34,7 +34,7 @@ namespace NexenHub.Pages
         public string MaxGt = " ";
         public string AvgGt = " ";
 
-        private int ProdGoal = 15600;
+        private int ProdGoal = 15000;
 
         private GlobalDatabase GlobalDb = new GlobalDatabase();
 

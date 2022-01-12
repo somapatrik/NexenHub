@@ -1,0 +1,51 @@
+﻿@page
+@model NexenHub.Pages.StatusCalenderModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="refresh" content="30">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body class="bg-dark">
+    <div class="container-fluid mt-0 mt-md-3">
+        <div class="row">
+            @{ foreach (var status in Model.statuses)
+                {
+
+                    <div class="col-12 col-md-6 col-xl-3  mb-1">
+
+                        @{string stl = "bg-success";
+                            if (!string.IsNullOrEmpty(status.Downtime))
+                                stl = "bg-danger";
+                        }
+
+                        <div class="card text-light text-center @stl">
+                            <div class="card-header">
+                                <h3> @status.Name </h3>
+                            </div>
+                            <div class="card-body">
+                                <h3>
+                                    @{
+                                        if (string.IsNullOrEmpty(status.Downtime))
+                                            @status.Item_id
+                                            else
+                                                @status.Downtime
+                                    }
+                                </h3>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</body>
+</html>

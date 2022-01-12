@@ -101,7 +101,7 @@ namespace NexenHub.Pages
                 FillDataScript(dt);
 
                 // Get last nonworks
-                FillDownTimeInfo(EQ_ID);
+              //  FillDownTimeInfo(EQ_ID);
 
                 // Act downtime
                 dt = dbglob.GetActNonWrk(EQ_ID);
@@ -135,23 +135,24 @@ namespace NexenHub.Pages
             }
         }
 
-        public void FillDownTimeInfo(string EQ_ID)
-        {
-            downInfo = new List<DownTimeInfoScript>();
-            DataTable dt = dbglob.GetLastNonWorkSum(EQ_ID, DateTime.Now.AddHours(-12));
-            int i = 0;
-            foreach (DataRow row in dt.Rows)
-            {
-                DownTimeInfoScript di = new DownTimeInfoScript();
-                di.start = DateTime.Parse(row["STIME"].ToString()).ToString("yyyy-MM-ddTHH:mm:ss");
-                di.end = !string.IsNullOrEmpty(row["ETIME"].ToString()) ? DateTime.Parse(row["ETIME"].ToString()).ToString("yyyy-MM-ddTHH:mm:ss") : null;
-                di.id = "id_" + row["NON_NAME"].ToString() + "_"+i;
-                di.content = row["NON_NAME"].ToString();
-                downInfo.Add(di);
-                i++;
-            }
-            downScript = JsonConvert.SerializeObject(downInfo, Formatting.Indented);
-        }
+        //public void FillDownTimeInfo(string EQ_ID)
+        //{
+        //    downInfo = new List<DownTimeInfoScript>();
+        //    DataTable dt = dbglob.GetLastNonWorkSum(EQ_ID, DateTime.Now.AddHours(-12));
+        //    int i = 0;
+        //    foreach (DataRow row in dt.Rows)
+        //    {
+        //        DownTimeInfoScript di = new DownTimeInfoScript();
+        //        di.start = DateTime.Parse(row["STIME"].ToString()).ToString("yyyy-MM-ddTHH:mm:ss");
+        //        di.end = !string.IsNullOrEmpty(row["ETIME"].ToString()) ? DateTime.Parse(row["ETIME"].ToString()).ToString("yyyy-MM-ddTHH:mm:ss") : null;
+        //        di.id = "id_" + row["NON_NAME"].ToString() + "_"+i;
+        //        di.content = row["NON_NAME"].ToString();
+        //        downInfo.Add(di);
+        //        i++;
+        //    }
+        //    downScript = JsonConvert.SerializeObject(downInfo, Formatting.Indented);
+        //}
+
         public void SetFilterDate()
         {
             DateTime now = DateTime.Now;
