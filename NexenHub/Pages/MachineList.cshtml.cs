@@ -47,12 +47,12 @@ namespace NexenHub.Pages
 
     }
 
-    public class MachineListObject
-    {
-        public string EQ_ID { get; set; }
-        public string Name { get; set; }
-        public string WC_ID { get; set; }
-        public string PROC_ID { get; set; }
-    }
+    //public class MachineListObject
+    //{
+    //    public string EQ_ID { get; set; }
+    //    public string Name { get; set; }
+    //    public string WC_ID { get; set; }
+    //    public string PROC_ID { get; set; }
+    //}
 
 }

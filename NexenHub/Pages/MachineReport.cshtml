@@ -1,122 +1,61 @@
-﻿@page
+﻿@page "{eqarg?}/{startarg:datetime?}/{endarg:datetime?}"
 @model NexenHub.Pages.MachineReportModel
 @{
 }
 
-
-
 <div class="container-fluid">
 
-
     <div class="row">
-        <ul class="nav nav-fill">
-            <li class="nav-item"><a class="nav-link">Mixing</a></li>
-            <li class="nav-item"><a class="page-link">Calendering</a></li>
-            <li class="nav-item"><a class="page-link">Extruding</a></li>
-            <li class="nav-item"><a class="page-link">Cutting</a></li>
-            <li class="nav-item"><a class="page-link">TBM</a></li>
-            <li class="nav-item"><a class="page-link">Curing</a></li>
-        </ul>
-    </div>
+        <div class="col-sm-12 col-xl-6">
 
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Machine</span>
 
-    <div class="row">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><button class="page-link">Mixer 1</button></li>
-                <li class="page-item"><button class="page-link">Mixer 2</button></li>
-                <li class="page-item"><button class="page-link">Mixer 3</button></li>
-            </ul>
-        </nav>
-    </div>
+                            <select class="form-select" asp-for="SelectedMachine">
+                                <option value=""></option>
+                                @{
+                                    foreach (var Machine in Model.Machines)
+                                    {
+                                        <option value="@Machine.EQ_ID">@Machine.EQ_ID - @Machine.Name</option>
+                                    }
+                                }
+                            </select>
 
-    <div class="row">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><button class="page-link">Tread 1</button></li>
-                <li class="page-item"><button class="page-link">Tread 2</button></li>
-                <li class="page-item"><button class="page-link">Sidewall</button></li>
-                <li class="page-item"><button class="page-link">Rubber slitter</button></li>
-            </ul>
-        </nav>
-    </div>
+                            <span class="input-group-text">From</span>
+                            <input type="text" id="myfrom" class="form-control" asp-for="DateFrom" data-provide="datepicker" data-date-end-date="0d">
+                            <span class="input-group-text">To</span>
+                            <input type="text" id="myTo" class="form-control" asp-for="DateTo" data-provide="datepicker" data-date-end-date="0d">                        
 
-    <div class="row">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><button class="page-link">Combi calender</button></li>
-                <li class="page-item"><button class="page-link">IL calender</button></li>
-                <li class="page-item"><button class="page-link">Tape line</button></li>
-            </ul>
-        </nav>
-    </div>
+                        </div>
 
-    <div class="row">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><button class="page-link">HBC 1</button></li>
-                <li class="page-item"><button class="page-link">HBC 2</button></li>
-                <li class="page-item"><button class="page-link">MHBC</button></li>
-                <li class="page-item"><button class="page-link">Wide slitter</button></li>
-                <li class="page-item"><button class="page-link">Mini slitter</button></li>
-                <li class="page-item"><button class="page-link">SWI cutter</button></li>
-            </ul>
-        </nav>
-    </div>
+                        <div class="row flex-row-reverse">
+                            <div class="col-sm-auto">
+                                <button type="submit" class="btn btn-primary" asp-page-handler="generate">Generate report</button>
+                            </div>
+                        </div>
 
-    <div class="row">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><button class="page-link">BG 1</button></li>
-                <li class="page-item"><button class="page-link">BG 2</button></li>
-                <li class="page-item"><button class="page-link">FF 1</button></li>
-                <li class="page-item"><button class="page-link">FF 2</button></li>
-                <li class="page-item"><button class="page-link">FF 3</button></li>
-                <li class="page-item"><button class="page-link">FF 4</button></li>
-                <li class="page-item"><button class="page-link">FF 5</button></li>
-            </ul>
-        </nav>
-    </div>
-
-    <div class="row">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><button class="page-link">TBM 11</button></li>
-                <li class="page-item"><button class="page-link">TBM 12</button></li>
-                <li class="page-item"><button class="page-link">TBM 13</button></li>
-                <li class="page-item"><button class="page-link">TBM 14</button></li>
-                <li class="page-item"><button class="page-link">TBM 15</button></li>
-                <li class="page-item"><button class="page-link">TBM 16</button></li>
-                <li class="page-item"><button class="page-link">TBM 21</button></li>
-                <li class="page-item"><button class="page-link">TBM 22</button></li>
-                <li class="page-item"><button class="page-link">TBM 23</button></li>
-                <li class="page-item"><button class="page-link">TBM 24</button></li>
-                <li class="page-item"><button class="page-link">TBM 25</button></li>
-                <li class="page-item"><button class="page-link">TBM 26</button></li>
-            </ul>
-        </nav>
-    </div>
-
-    <div class="row">
-
-        <form id="form" name="form" class="form-inline">
-            <div class="form-group">
-                <select class="form-select">
-                </select>
-                <div id="event_period">
-                    <input type="text" class="actual_range" data-provide="datepicker" data-date-end-date="0d">
-                    <input type="text" class="actual_range" data-provide="datepicker" data-date-end-date="0d">
+                    </form>
                 </div>
-            </div>
-        </form>
 
+            </div>
+        </div>
     </div>
 </div>
 
 <script type="text/javascript">
 
-    $('#event_period').datepicker({
-        inputs: $('.actual_range')
+    $('#myfrom').datepicker({
+        format: 'yyyy-mm-dd',
+        weekStart: '1'
+    });
+
+    $('#myTo').datepicker({
+        format: 'yyyy-mm-dd',
+        weekStart: '1'
     });
 
 </script>
+
