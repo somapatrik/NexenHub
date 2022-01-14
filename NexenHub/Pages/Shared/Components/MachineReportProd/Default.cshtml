@@ -1,0 +1,43 @@
+﻿@model NexenHub.Models.MachineProdReport
+}
+
+<div class="card">
+    <div class="card-body">
+        <canvas id="@Html.Raw(Model.UniqeName)" style="display: block; box-sizing: border-box; height: 429px; width: 858px;" width="858" height="429" />
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var ctx = document.getElementById('@Html.Raw(Model.UniqeName)').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Model.datesFormat),
+            datasets: [
+                {
+
+                    data: @Html.Raw(Model.countsFormat),
+                    backgroundColor: ['rgba(0, 130, 255, 0.2)'],
+                    borderColor: ['rgba(0, 130, 255, 1)'],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+</script>

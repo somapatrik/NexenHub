@@ -12,6 +12,66 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable MachineProductionReportSum(string EQ_ID, DateTime start, DateTime end)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT /*+ INDEX(TB_PR_M_PROD IX_PR_M_PROD_5)*/ ");
+                query.AppendLine("TO_DATE(PROD_DATE,'YYYYMMDD') PROD_DATE_S, sum(PROD_QTY) PROD_QTY ");
+                query.AppendLine("FROM TB_PR_M_PROD ");
+                query.AppendLine("WHERE USE_YN='Y'");
+                query.AppendLine("AND EQ_ID=:eqid ");
+                query.AppendLine("AND (PROD_DATE BETWEEN :startDT AND :endDT) ");
+                query.AppendLine("AND PLANT_ID=:plant ");
+                query.AppendLine("AND LOT_ID IS NOT NULL");
+                query.AppendLine("group by (PROD_DATE) ");
+                query.AppendLine("order by PROD_DATE ");
+
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("startDT", start.ToString("yyyyMMdd"), OracleDbType.Varchar2);
+                db.AddParameter("endDT", end.ToString("yyyyMMdd"), OracleDbType.Varchar2);
+                db.AddParameter("plant", "P500", OracleDbType.Varchar2);
+                
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        /*Dodělat*/
+        public DataTable MachineProductionCounts(string EQ_ID, DateTime start, DateTime end)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT /*+ INDEX(TB_PR_M_PROD IX_PR_M_PROD_5)*/");
+                query.AppendLine("LOT_ID,  PROD_TIME, PROD_DATE, PROC_ID, WC_ID, LR_FLAG, WO_NO, ITEM_ID, PROD_QTY, UNIT, CART_ID, PROD_STIME, PROD_ETIME, TEST_YN");
+                query.AppendLine("FROM TB_PR_M_PROD ");
+                query.AppendLine("WHERE USE_YN='Y'");
+                query.AppendLine("AND EQ_ID='10010'");
+                query.AppendLine("AND PROD_DATE BETWEEN :startDT AND :endDT");
+                query.AppendLine("AND PLANT_ID=:plant");
+                query.AppendLine("AND LOT_ID IS NOT NULL");
+                query.AppendLine("ORDER BY PROD_TIME");
+
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("startDT", start.ToString("yyyyMMdd"), OracleDbType.Varchar2);
+                db.AddParameter("endDT", start.ToString("yyyyMMdd"), OracleDbType.Varchar2);
+                db.AddParameter("plant", "P500", OracleDbType.Varchar2);
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetDashboardStatus(string WC_ID)
         {
             try

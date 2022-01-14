@@ -43,13 +43,15 @@ namespace NexenHub.Pages
 
             if (startArg != null && startArg != DateTime.MinValue)
                 DateFrom = startArg.ToString("yyyy-MM-dd");
+            else
+                DateFrom = DateTime.Now.ToString("yyyy-MM-dd");
 
             if (endArg != null && endArg != DateTime.MinValue)
                 DateTo = startArg.ToString("yyyy-MM-dd");
             else
                 DateTo = DateTime.Now.ToString("yyyy-MM-dd");
 
-            Generate();
+           // Generate();
         }
 
         public void OnPostGenerate()
@@ -60,7 +62,10 @@ namespace NexenHub.Pages
 
         private void Generate()
         {
-            ValidateInput();
+            if (ValidateInput())
+            {
+
+            }
         }
 
         private Boolean ValidateInput()
