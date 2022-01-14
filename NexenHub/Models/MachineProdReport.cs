@@ -31,6 +31,24 @@ namespace NexenHub.Models
         public string datesFormat;
         public string countsFormat;
 
+        public string maxValue
+        {
+            get { return lsProduction.Count > 0 ? maxVal.ToString() : ""; }
+        }
+
+        public string minValue
+        {
+            get { return lsProduction.Count > 0 ? minVal.ToString() : ""; }
+        }
+        public string avgValue
+        {
+            get { return lsProduction.Count > 0 ? avgVal.ToString(".##") : ""; }
+        }
+
+        private double maxVal;
+        private double minVal;
+        private double avgVal;
+
         public string UniqeName;
 
         public MachineProdReport(string EQ_ID)
@@ -77,7 +95,7 @@ namespace NexenHub.Models
             foreach (DataRow r in dtProduction.Rows)
             {
                 DateTime d = DateTime.Parse(r["PROD_DATE_S"].ToString());
-                string date = r["PROD_DATE_S"].ToString();
+                string date = d.ToString("yyyy-MM-dd");// r["PROD_DATE_S"].ToString();
                 string sum = r["PROD_QTY"].ToString();
 
                 dates.Add(date);
@@ -88,8 +106,16 @@ namespace NexenHub.Models
                     day = d, 
                     prodSum = double.Parse(sum)
                 });
+
             }
 
+            if (lsProduction.Count > 0)
+            {
+                maxVal = lsProduction.Max(m => m.prodSum);
+                minVal = lsProduction.Min(mi => mi.prodSum);
+                avgVal = lsProduction.Average(a => a.prodSum);
+            }
+            
             datesFormat = JsonConvert.SerializeObject(dates, Formatting.Indented);
             countsFormat = JsonConvert.SerializeObject(counts, Formatting.Indented);
         }

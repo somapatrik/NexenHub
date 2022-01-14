@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NexenHub.Class;
+using NexenHub.Models;
 
 namespace NexenHub.Pages
 {
     public class MachineReportModel : PageModel
     {
+
+        #region URL arguments
 
         [BindProperty(SupportsGet =true)]
         public string eqArg { get; set; }
@@ -21,6 +24,10 @@ namespace NexenHub.Pages
         [BindProperty(SupportsGet = true)]
         public DateTime endArg { get; set; }
 
+        #endregion
+
+        #region GUI variables
+
         [BindProperty]
         public string SelectedMachine { get; set; }
 
@@ -30,7 +37,13 @@ namespace NexenHub.Pages
         [BindProperty]
         public string DateTo { get; set; }
 
+        public bool IsValid { get; set; }
+
         public List<MachineListObject> Machines;
+
+        #endregion
+
+        public MachineProdReport reportData;
 
         private GlobalDatabase dbglobal = new GlobalDatabase();
 
@@ -51,7 +64,6 @@ namespace NexenHub.Pages
             else
                 DateTo = DateTime.Now.ToString("yyyy-MM-dd");
 
-           // Generate();
         }
 
         public void OnPostGenerate()
@@ -62,10 +74,7 @@ namespace NexenHub.Pages
 
         private void Generate()
         {
-            if (ValidateInput())
-            {
-
-            }
+            IsValid = ValidateInput(); 
         }
 
         private Boolean ValidateInput()
@@ -77,6 +86,7 @@ namespace NexenHub.Pages
                 !string.IsNullOrEmpty(DateFrom) && DateTime.TryParse(DateFrom, out genFrom) &&
                 !string.IsNullOrEmpty(DateTo) && DateTime.TryParse(DateTo,out genTo))
             {
+                reportData = new MachineProdReport(SelectedMachine, genFrom, genTo);
                 return true;
             }
 

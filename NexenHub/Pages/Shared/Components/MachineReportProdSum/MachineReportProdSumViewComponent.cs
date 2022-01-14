@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace NexenHub.Pages.Shared.Components.MachineReportProdSum
 {
-    public class MachineReportProdViewComponent : ViewComponent
+    public class MachineReportProdSumViewComponent : ViewComponent
     {
-
         public IViewComponentResult Invoke(MachineProdReport reportData)
         {
             MachineProdReport ReportProd = reportData;
