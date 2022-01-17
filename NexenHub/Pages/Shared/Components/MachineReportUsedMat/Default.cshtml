@@ -1,0 +1,54 @@
+﻿@model NexenHub.Models.MachineUsedMat
+
+<div class="card">
+    <div class="card-header bg-dark text-light">
+        Used material
+    </div>
+    <div class="card-body flex-fill">
+        <div id="@Html.Raw(Model.UniqeName)_Vis" />
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var items = new vis.DataSet([
+        @{
+            int i = 0;
+            foreach (var item in Model.visItems)
+            {
+                @Html.Raw("{id:'" + item.group + "', content:'" + item.content + "',start:'"+item.startS+"',end:'"+item.endS+"',group:'"+item.group+"'}");
+                i++;
+                if (i < Model.visItems.Count)
+                    @Html.Raw(",");
+            }
+        }
+    ]);
+
+    var groups = new vis.DataSet([
+        @{
+            int j = 0;
+            foreach (var grp in Model.visGroups)
+            {
+                @Html.Raw("{id: '"+grp.id+"', content: '"+grp.content+"'}");
+                j++;
+                if (j < Model.visGroups.Count())
+                    @Html.Raw(",");
+            }
+        }
+    ]);
+
+    var container = document.getElementById("@Html.Raw(Model.UniqeName)_Vis");
+
+    var options = {
+                start: "@Model.startFilterDate.ToString("yyyy-MM-ddTHH:mm:ss")",
+                end: "@Model.endFilterDate.ToString("yyyy-MM-ddTHH:mm:ss")",
+                editable:false
+                };
+
+    var timeline = new vis.Timeline(container);
+    timeline.setOptions(options);
+    timeline.setGroups(groups);
+    timeline.setItems(items);
+
+</script>
+

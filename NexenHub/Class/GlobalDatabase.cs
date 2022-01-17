@@ -11,6 +11,38 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable MachineReportUsedMat(string EQ_ID, DateTime start, DateTime end)
+        {
+            try
+            {
+                // For test converted here - I am pretty sure this will stay here forever - GUBUN
+                string startDT = start.AddHours(-6).ToString("yyyyMMddHHmmss");
+                string endDT = end.AddHours(+30).ToString("yyyyMMddHHmmss");
+
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT /*+INDEX(TB_EQ_H_EQPOSHIS IX_EQ_M_EQPOSHIS_IDX_01)*/ ");
+                query.AppendLine("INP.IO_POSID, INP.IO_POSGB, INP.CART_ID, INP.LOT_ID, INP.ENT_DT ");
+                query.AppendLine("FROM TB_EQ_H_EQPOSHIS INP ");
+                query.AppendLine("WHERE INP.EQ_ID = :eqid ");
+                query.AppendLine("AND INP.PLANT_ID = :plant ");
+                query.AppendLine("AND INP.EVENT_TIME >= :startDT AND INP.EVENT_TIME <= :endDT ");
+                query.AppendLine("ORDER BY IO_POSID, INP.ENT_DT, INP.LOT_ID ");
+
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("plant", "P500", OracleDbType.Varchar2);
+                db.AddParameter("startDT", startDT, OracleDbType.Varchar2);
+                db.AddParameter("endDT", endDT, OracleDbType.Varchar2);
+
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
 
         public DataTable MachineProductionReportSum(string EQ_ID, DateTime start, DateTime end)
         {
@@ -35,35 +67,6 @@ namespace NexenHub.Class
                 db.AddParameter("endDT", end.ToString("yyyyMMdd"), OracleDbType.Varchar2);
                 db.AddParameter("plant", "P500", OracleDbType.Varchar2);
                 
-                return db.ExecTable();
-            }
-            catch (Exception ex)
-            {
-                return new DataTable();
-            }
-        }
-
-        /*Dodělat*/
-        public DataTable MachineProductionCounts(string EQ_ID, DateTime start, DateTime end)
-        {
-            try
-            {
-                StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT /*+ INDEX(TB_PR_M_PROD IX_PR_M_PROD_5)*/");
-                query.AppendLine("LOT_ID,  PROD_TIME, PROD_DATE, PROC_ID, WC_ID, LR_FLAG, WO_NO, ITEM_ID, PROD_QTY, UNIT, CART_ID, PROD_STIME, PROD_ETIME, TEST_YN");
-                query.AppendLine("FROM TB_PR_M_PROD ");
-                query.AppendLine("WHERE USE_YN='Y'");
-                query.AppendLine("AND EQ_ID='10010'");
-                query.AppendLine("AND PROD_DATE BETWEEN :startDT AND :endDT");
-                query.AppendLine("AND PLANT_ID=:plant");
-                query.AppendLine("AND LOT_ID IS NOT NULL");
-                query.AppendLine("ORDER BY PROD_TIME");
-
-
-                DBOra db = new DBOra(query.ToString());
-                db.AddParameter("startDT", start.ToString("yyyyMMdd"), OracleDbType.Varchar2);
-                db.AddParameter("endDT", start.ToString("yyyyMMdd"), OracleDbType.Varchar2);
-                db.AddParameter("plant", "P500", OracleDbType.Varchar2);
                 return db.ExecTable();
             }
             catch (Exception ex)

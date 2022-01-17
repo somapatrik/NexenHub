@@ -45,8 +45,9 @@ namespace NexenHub.Pages
 
         public MachineProdReport reportData;
 
-        private GlobalDatabase dbglobal = new GlobalDatabase();
+        public MachineUsedMat reportUsedMaterial;
 
+        private GlobalDatabase dbglobal = new GlobalDatabase();
 
         public void OnGet()
         {
@@ -87,6 +88,7 @@ namespace NexenHub.Pages
                 !string.IsNullOrEmpty(DateTo) && DateTime.TryParse(DateTo,out genTo))
             {
                 reportData = new MachineProdReport(SelectedMachine, genFrom, genTo);
+                reportUsedMaterial = new MachineUsedMat(SelectedMachine, genFrom, genTo);
                 return true;
             }
 

@@ -33,21 +33,26 @@ namespace NexenHub.Models
 
         public string maxValue
         {
-            get { return lsProduction.Count > 0 ? maxVal.ToString() : ""; }
+            get { return lsProduction.Count > 0 ? maxVal.ToString(GlobalSettings.CzechNum) : ""; }
         }
 
         public string minValue
         {
-            get { return lsProduction.Count > 0 ? minVal.ToString() : ""; }
+            get { return lsProduction.Count > 0 ? minVal.ToString(GlobalSettings.CzechNum) : ""; }
         }
         public string avgValue
         {
-            get { return lsProduction.Count > 0 ? avgVal.ToString(".##") : ""; }
+            get { return lsProduction.Count > 0 ? avgVal.ToString(GlobalSettings.CzechNum) : ""; }
+        }
+        public string sumValue
+        {
+            get { return lsProduction.Count > 0 ? sumVal.ToString(GlobalSettings.CzechNum) : ""; }
         }
 
         private double maxVal;
         private double minVal;
         private double avgVal;
+        private double sumVal;
 
         public string UniqeName;
 
@@ -114,6 +119,7 @@ namespace NexenHub.Models
                 maxVal = lsProduction.Max(m => m.prodSum);
                 minVal = lsProduction.Min(mi => mi.prodSum);
                 avgVal = lsProduction.Average(a => a.prodSum);
+                sumVal = lsProduction.Sum(a => a.prodSum);
             }
             
             datesFormat = JsonConvert.SerializeObject(dates, Formatting.Indented);
