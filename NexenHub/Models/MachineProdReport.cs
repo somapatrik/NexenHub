@@ -80,6 +80,10 @@ namespace NexenHub.Models
                 this.StartDate = endDt;
             }
 
+            // Limit range to one year
+            if (StartDate < EndDate.AddYears(-1))
+                StartDate = EndDate.AddYears(-1);
+
             InitValues();
         }
 

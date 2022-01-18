@@ -54,6 +54,10 @@ namespace NexenHub.Models
                 this.StartDate = endDt;
             }
 
+            // Limit range
+            if (StartDate < EndDate.AddDays(-2))
+                StartDate = EndDate.AddDays(-2);
+
             InitValues();
         }
 
