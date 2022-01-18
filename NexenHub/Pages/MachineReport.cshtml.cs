@@ -61,7 +61,7 @@ namespace NexenHub.Pages
                 DateFrom = DateTime.Now.ToString("yyyy-MM-dd");
 
             if (endArg != null && endArg != DateTime.MinValue)
-                DateTo = startArg.ToString("yyyy-MM-dd");
+                DateTo = endArg.ToString("yyyy-MM-dd");
             else
                 DateTo = DateTime.Now.ToString("yyyy-MM-dd");
 

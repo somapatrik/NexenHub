@@ -11,6 +11,41 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public DataTable MachineReportWorkOrders(string EQ_ID, DateTime start, DateTime end)
+        {
+            try
+            {
+                // For test converted here - I am pretty sure this will stay here forever - GUBUN
+                string startDT = start.AddHours(-6).ToString("yyyyMMddHHmmss");
+                string endDT = end.AddHours(+30).ToString("yyyyMMddHHmmss");
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT WO_NO, to_date(WO_STIME,'YYYYMMDDHH24MISS') WO_STIME, to_date(WO_ETIME,'YYYYMMDDHH24MISS') WO_ETIME ");
+                query.AppendLine("FROM TB_PL_M_WRKORD ");
+                query.AppendLine("WHERE PLANT_ID = :plant ");
+                query.AppendLine("AND EQ_ID = :eqid ");
+                query.AppendLine("AND USE_YN = 'Y' ");
+                query.AppendLine("AND DEL_FLAG = 'N' ");
+                query.AppendLine("AND (WO_STIME >= :startDT OR WO_ETIME >= :startDT2) ");
+                query.AppendLine("AND (WO_STIME <= :endDT OR WO_ETIME <= :endDT2) ");
+                
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("plant", "P500", OracleDbType.Varchar2);
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("startDT", startDT, OracleDbType.Varchar2);
+                db.AddParameter("startDT2", startDT, OracleDbType.Varchar2);
+                db.AddParameter("endDT", endDT, OracleDbType.Varchar2);
+                db.AddParameter("endDT2", endDT, OracleDbType.Varchar2);
+
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable MachineReportUsedMat(string EQ_ID, DateTime start, DateTime end)
         {
             try

@@ -9,6 +9,12 @@
     </div>
 </div>
 
+<style>
+    .vis-item.vis-background.workorder {
+        background-color: rgba(255, 215, 71, 0.2);
+    }
+</style>
+
 <script type="text/javascript">
 
     var items = new vis.DataSet([
@@ -17,8 +23,17 @@
             foreach (var item in Model.visItems)
             {
                 @Html.Raw("{id:'" + item.id + "', content:'" + item.content + "',start:'"+item.startS+"',end:'"+item.endS+"',group:'"+item.group+"'}");
-                i++;
-                if (i < Model.visItems.Count)
+                //i++;
+                //if (i < Model.visItems.Count)
+                @Html.Raw(",");
+            }
+
+            int k = 0;
+            foreach (var item in Model.visBackground)
+            {
+                @Html.Raw("{id:'" + item.id + "', content:'" + item.content + "',start:'"+item.startS+"',end:'"+item.endS+ "',type: 'background', className: 'workorder'}");
+                k++;
+                if (k < Model.visBackground.Count)
                     @Html.Raw(",");
             }
         }
@@ -26,6 +41,7 @@
     ]);
 
     var groups = new vis.DataSet([
+        {id:'emptygroup', content: 'WO'},
         @{
             int j = 0;
             foreach (var grp in Model.visGroups)
@@ -41,8 +57,8 @@
     var container = document.getElementById("@Html.Raw(Model.UniqeName)_Vis");
 
     var options = {
-                start: "@Model.startFilterDate.ToString("yyyy-MM-ddTHH:mm:ss")",
-                end: "@Model.endFilterDate.ToString("yyyy-MM-ddTHH:mm:ss")",
+                start: "@Model.EndDate.AddHours(-3).ToString("yyyy-MM-ddTHH:mm:ss")",
+                end: "@Model.EndDate.ToString("yyyy-MM-ddTHH:mm:ss")",
                 editable:false
                 };
 

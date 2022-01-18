@@ -20,13 +20,16 @@ namespace NexenHub.Models
         public string UniqeName;
 
         public DataTable dtUsed;
+        public DataTable dtWo;
 
         public List<visItem> visItems;
+        public List<visItem> visBackground;
         public List<visGroup> visGroups;
 
         public string formatGroups;
         public DateTime startFilterDate;
         public DateTime endFilterDate;
+
         public MachineUsedMat(string EQ_ID)
         {
             this.EQ_ID = EQ_ID;
@@ -58,6 +61,7 @@ namespace NexenHub.Models
         {
             visItems = new List<visItem>();
             visGroups = new List<visGroup>();
+            visBackground = new List<visItem>();
 
             startFilterDate = StartDate.AddHours(-6);//.ToString("yyyy-MM-ddTHH:mm:ss");
             endFilterDate = EndDate.AddHours(+30);//.ToString("yyyy-MM-ddTHH:mm:ss");
@@ -71,6 +75,7 @@ namespace NexenHub.Models
         private void LoadData()
         {
             dtUsed = dbglob.MachineReportUsedMat(EQ_ID, StartDate, EndDate);
+            dtWo = dbglob.MachineReportWorkOrders(EQ_ID, StartDate, EndDate);
         }
 
         private void ProcessData()
@@ -82,6 +87,7 @@ namespace NexenHub.Models
                 string IO = r["IO_POSGB"].ToString();
                 string dbGroup = r["IO_POSID"].ToString();
                 string dbLOT = r["LOT_ID"].ToString();
+                string dbcartid = r["CART_ID"].ToString();
                 DateTime date = DateTime.Parse(r["ENT_DT"].ToString());
 
                 if (IO == "I")
@@ -90,7 +96,7 @@ namespace NexenHub.Models
                     if (foundI != null)
                         foundI.start = date;
                     else 
-                        visItems.Add(new visItem() { id=i.ToString(), LOT=dbLOT, start = date, content = dbLOT, group = dbGroup});
+                        visItems.Add(new visItem() { id=i.ToString(), LOT=dbLOT, start = date, content = dbLOT + " (" + dbcartid + ")", group = dbGroup});
                 }
 
                 if (IO == "O")
@@ -99,7 +105,7 @@ namespace NexenHub.Models
                     if (foundO != null)
                         foundO.end = date;
                     else
-                        visItems.Add(new visItem() { id = i.ToString(), LOT = dbLOT, end = date, content = dbLOT, group = dbGroup }); ;
+                        visItems.Add(new visItem() { id = i.ToString(), LOT = dbLOT, end = date, content = dbLOT + "("+ dbcartid +")", group = dbGroup }); ;
                 }
 
                 i++;
@@ -122,6 +128,20 @@ namespace NexenHub.Models
 
 
             formatGroups = JsonConvert.SerializeObject(visGroups, Formatting.Indented);
+
+            // Background WO
+            foreach (DataRow row in dtWo.Rows)
+            {
+                visBackground.Add(new visItem()
+                {
+                    id = i.ToString(),
+                    content = "WO: " + row["WO_NO"].ToString(),
+                    start = string.IsNullOrEmpty(row["WO_STIME"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["WO_STIME"].ToString()),
+                    end = string.IsNullOrEmpty(row["WO_ETIME"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["WO_ETIME"].ToString())
+                });
+                
+                i++;
+            }
 
         }
 

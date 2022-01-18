@@ -54,6 +54,7 @@
                     <th scope="col">WC</th>
                     <th scope="col">PROC</th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -61,15 +62,18 @@
                 @{ foreach (var machine in Model.DbList)
                     {
 
-                        <tr>
-                            <th scope="row">@machine.EQ_ID</th>
-                            <td class="text-left">@machine.Name</td>
-                            <td>@machine.WC_ID</td>
-                            <td>@machine.PROC_ID</td>
-                            <td>
-                                <a class="btn btn-success btn-sm" href="/MachineProfile/@machine.EQ_ID">Detail</a>
-                            </td>
-                        </tr>
+                                <tr>
+                                    <th scope="row">@machine.EQ_ID</th>
+                                    <td class="text-left">@machine.Name</td>
+                                    <td>@machine.WC_ID</td>
+                                    <td>@machine.PROC_ID</td>
+                                    <td>
+                                        <a class="btn btn-success btn-sm" href="/MachineProfile/@machine.EQ_ID">Detail</a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-success btn-sm" href="/MachineReport/@machine.EQ_ID/@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")/@DateTime.Now.ToString("yyyy-MM-dd")">Report</a>
+                                    </td>
+                                </tr>
                     }
                 }
 
