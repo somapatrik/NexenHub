@@ -31,28 +31,31 @@ namespace NexenHub.Pages
         private void CreateList()
         {
 
+            string[] DoNotShow =
+            {
+                "10004",
+                "10005",
+                "10006",
+                "10007",
+                "10017",
+                "10024",
+                "10032"
+            };
+
             DataTable dt = dbglobal.GetMachineList(); ;
             DbList = new List<MachineListObject>();
             foreach (DataRow r in dt.Rows)
             {
-                DbList.Add(new MachineListObject
-                {
-                    EQ_ID = r["EQ_ID"].ToString(), 
-                    Name = r["Name"].ToString(),
-                    WC_ID = r["WC_ID"].ToString(),
-                    PROC_ID = r["PROC_ID"].ToString()
-                });
+                if (!DoNotShow.Contains(r["EQ_ID"].ToString()))
+                    DbList.Add(new MachineListObject
+                    {
+                        EQ_ID = r["EQ_ID"].ToString(), 
+                        Name = r["Name"].ToString(),
+                        WC_ID = r["WC_ID"].ToString(),
+                        PROC_ID = r["PROC_ID"].ToString()
+                    });
             }
         }
 
     }
-
-    //public class MachineListObject
-    //{
-    //    public string EQ_ID { get; set; }
-    //    public string Name { get; set; }
-    //    public string WC_ID { get; set; }
-    //    public string PROC_ID { get; set; }
-    //}
-
 }

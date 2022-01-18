@@ -16,12 +16,13 @@
             int i = 0;
             foreach (var item in Model.visItems)
             {
-                @Html.Raw("{id:'" + item.group + "', content:'" + item.content + "',start:'"+item.startS+"',end:'"+item.endS+"',group:'"+item.group+"'}");
+                @Html.Raw("{id:'" + item.id + "', content:'" + item.content + "',start:'"+item.startS+"',end:'"+item.endS+"',group:'"+item.group+"'}");
                 i++;
                 if (i < Model.visItems.Count)
                     @Html.Raw(",");
             }
         }
+
     ]);
 
     var groups = new vis.DataSet([

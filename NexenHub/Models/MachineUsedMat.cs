@@ -75,8 +75,8 @@ namespace NexenHub.Models
 
         private void ProcessData()
         {
-            
 
+            int i = 0;
             foreach (DataRow r in dtUsed.Rows)
             {
                 string IO = r["IO_POSGB"].ToString();
@@ -89,8 +89,8 @@ namespace NexenHub.Models
                     visItem foundI = visItems.Find(o => o.LOT == dbLOT && o.group == dbGroup && o.start == DateTime.MinValue && o.end >= date);
                     if (foundI != null)
                         foundI.start = date;
-                    else
-                        visItems.Add(new visItem() { LOT=dbLOT, start = date, content = dbLOT, group = dbGroup});
+                    else 
+                        visItems.Add(new visItem() { id=i.ToString(), LOT=dbLOT, start = date, content = dbLOT, group = dbGroup});
                 }
 
                 if (IO == "O")
@@ -99,13 +99,27 @@ namespace NexenHub.Models
                     if (foundO != null)
                         foundO.end = date;
                     else
-                        visItems.Add(new visItem() { LOT = dbLOT, end = date, content = dbLOT, group = dbGroup });
+                        visItems.Add(new visItem() { id = i.ToString(), LOT = dbLOT, end = date, content = dbLOT, group = dbGroup }); ;
                 }
+
+                i++;
 
                 visGroup foundG = visGroups.Find(f => f.id == dbGroup);
                 if (foundG == null)
                     visGroups.Add(new visGroup() { id = dbGroup, content = dbGroup });
             }
+
+            // At default datetime to empty dates
+            foreach (visItem item in visItems)
+            {
+                if (item.start == DateTime.MinValue)
+                    item.start = startFilterDate;
+
+                if (item.end == DateTime.MinValue)
+                    item.end = endFilterDate;
+
+            }
+
 
             formatGroups = JsonConvert.SerializeObject(visGroups, Formatting.Indented);
 
@@ -120,6 +134,7 @@ namespace NexenHub.Models
 
     public class visItem
     {
+        public string id { get; set; }
         public string content { get; set; }
         public DateTime start { set; get; }
         public DateTime end { set; get; }
