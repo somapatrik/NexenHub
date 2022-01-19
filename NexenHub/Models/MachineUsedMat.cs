@@ -54,9 +54,9 @@ namespace NexenHub.Models
                 this.StartDate = endDt;
             }
 
-            // Limit range
-            if (StartDate < EndDate.AddDays(-2))
-                StartDate = EndDate.AddDays(-2);
+            // Limit range to display
+            if (StartDate < EndDate.AddDays(-7))
+                StartDate = EndDate.AddDays(-7);
 
             InitValues();
         }
@@ -67,8 +67,11 @@ namespace NexenHub.Models
             visGroups = new List<visGroup>();
             visBackground = new List<visItem>();
 
-            startFilterDate = StartDate.AddHours(-6);//.ToString("yyyy-MM-ddTHH:mm:ss");
-            endFilterDate = EndDate.AddHours(+30);//.ToString("yyyy-MM-ddTHH:mm:ss");
+            // Day starts at 6:00 and ends another day in 6:00
+            // StartDate 17.1. 00:00 => 17.1. 06:00
+            // StartDate 18.1. 00:00 => 19.1. 06:00
+            startFilterDate = StartDate.AddHours(6);
+            endFilterDate = EndDate.AddHours(30);
 
             LoadData();
             ProcessData();
@@ -78,8 +81,12 @@ namespace NexenHub.Models
 
         private void LoadData()
         {
-            dtUsed = dbglob.MachineReportUsedMat(EQ_ID, StartDate, EndDate);
-            dtWo = dbglob.MachineReportWorkOrders(EQ_ID, StartDate, EndDate);
+
+            //dtUsed = dbglob.MachineReportUsedMat(EQ_ID, StartDate, EndDate);
+            //dtWo = dbglob.MachineReportWorkOrders(EQ_ID, StartDate, EndDate);
+
+            dtUsed = dbglob.MachineReportUsedMat(EQ_ID, startFilterDate, endFilterDate);
+            dtWo = dbglob.MachineReportWorkOrders(EQ_ID, startFilterDate, endFilterDate);
         }
 
         private void ProcessData()
@@ -114,12 +121,16 @@ namespace NexenHub.Models
 
                 i++;
 
+                // Material groups
                 visGroup foundG = visGroups.Find(f => f.id == dbGroup);
                 if (foundG == null)
                     visGroups.Add(new visGroup() { id = dbGroup, content = dbGroup });
             }
 
-            // At default datetime to empty dates
+            // Material groups simply to JSON
+            formatGroups = JsonConvert.SerializeObject(visGroups, Formatting.Indented);
+
+            // At default datetime to empty dates in items
             foreach (visItem item in visItems)
             {
                 if (item.start == DateTime.MinValue)
@@ -127,21 +138,21 @@ namespace NexenHub.Models
 
                 if (item.end == DateTime.MinValue)
                     item.end = endFilterDate;
-
             }
-
-
-            formatGroups = JsonConvert.SerializeObject(visGroups, Formatting.Indented);
 
             // Background WO
             foreach (DataRow row in dtWo.Rows)
             {
+                string wono = row["WO_NO"].ToString();
+                string wostime = row["WO_STIME"].ToString();
+                string woetime = row["WO_ETIME"].ToString();
+
                 visBackground.Add(new visItem()
                 {
                     id = i.ToString(),
-                    content = "WO: " + row["WO_NO"].ToString(),
-                    start = string.IsNullOrEmpty(row["WO_STIME"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["WO_STIME"].ToString()),
-                    end = string.IsNullOrEmpty(row["WO_ETIME"].ToString()) ? DateTime.MinValue : DateTime.Parse(row["WO_ETIME"].ToString())
+                    content = string.IsNullOrEmpty(woetime) ? "WO: "+ wono + " (active)" : "WO: " + wono,
+                    start = string.IsNullOrEmpty(wostime) ? startFilterDate : DateTime.Parse(wostime),
+                    end = string.IsNullOrEmpty(woetime) ? endFilterDate : DateTime.Parse(woetime)
                 });
                 
                 i++;
@@ -151,7 +162,7 @@ namespace NexenHub.Models
 
         private void GenerateName()
         {
-            UniqeName = DateTime.Now.ToString("yyyyMMddHHmmss") + EQ_ID;
+            UniqeName = DateTime.Now.ToString("usedHHmmss") + EQ_ID;
         }
 
     }

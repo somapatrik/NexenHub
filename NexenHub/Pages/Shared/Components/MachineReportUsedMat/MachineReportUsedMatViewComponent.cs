@@ -11,7 +11,6 @@ namespace NexenHub.Pages.Shared.Components.MachineReportUsedMat
         {
             public IViewComponentResult Invoke(MachineUsedMat usedMat)
             {
-                //MachineProdReport ReportProd = reportData;
                 return View("Default", usedMat);
             }
         }

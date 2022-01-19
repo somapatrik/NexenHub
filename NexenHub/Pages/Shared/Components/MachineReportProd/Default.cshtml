@@ -5,13 +5,13 @@
                 Production chart
             </div>
             <div class="card-body">
-                <canvas id="@Html.Raw(Model.UniqeName)_ProdChart" style="display: block; box-sizing: border-box; " />
+                <canvas id="@Html.Raw(Model.UniqeName+"ProdChart")" style="display: block; box-sizing: border-box; " />
             </div>
         </div>
 
     <script type="text/javascript">
 
-    var ctx = document.getElementById('@Html.Raw(Model.UniqeName)_ProdChart').getContext('2d');
+    var ctx = document.getElementById('@Html.Raw(Model.UniqeName+"ProdChart")').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {

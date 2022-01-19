@@ -4,7 +4,7 @@
 }
 
     <div class="row mb-3">
-        <div class="col-sm-12 col-xl-8">
+        <div class="col-sm-12 col-xl-6">
 
             <div class="card">
                 <div class="card-header bg-dark text-light">
@@ -44,8 +44,14 @@
                         </div>
 
                         <div class="row flex-row-reverse">
-                            <div class="col-sm-auto">
-                                <button type="submit" class="btn btn-primary" asp-page-handler="generate">Generate report</button>
+                            <div id="btnGenerate" class="col-sm-auto">
+                                <button type="submit" class="btn btn-primary" onclick="ShowSpinner();" asp-page-handler="generate">Generate report</button>
+                            </div>
+                            <div id="spinner" class="col-sm-auto" style="visibility:collapse">
+                                <button class="btn btn-primary" type="button" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Loading...
+                                </button>
                             </div>
                         </div>
 
@@ -53,6 +59,7 @@
                 </div>
 
             </div>
+
         </div>
     </div>
 
@@ -61,13 +68,13 @@
         if (Model.IsValid)
         {
             <div class="row mb-3">
-                <div class="col-sm-12 col-md-8 col-lg-6">
+                <div class="col-sm-12 col-md-6 col-xl-4">
 
                     @await Component.InvokeAsync("MachineReportProd", Model.reportData)
 
                 </div>
 
-                <div class="col-sm-12 col-md-4 col-lg-4">
+                <div class="col-sm-12 col-md-6 col-xl-2">
 
                     @await Component.InvokeAsync("MachineReportProdSum", Model.reportData)
 
@@ -75,7 +82,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-12 col-lg-10">
+                <div class="col-sm-12 col-xl-6">
                     @await Component.InvokeAsync("MachineReportUsedMat", Model.reportUsedMaterial)
                 </div>
             </div>
@@ -94,6 +101,14 @@
         format: 'yyyy-mm-dd',
         weekStart: '1'
     });
+
+    function ShowSpinner() {
+        var spin = document.getElementById("spinner");
+        var btn = document.getElementById("btnGenerate");
+
+        spin.style.visibility = "visible";
+        btn.style.visibility = "collapse";
+    }
 
 </script>
 

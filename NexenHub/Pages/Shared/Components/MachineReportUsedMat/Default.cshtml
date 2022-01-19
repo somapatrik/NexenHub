@@ -11,21 +11,21 @@
 
 <style>
     .vis-item.vis-background.workorder {
-        background-color: rgba(255, 215, 71, 0.2);
+        background-color: rgba(245, 198, 203, .5);
     }
 </style>
 
 <script type="text/javascript">
 
-    var items = new vis.DataSet([
+    var @Html.Raw(Model.UniqeName + "items") = new vis.DataSet([
         @{
             int i = 0;
             foreach (var item in Model.visItems)
             {
                 @Html.Raw("{id:'" + item.id + "', content:'" + item.content + "',start:'"+item.startS+"',end:'"+item.endS+"',group:'"+item.group+"'}");
-                //i++;
-                //if (i < Model.visItems.Count)
-                @Html.Raw(",");
+                i++;
+                if (i < Model.visItems.Count || ( i == Model.visItems.Count && Model.visBackground.Count > 0) )
+                    @Html.Raw(",");
             }
 
             int k = 0;
@@ -40,8 +40,8 @@
 
     ]);
 
-    var groups = new vis.DataSet([
-        {id:'emptygroup', content: 'WO'},
+    var @Html.Raw(Model.UniqeName + "grp") = new vis.DataSet([
+        {id:'0', content: 'WO'},
         @{
             int j = 0;
             foreach (var grp in Model.visGroups)
@@ -56,16 +56,16 @@
 
     var container = document.getElementById("@Html.Raw(Model.UniqeName)_Vis");
 
-    var options = {
+    var @Html.Raw(Model.UniqeName + "opt") = {
                 start: "@Model.EndDate.AddHours(-3).ToString("yyyy-MM-ddTHH:mm:ss")",
                 end: "@Model.EndDate.ToString("yyyy-MM-ddTHH:mm:ss")",
                 editable:false
                 };
 
     var timeline = new vis.Timeline(container);
-    timeline.setOptions(options);
-    timeline.setGroups(groups);
-    timeline.setItems(items);
+    timeline.setOptions(@Html.Raw(Model.UniqeName + "opt"));
+    timeline.setGroups(@Html.Raw(Model.UniqeName + "grp"));
+    timeline.setItems(@Html.Raw(Model.UniqeName + "items"));
 
 </script>
 

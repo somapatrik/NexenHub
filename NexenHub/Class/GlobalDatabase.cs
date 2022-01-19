@@ -17,8 +17,8 @@ namespace NexenHub.Class
             try
             {
                 // For test converted here - I am pretty sure this will stay here forever - GUBUN
-                string startDT = start.AddHours(-6).ToString("yyyyMMddHHmmss");
-                string endDT = end.AddHours(+30).ToString("yyyyMMddHHmmss");
+                string startDT = start.ToString("yyyyMMddHHmmss");
+                string endDT = end.ToString("yyyyMMddHHmmss");
 
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT WO_NO, to_date(WO_STIME,'YYYYMMDDHH24MISS') WO_STIME, to_date(WO_ETIME,'YYYYMMDDHH24MISS') WO_ETIME ");
@@ -51,25 +51,38 @@ namespace NexenHub.Class
             try
             {
                 // For test converted here - I am pretty sure this will stay here forever - GUBUN
-                string startDT = start.AddHours(-6).ToString("yyyyMMddHHmmss");
-                string endDT = end.AddHours(+30).ToString("yyyyMMddHHmmss");
+                string startDT = start.ToString("yyyyMMddHHmmss");
+                string endDT = end.ToString("yyyyMMddHHmmss");
 
 
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT /*+INDEX(TB_EQ_H_EQPOSHIS IX_EQ_M_EQPOSHIS_IDX_01)*/ ");
+                //query.AppendLine("SELECT /*+INDEX(TB_EQ_H_EQPOSHIS IX_EQ_M_EQPOSHIS_IDX_01)*/ ");
+                //query.AppendLine("INP.IO_POSID, INP.IO_POSGB, INP.CART_ID, INP.LOT_ID, INP.ENT_DT ");
+                //query.AppendLine("FROM TB_EQ_H_EQPOSHIS INP ");
+                //query.AppendLine("WHERE INP.EQ_ID = :eqid ");
+                //query.AppendLine("AND INP.PLANT_ID = :plant ");
+                //query.AppendLine("AND INP.EVENT_TIME >= :startDT AND INP.EVENT_TIME <= :endDT ");
+                //query.AppendLine("ORDER BY IO_POSID, INP.ENT_DT, INP.LOT_ID ");
+
+                query.AppendLine("SELECT /*+INDEX(TB_EQ_H_EQPOSHIS IX_EQ_M_EQPOSHIS_IDX_02)*/ ");
                 query.AppendLine("INP.IO_POSID, INP.IO_POSGB, INP.CART_ID, INP.LOT_ID, INP.ENT_DT ");
                 query.AppendLine("FROM TB_EQ_H_EQPOSHIS INP ");
-                query.AppendLine("WHERE INP.EQ_ID = :eqid ");
-                query.AppendLine("AND INP.PLANT_ID = :plant ");
-                query.AppendLine("AND INP.EVENT_TIME >= :startDT AND INP.EVENT_TIME <= :endDT ");
+                query.AppendLine("WHERE INP.LOT_ID in( ");
+                query.AppendLine("SELECT /*+INDEX(TB_EQ_H_EQPOSHIS IX_EQ_M_EQPOSHIS_IDX_01)*/ ");
+                query.AppendLine("DISTINCT(LOT_ID) ");
+                query.AppendLine("FROM TB_EQ_H_EQPOSHIS lot ");
+                query.AppendLine("WHERE lot.EVENT_TIME >= :startDT AND lot.EVENT_TIME <= :endDT ");
+                query.AppendLine("AND lot.EQ_ID = :eqid ");
+                query.AppendLine("AND lot.PLANT_ID = :plant ");
+                query.AppendLine("AND lot.IO_POSID is not null) ");
                 query.AppendLine("ORDER BY IO_POSID, INP.ENT_DT, INP.LOT_ID ");
 
 
                 DBOra db = new DBOra(query.ToString());
-                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
-                db.AddParameter("plant", "P500", OracleDbType.Varchar2);
                 db.AddParameter("startDT", startDT, OracleDbType.Varchar2);
                 db.AddParameter("endDT", endDT, OracleDbType.Varchar2);
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("plant", "P500", OracleDbType.Varchar2);
 
                 return db.ExecTable();
             }
@@ -101,7 +114,7 @@ namespace NexenHub.Class
                 db.AddParameter("startDT", start.ToString("yyyyMMdd"), OracleDbType.Varchar2);
                 db.AddParameter("endDT", end.ToString("yyyyMMdd"), OracleDbType.Varchar2);
                 db.AddParameter("plant", "P500", OracleDbType.Varchar2);
-                
+
                 return db.ExecTable();
             }
             catch (Exception ex)

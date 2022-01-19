@@ -93,6 +93,16 @@ namespace NexenHub.Models
             counts = new List<string>();
             lsProduction = new List<MachineProdReportItem>();
 
+            // Fill with dates
+            DateTime fill = StartDate;
+            while (fill <= EndDate)
+            {
+                lsProduction.Add(new MachineProdReportItem() { day = fill, prodSum = 0 });
+                dates.Add(fill.ToString("yyyy-MM-dd"));
+                fill = fill.AddDays(1);
+                
+            }
+
             LoadData();
             ProcessData();
             GenerateName();
@@ -101,21 +111,17 @@ namespace NexenHub.Models
 
         private void ProcessData()
         {
+            
+
             foreach (DataRow r in dtProduction.Rows)
             {
                 DateTime d = DateTime.Parse(r["PROD_DATE_S"].ToString());
-                string date = d.ToString("yyyy-MM-dd");// r["PROD_DATE_S"].ToString();
                 string sum = r["PROD_QTY"].ToString();
 
-                dates.Add(date);
-                counts.Add(sum);
-
-                lsProduction.Add(new MachineProdReportItem()
-                { 
-                    day = d, 
-                    prodSum = double.Parse(sum)
-                });
-
+                MachineProdReportItem found = lsProduction.Find(o => o.day == d);
+                if (found != null)
+                    found.prodSum = double.Parse(sum);
+               
             }
 
             if (lsProduction.Count > 0)
@@ -125,7 +131,11 @@ namespace NexenHub.Models
                 avgVal = lsProduction.Average(a => a.prodSum);
                 sumVal = lsProduction.Sum(a => a.prodSum);
             }
-            
+
+            string nvm = minValue;
+
+            counts = lsProduction.Select(o => o.prodSum.ToString()).ToList();
+
             datesFormat = JsonConvert.SerializeObject(dates, Formatting.Indented);
             countsFormat = JsonConvert.SerializeObject(counts, Formatting.Indented);
         }
