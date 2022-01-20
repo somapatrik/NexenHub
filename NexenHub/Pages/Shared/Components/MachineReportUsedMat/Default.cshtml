@@ -57,8 +57,8 @@
     var container = document.getElementById("@Html.Raw(Model.UniqeName)_Vis");
 
     var @Html.Raw(Model.UniqeName + "opt") = {
-                start: "@Model.EndDate.AddHours(-3).ToString("yyyy-MM-ddTHH:mm:ss")",
-                end: "@Model.EndDate.ToString("yyyy-MM-ddTHH:mm:ss")",
+                start: "@Model.endFilterDate.AddHours(-3).ToString("yyyy-MM-ddTHH:mm:ss")",
+                end: "@Model.endFilterDate.ToString("yyyy-MM-ddTHH:mm:ss")",
                 editable:false
                 };
 

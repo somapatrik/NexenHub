@@ -2,7 +2,7 @@
 Web &amp; REST API
 
 # Used components
-* Bootsrap v5.1.3 [getbootstrap.com](https://getbootstrap.com/)
+* Bootsrap v4.3.1 [getbootstrap.com](https://getbootstrap.com/)
 * Bootstrap-datepicker [github.com/uxsolutions/bootstrap-datepicker](https://github.com/uxsolutions/bootstrap-datepicker)
 * Chart.js v3.5.0 [chartjs.org](https://www.chartjs.org)
 * jQuery v3.5.1 [jquery.com/](https://jquery.com/)

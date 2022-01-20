@@ -34,6 +34,9 @@ namespace NexenHub.Pages
         public string MaxGt = " ";
         public string AvgGt = " ";
 
+        public string JandiTitle;
+        public string JandiMsg;
+
         private int ProdGoal = 15000;
 
         private GlobalDatabase GlobalDb = new GlobalDatabase();
@@ -41,6 +44,7 @@ namespace NexenHub.Pages
         public void OnGet()
         {
             FillChart();
+            GetJandiMsg();
         }
 
         public void OnPostFilter(string id)
@@ -50,6 +54,13 @@ namespace NexenHub.Pages
                 FillChart(MonthNum);
             else
                 FillChart();
+        }
+
+        private void GetJandiMsg()
+        {
+            DataTable dt = GlobalDb.GetJandiMsg();
+            JandiTitle = dt.Rows[0]["TITLE"].ToString();
+            JandiMsg = dt.Rows[0]["MSG"].ToString().Replace("\n", "<br>");
         }
 
         private void FillChart(int FilterMonth = 0)

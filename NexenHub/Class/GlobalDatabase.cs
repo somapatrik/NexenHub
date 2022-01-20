@@ -11,6 +11,29 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetJandiMsg()
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT");
+                query.AppendLine("SND_TITLE TITLE,");
+                query.AppendLine("SND_MSG MSG");
+                query.AppendLine("FROM TB_DC_H_MESSAGE_JANDI");
+                query.AppendLine("WHERE SND_FLAG = 'Y'");
+                query.AppendLine("AND MSG_TYPE = 'PRD'");
+                query.AppendLine("AND ROWNUM = 1");
+                query.AppendLine("ORDER BY ENT_DT desc");
+
+                DBOra db = new DBOra(query.ToString());
+
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
 
         public DataTable MachineReportWorkOrders(string EQ_ID, DateTime start, DateTime end)
         {
@@ -56,13 +79,6 @@ namespace NexenHub.Class
 
 
                 StringBuilder query = new StringBuilder();
-                //query.AppendLine("SELECT /*+INDEX(TB_EQ_H_EQPOSHIS IX_EQ_M_EQPOSHIS_IDX_01)*/ ");
-                //query.AppendLine("INP.IO_POSID, INP.IO_POSGB, INP.CART_ID, INP.LOT_ID, INP.ENT_DT ");
-                //query.AppendLine("FROM TB_EQ_H_EQPOSHIS INP ");
-                //query.AppendLine("WHERE INP.EQ_ID = :eqid ");
-                //query.AppendLine("AND INP.PLANT_ID = :plant ");
-                //query.AppendLine("AND INP.EVENT_TIME >= :startDT AND INP.EVENT_TIME <= :endDT ");
-                //query.AppendLine("ORDER BY IO_POSID, INP.ENT_DT, INP.LOT_ID ");
 
                 query.AppendLine("SELECT /*+INDEX(TB_EQ_H_EQPOSHIS IX_EQ_M_EQPOSHIS_IDX_02)*/ ");
                 query.AppendLine("INP.IO_POSID, INP.IO_POSGB, INP.CART_ID, INP.LOT_ID, INP.ENT_DT ");
@@ -337,35 +353,6 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
-
-        //public DataTable GetLastNonWorkSum(string EQ_ID, DateTime FromDate)
-        //{
-        //    try
-        //    {
-        //        StringBuilder query = new StringBuilder();
-
-        //        query.AppendLine("SELECT");
-        //        query.AppendLine("to_date(NONWRK.NONWRK_STIME, 'YYYYMMDDHH24MISS') STIME, ");
-        //        query.AppendLine("to_date(NONWRK.NONWRK_ETIME, 'YYYYMMDDHH24MISS') ETIME, ");
-        //        query.AppendLine("CODE.NONWRK_NAME_1033 NON_NAME,");
-        //        query.AppendLine("DISP_COLOR BG_COLOR, ");
-        //        query.AppendLine("REL05 FR_COLOR");
-        //        query.AppendLine("from TB_CM_M_NONWRK NONWRK");
-        //        query.AppendLine("join TB_CM_M_NONWRKCODE CODE on CODE.NONWRK_CODE = NONWRK.NONWRK_CODE");
-        //        query.AppendLine("WHERE EQ_ID = :eqid");
-        //        query.AppendLine("AND NONWRK.ENT_DT >= :fromdate");
-        //        query.AppendLine("ORDER BY NONWRK.ENT_DT");
-
-        //        DBOra db = new DBOra(query.ToString());
-        //        db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
-        //        db.AddParameter("fromdate", FromDate, OracleDbType.Date);
-        //        return db.ExecTable();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new DataTable();
-        //    }
-        //}
 
         public DataTable GetNonWorkSum(string EQ_ID)
         {

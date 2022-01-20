@@ -6,80 +6,97 @@
 
 
 <div class="container">
-      <div class="row">
-
-            <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-3">
-                <div class="card">
-                    <div class="card-header text-white bg-secondary">
-                        Minimum GT
-                    </div>
-                    <div class="card-body text-center">
-                        <h3 class="card-title">@Model.MinGt</h3>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-3">
-                <div class="card">
-                    <div class="card-header text-white bg-secondary">
-                        Maximum GT
-                    </div>
-                    <div class="card-body text-center">
-                        <h3 class="card-title">@Model.MaxGt</h3>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-4 col-xl-4 mb-3">
-                <div class="card">
-                    <div class="card-header text-white bg-secondary">
-                        Average GT
-                    </div>
-                    <div class="card-body text-center">
-                        <h3 class="card-title">@Model.AvgGt</h3>
-                    </div>
-                </div>
-            </div>
-
-    </div>
 
     <div class="row">
         <div class="col">
-
-            <div class="card mb-3">
-                <div class="card-header text-white bg-secondary">
+            <div class="card">
+                <div class="card-header text-white bg-dark">
                     Monthly report
                 </div>
                 <div class="card-body">
-                    <canvas id="myChart" />
-                </div>
-            </div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card border-secondary">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Minimum GT</h5>
+                                    <h4 class="card-title">@Model.MinGt</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="card border-secondary">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Average GT</h5>
+                                    <h4 class="card-title">@Model.AvgGt</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="card border-secondary">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Maximum GT</h5>
+                                    <h4 class="card-title">@Model.MaxGt</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <canvas id="myChart" />
+                    </div>
+
+
+
                     <form method="post">
                         <nav>
                             <ul class="pagination justify-content-center">
-                                @{ for (int i=1; i < 13;i++)
-                                   {
-                                     if (Model.SelectedMonth == i)
-                                     {
-                                        <li class="page-item active"><button class="page-link" asp-page-handler="filter" asp-route-id="@i">@i</button></li>  
-                                     }
-                                     else
-                                     {
-                                        <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="@i">@i</button></li>
-                                     }
-                                   }
+                                @{ for (int i = 1; i < 13; i++)
+                                    {
+                                        if (Model.SelectedMonth == i)
+                                        {
+                                            <li class="page-item active"><button class="page-link" asp-page-handler="filter" asp-route-id="@i">@i</button></li>
+
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="@i">@i</button></li>
+                                        }
+                                    }
                                 }
                             </ul>
                         </nav>
                     </form>
-        
+                </div>
+                <div class="card-footer text-right">
+                    <span type="button" data-toggle="modal" data-target="#jandiModal">Show Jandi report</span>
+                </div>
+            </div>
+
         </div>
     </div>
-    @*<div class="row">
-        <div class="col">
-            <div id="visualization"/>
+</div>
+
+<div class="modal fade" id="jandiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Model.JandiTitle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Raw(Model.JandiMsg)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
         </div>
-    </div>*@
+    </div>
 </div>
 
 <script>
@@ -127,27 +144,6 @@
             }
         }
     });
-
-
-    //// DOM element where the Timeline will be attached
-    //var container = document.getElementById('visualization');
-
-    //// Create a DataSet (allows two way data-binding)
-    //var items = new vis.DataSet([
-    //    { id: 1, content: 'item 1', start: '2013-04-20' },
-    //    { id: 2, content: 'item 2', start: '2013-04-14' },
-    //    { id: 3, content: 'item 3', start: '2013-04-18' },
-    //    { id: 4, content: 'item 4', start: '2013-04-16', end: '2013-04-19' },
-    //    { id: 5, content: 'item 5', start: '2013-04-25' },
-    //    { id: 6, content: 'item 6', start: '2013-04-27' }
-    //]);
-
-    //// Configuration for the Timeline
-    //var options = {};
-
-    //// Create a Timeline
-    //var timeline = new vis.Timeline(container, items, options);
-
 
 </script>
 
