@@ -3,8 +3,10 @@
 @{
 }
 
+<div class="container">
+
     <div class="row mb-3">
-        <div class="col-sm-12 col-xl-6">
+        <div class="col-sm-12">
 
             <div class="card">
                 <div class="card-header bg-dark text-light">
@@ -68,13 +70,13 @@
         if (Model.IsValid)
         {
             <div class="row mb-3">
-                <div class="col-sm-12 col-md-6 col-xl-4">
+                <div class="col-sm-12 col-md-6 col-xl-8">
 
                     @await Component.InvokeAsync("MachineReportProd", Model.reportData)
 
                 </div>
 
-                <div class="col-sm-12 col-md-6 col-xl-2">
+                <div class="col-sm-12 col-md-6 col-xl-4">
 
                     @await Component.InvokeAsync("MachineReportProdSum", Model.reportData)
 
@@ -82,13 +84,15 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-12 col-xl-6">
+                <div class="col-sm-12">
                     @await Component.InvokeAsync("MachineReportUsedMat", Model.reportUsedMaterial)
                 </div>
             </div>
 
         }
     }
+
+</div>
 
 <script type="text/javascript">
 

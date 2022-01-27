@@ -44,14 +44,15 @@ namespace NexenHub.Class
                 string endDT = end.ToString("yyyyMMddHHmmss");
 
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT WO_NO, to_date(WO_STIME,'YYYYMMDDHH24MISS') WO_STIME, to_date(WO_ETIME,'YYYYMMDDHH24MISS') WO_ETIME ");
-                query.AppendLine("FROM TB_PL_M_WRKORD ");
-                query.AppendLine("WHERE PLANT_ID = :plant ");
-                query.AppendLine("AND EQ_ID = :eqid ");
-                query.AppendLine("AND USE_YN = 'Y' ");
-                query.AppendLine("AND DEL_FLAG = 'N' ");
-                query.AppendLine("AND (WO_STIME >= :startDT OR WO_ETIME >= :startDT2) ");
-                query.AppendLine("AND (WO_STIME <= :endDT OR WO_ETIME <= :endDT2) ");
+                query.AppendLine("SELECT WO_NO, to_date(WO_STIME,'YYYYMMDDHH24MISS') WO_STIME, to_date(WO_ETIME,'YYYYMMDDHH24MISS') WO_ETIME, WO.ITEM_ID, ITEM.ITEM_NAME ");
+                query.AppendLine("FROM TB_PL_M_WRKORD WO ");
+                query.AppendLine("LEFT JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID = WO.ITEM_ID ");
+                query.AppendLine("WHERE WO.PLANT_ID = :plant ");
+                query.AppendLine("AND WO.EQ_ID = :eqid ");
+                query.AppendLine("AND WO.USE_YN = 'Y' ");
+                query.AppendLine("AND WO.DEL_FLAG = 'N' ");
+                query.AppendLine("AND (WO.WO_STIME >= :startDT OR WO.WO_ETIME >= :startDT2) ");
+                query.AppendLine("AND (WO.WO_STIME <= :endDT OR WO.WO_ETIME <= :endDT2) ");
                 
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("plant", "P500", OracleDbType.Varchar2);
@@ -81,8 +82,9 @@ namespace NexenHub.Class
                 StringBuilder query = new StringBuilder();
 
                 query.AppendLine("SELECT /*+INDEX(TB_EQ_H_EQPOSHIS IX_EQ_M_EQPOSHIS_IDX_02)*/ ");
-                query.AppendLine("INP.IO_POSID, INP.IO_POSGB, INP.CART_ID, INP.LOT_ID, INP.ENT_DT ");
+                query.AppendLine("INP.IO_POSID, INP.IO_POSGB, INP.CART_ID, INP.LOT_ID, INP.ENT_DT,INP.ITEM_ID,ITEM.ITEM_NAME ");
                 query.AppendLine("FROM TB_EQ_H_EQPOSHIS INP ");
+                query.AppendLine("LEFT JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID = INP.ITEM_ID ");
                 query.AppendLine("WHERE INP.LOT_ID in( ");
                 query.AppendLine("SELECT /*+INDEX(TB_EQ_H_EQPOSHIS IX_EQ_M_EQPOSHIS_IDX_01)*/ ");
                 query.AppendLine("DISTINCT(LOT_ID) ");

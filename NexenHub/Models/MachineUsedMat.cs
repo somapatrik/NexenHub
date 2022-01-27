@@ -99,7 +99,11 @@ namespace NexenHub.Models
                 string dbGroup = r["IO_POSID"].ToString();
                 string dbLOT = r["LOT_ID"].ToString();
                 string dbcartid = r["CART_ID"].ToString();
+                string dbitemid = r["ITEM_ID"].ToString();
+                string dbitemname = r["ITEM_NAME"].ToString();
                 DateTime date = DateTime.Parse(r["ENT_DT"].ToString());
+
+                string body = dbitemname + " - " + dbitemid + " </br> " + dbLOT + " - " +dbcartid;
 
                 if (IO == "I")
                 {
@@ -107,7 +111,7 @@ namespace NexenHub.Models
                     if (foundI != null)
                         foundI.start = date;
                     else 
-                        visItems.Add(new visItem() { id=i.ToString(), LOT=dbLOT, start = date, content = dbLOT + " (" + dbcartid + ")", group = dbGroup});
+                        visItems.Add(new visItem() { id=i.ToString(), LOT=dbLOT, start = date, content = body, group = dbGroup});
                 }
 
                 if (IO == "O")
@@ -116,7 +120,7 @@ namespace NexenHub.Models
                     if (foundO != null)
                         foundO.end = date;
                     else
-                        visItems.Add(new visItem() { id = i.ToString(), LOT = dbLOT, end = date, content = dbLOT + "("+ dbcartid +")", group = dbGroup }); ;
+                        visItems.Add(new visItem() { id = i.ToString(), LOT = dbLOT, end = date, content = body, group = dbGroup }); ;
                 }
 
                 i++;
@@ -146,11 +150,21 @@ namespace NexenHub.Models
                 string wono = row["WO_NO"].ToString();
                 string wostime = row["WO_STIME"].ToString();
                 string woetime = row["WO_ETIME"].ToString();
+                string woitem = row["ITEM_ID"].ToString();
+                string woitemname = row["ITEM_NAME"].ToString();
+
+
+                string body = "";
+
+                if (string.IsNullOrEmpty(woetime))
+                    body = woitemname + " - " + woitem + " WO:" + wono + " (active)";
+                else
+                    body = woitemname + " - " + woitem + " WO:" + wono;
 
                 visBackground.Add(new visItem()
                 {
                     id = i.ToString(),
-                    content = string.IsNullOrEmpty(woetime) ? "WO: "+ wono + " (active)" : "WO: " + wono,
+                    content = body,
                     start = string.IsNullOrEmpty(wostime) ? startFilterDate : DateTime.Parse(wostime),
                     end = string.IsNullOrEmpty(woetime) ? endFilterDate : DateTime.Parse(woetime)
                 });
