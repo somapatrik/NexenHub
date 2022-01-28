@@ -35,7 +35,6 @@ namespace NexenHub.Models
         {
             get { return lsProduction.Count > 0 ? maxVal.ToString(GlobalSettings.CzechNum) : ""; }
         }
-
         public string minValue
         {
             get { return lsProduction.Count > 0 ? minVal.ToString(GlobalSettings.CzechNum) : ""; }

@@ -22,6 +22,7 @@ namespace NexenHub.Class
                 query.AppendLine("FROM TB_DC_H_MESSAGE_JANDI");
                 query.AppendLine("WHERE SND_FLAG = 'Y'");
                 query.AppendLine("AND MSG_TYPE = 'PRD'");
+                query.AppendLine("AND ENT_DT = (select MAX(ENT_DT) from TB_DC_H_MESSAGE_JANDI)");
                 query.AppendLine("AND ROWNUM = 1");
                 query.AppendLine("ORDER BY ENT_DT desc");
 
