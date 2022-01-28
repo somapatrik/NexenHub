@@ -141,6 +141,34 @@ namespace NexenHub.Class
             }
         }
 
+        public DataTable MachineProductionReportSumHour(string EQ_ID, DateTime date)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT"); 
+                query.AppendLine("TO_DATE(SUBSTR(PROD_TIME, 1, 10), 'YYYYMMDDHH24') PROD_DATE_S,");
+                query.AppendLine("SUM(PROD_QTY) PROD_QTY");
+                query.AppendLine("FROM TB_PR_M_PROD");
+                query.AppendLine("WHERE PROD_DATE = :startdt");
+                query.AppendLine("AND EQ_ID = :eqid");
+                query.AppendLine("AND USE_YN = 'Y'");
+               // query.AppendLine("AND TEST_YN = 'N'");
+                query.AppendLine("GROUP BY SUBSTR(PROD_TIME, 1, 10)");
+                query.AppendLine("ORDER BY PROD_DATE_S");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("startdt", date.ToString("yyyyMMdd"), OracleDbType.Varchar2);
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetDashboardStatus(string WC_ID)
         {
             try

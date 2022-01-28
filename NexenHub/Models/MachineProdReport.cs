@@ -59,8 +59,10 @@ namespace NexenHub.Models
         public MachineProdReport(string EQ_ID)
         {
             this.EQ_ID = EQ_ID;
-            this.StartDate = DateTime.Now;
-            this.EndDate = DateTime.Now;
+
+            // Input dates must be midnight
+            this.StartDate = DateTime.Now.Date;
+            this.EndDate = DateTime.Now.Date;
 
             InitValues();
         }
@@ -69,15 +71,17 @@ namespace NexenHub.Models
         {
 
             this.EQ_ID = EQ_ID;
+            
+            // Input dates must be midnight
             if (startDT <= endDt)
             {
-                this.StartDate = startDT;
-                this.EndDate = endDt;
+                this.StartDate = startDT.Date;
+                this.EndDate = endDt.Date;
             }
             else
             {
-                this.EndDate = startDT;
-                this.StartDate = endDt;
+                this.EndDate = startDT.Date;
+                this.StartDate = endDt.Date;
             }
 
             // Limit range to one year
@@ -94,14 +98,15 @@ namespace NexenHub.Models
             lsProduction = new List<MachineProdReportItem>();
 
             // Fill with dates
-            DateTime fill = StartDate;
-            while (fill <= EndDate)
-            {
-                lsProduction.Add(new MachineProdReportItem() { day = fill, prodSum = 0 });
-                dates.Add(fill.ToString("yyyy-MM-dd"));
-                fill = fill.AddDays(1);
-                
-            }
+            //DateTime fill = StartDate;
+            //while (fill <= EndDate)
+            //{
+            //    lsProduction.Add(new MachineProdReportItem() { day = fill, prodSum = 0 });
+            //    dates.Add(fill.ToString("yyyy-MM-dd"));
+            //    fill = fill.AddDays(1);
+
+            //}
+            FillDatesX();
 
             LoadData();
             ProcessData();
@@ -109,10 +114,40 @@ namespace NexenHub.Models
 
         }
 
+        // Will prepare X axis with dates / times
+        private void FillDatesX()
+        {
+            if (StartDate == EndDate)
+            {
+                DateTime fillStart = StartDate.AddHours(6); // 00:00 + 06:00
+                DateTime fillEnd = fillStart.AddHours(23);  // 06:00 -> 05:00
+
+                // Fill hour by hour
+                while (fillStart <= fillEnd)
+                {
+                    lsProduction.Add(new MachineProdReportItem() { day = fillStart, prodSum = 0 });
+                    dates.Add(fillStart.ToString("yyyy-MM-dd HH-mm-ss"));
+                    fillStart = fillStart.AddHours(1);
+                }
+            }
+            else
+            {
+                DateTime fill = StartDate;
+
+                // Fill day by day
+                while (fill <= EndDate)
+                {
+                    lsProduction.Add(new MachineProdReportItem() { day = fill, prodSum = 0 });
+                    dates.Add(fill.ToString("yyyy-MM-dd"));
+                    fill = fill.AddDays(1);
+
+                }
+            }
+        }
+
         private void ProcessData()
         {
             
-
             foreach (DataRow r in dtProduction.Rows)
             {
                 DateTime d = DateTime.Parse(r["PROD_DATE_S"].ToString());
@@ -132,8 +167,6 @@ namespace NexenHub.Models
                 sumVal = lsProduction.Sum(a => a.prodSum);
             }
 
-            string nvm = minValue;
-
             counts = lsProduction.Select(o => o.prodSum.ToString()).ToList();
 
             datesFormat = JsonConvert.SerializeObject(dates, Formatting.Indented);
@@ -147,7 +180,10 @@ namespace NexenHub.Models
 
         private void LoadData()
         {
-            dtProduction = dbglob.MachineProductionReportSum(EQ_ID, StartDate, EndDate);
+            if (StartDate == EndDate)
+                dtProduction = dbglob.MachineProductionReportSumHour(EQ_ID, StartDate);
+            else
+                dtProduction = dbglob.MachineProductionReportSum(EQ_ID, StartDate, EndDate);
         }
 
     }

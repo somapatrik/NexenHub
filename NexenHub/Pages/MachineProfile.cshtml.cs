@@ -65,12 +65,13 @@ namespace NexenHub.Pages
         public string chartlabels { get; set; }
         public string chartdataset { get; set; }
         public WorkOrder WO { get; set; }
-        public double QuantityPrc;
         public List<InputedMaterial> Inputed { get; set; }
 
         public List<InputedMaterial> BOM { get; set; }
 
         public MachineBasicInfo machineBasic { get; set; }
+
+        public MachineProdReport machineProduction;
 
         public List<DownTimeInfoScript> downInfo { get; set; }
         public string downScript {get;set;}
@@ -95,13 +96,13 @@ namespace NexenHub.Pages
                 // Machine info
                 machineBasic = new MachineBasicInfo(EQ_ID);
 
+                // Machine production - TODO when 1 day show hours
+                machineProduction = new MachineProdReport(EQ_ID);
+
                 // Get downtimes
                 DataTable dt = dbglob.GetNonWorkSum(EQ_ID);
                 ChartDataScript = new ChartDownTimeDataSet();
                 FillDataScript(dt);
-
-                // Get last nonworks
-              //  FillDownTimeInfo(EQ_ID);
 
                 // Act downtime
                 dt = dbglob.GetActNonWrk(EQ_ID);
@@ -115,11 +116,6 @@ namespace NexenHub.Pages
                 WO = new WorkOrder();
                 WO.LoadFromMachine(EQ_ID);
 
-                if (string.IsNullOrEmpty(WO.PROD_QTY) || string.IsNullOrEmpty(WO.WO_QTY))
-                    QuantityPrc = 0;
-                else
-                    QuantityPrc = Math.Round(((Double.Parse(WO.PROD_QTY) / Double.Parse(WO.WO_QTY)) * 100), 0);
-
                 // BOM
                 if (WO.TEST_YN == "Y") 
                     LoadTestBOM(WO.ITEM_ID, WO.PROTOTYPE_ID, WO.PROTOTYPE_VER);
@@ -128,37 +124,7 @@ namespace NexenHub.Pages
 
                 // Get inputed material
                 LoadInputedMaterial(EQ_ID);
-
-                
-
-                SetFilterDate();
             }
-        }
-
-        //public void FillDownTimeInfo(string EQ_ID)
-        //{
-        //    downInfo = new List<DownTimeInfoScript>();
-        //    DataTable dt = dbglob.GetLastNonWorkSum(EQ_ID, DateTime.Now.AddHours(-12));
-        //    int i = 0;
-        //    foreach (DataRow row in dt.Rows)
-        //    {
-        //        DownTimeInfoScript di = new DownTimeInfoScript();
-        //        di.start = DateTime.Parse(row["STIME"].ToString()).ToString("yyyy-MM-ddTHH:mm:ss");
-        //        di.end = !string.IsNullOrEmpty(row["ETIME"].ToString()) ? DateTime.Parse(row["ETIME"].ToString()).ToString("yyyy-MM-ddTHH:mm:ss") : null;
-        //        di.id = "id_" + row["NON_NAME"].ToString() + "_"+i;
-        //        di.content = row["NON_NAME"].ToString();
-        //        downInfo.Add(di);
-        //        i++;
-        //    }
-        //    downScript = JsonConvert.SerializeObject(downInfo, Formatting.Indented);
-        //}
-
-        public void SetFilterDate()
-        {
-            DateTime now = DateTime.Now;
-            IsA = now.Hour >= 6 && now.Hour < 18 ? true : false;
-
-            FilterDate = now.AddHours(-6);
         }
 
         public void LoadTestBOM(string ITEM_ID,string PROTOTYPE_ID, string PROTOTYPE_VER)

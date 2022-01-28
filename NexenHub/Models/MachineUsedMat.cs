@@ -81,10 +81,6 @@ namespace NexenHub.Models
 
         private void LoadData()
         {
-
-            //dtUsed = dbglob.MachineReportUsedMat(EQ_ID, StartDate, EndDate);
-            //dtWo = dbglob.MachineReportWorkOrders(EQ_ID, StartDate, EndDate);
-
             dtUsed = dbglob.MachineReportUsedMat(EQ_ID, startFilterDate, endFilterDate);
             dtWo = dbglob.MachineReportWorkOrders(EQ_ID, startFilterDate, endFilterDate);
         }

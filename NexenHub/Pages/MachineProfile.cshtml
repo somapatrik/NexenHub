@@ -11,14 +11,14 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-3">
 
         <div class="col-12 col-lg-7">
 
             <div class="row mb-3">
                 <div class="col">
                     <div class="card">
-                        <div class="card-header bg-secondary text-light">
+                        <div class="card-header bg-dark text-light">
                             Workorder
                             <span class="float-right">
                                 @{
@@ -69,22 +69,9 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col">
-                    @{
-                        if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
-                        {
-                            @await Component.InvokeAsync("MachineProdChart", new { EQ_ID = Model.machineBasic.EQ_ID })
-                        }
-                    }
-
-                </div>
-            </div>
-
         </div>
 
         <div class="col-12 col-lg-5">
-
 
             @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
                 {
@@ -107,7 +94,7 @@
             <div class="row">
                 <div class="col">
                     <div class="card">
-                        <div class="card-header bg-secondary text-light">
+                        <div class="card-header bg-dark text-light">
                             Shift downtimes
                         </div>
                         <div class="card-body">
@@ -121,21 +108,24 @@
 
     </div>
 
+    <div class="row mb-3">
+        <div class="col">
+            @{
+                if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
+                {
+                    @await Component.InvokeAsync("MachineReportProd", Model.machineProduction)
+                }
+            }
+        </div>
+    </div>
+
     <div class="row ">
         <div class="col-lg-7 mb-3">
             <div class="card">
-                <div class="card-header bg-secondary text-light">Material in use</div>
+                <div class="card-header bg-dark text-light">Material in use</div>
                 <div class="card-body">
 
                     <table class="table table-sm table-borderless table-hover">
-                        @*<thead>
-                                <tr>
-                                    <th scope="col">POS</th>
-                                    <th scope="col">CART ID</th>
-                                    <th scope="col">ITEM ID</th>
-                                    <th scope="col">ITEM NAME</th>
-                                </tr>
-                            </thead>*@
                         <tbody>
 
                             @{ foreach (var material in Model.Inputed)
@@ -164,6 +154,7 @@
                             }
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>
@@ -179,7 +170,7 @@
                     }
                     else
                     {
-                        <div class="card-header bg-secondary text-light">
+                        <div class="card-header bg-dark text-light">
                             @Html.Raw("BOM")
                         </div>
                     }
@@ -205,19 +196,6 @@
         </div>
     </div>
 
-    @*<div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-secondary text-light">
-                    Downtime visualization
-                </div>
-                <div class="card-body">
-                    <div id="visualization" />
-                </div>
-            </div>
-        </div>
-    </div>*@
-
 </div>
 
 
@@ -235,17 +213,6 @@
         responsive: true
     }
     });
-
-
-var items = new vis.DataSet(@Html.Raw(Model.downScript));
-
-var container = document.getElementById("visualization");
-var options = {
-                start: "@DateTime.Now.AddMinutes(-30).ToString("yyyy-MM-ddTHH:mm:ss")",
-                end:  "@DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss")"
-              };
-
-var timeline = new vis.Timeline(container, items, options);
 
 </script>
 
