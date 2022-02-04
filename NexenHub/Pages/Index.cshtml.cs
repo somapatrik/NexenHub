@@ -54,13 +54,17 @@ namespace NexenHub.Pages
                 FillChart(MonthNum);
             else
                 FillChart();
+
+            GetJandiMsg();
         }
 
         private void GetJandiMsg()
         {
             DataTable dt = GlobalDb.GetJandiMsg();
-            JandiTitle = dt.Rows[0]["TITLE"].ToString();
-            JandiMsg = dt.Rows[0]["MSG"].ToString().Replace("\n", "<br>");
+            if (dt.Rows.Count > 0) { 
+                JandiTitle = dt.Rows[0]["TITLE"].ToString();
+                JandiMsg = dt.Rows[0]["MSG"].ToString().Replace("\n", "<br>");
+            }
         }
 
         private void FillChart(int FilterMonth = 0)

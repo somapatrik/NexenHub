@@ -11,8 +11,8 @@
 
     <script type="text/javascript">
 
-    var ctx = document.getElementById('@Html.Raw(Model.UniqeName+"ProdChart")').getContext('2d');
-    var myChart = new Chart(ctx, {
+    var prodctx = document.getElementById('@Html.Raw(Model.UniqeName+"ProdChart")').getContext('2d');
+    var prodmyChart = new Chart(prodctx, {
         type: 'bar',
         data: {
             labels: @Html.Raw(Model.datesFormat),

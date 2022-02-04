@@ -96,15 +96,6 @@ namespace NexenHub.Models
             counts = new List<string>();
             lsProduction = new List<MachineProdReportItem>();
 
-            // Fill with dates
-            //DateTime fill = StartDate;
-            //while (fill <= EndDate)
-            //{
-            //    lsProduction.Add(new MachineProdReportItem() { day = fill, prodSum = 0 });
-            //    dates.Add(fill.ToString("yyyy-MM-dd"));
-            //    fill = fill.AddDays(1);
-
-            //}
             FillDatesX();
 
             LoadData();
@@ -146,7 +137,6 @@ namespace NexenHub.Models
 
         private void ProcessData()
         {
-            
             foreach (DataRow r in dtProduction.Rows)
             {
                 DateTime d = DateTime.Parse(r["PROD_DATE_S"].ToString());
@@ -161,7 +151,7 @@ namespace NexenHub.Models
             if (lsProduction.Count > 0)
             {
                 maxVal = lsProduction.Max(m => m.prodSum);
-                minVal = lsProduction.Min(mi => mi.prodSum);
+                minVal = lsProduction.FindAll(o=>o.prodSum > 0).Min(mi => mi.prodSum);
                 avgVal = lsProduction.Average(a => a.prodSum);
                 sumVal = lsProduction.Sum(a => a.prodSum);
             }

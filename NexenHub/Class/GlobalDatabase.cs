@@ -11,6 +11,40 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public DataTable MachineReportDownTimes(string EQ_ID, DateTime start, DateTime end)
+        {
+            try
+            {
+                string startDT = start.ToString("yyyyMMddHHmmss");
+                string endDT = end.ToString("yyyyMMddHHmmss");
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT ");
+                query.AppendLine("TO_DATE(NONWRK_STIME, 'YYYYMMDDHH24MISS') STIME,");
+                query.AppendLine("TO_DATE(NVL(NONWRK_ETIME, to_char(SYSDATE, 'YYYYMMDDHH24MISS')), 'YYYYMMDDHH24MISS') ETIME,");
+                query.AppendLine("NON.NONWRK_CODE,");
+                query.AppendLine("CODE.NONWRK_NAME_1033 NONWRK_NAME");
+                query.AppendLine("FROM TB_CM_M_NONWRK NON");
+                query.AppendLine("LEFT JOIN TB_CM_M_NONWRKCODE CODE on CODE.NONWRK_CODE = NON.NONWRK_CODE");
+                query.AppendLine("WHERE EQ_ID = :eqid");
+                query.AppendLine("AND(NONWRK_ETIME >= :startDT AND NONWRK_STIME <= :endDT)");
+                query.AppendLine("OR NONWRK_STIME IS NULL");
+                query.AppendLine("ORDER BY NONWRK_STIME");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("startDT", startDT, OracleDbType.Varchar2);
+                db.AddParameter("endDT", endDT, OracleDbType.Varchar2);
+
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetJandiMsg()
         {
             try
