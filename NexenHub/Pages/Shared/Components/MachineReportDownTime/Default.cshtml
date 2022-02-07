@@ -2,9 +2,15 @@
 
         <div class="card">
             <div class="card-header bg-dark text-light">
-                Downtimes
+                Downtime
             </div>
             <div class="card-body">
+                <div class="row flex-row-reverse mb-3">
+                    <div class="col">
+                        <span class="float-right text-muted">@Model.filterStartDate - @Model.filterEndDate</span>
+                    </div>
+
+                </div>
                 <div class="row">
                     <div class="col-6">
                         <canvas id="sumDTchart" style="display: block; box-sizing: border-box;" />
@@ -13,6 +19,7 @@
                         <canvas id="eachDTchart" style="display: block; box-sizing: border-box;" />
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -22,28 +29,38 @@
             const eachDT = new Chart(eachctx, {
                 type: 'doughnut',
                 data: {
-                    labels: @Html.Raw(Model.formatEaLabels),
+                    labels:@Html.Raw(Model.formatEaLabels),
                     datasets: [{
                         label: 'Sum data',
                         data: @Html.Raw(Model.formatEaDatas),
                         borderWidth: 1,
-                        "backgroundColor": [
-                            "rgba(50,205,50,0.2)",
-                            "rgba(220, 53, 69, 0.2)"
-                        ],
-                        "borderColor": [
-                            "rgba(50,205,50,1)",
-                            "rgba(220, 53, 69, 1)"
-                        ]
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                        ]@*@Html.Raw(Model.formatBackgrounds)*@,
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                        ]@*@Html.Raw(Model.formatBorders)*@
                     }]
                 },
                 options: {
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
                     responsive: true,
                     plugins: {
                         legend: { position: 'right' },
                         title: {
-                            display: true,
+                            display: false,
                             text: ''
                         }
                     }
@@ -59,13 +76,19 @@
                         label: 'Sum data',
                         data: @Html.Raw(Model.formatSumDatas),
                         borderWidth: 1,
-                        "backgroundColor": [
-                            "rgba(50,205,50,0.2)",
-                            "rgba(220, 53, 69, 0.2)"
+                        backgroundColor: [
+                            "rgba(50,205,50,0.5)",
+                            "rgba(220, 53, 69,0.5)",
+                            "rgba(139,0,139,0.5)",
+                            "rgba(85,107,47,0.5)",
+                            "rgba(255,140,0,0.5)"
                         ],
-                        "borderColor": [
+                        borderColor: [
                             "rgba(50,205,50,1)",
-                            "rgba(220, 53, 69, 1)"
+                            "rgba(220, 53, 69,1)",
+                            "rgba(139,0,139,1)",
+                            "rgba(85,107,47,1)",
+                            "rgba(255,140,0,1)"
                         ]
                     }]
                 },
@@ -75,7 +98,7 @@
                     plugins: {
                         legend: { position: 'right' },
                         title: {
-                            display: true,
+                            display: false,
                             text: ''
                         }
                     }

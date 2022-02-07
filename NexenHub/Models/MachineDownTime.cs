@@ -3,6 +3,7 @@ using NexenHub.Class;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,14 +22,23 @@ namespace NexenHub.Models
         public DateTime filterStartDate;
         public DateTime filterEndDate;
 
+        // Updtime / downtime chart
         public double totalWorkSeconds;
+        public double totalUpTimeSeconds;
         public double totalDownTimeSeconds;
+
+        public TimeSpan spanDown;
+        public TimeSpan spanUp;
+        public TimeSpan spanAllTime;
 
         public string formatSumLabels;
         public string formatSumDatas;
 
+        // Downtimes chart
         public string formatEaLabels;
         public string formatEaDatas;
+        public string formatBackgrounds;
+        public string formatBorders;
 
         public string UniqeName;
 
@@ -110,7 +120,7 @@ namespace NexenHub.Models
                 string name = row["NONWRK_NAME"].ToString();
 
                 DownTimeSumItem found = sumDownTimes.Find(d=>d.Code == code);
- 
+
                 if (found != null)
                     found.Seconds += diff;
                 else
@@ -119,7 +129,10 @@ namespace NexenHub.Models
 
             // Total DT seconds
             if (sumDownTimes.Count > 0)
+            {
                 totalDownTimeSeconds = sumDownTimes.Sum(x => x.Seconds);
+                totalUpTimeSeconds = totalWorkSeconds - totalDownTimeSeconds;
+            }
 
         }
 
@@ -129,10 +142,19 @@ namespace NexenHub.Models
             List<string> sumLabels = new List<string>();
             List<string> sumDatas = new List<string>();
 
-            sumLabels.Add("Uptime");
-            sumLabels.Add("Downtime");
-            sumDatas.Add(totalWorkSeconds.ToString());
-            sumDatas.Add(totalDownTimeSeconds.ToString());
+            double perDown = Math.Round((totalDownTimeSeconds / totalWorkSeconds) * 100,1);
+            double perUp = Math.Round((totalUpTimeSeconds / totalWorkSeconds) * 100,1);
+
+            spanDown = TimeSpan.FromSeconds(totalDownTimeSeconds);
+            spanUp = TimeSpan.FromSeconds(totalUpTimeSeconds);
+            spanAllTime = TimeSpan.FromSeconds(totalWorkSeconds);
+
+            sumLabels.Add(perUp.ToString() + "% Uptime");
+            sumLabels.Add(perDown.ToString() + "% Downtime");
+            //sumDatas.Add(totalWorkSeconds.ToString());
+            //sumDatas.Add(totalDownTimeSeconds.ToString());
+            sumDatas.Add(perUp.ToString());
+            sumDatas.Add(perDown.ToString());
 
             formatSumLabels = JsonConvert.SerializeObject(sumLabels, Formatting.None);
             formatSumDatas = JsonConvert.SerializeObject(sumDatas, Formatting.None);
@@ -140,15 +162,29 @@ namespace NexenHub.Models
             // Each dt
             List<string> eaDtLabels = new List<string>();
             List<string> eaDtDatas = new List<string>();
+            List<string> eaBackground = new List<string>();
+            List<string> eaBorders = new List<string>();
+
+            KnownColor useColor = KnownColor.Firebrick; // 30 - 167
 
             foreach (DownTimeSumItem downtime in sumDownTimes.OrderBy(x => x.Seconds))
             {
-                eaDtLabels.Add(downtime.Name);
-                eaDtDatas.Add(downtime.Seconds.ToString());
+                double perEa = Math.Round((downtime.Seconds / totalDownTimeSeconds) * 100, 1);
+                eaDtLabels.Add(perEa + "% " + downtime.Name);
+                //eaDtDatas.Add(downtime.Seconds.ToString());
+                eaDtDatas.Add(perEa.ToString());
+                
+                // Colors
+                Color rgbaColor = Color.FromKnownColor(useColor);
+                eaBackground.Add(string.Format("rgba({0},{1},{2},.2)", rgbaColor.R, rgbaColor.G, rgbaColor.B, rgbaColor.A));
+                eaBorders.Add(string.Format("rgba({0},{1},{2},1)", rgbaColor.R, rgbaColor.G, rgbaColor.B, rgbaColor.A));
+                useColor = (int)useColor == 167 ? (KnownColor)29 : useColor + 2;
             }
 
             formatEaLabels = JsonConvert.SerializeObject(eaDtLabels, Formatting.None);
             formatEaDatas = JsonConvert.SerializeObject(eaDtDatas, Formatting.None);
+            formatBackgrounds = JsonConvert.SerializeObject(eaBackground, Formatting.None);
+            formatBorders = JsonConvert.SerializeObject(eaBorders, Formatting.None);
         }
 
         private void GenerateName()
