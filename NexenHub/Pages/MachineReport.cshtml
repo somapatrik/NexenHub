@@ -6,7 +6,7 @@
 <div class="container-fluid">
 
     <div class="row mb-3 flex-row-reverse">
-        <div class="col-sm-12 col-lg-6">
+        <div class="col-sm-12 col-xl-6">
 
             <div class="card">
                 <div class="card-header bg-dark text-light">
@@ -71,34 +71,39 @@
         {
         <div class="row mb-3">
 
-            <div class="col-2">
 
-                @await Component.InvokeAsync("MachineReportProdSum", Model.reportData)
-
-            </div>
-            <div class="col-5">
+            <div class="col-sm-12 col-md-8 col-xl-5">
 
                 @await Component.InvokeAsync("MachineReportProd", Model.reportData)
 
             </div>
+            <div class="col-sm-12 col-md-4 col-xl-2">
 
-            <div class="col-5">
+                @await Component.InvokeAsync("MachineReportProdSum", Model.reportData)
+
+            </div>
+            <div class="col-sm-12 col-xl-5">
 
                 @await Component.InvokeAsync("MachineReportDownTime", Model.reportDowntTimes)
 
             </div>
 
         </div>
-            <div class="row mb-3">
 
-
+        <div class="row mb-3">
+            <div class="col">
 
             </div>
+        </div>
 
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm col-xl-2">
+                    
+                </div>
+                <div class="col-sm-12 col-xl-8">
                     @await Component.InvokeAsync("MachineReportUsedMat", Model.reportUsedMaterial)
                 </div>
+                <div class="col-sm col-xl-2"></div>
             </div>
 
         }
