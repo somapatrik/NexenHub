@@ -3,40 +3,38 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Nexen hub</title>
+    <title>Nexen hub</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body style="background-color:#f5f5f5;">
+    <link href="~/lib/bootstrap/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/vis/dist/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/vis/dist/vis.min.css" rel="stylesheet" type="text/css" />
 
-    <script src="~/lib/chart/dist/chart.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="bg-soma-dark">
+
+    <script src="~/lib/chart/dist/chart.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="~/lib/vis/dist/vis.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <link href="~/lib/bootstrap/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
-
-    <link href="~/lib/vis/dist/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/lib/vis/dist/vis.css" rel="stylesheet" type="text/css" />
-
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-soma-darklight text-light mb-3">
             <div class="container">
-
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
                     <img src="/lib/Images/logo_light.png" width="200" />
                 </a>
 
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/MachineList">Machines</a>
                         </li>
@@ -47,10 +45,10 @@
                             <a class="nav-link" asp-area="" asp-page="/CartsInfo">Cart e-paper</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle"  href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dashboards
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/status">TBM</a>
                                 <a class="dropdown-item" href="/StatusMix">Mix</a>
                                 <a class="dropdown-item" href="/statusCalender">Calender</a>
@@ -62,7 +60,7 @@
                     </ul>
 
                     <form class="form-inline">
-                        <a class="btn btn-outline-success" asp-page="/Rex">Download ReX</a>
+                        <a class="btn btn-success" asp-page="/Rex">Download ReX</a>
                     </form>
 
                 </div>
@@ -76,7 +74,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted bg-dark">
+    <footer class="footer text-muted bg-soma-darklight">
         <div class="container">
             <div class="row">
                 <div class="col">&copy; 2021 - NexenHub</div>

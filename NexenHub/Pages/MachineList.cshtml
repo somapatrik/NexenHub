@@ -10,32 +10,32 @@
         <div class="btn-group " role="group">
 
             <form method="get">
-                <button class="page-link mr-3">ALL</button>
+                <button class="page-link bg-dark text-light border-secondary mr-3">ALL</button>
             </form>
 
             <form method="post">
                 <nav>
                     <ul class="pagination justify-content-center">
                         <li class="page-item">
-                            <button class="page-link" asp-page-handler="filter" asp-route-id="M">MIX</button>
+                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="M">MIX</button>
                         </li>
                         <li class="page-item">
-                            <button class="page-link" asp-page-handler="filter" asp-route-id="C">CAL</button>
+                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="C">CAL</button>
                         </li>
                         <li class="page-item">
-                            <button class="page-link" asp-page-handler="filter" asp-route-id="B">BEAD</button>
+                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="B">BEAD</button>
                         </li>
                         <li class="page-item">
-                            <button class="page-link" asp-page-handler="filter" asp-route-id="E">EXT</button>
+                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="E">EXT</button>
                         </li>
                         <li class="page-item">
-                            <button class="page-link" asp-page-handler="filter" asp-route-id="P">CUT</button>
+                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="P">CUT</button>
                         </li>
                         <li class="page-item">
-                            <button class="page-link" asp-page-handler="filter" asp-route-id="T">TBM</button>
+                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="T">TBM</button>
                         </li>
                         <li class="page-item">
-                            <button class="page-link" asp-page-handler="filter" asp-route-id="U">CUR</button>
+                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="U">CUR</button>
                         </li>
                     </ul>
                 </nav>
@@ -45,7 +45,7 @@
     </div>
 
     <div>
-        <table class="table table-sm table-striped table-hover table-dark text-center">
+        <table class="table table-sm table-striped table-hover table-secondary text-center">
 
             <thead>
                 <tr>
@@ -54,7 +54,6 @@
                     <th scope="col">WC</th>
                     <th scope="col">PROC</th>
                     <th scope="col"></th>
-                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -62,18 +61,18 @@
                 @{ foreach (var machine in Model.DbList)
                     {
 
+                        
                                 <tr>
                                     <th scope="row">@machine.EQ_ID</th>
-                                    <td class="text-left">@machine.Name</td>
+                                    <td>@machine.Name</td>
                                     <td>@machine.WC_ID</td>
                                     <td>@machine.PROC_ID</td>
-                                    <td>
+                                    <td class="justify-content-between">
                                         <a class="btn btn-success btn-sm" href="/MachineProfile/@machine.EQ_ID">Detail</a>
-                                    </td>
-                                    <td>
                                         <a class="btn btn-success btn-sm" href="/MachineReport/@machine.EQ_ID/@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")/@DateTime.Now.ToString("yyyy-MM-dd")">Report</a>
                                     </td>
                                 </tr>
+                        
                     }
                 }
 

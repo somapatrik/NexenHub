@@ -9,15 +9,17 @@
 
     <div class="row">
         <div class="col">
-            <div class="card">
-                <div class="card-header text-white bg-dark">
-                    Monthly report
-                </div>
+
+            <div class="card bg-soma-darklight text-light">
+
                 <div class="card-body">
+                    <div class="card-title text-center">
+                        <h5>Monthly report</h5>
+                    </div>
 
                     <div class="row mb-3">
                         <div class="col">
-                            <div class="card border-secondary">
+                            <div class="card bg-soma-darklight border-secondary">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Minimum GT</h5>
                                     <h4 class="card-title">@Model.MinGt</h4>
@@ -26,7 +28,7 @@
                         </div>
 
                         <div class="col">
-                            <div class="card border-secondary">
+                            <div class="card bg-soma-darklight border-secondary">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Average GT</h5>
                                     <h4 class="card-title">@Model.AvgGt</h4>
@@ -35,7 +37,7 @@
                         </div>
 
                         <div class="col">
-                            <div class="card border-secondary">
+                            <div class="card bg-soma-darklight border-secondary">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Maximum GT</h5>
                                     <h4 class="card-title">@Model.MaxGt</h4>
@@ -48,11 +50,9 @@
                         <canvas id="myChart" />
                     </div>
 
-
-
                     <form method="post">
                         <nav>
-                            <ul class="pagination justify-content-center">
+                            <ul class="pagination pagination-dark justify-content-center">
                                 @{ for (int i = 1; i < 13; i++)
                                     {
                                         if (Model.SelectedMonth == i)
@@ -62,7 +62,7 @@
                                         }
                                         else
                                         {
-                                            <li class="page-item"><button class="page-link" asp-page-handler="filter" asp-route-id="@i">@i</button></li>
+                                            <li class="page-item"><button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="@i">@i</button></li>
                                         }
                                     }
                                 }
@@ -70,30 +70,29 @@
                         </nav>
                     </form>
                 </div>
-                <div class="card-footer text-right">
-                    <span type="button" data-toggle="modal" data-target="#jandiModal">Show Jandi report</span>
+                <div class="card-footer">
+                    <span type="button" data-bs-toggle="modal" data-bs-target="#jandiModal">Show Jandi report</span>
                 </div>
             </div>
 
         </div>
     </div>
+
 </div>
 
-<div class="modal fade" id="jandiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+<div class="modal fade" id="jandiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content  bg-secondary text-light">
             <div class="modal-header">
-                <h5 class="modal-title">@Model.JandiTitle</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" id="exampleModalLabel">@Model.JandiTitle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 @Html.Raw(Model.JandiMsg)
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -107,39 +106,56 @@
             labels: @Html.Raw(Model.DaysInMonth),
             datasets: [
                 {
+                label: 'Daily goal',
+                data: @Html.Raw(Model.GoalDay),
+                    backgroundColor: ['orange'],
+                    borderColor: ['orange'],
+                borderWidth: 1,
+                type:'line'
+                },
+                {
                 label: 'GreenTire',
                 data: @Html.Raw(Model.GTDays),
-                backgroundColor: ['rgba(50, 205, 50, 0.2)'],
-                borderColor: ['rgba(50, 205, 50, 1)'],
+                    backgroundColor: ['rgba(75, 192, 192, 0.7)'],
+                    borderColor: ['rgba(75, 192, 192, 1)'],
                 borderWidth: 1
                 },
                 {
                 label: 'Finished Tire',
                 data: @Html.Raw(Model.TireDays),
-                backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-                borderColor: ['rgba(54, 162, 235, 1)'],
+                    backgroundColor: ['rgba(54, 162, 235, 0.7)'],
+                    borderColor: ['rgba(54, 162, 235, 1)'],
                 borderWidth: 1
-                },
-                {
-                label: 'Daily goal',
-                data: @Html.Raw(Model.GoalDay),
-                    backgroundColor: ['rgba(255, 140, 0, 0.2)'],
-                    borderColor: ['rgba(255, 140, 0, 1)'],
-                borderWidth: 1,
-                type:'line'
                 }
             ]
         },
         options: {
-            elements: {
-                point: {
-                    radius: 0
-                }
-            },
+            maintainAspectRatio: true,
             responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255,255, 255,0.1)'
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255,255, 255,0.1)'
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'white'
+                    }
                 }
             }
         }

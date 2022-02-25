@@ -3,11 +3,11 @@
 @{
 }
 
-<div class="container">
+<div class="container text-light">
 
     <div class="row">
-        <div class="col-12 mb-3">
-            <div class="h3">@Model.machineBasic.Name</div>
+        <div class="col mb-3 justify-content-center">
+            <div class="h5">@Model.machineBasic.Name</div>
         </div>
     </div>
 
@@ -18,31 +18,43 @@
 
             <div class="row mb-3">
                 <div class="col">
-                    <div class="card">
-                        <div class="card-header bg-dark text-light">
-                            Workorder
-                            <span class="float-right">
-                                @{
 
-                                    if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
-                                    {
-                                    <span class="badge badge-dark">@Model.WO.PROD_TYPE</span>
-                                    }
+                 <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
 
-                                    if (@Model.WO.OE)
-                                    {
-                                    <span class="badge badge-primary">OE</span>
-                                    }
-
-                                    if (@Model.WO.TEST_YN == "Y")
-                                    {
-                                    <span class="badge badge-warning">PROTOTYPE</span>
-                                    }
-                                }
-                            </span>
-
-                        </div>
                         <div class="card-body">
+                            <div class="card-title ">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">
+                                        @{
+                                            if (@Model.WO.TEST_YN == "Y")
+                                            {
+                                                <div class="flex-fill badge bg-warning text-dark">PROTOTYPE</div>
+                                            }
+                                        }
+                                    </div>
+                                    
+                                        @{
+
+                                            if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
+                                            {
+                                            <div>
+                                                <span class="badge bg-dark">@Model.WO.PROD_TYPE</span>
+                                            </div>
+                                            }
+
+                                            if (@Model.WO.OE)
+                                            {
+                                            <div>
+                                                <span class="badge bg-primary">OE</span>
+                                            </div>
+                                            }
+
+
+                                        }
+                                    
+                                </div>
+                            </div>
+
 
                             <div class="container">
                                 <div class="row">
@@ -57,9 +69,9 @@
                                 @{
                                     if (@Model.WO.TEST_YN == "Y")
                                     {
-                                    <div class="row">
-                                        <div class="col text-center">@Model.WO.PROTOTYPE_ID <br /> @Model.WO.PROTOTYPE_VER </div>
-                                    </div>
+                                        <div class="row">
+                                            <div class="col text-center">@Model.WO.PROTOTYPE_ID <br /> @Model.WO.PROTOTYPE_VER </div>
+                                        </div>
                                     }
                                 }
 
