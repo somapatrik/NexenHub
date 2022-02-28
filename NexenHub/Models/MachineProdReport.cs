@@ -151,7 +151,13 @@ namespace NexenHub.Models
             if (lsProduction.Count > 0)
             {
                 maxVal = lsProduction.Max(m => m.prodSum);
-                minVal = lsProduction.FindAll(o=>o.prodSum > 0).Min(mi => mi.prodSum);
+
+                var foundMin = lsProduction.FindAll(o => o.prodSum > 0);
+                if (foundMin.Count > 0)
+                    minVal = lsProduction.FindAll(o => o.prodSum > 0).Min(mi => mi.prodSum);
+                else
+                    minVal = 0;
+                
                 avgVal = lsProduction.Average(a => a.prodSum);
                 sumVal = lsProduction.Sum(a => a.prodSum);
             }

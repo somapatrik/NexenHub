@@ -1,10 +1,10 @@
 ﻿@model NexenHub.Models.MachineProdReport
 
-        <div class="card">
-            <div class="card-header bg-dark text-light">
-                Production chart
-            </div>
+        <div class="card bg-soma-darklight text-light">
             <div class="card-body">
+                <div class="card-title">
+                    <h5>Production chart</h5>
+                </div>
                 <canvas id="@Html.Raw(Model.UniqeName+"ProdChart")" style="display: block; box-sizing: border-box; " />
             </div>
         </div>
@@ -19,7 +19,7 @@
             datasets: [
                 {
                     data: @Html.Raw(Model.countsFormat),
-                    backgroundColor: ['rgba(0, 130, 255, 0.2)'],
+                    backgroundColor: ['rgba(0, 130, 255, 0.7)'],
                     borderColor: ['rgba(0, 130, 255, 1)'],
                     borderWidth: 1
                 }
@@ -30,7 +30,21 @@
             responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255,255, 255,0.2)'
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255,255, 255,0.2)'
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
                 }
             },
             plugins: {

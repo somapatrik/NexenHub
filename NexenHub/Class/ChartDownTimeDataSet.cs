@@ -105,7 +105,7 @@ namespace NexenHub.Class
 
         private void AddDefinedColor(int r, int g, int b)
         {
-            string background_color = string.Format("rgba({0},{1},{2},0.2)", r, g, b);
+            string background_color = string.Format("rgba({0},{1},{2},0.7)", r, g, b);
             string border_color = string.Format("rgba({0},{1},{2},1)", r, g, b);
 
             if (_AddFirst)

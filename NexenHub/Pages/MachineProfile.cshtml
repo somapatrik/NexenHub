@@ -6,18 +6,18 @@
 <div class="container text-light">
 
     <div class="row">
-        <div class="col mb-3 justify-content-center">
-            <div class="h5">@Model.machineBasic.Name</div>
+        <div class="col d-flex justify-content-center mb-3">
+            <h4>@Model.machineBasic.Name</h4>
         </div>
     </div>
 
     <!-- WO + DownTimes -->
     <div class="row mb-3">
 
-        <div class="col-12 col-lg-7">
+        <div class="col col-lg-7">
 
             <div class="row mb-3">
-                <div class="col">
+                @*<div class="col">*@
 
                  <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
 
@@ -57,9 +57,9 @@
 
 
                             <div class="container">
-                                <div class="row">
-                                    <div class="col">@Model.WO.WO_NO</div>
-                                    <div class="col text-right">@Model.WO.WO_STIME</div>
+                                <div class="d-flex">
+                                    <div class="flex-grow-1">@Model.WO.WO_NO</div>
+                                    <div>@Model.WO.WO_STIME</div>
                                 </div>
 
                                 <div class="row mt-3 mb-3">
@@ -79,12 +79,23 @@
 
                         </div>
                     </div>
+                @*</div>*@
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    @{
+                        if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
+                        {
+                            @await Component.InvokeAsync("MachineReportProd", Model.machineProduction)
+                        }
+                    }
                 </div>
             </div>
 
         </div>
 
-        <div class="col-12 col-lg-5">
+        <div class="col col-lg-5">
 
             @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
                 {
@@ -104,18 +115,18 @@
                 }
             }
 
-            <div class="row">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header bg-dark text-light">
+        <div class="row">
+            <div class="col">
+                <div class="card bg-soma-darklight">
+                    <div class="card-body">
+                        <div class="card-title">
                             Shift downtimes
                         </div>
-                        <div class="card-body">
-                            <canvas id="myChart"></canvas>
-                        </div>
+                        <canvas id="myChart"></canvas>
                     </div>
                 </div>
             </div>
+        </div>
 
         </div>
 
@@ -123,35 +134,35 @@
 
     <!-- Material in use -->
     <div class="row mb-3">
-        <div class="col-lg-7 mb-3">
-            <div class="card">
-                <div class="card-header bg-dark text-light">Material in use</div>
-                <div class="card-body">
 
-                    <table class="table table-sm table-borderless table-hover">
+        <div class="col-lg-7 mb-3">
+            <div class="card bg-soma-darklight">
+                <div class="card-body">
+                    <div class="card-title"><h5>Material in use</h5></div>
+                    <table class="table table-sm table-borderless text-light" style="background-color:transparent;">
                         <tbody>
 
                             @{ foreach (var material in Model.Inputed)
                                 {
                                     if (material.IsInBom)
                                     {
-                                <tr class="table-success">
-                                    <td>@material.IO_POSID</td>
-                                    <td>@material.CART_ID</td>
-                                    <td><a class="btn-link" href="../esl/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
-                                    <td class="font-weight-bold">@material.ITEM_ID</td>
-                                    <td>@material.ITEM_NAME</td>
-                                </tr>
+                                        <tr>
+                                            <td>@material.IO_POSID</td>
+                                            <td>@material.CART_ID</td>
+                                            <td><a class="btn-link" href="../esl/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
+                                            <td class="font-weight-bold">@material.ITEM_ID</td>
+                                            <td>@material.ITEM_NAME</td>
+                                        </tr>
                                     }
                                     else
                                     {
-                                <tr>
-                                    <td>@material.IO_POSID</td>
-                                    <td>@material.CART_ID</td>
-                                    <td><a class="btn-link" href="../esl/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
-                                    <td class="font-weight-bold">@material.ITEM_ID</td>
-                                    <td>@material.ITEM_NAME</td>
-                                </tr>
+                                        <tr class="table-danger">
+                                            <td>@material.IO_POSID</td>
+                                            <td>@material.CART_ID</td>
+                                            <td><a class="btn-link" href="../esl/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
+                                            <td class="font-weight-bold">@material.ITEM_ID</td>
+                                            <td>@material.ITEM_NAME</td>
+                                        </tr>
                                     }
                                 }
                             }
@@ -163,51 +174,50 @@
         </div>
 
         <div class="col-lg-5 mb-3">
-            <div class="card">
 
-                @{ if (Model.WO.TEST_YN == "Y")
-                    {
-                    <div class="card-header bg-warning text-dark">
-                        @Html.Raw("Prototype BOM")
-                    </div>
-                    }
-                    else
-                    {
-                    <div class="card-header bg-dark text-light">
-                        @Html.Raw("BOM")
-                    </div>
-                    }
-                }
-                <div class="card-body">
-
-                    <table class="table table-sm table-hover table-borderless">
-                        <tbody>
-
-                            @{ foreach (var material in Model.BOM)
-                                {
-                                <tr>
-                                    <th scope="row">@material.ITEM_ID</th>
-                                    <td>@material.ITEM_NAME</td>
-                                </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Production chart -->
-    <div class="row mb-3">
-        <div class="col">
             @{
-                if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
+                if (Model.WO.TEST_YN == "Y")
                 {
-                @await Component.InvokeAsync("MachineReportProd", Model.machineProduction)
+                    @Html.Raw("<div class=\"card bg-warning text-dark\">")
+                    @Html.Raw("<div class=\"card-body\">")
+                }
+                else
+                {
+                    @Html.Raw("<div class=\"card bg-soma-darklight text-light\">")
+                    @Html.Raw("<div class=\"card-body\">")
                 }
             }
+
+            @{ if (Model.WO.TEST_YN == "Y")
+                {
+                    <div class="card-title">
+                        <h5>@Html.Raw("Prototype BOM")</h5>
+                    </div>
+                }
+                else
+                {
+                    <div class="card-title">
+                        <h5>@Html.Raw("BOM")</h5>
+                    </div>
+                }
+            }
+
+            <table class="table table-sm table-borderless text-light">
+                <tbody>
+
+                    @{ foreach (var material in Model.BOM)
+                        {
+                            <tr>
+                                <th scope="row">@material.ITEM_ID</th>
+                                <td>@material.ITEM_NAME</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+            @Html.Raw("</div></div>")
+
         </div>
     </div>
 
@@ -221,18 +231,21 @@
         type: 'doughnut',
         data: {
             labels: @Html.Raw(Model.chartlabels),
-            datasets: [@Html.Raw(Model.chartdataset)]
+            datasets: [@Html.Raw(Model.chartdataset)],
+            borderWidth: 0
         },
-    options:
-    {
-        responsive: true
-    }
+        options: {
+            maintainAspectRatio: true,
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: 'white'
+                    }
+                }
+            }
+        }
     });
 
 </script>
-
-<style>
-    .vis-item.vis-background.negative {
-        background-color: rgba(255, 0, 0, .7);
-    }
-</style>
