@@ -3,25 +3,20 @@
 @{
 }
 
-<div class="container-fluid">
+<div class="container">
 
     <div class="row mb-3 flex-row-reverse">
-        <div class="col-sm-12 col-xl-6">
+        <div class="col">
 
-            <div class="card">
-                <div class="card-header bg-dark text-light">
-                    Select machine to report
-                </div>
+            <div class="card bg-soma-darklight text-light">
+                <div class="card-header"><h5>Select machine to report</h5></div>
                 <div class="card-body">
                     <form method="post">
-
                         <div class="input-group mb-3">
+                            
+                            <span class="input-group-text">Machine</span>
 
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Machine</span>
-                            </div>
-
-                            <select class="form-control " asp-for="SelectedMachine">
+                            <select class="form-control" asp-for="SelectedMachine">
                                 <option value="" />
                                 @{
                                     foreach (var Machine in Model.Machines)
@@ -30,27 +25,20 @@
                                     }
                                 }
                             </select>
-
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">From</span>
-                            </div>
-
+                            
+                            <span class="input-group-text">From</span>
                             <input type="text" id="myfrom" class="form-control" asp-for="DateFrom" data-provide="datepicker" data-date-end-date="0d">
-
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">To</span>
-                            </div>
-
+                            <span class="input-group-text">To</span>
                             <input type="text" id="myTo" class="form-control" asp-for="DateTo" data-provide="datepicker" data-date-end-date="0d">
 
                         </div>
 
                         <div class="row flex-row-reverse">
                             <div id="btnGenerate" class="col-sm-auto">
-                                <button type="submit" class="btn btn-primary" onclick="ShowSpinner();" asp-page-handler="generate">Generate report</button>
+                                <button type="submit" class="btn btn-success" onclick="ShowSpinner();" asp-page-handler="generate">Generate report</button>
                             </div>
                             <div id="spinner" class="col-sm-auto" style="visibility:collapse">
-                                <button class="btn btn-primary" type="button" disabled>
+                                <button class="btn btn-success" type="button" disabled>
                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     Loading...
                                 </button>
@@ -71,39 +59,28 @@
         {
         <div class="row mb-3">
 
-
-            <div class="col-sm-12 col-md-8 col-xl-5">
+            <div class="col col-lg-8">
 
                 @await Component.InvokeAsync("MachineReportProd", Model.reportData)
 
             </div>
-            <div class="col-sm-12 col-md-4 col-xl-2">
+            <div class="col col-lg-4">
 
                 @await Component.InvokeAsync("MachineReportProdSum", Model.reportData)
 
             </div>
-            <div class="col-sm-12 col-xl-5">
-
-                @await Component.InvokeAsync("MachineReportDownTime", Model.reportDowntTimes)
-
-            </div>
-
         </div>
 
         <div class="row mb-3">
             <div class="col">
-
+                @await Component.InvokeAsync("MachineReportDownTime", Model.reportDowntTimes)
             </div>
         </div>
 
             <div class="row">
-                <div class="col-sm col-xl-2">
-                    
-                </div>
-                <div class="col-sm-12 col-xl-8">
+                <div class="col">
                     @await Component.InvokeAsync("MachineReportUsedMat", Model.reportUsedMaterial)
                 </div>
-                <div class="col-sm col-xl-2"></div>
             </div>
 
         }

@@ -99,6 +99,10 @@ namespace NexenHub.Models
             filterStartDate = StartDate.AddHours(6);
             filterEndDate = EndDate.AddHours(30);
 
+            if (filterEndDate > DateTime.Now)
+                filterEndDate = DateTime.Now;
+
+
             totalWorkSeconds = (filterEndDate - filterStartDate).TotalSeconds;
         }
 
@@ -167,7 +171,7 @@ namespace NexenHub.Models
 
             KnownColor useColor = KnownColor.Firebrick; // 30 - 167
 
-            foreach (DownTimeSumItem downtime in sumDownTimes.OrderBy(x => x.Seconds))
+            foreach (DownTimeSumItem downtime in sumDownTimes.OrderByDescending(x => x.Seconds))
             {
                 double perEa = Math.Round((downtime.Seconds / totalDownTimeSeconds) * 100, 1);
                 eaDtLabels.Add(perEa + "% " + downtime.Name);

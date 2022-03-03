@@ -1,19 +1,36 @@
 ﻿@model NexenHub.Models.MachineUsedMat
 
-<div class="card">
-    <div class="card-header bg-dark text-light">
-        Used material
-    </div>
+    <style>
+        .vis-item.vis-background.workorder {
+            background-color: rgba(245, 198, 203, .9);
+        }
+
+
+        .vis-timeline {
+            font-size: 12pt;
+            background: transparent;
+        }
+
+        .vis-time-axis .vis-text {
+            color: white;
+        }
+
+        .vis-panel .vis-inner{
+            color:white;
+        }
+
+    </style>
+
+<div class="card bg-soma-darklight text-light">
     <div class="card-body flex-fill">
-        <div id="@Html.Raw(Model.UniqeName)_Vis" />
+        <div class="card-title">
+            <h5>Used material</h5>
+        </div>
+        <div id="@Html.Raw(Model.UniqeName)_Vis" style="color:white;"/>
     </div>
 </div>
 
-<style>
-    .vis-item.vis-background.workorder {
-        background-color: rgba(245, 198, 203, .5);
-    }
-</style>
+
 
 <script type="text/javascript">
 

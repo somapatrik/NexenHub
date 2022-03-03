@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\lib\bootstrap_backup\**" />
+    <Content Remove="wwwroot\lib\bootstrap_backup\**" />
+    <EmbeddedResource Remove="wwwroot\lib\bootstrap_backup\**" />
+    <None Remove="wwwroot\lib\bootstrap_backup\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\lib\Images\logo_light.png" />
   </ItemGroup>
 

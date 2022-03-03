@@ -5,25 +5,20 @@
 
 <div class="container">
 
-    <div class="card">
+    <div class="card bg-soma-darklight text-light">
         <h5 class="card-header"><b>ReX</b> - Cart information reader for Android (@Model.version.Version.ToString("yyyy-MM-dd"))</h5>
         <div class="card-body">
-            @*<h5 class="card-title">Cart information reader for Android</h5>*@
             <div class="card-text">
-                <ul class="list-group">
-                    <li class="list-group-item">Minimum Android version: <b>Oreo 8.0</b></li>
-                    <li class="list-group-item">Enable installation from unknown sources</li>
-                    <li class="list-group-item">NFC is not required</li>
+                <ul>
+                    <li>Minimum Android version: <b>Oreo 8.0</b></li>
+                    <li>Enable installation from unknown sources</li>
+                    <li>NFC is not required</li>
                 </ul>
             </div>
         </div>
         <div class="card-footer text-muted ">
-            <div class="container">
-                <div class="row">
-                    <div class="col text-right">
-                        <a href="@Url.Page("rex", "Download")" class="btn btn-primary float-right m-1">Download</a>
-                    </div>
-                </div>
+            <div class="d-flex justify-content-end">
+                <a href="@Url.Page("rex", "Download")" class="btn btn-success m-1">Download</a>
             </div>
 
         </div>
