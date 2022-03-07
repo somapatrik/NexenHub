@@ -208,14 +208,16 @@ namespace NexenHub.Class
         {
             try
             {
+                WC_ID = string.IsNullOrEmpty(WC_ID) ? "" : WC_ID.ToUpper();
+
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT");
                 query.AppendLine("EQ.EQ_ID,");
                 query.AppendLine("EQ.EQ_NAME, ");
                 query.AppendLine("CODE.NONWRK_CODE,");
                 query.AppendLine("CODE.NONWRK_NAME_1033 as NON_NAME, ");
-                query.AppendLine("NVL(REPLACE(CODE.REL05,'000','0'),'0,0,0') as FRCOLOR,  ");
-                query.AppendLine("NVL(REPLACE(CODE.DISP_COLOR,'000','0'),'255,255,255') as BGCOLOR, ");
+                //query.AppendLine("NVL(REPLACE(CODE.REL05,'000','0'),'0,0,0') as FRCOLOR,  ");
+                //query.AppendLine("NVL(REPLACE(CODE.DISP_COLOR,'000','0'),'255,255,255') as BGCOLOR, ");
                 query.AppendLine("WRK.ITEM_ID");
                 query.AppendLine("FROM TB_EQ_M_EQUIP EQ");
                 query.AppendLine("LEFT JOIN TB_CM_M_NONWRK NON ON NON.EQ_ID = EQ.EQ_ID AND NON.NONWRK_ETIME is null");
@@ -224,7 +226,9 @@ namespace NexenHub.Class
                 query.AppendLine("WHERE EQ.EQ_TYPE = 'P'");
                 query.AppendLine("AND EQ.USE_YN = 'Y'");
                 query.AppendLine("AND EQ.FACT_ID = 'NEX1'");
-                query.AppendLine("AND EQ.WC_ID = :wc");
+                query.AppendLine("AND EQ.EQ_ID NOT IN ('10004','10005','10006','10007','10017','10024','10032')");
+                if (WC_ID != "")
+                    query.AppendLine("AND EQ.WC_ID = :wc");
                 query.AppendLine("ORDER BY EQ.EQ_ID");
 
 

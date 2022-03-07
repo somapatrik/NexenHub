@@ -17,9 +17,9 @@ namespace NexenHub.Pages
         public List<StatusEq> statuses;
 
 
-        public void OnGet()
+        public void OnGet(string proc)
         {
-            DataTable dt = dbglob.GetDashboardStatus("T");
+            DataTable dt = dbglob.GetDashboardStatus(proc);
             
             statuses = new List<StatusEq>();
 
@@ -30,8 +30,8 @@ namespace NexenHub.Pages
                 eq.Name = row["EQ_NAME"].ToString();
                 eq.Downtime = row["NON_NAME"].ToString();
                 eq.Item_id = row["ITEM_ID"].ToString();
-                eq.BgColor = row["BGCOLOR"].ToString();
-                eq.FrColor = row["FRCOLOR"].ToString();
+                //eq.BgColor = row["BGCOLOR"].ToString();
+                //eq.FrColor = row["FRCOLOR"].ToString();
                 statuses.Add(eq);
             }
         }

@@ -24,7 +24,7 @@
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-soma-darklight text-light mb-3">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
                     <img src="/lib/Images/logo_light.png" width="200" />
                 </a>
@@ -34,38 +34,40 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/VisCur">Curing production</a>
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-end">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Production
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/VisCur">Curing</a>
+                                <a class="dropdown-item" href="/3dChart">TBM</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Machines
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/MachineList">List of machines</a>
+                                <a class="dropdown-item" href="/MachineReport">Report</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/MachineList">Machines</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/MachineReport">Machine report</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/CartsInfo">Cart e-paper</a>
+                            <a class="nav-link" asp-area="" asp-page="/CartsInfo">E-paper</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dashboards
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/status">TBM</a>
-                                <a class="dropdown-item" href="/StatusMix">Mix</a>
-                                <a class="dropdown-item" href="/statusCalender">Calender</a>
-                                <a class="dropdown-item" href="/StatusBead">Bead</a>
-                                <a class="dropdown-item" href="/StatusExtruder">Extruder</a>
-                                <a class="dropdown-item" href="/StatusCutting">Cutting</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Experimental
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/3dchart">3D Chart</a>
+                                <a class="dropdown-item" href="/status/T">TBM</a>
+                                <a class="dropdown-item" href="/Status/M">Mix</a>
+                                <a class="dropdown-item" href="/status/C">Calender</a>
+                                <a class="dropdown-item" href="/Status/B">Bead</a>
+                                <a class="dropdown-item" href="/Status/E">Extruder</a>
+                                <a class="dropdown-item" href="/Status/P">Cutting</a>
+                                <a class="dropdown-item" href="/Status">All</a>
                             </div>
                         </li>
                     </ul>
@@ -79,6 +81,7 @@
         </nav>
 
     </header>
+
     <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
