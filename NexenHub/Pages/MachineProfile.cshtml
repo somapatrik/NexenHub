@@ -1,11 +1,19 @@
 ﻿@page "{EQ_ID}"
 @model NexenHub.Pages.MachineProfileModel
 @{
+    string txtc = "text-light";
+    string bgc = "bg-soma-darklight";
+
+    if (Model.WO.TEST_YN == "Y")
+    {
+        txtc = "text-dark";
+        bgc = "bg-warning";
+    }
 }
 
 <div class="container text-light">
 
-    <div class="row">
+    <div class="row mb-3">
         <div class="col d-flex justify-content-center mb-3">
             <h4>@Model.machineBasic.Name</h4>
         </div>
@@ -18,7 +26,8 @@
 
             <div class="row mb-3">
 
-                 <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
+                <div class="col">
+                    <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
 
                         <div class="card-body">
                             <div class="card-title ">
@@ -31,26 +40,26 @@
                                             }
                                         }
                                     </div>
-                                    
-                                        @{
 
-                                            if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
-                                            {
+                                    @{
+
+                                        if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
+                                        {
                                             <div>
                                                 <span class="badge bg-dark">@Model.WO.PROD_TYPE</span>
                                             </div>
-                                            }
+                                        }
 
-                                            if (@Model.WO.OE)
-                                            {
+                                        if (@Model.WO.OE)
+                                        {
                                             <div>
                                                 <span class="badge bg-primary">OE</span>
                                             </div>
-                                            }
-
-
                                         }
-                                    
+
+
+                                    }
+
                                 </div>
                             </div>
 
@@ -78,7 +87,8 @@
 
                         </div>
                     </div>
-            
+                </div>
+
             </div>
 
             <div class="row">
@@ -99,33 +109,33 @@
             @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
                 {
 
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="card text-white bg-danger">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card text-white bg-danger">
 
-                            <div class="card-header text-center">
-                                @Model.ActNonWork
+                                <div class="card-header text-center">
+                                    @Model.ActNonWork
+                                </div>
+
                             </div>
-
                         </div>
                     </div>
-                </div>
 
                 }
             }
 
-        <div class="row">
-            <div class="col">
-                <div class="card bg-soma-darklight">
-                    <div class="card-body">
-                        <div class="card-title">
-                            Shift downtimes
+            <div class="row">
+                <div class="col">
+                    <div class="card bg-soma-darklight">
+                        <div class="card-body">
+                            <div class="card-title">
+                                Shift downtimes
+                            </div>
+                            <canvas id="myChart" />
                         </div>
-                        <canvas id="myChart"/>
                     </div>
                 </div>
             </div>
-        </div>
 
         </div>
 
@@ -174,18 +184,8 @@
 
         <div class="col-lg-5 mb-3">
 
-            @{
-                if (Model.WO.TEST_YN == "Y")
-                {
-                    @Html.Raw("<div class=\"card bg-warning text-dark\">")
-                    @Html.Raw("<div class=\"card-body\">")
-                }
-                else
-                {
-                    @Html.Raw("<div class=\"card bg-soma-darklight text-light\">")
-                    @Html.Raw("<div class=\"card-body\">")
-                }
-            }
+                <div class="card @bgc @txtc">
+                <div class="card-body">
 
             @{ if (Model.WO.TEST_YN == "Y")
                 {
@@ -201,7 +201,7 @@
                 }
             }
 
-            <table class="table table-sm table-borderless text-light">
+            <table class="table table-sm table-borderless @txtc">
                 <tbody>
 
                     @{ foreach (var material in Model.BOM)
@@ -215,7 +215,7 @@
                 </tbody>
             </table>
 
-            @Html.Raw("</div></div>")
+            </div></div>
 
         </div>
     </div>

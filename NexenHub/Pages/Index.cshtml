@@ -7,18 +7,17 @@
 
 <div class="container">
 
-    <div class="row">
-        <div class="col">
+    <div class="row g-3">
+
+        <div class="col-12 col-lg-9">
 
             <div class="card bg-soma-darklight text-light">
 
                 <div class="card-body">
-                    <div class="card-title">
-                        <h5>Monthly report</h5>
-                    </div>
 
                     <div class="row mb-3">
-                        <div class="col">
+
+                        <div class="col-12 col-md">
                             <div class="card bg-soma-darklight border-secondary">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Minimum GT</h5>
@@ -27,7 +26,7 @@
                             </div>
                         </div>
 
-                        <div class="col">
+                        <div class="col-12 col-md">
                             <div class="card bg-soma-darklight border-secondary">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Average GT</h5>
@@ -36,7 +35,7 @@
                             </div>
                         </div>
 
-                        <div class="col">
+                        <div class="col-12 col-md">
                             <div class="card bg-soma-darklight border-secondary">
                                 <div class="card-body text-center">
                                     <h5 class="card-title">Maximum GT</h5>
@@ -69,6 +68,7 @@
                             </ul>
                         </nav>
                     </form>
+
                 </div>
                 <div class="card-footer">
                     <span type="button" data-bs-toggle="modal" data-bs-target="#jandiModal">Show Jandi report</span>
@@ -76,6 +76,22 @@
             </div>
 
         </div>
+
+        <div class="col-12 col-lg-3">
+            <div class="card bg-soma-darklight text-light">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <input id="txtSearch" type="text" class="form-control text-center" placeholder="LOT" />
+                        </div>
+                        <div class="row mt-3">
+                            <button class="btn btn-success" onclick="searchMat()">Search</button>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+
     </div>
 
 </div>
@@ -98,68 +114,80 @@
 </div>
 
 <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: @Html.Raw(Model.DaysInMonth),
-            datasets: [
-                {
-                label: 'Daily goal',
-                data: @Html.Raw(Model.GoalDay),
-                    backgroundColor: ['orange'],
-                    borderColor: ['orange'],
-                borderWidth: 1,
-                type:'line'
-                },
-                {
-                label: 'GreenTire',
-                data: @Html.Raw(Model.GTDays),
-                    backgroundColor: ['rgba(75, 192, 192, 0.7)'],
-                    borderColor: ['rgba(75, 192, 192, 1)'],
-                borderWidth: 1
-                },
-                {
-                label: 'Finished Tire',
-                data: @Html.Raw(Model.TireDays),
-                    backgroundColor: ['rgba(54, 162, 235, 0.7)'],
-                    borderColor: ['rgba(54, 162, 235, 1)'],
-                borderWidth: 1
-                }
-            ]
-        },
-        options: {
-            maintainAspectRatio: true,
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: 'rgba(255,255, 255,0.1)'
+
+    function searchMat() {
+        var searchVal = document.getElementById("txtSearch").value;
+        if (searchVal.length == 15) {
+            window.location.href = "./lot/" + searchVal;
+        }
+    }
+
+    function drawTheChart() {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Model.DaysInMonth),
+                datasets: [
+                    {
+                        label: 'Daily goal',
+                        data: @Html.Raw(Model.GoalDay),
+                        backgroundColor: ['orange'],
+                        borderColor: ['orange'],
+                        borderWidth: 1,
+                        type: 'line'
                     },
-                    ticks: {
-                        color: 'white'
-                    }
-                },
-                x: {
-                    grid: {
-                        color: 'rgba(255,255, 255,0.1)'
+                    {
+                        label: 'GreenTire',
+                        data: @Html.Raw(Model.GTDays),
+                        backgroundColor: ['rgba(75, 192, 192, 0.7)'],
+                        borderColor: ['rgba(75, 192, 192, 1)'],
+                        borderWidth: 1
                     },
-                    ticks: {
-                        color: 'white'
+                    {
+                        label: 'Finished Tire',
+                        data: @Html.Raw(Model.TireDays),
+                        backgroundColor: ['rgba(54, 162, 235, 0.7)'],
+                        borderColor: ['rgba(54, 162, 235, 1)'],
+                        borderWidth: 1
                     }
-                }
+                ]
             },
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color: 'white'
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255,255, 255,0.1)'
+                        },
+                        ticks: {
+                            color: 'white'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255,255, 255,0.1)'
+                        },
+                        ticks: {
+                            color: 'white'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: 'white'
+                        }
                     }
                 }
             }
-        }
-    });
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", drawTheChart());
 
 </script>
 

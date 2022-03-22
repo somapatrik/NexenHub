@@ -11,6 +11,93 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetLotHis(string LOT_ID)
+        {
+            try
+            {
+                // Jo, je to natvrdo
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT ");
+                query.AppendLine("to_date(HIS.TRAN_TIME, 'YYYYMMDDHH24MISS') TRANDATE,");
+                query.AppendLine("LOC.LOC_DESC_1033 LOCATION,");
+                query.AppendLine("CASE");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'A' THEN 'Created'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'B' THEN 'Loading'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'C' THEN 'Wait for relocation'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'D' THEN 'Relocation'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'E' THEN 'Wait for delivery'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'F' THEN 'Delivery'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'G' THEN 'Wait for input'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'H' THEN 'Input'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'Z' THEN 'Completed'");
+                query.AppendLine("ELSE HIS.LOT_STATE");
+                query.AppendLine("END LOTSTATE,");
+                query.AppendLine("CASE");
+                query.AppendLine("WHEN HIS.ITEM_STATE = 'N' THEN 'Normal'");
+                query.AppendLine("WHEN HIS.ITEM_STATE = 'B' THEN 'Bad'");
+                query.AppendLine("WHEN HIS.ITEM_STATE = 'H' THEN 'Hold'");
+                query.AppendLine("WHEN HIS.ITEM_STATE = 'S' THEN 'Scrap'");
+                query.AppendLine("ELSE +HIS.ITEM_STATE");
+                query.AppendLine("END ITEMSTATE,");
+                query.AppendLine("(HIS.CURRENT_QTY || HIS.UNIT) QTY");
+                query.AppendLine("from TB_IN_H_LOTHIS HIS");
+                query.AppendLine("left");
+                query.AppendLine("join TB_IN_M_LOC loc on LOC.LOC_ID = HIS.LOC_NO");
+                query.AppendLine("where LOT_ID = :lot");
+                query.AppendLine("order by TRAN_TIME");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("lot", LOT_ID, OracleDbType.Varchar2);
+
+                DataTable dt = db.ExecTable();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetLotInfo(string LOT_ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_MO_MR_INPUT_ITEM_INFO");
+
+                db.AddParameter("AS_PLANT_ID", "P500", OracleDbType.Varchar2);
+                db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetPingDevices()
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select 'NMP: ' || DESCRIPTION DISPLAYNAME, IP_ADDRESS IP from TB_CM_M_NMP_SETTINGS where USE_YN='Y'");
+                query.AppendLine("UNION ALL");
+                query.AppendLine("select 'ICS: ' || DISPLAYNAME DISPLAYNAME, IP from TB_CM_M_MONITORING_CONFIG where USE_YN = 'Y' ");
+
+                DBOra db = new DBOra(query.ToString());
+
+                return db.ExecTable();
+            }
+            catch(Exception ex)
+            {
+                return new DataTable();
+            }
+        }
 
         public DataTable MachineReportDownTimes(string EQ_ID, DateTime start, DateTime end)
         {
@@ -216,8 +303,6 @@ namespace NexenHub.Class
                 query.AppendLine("EQ.EQ_NAME, ");
                 query.AppendLine("CODE.NONWRK_CODE,");
                 query.AppendLine("CODE.NONWRK_NAME_1033 as NON_NAME, ");
-                //query.AppendLine("NVL(REPLACE(CODE.REL05,'000','0'),'0,0,0') as FRCOLOR,  ");
-                //query.AppendLine("NVL(REPLACE(CODE.DISP_COLOR,'000','0'),'255,255,255') as BGCOLOR, ");
                 query.AppendLine("WRK.ITEM_ID");
                 query.AppendLine("FROM TB_EQ_M_EQUIP EQ");
                 query.AppendLine("LEFT JOIN TB_CM_M_NONWRK NON ON NON.EQ_ID = EQ.EQ_ID AND NON.NONWRK_ETIME is null");

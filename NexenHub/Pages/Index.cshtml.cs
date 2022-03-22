@@ -10,7 +10,7 @@ using Oracle.ManagedDataAccess.Client;
 using System.Data;
 using NexenHub.Models;
 using System.Text;
-using Newtonsoft.Json;
+using Newtonsoft.Json; 
 
 namespace NexenHub.Pages
 {
@@ -22,7 +22,6 @@ namespace NexenHub.Pages
         {
             _logger = logger;
         }
-
         public string DaysInMonth { get; set; }
         public string TireDays { get; set; }
         public string GTDays { get; set; }

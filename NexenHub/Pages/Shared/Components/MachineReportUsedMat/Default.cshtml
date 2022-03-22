@@ -2,7 +2,11 @@
 
     <style>
         .vis-item.vis-background.workorder {
-            background-color: rgba(245, 198, 203, .9);
+            background-color: rgba(36,162,235,.9);
+        }
+
+        .vis-item.vis-background.workorder2 {
+            background-color:rgba(75,192,192,.9);
         }
 
 
@@ -46,9 +50,16 @@
             }
 
             int k = 0;
+            string woStyle = "";
             foreach (var item in Model.visBackground)
             {
-                @Html.Raw("{id:'" + item.id + "', content:'" + item.content + "',start:'"+item.startS+"',end:'"+item.endS+ "',type: 'background', className: 'workorder'}");
+                if ((k % 2) == 0)
+                    woStyle = "workorder"; 
+                else
+                    woStyle = "workorder2"; 
+
+                @Html.Raw("{id:'" + item.id + "', content:'" + item.content + "',start:'"+item.startS+"',end:'"+item.endS+ "',type: 'background', className: '"+ woStyle +"'}");
+
                 k++;
                 if (k < Model.visBackground.Count)
                     @Html.Raw(",");

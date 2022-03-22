@@ -73,6 +73,10 @@ namespace NexenHub.Models
             startFilterDate = StartDate.AddHours(6);
             endFilterDate = EndDate.AddHours(30);
 
+            // Do not filter the future (I DON´T WANT YOUR FUCHA!)
+            if (endFilterDate > DateTime.Now)
+                endFilterDate = DateTime.Now;
+
             LoadData();
             ProcessData();
             GenerateName();
@@ -134,10 +138,36 @@ namespace NexenHub.Models
             foreach (visItem item in visItems)
             {
                 if (item.start == DateTime.MinValue)
-                    item.start = startFilterDate;
+                {
+                    
+                    item.content += "</br>Missing input time";
+
+                    List<visItem> beforeItems = visItems.FindAll(n => n.group == item.group && n.end < item.end);
+                    if (beforeItems.Count>0)
+                        item.start = beforeItems.Max(d => d.end);
+                    else
+                        item.start = startFilterDate;
+
+                }
+                    
 
                 if (item.end == DateTime.MinValue)
-                    item.end = endFilterDate;
+                {
+                    
+                    
+
+                    List<visItem> afterItems = visItems.FindAll(n => n.group == item.group && n.start > item.start);
+                    if (afterItems.Count > 0)
+                    {
+                        item.end = afterItems.Min(d => d.start);
+                        item.content += "</br>Missing output time";
+                    }
+                    else
+                    {
+                        item.end = endFilterDate;
+                        item.content += "</br>In use";
+                    }
+                }
             }
 
             // Background WO

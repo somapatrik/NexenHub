@@ -112,6 +112,9 @@ namespace NexenHub.Models
                 DateTime fillStart = StartDate.AddHours(6); // 00:00 + 06:00
                 DateTime fillEnd = fillStart.AddHours(23);  // 06:00 -> 05:00
 
+                if (fillEnd > DateTime.Now)
+                    fillEnd = DateTime.Now;
+
                 // Fill hour by hour
                 while (fillStart <= fillEnd)
                 {

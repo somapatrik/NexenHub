@@ -1,0 +1,67 @@
+﻿@model NexenHub.Models.LotItem
+
+<div class="card bg-soma-darklight text-md-start text-light border-secondary">
+    <h5 class="card-header">Lot information</h5>
+    <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-borderless text-light">
+                    <tbody>
+                        <tr>
+                            <th scope="row">ID</th>
+                            <td>@Model.ID</td>
+                            <th scope="row">Process</th>
+                            <td>@Model.ProcId</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Name</th>
+                            <td>@Model.Name</td>
+                            <th scope="row">Group</th>
+                            <td>@Model.Grp</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Lot state</th>
+                            <td>@Model.LotState</td>
+                            <th scope="row">Kind</th>
+                            <td>@Model.Kind</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Item state</th>
+                            <td>@Model.State</td>
+                            <th scope="row">Stock</th>
+                            <td>@Model.StockQty</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Cart state</th>
+                            <td>@Model.CartState</td>
+                            <th scope="row">Division</th>
+                            <td>@Model.Division</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Valid</th>
+                            <td>@Model.Valid</td>
+                            <th scope="row"></th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Event time?</th>
+                            <td>@Model.dateEvent.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <th scope="row"></th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Expiry date</th>
+                            <td>@Model.dateExpiry.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <th scope="row"></th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Date result</th>
+                            <td>@Model.ExpiryDateResult</td>
+                            <th scope="row"></th>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
