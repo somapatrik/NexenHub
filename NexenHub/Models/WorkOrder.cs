@@ -26,18 +26,25 @@ namespace NexenHub.Models
         {
             get
             {
-                bool x = this.XCHPF == "OE" ? true : false;
+                bool x = this.XCHPF == "OE";
                 return x;
             }
         }
+
+        public bool WO_EXISTS { get; set; }
+        public string WO_ChildItemID { get; set; }
+        public string WO_ChildItemName { get; set; }
+        public string WO_ChildItemCompound { get; set; }
 
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
         public void LoadFromMachine(string eq_id)
         {
+            WO_EXISTS = false;
             DataTable dt = dbglob.GetWorkOrderFromEQ(eq_id);
-            if (dt.Rows.Count > 0) { 
+            if (dt.Rows.Count > 0) {
+                WO_EXISTS = true;
                 WO_NO = dt.Rows[0]["WO_NO"].ToString();
                 WO_STIME = dt.Rows[0]["WO_STIME"].ToString();
                 PROD_TYPE = dt.Rows[0]["PROD_TYPE"].ToString();
@@ -62,5 +69,27 @@ namespace NexenHub.Models
             }
         }
 
+        /// <summary>
+        /// Gets WO like ICS, only loads data for a mobile test
+        /// </summary>
+        /// <param name="eq_id"></param>
+        public void LoadLikeICS(string eq_id)
+        {
+            WO_EXISTS = false;
+            DataTable dt = dbglob.LoadWorkOrder(eq_id);
+            if (dt.Rows.Count > 0)
+            {
+                WO_EXISTS = true;
+                WO_NO = dt.Rows[0]["WO_NO"].ToString();
+                ITEM_ID = dt.Rows[0]["ITEM_ID"].ToString();
+                PROD_TYPE = dt.Rows[0]["PROD_TYPE"].ToString();
+                PROD_QTY = dt.Rows[0]["PROD_QTY"].ToString();
+                WO_QTY = dt.Rows[0]["WO_QTY"].ToString();
+
+                // Load child item
+                  
+
+            }
+        }
     }
 }

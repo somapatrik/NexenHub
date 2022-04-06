@@ -27,7 +27,7 @@ namespace NexenHub.Pages
             MachinesPM = new List<StatusEq>();
             foreach (DataRow row in dbglob.GetDashboardStatus("").Rows)
             {
-                if (row["NONWRK_CODE"].ToString() == "N016")
+                if (row["NONWRK_CODE"].ToString() == "N016" && row["WC_ID"].ToString() != "U")
                     MachinesPM.Add(new StatusEq() { Name = row["EQ_NAME"].ToString(), Downtime = row["NON_NAME"].ToString() });
             }
 

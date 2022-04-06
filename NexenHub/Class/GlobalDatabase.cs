@@ -11,6 +11,148 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public DataTable GetPremiumGtInfo(string ITEM_ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_MO_MR_PRIMIEUMOE_INFO");
+
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_CURRENT_ITEM_ID", ITEM_ID, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable NoLifeCheck(string LOT_ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_MO_MR_NOLIFE_CHECK");
+
+                db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        // TODO: FACT_ID
+        public DataTable NoValidCheck(string LOT_ID, string WO_NO, string BOM_ITEM_ID, string BOM_ITEM_NAME, string BOM_ITEM_COMPOUND)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_MO_MR_NOVALID_CHECK3");
+
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_EQ_ID", "NEX1", OracleDbType.Varchar2);
+                db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_WO_NO", WO_NO, OracleDbType.Varchar2);
+
+                db.AddParameter("AS_BOM_ITEM_ID", BOM_ITEM_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_BOM_ITEM_NAME", BOM_ITEM_NAME, OracleDbType.Varchar2);
+                db.AddParameter("AS_BOM_COMPOUND", BOM_ITEM_COMPOUND, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable FIFOCheck(string LOT_ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_MO_MR_FIFO_CHECK");
+
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable AgingCheck(string LOT_ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_MO_MR_AGING_CHECK");
+
+                db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        /// <summary>
+        /// ICS query for getting WO
+        /// </summary>
+        /// <returns></returns>
+        public DataTable LoadWorkOrder(string EQ_ID, string FACT_ID = "NEX1")
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_MON_WORKORDER");
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_FACT_ID", FACT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_EQ_ID", EQ_ID, OracleDbType.Varchar2);
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+                DataTable dt = db.ExecProcedure();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetLotHis(string LOT_ID)
         {
             try
@@ -21,15 +163,15 @@ namespace NexenHub.Class
                 query.AppendLine("to_date(HIS.TRAN_TIME, 'YYYYMMDDHH24MISS') TRANDATE,");
                 query.AppendLine("LOC.LOC_DESC_1033 LOCATION,");
                 query.AppendLine("CASE");
-                query.AppendLine("WHEN HIS.LOT_STATE = 'A' THEN 'Created'");
-                query.AppendLine("WHEN HIS.LOT_STATE = 'B' THEN 'Loading'");
-                query.AppendLine("WHEN HIS.LOT_STATE = 'C' THEN 'Wait for relocation'");
-                query.AppendLine("WHEN HIS.LOT_STATE = 'D' THEN 'Relocation'");
-                query.AppendLine("WHEN HIS.LOT_STATE = 'E' THEN 'Wait for delivery'");
-                query.AppendLine("WHEN HIS.LOT_STATE = 'F' THEN 'Delivery'");
-                query.AppendLine("WHEN HIS.LOT_STATE = 'G' THEN 'Wait for input'");
-                query.AppendLine("WHEN HIS.LOT_STATE = 'H' THEN 'Input'");
-                query.AppendLine("WHEN HIS.LOT_STATE = 'Z' THEN 'Completed'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'A' THEN '(A) Created'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'B' THEN '(B) Loading'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'C' THEN '(C) Wait for relocation'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'D' THEN '(D) Relocation'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'E' THEN '(E) Wait for delivery'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'F' THEN '(F) Delivery'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'G' THEN '(G) Wait for input'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'H' THEN '(H) Input'");
+                query.AppendLine("WHEN HIS.LOT_STATE = 'Z' THEN '(Z) Completed'");
                 query.AppendLine("ELSE HIS.LOT_STATE");
                 query.AppendLine("END LOTSTATE,");
                 query.AppendLine("CASE");
@@ -303,7 +445,8 @@ namespace NexenHub.Class
                 query.AppendLine("EQ.EQ_NAME, ");
                 query.AppendLine("CODE.NONWRK_CODE,");
                 query.AppendLine("CODE.NONWRK_NAME_1033 as NON_NAME, ");
-                query.AppendLine("WRK.ITEM_ID");
+                query.AppendLine("WRK.ITEM_ID,");
+                query.AppendLine("EQ.WC_ID");
                 query.AppendLine("FROM TB_EQ_M_EQUIP EQ");
                 query.AppendLine("LEFT JOIN TB_CM_M_NONWRK NON ON NON.EQ_ID = EQ.EQ_ID AND NON.NONWRK_ETIME is null");
                 query.AppendLine("LEFT JOIN TB_CM_M_NONWRKCODE CODE on CODE.NONWRK_CODE = NON.NONWRK_CODE");

@@ -12,5 +12,7 @@ namespace NexenHub.Class
         public static string DatabaseConnectionDevelopment;
 
         public static string CzechNum = "### ### ### ###.##";
+
+        public static string PLANT_ID = "P500";
     }
 }

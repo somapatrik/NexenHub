@@ -2,6 +2,7 @@
 @model NexenHub.Pages.tvModel
 @{
     Layout = null;
+    bool isFriday = DateTime.Now.DayOfWeek == DayOfWeek.Friday;
 }
 
 <!DOCTYPE html>
@@ -27,11 +28,21 @@
             }
         }
 
+
+        @{
+            if (isFriday)
+            {
+                <div class="alert alert-danger text-center mt-2" role="alert">
+                    <h2 class="alert-heading">Happy report day!</h2>
+                </div>
+            }
+        }
+
         @{
             if (!@Model.isPM)
             {
                 <div class="alert alert-success text-center mt-2" role="alert">
-                            <h2 class="alert-heading">No PM is in progress</h2>
+                    <h2 class="alert-heading">No PM is in progress</h2>
                 </div>
             }
             else
@@ -47,7 +58,7 @@
                         <div class="col">
                             <div class="card h-100 bg-warning text-dark">
                                 <div class="card-header text-center">
-                                    <h3> @dev.Name </h3>
+                                    <h3> @dev.Name</h3>
                                 </div>
                                 <div class="card-body text-center">
                                     <h4>@dev.Downtime</h4>
@@ -94,6 +105,7 @@
             }
 
         }
+
 
 
 

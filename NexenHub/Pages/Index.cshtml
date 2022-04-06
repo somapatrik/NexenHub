@@ -9,7 +9,7 @@
 
     <div class="row g-3">
 
-        <div class="col-12 col-lg-9">
+        <div class="col-12">
 
             <div class="card bg-soma-darklight text-light">
 
@@ -77,21 +77,6 @@
 
         </div>
 
-        <div class="col-12 col-lg-3">
-            <div class="card bg-soma-darklight text-light">
-
-                    <div class="card-body">
-                        <div class="row">
-                            <input id="txtSearch" type="text" class="form-control text-center" placeholder="LOT" />
-                        </div>
-                        <div class="row mt-3">
-                            <button class="btn btn-success" onclick="searchMat()">Search</button>
-                        </div>
-                    </div>
-
-            </div>
-        </div>
-
     </div>
 
 </div>
@@ -114,13 +99,6 @@
 </div>
 
 <script>
-
-    function searchMat() {
-        var searchVal = document.getElementById("txtSearch").value;
-        if (searchVal.length == 15) {
-            window.location.href = "./lot/" + searchVal;
-        }
-    }
 
     function drawTheChart() {
         var ctx = document.getElementById('myChart').getContext('2d');

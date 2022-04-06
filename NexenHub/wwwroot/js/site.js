@@ -11,3 +11,12 @@ const CHART_COLORS = {
 };
 
 
+function searchMat(x, e) {
+    if (x.keyCode == 13)
+    {
+        var searchVal = e.value;//document.getElementById("txtSearchGlobal").value;
+        if (searchVal.length == 15) {
+            window.location.href = "/lot/" + searchVal;
+        }
+    }
+}
