@@ -73,7 +73,7 @@ namespace NexenHub.Models
         /// Gets WO like ICS, only loads data for a mobile test
         /// </summary>
         /// <param name="eq_id"></param>
-        public void LoadLikeICS(string eq_id)
+        public void LoadLikeICS(string eq_id, string MiniPC)
         {
             WO_EXISTS = false;
             DataTable dt = dbglob.LoadWorkOrder(eq_id);
@@ -87,7 +87,13 @@ namespace NexenHub.Models
                 WO_QTY = dt.Rows[0]["WO_QTY"].ToString();
 
                 // Load child item
-                  
+                DataTable dx = dbglob.LoadWOChildItem(ITEM_ID, MiniPC);
+                if (dx.Rows.Count > 0)
+                {
+                    WO_ChildItemID = dx.Rows[0]["ITEM_ID"].ToString();
+                    WO_ChildItemName = dx.Rows[0]["ITEM_NAME"].ToString();
+                    WO_ChildItemCompound = dx.Rows[0]["PLAN_COMPOUND"].ToString();
+                }
 
             }
         }

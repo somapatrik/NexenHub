@@ -49,7 +49,7 @@ namespace NexenHub.Controllers
         public async Task<ActionResult<InputCheck>> GetValidResult(string lot, string eq, string pos)
         {
             StringBuilder query = new StringBuilder();
-            query.AppendLine("SELECT MINIPC_ID");
+            query.AppendLine("SELECT MINIPC_ID, FACT_ID");
             query.AppendLine("FROM TB_CM_M_MONITORING_READER");
             query.AppendLine("WHERE POSID = :pos");
             query.AppendLine("AND EQ_ID = :eq");
@@ -62,15 +62,14 @@ namespace NexenHub.Controllers
             if (dt.Rows.Count > 0)
             {
                 string minipc = db.ExecTable().Rows[0][0].ToString();
-                InputCheck check = new InputCheck(lot, eq, pos);
+                string fact = db.ExecTable().Rows[0][1].ToString();
+                InputCheck check = new InputCheck(lot, eq, minipc);
                 return check;
             }
             else
             {
                 return BadRequest();
-            }
-
-            
+            }   
         }
 
         public class InputPosition

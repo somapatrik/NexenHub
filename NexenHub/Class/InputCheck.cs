@@ -9,8 +9,9 @@ namespace NexenHub.Class
 {
     public class InputCheck
     {
-
         private string _LOT_ID;
+        private string _EQ_ID;
+        private string _MINIPC_ID;
         public string LOT_ID
         {
             get { return _LOT_ID; }
@@ -20,10 +21,6 @@ namespace NexenHub.Class
                 LoadLotCheck();
             }
         }
-
-        private string _EQ_ID;
-
-        private string _MINIPC_ID;
 
         public bool ExpireCheckResult;
         public bool AgingCheckResult;
@@ -81,7 +78,7 @@ namespace NexenHub.Class
                 PremiumGtResult = false;
                 AllCheck = false;
 
-                _workOrder.LoadLikeICS(_EQ_ID);
+                _workOrder.LoadLikeICS(_EQ_ID, _MINIPC_ID);
                 if (!_workOrder.WO_EXISTS)
                     return;
 
@@ -181,6 +178,7 @@ namespace NexenHub.Class
             if (_workOrder.ITEM_ID != null)
             {
                 DataTable dt = dbglob.NoValidCheck(
+                    _EQ_ID,
                     _LOT_ID,
                     _workOrder.WO_NO,
                     _workOrder.WO_ChildItemID,

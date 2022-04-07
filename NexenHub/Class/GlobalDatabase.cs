@@ -11,6 +11,27 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable LoadWOChildItem(string ID, string MiniPC)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_MON_GET_CURRENT_CHILD_ITEM");
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_ITEM_ID", ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_MINIPC_ID", MiniPC, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+                DataTable dt = db.ExecProcedure();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
 
         public DataTable GetPremiumGtInfo(string ITEM_ID)
         {
@@ -57,14 +78,14 @@ namespace NexenHub.Class
         }
 
         // TODO: FACT_ID
-        public DataTable NoValidCheck(string LOT_ID, string WO_NO, string BOM_ITEM_ID, string BOM_ITEM_NAME, string BOM_ITEM_COMPOUND)
+        public DataTable NoValidCheck(string EQ_ID, string LOT_ID, string WO_NO, string BOM_ITEM_ID, string BOM_ITEM_NAME, string BOM_ITEM_COMPOUND)
         {
             try
             {
                 DBOra db = new DBOra("SP_MO_MR_NOVALID_CHECK3");
 
                 db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
-                db.AddParameter("AS_EQ_ID", "NEX1", OracleDbType.Varchar2);
+                db.AddParameter("AS_EQ_ID", EQ_ID, OracleDbType.Varchar2);
                 db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
                 db.AddParameter("AS_WO_NO", WO_NO, OracleDbType.Varchar2);
 
