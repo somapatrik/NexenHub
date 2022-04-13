@@ -1,0 +1,104 @@
+﻿@model NexenHub.Models.YearProd
+@{ 
+
+}
+
+<div class="card bg-soma-darklight">
+    @*<H5 class="card-header text-light"></H5>*@
+    <div class="card-body">
+        <canvas id="ypChart" />
+    </div>
+    <div class="card-footer">
+        <nav>
+            <ul class="pagination justify-content-center">
+                @{ for (int i = 1; i < 13; i++) {
+                    <li id="yp_pag_@i" class="page-item"><a class="page-link bg-soma-dark border-secondary text-light" onclick="updateYpChart(@i)">@i</a></li>
+                   }
+                 }
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var yp_days = @Html.Raw(Model.jsonDays);
+    var yp_gtprod = @Html.Raw(Model.jsonGtProd);
+    var yp_tireprod = @Html.Raw(Model.jsonTireProd);
+    var yp_month = @Model.actMonth;
+
+    document.getElementById('yp_pag_' + yp_month).classList.add("active");
+
+    var yp_ctx = document.getElementById('ypChart').getContext('2d');
+    ypChart = new Chart(yp_ctx, {
+            type: 'bar',
+            data: {
+                labels: yp_days[yp_month - 1],
+                datasets: [
+                    {
+                        label: 'GreenTire',
+                        data: yp_gtprod[yp_month - 1],
+                        backgroundColor: ['rgba(75, 192, 192, 0.7)'],
+                        borderColor: ['rgba(75, 192, 192, 1)'],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Finished Tire',
+                        data: yp_tireprod[yp_month - 1],
+                        backgroundColor: ['rgba(54, 162, 235, 0.7)'],
+                        borderColor: ['rgba(54, 162, 235, 1)'],
+                        borderWidth: 1
+                    }
+                ]
+            },
+        options: {
+            maintainAspectRatio: true,
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255,255, 255,0.1)'
+                        },
+                        ticks: {
+                            color: 'white'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: 'rgba(255,255, 255,0.1)'
+                        },
+                        ticks: {
+                            color: 'white'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: 'white'
+                        }
+                    }
+                }
+            }
+        });
+
+    function updateYpChart(month) {
+        ypChart.data.labels = yp_days[month - 1];
+        ypChart.data.datasets[0].data = yp_gtprod[month - 1];
+        ypChart.data.datasets[1].data = yp_tireprod[month - 1];
+        ypChart.update();
+        selectYpPag(month);
+        yp_month = month;
+    }
+
+    function selectYpPag(month) {
+        for (var i = 1; i < 13; i++) {
+            document.getElementById('yp_pag_' + i).classList.remove("active");
+        }
+        document.getElementById('yp_pag_' + month).classList.add("active");
+    }
+
+</script>

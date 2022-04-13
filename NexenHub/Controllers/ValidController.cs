@@ -62,7 +62,7 @@ namespace NexenHub.Controllers
             if (dt.Rows.Count > 0)
             {
                 string minipc = db.ExecTable().Rows[0][0].ToString();
-                string fact = db.ExecTable().Rows[0][1].ToString();
+                //string fact = db.ExecTable().Rows[0][1].ToString();
                 InputCheck check = new InputCheck(lot, eq, minipc);
                 return check;
             }

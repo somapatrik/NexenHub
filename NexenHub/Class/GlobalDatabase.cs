@@ -461,7 +461,7 @@ namespace NexenHub.Class
                 WC_ID = string.IsNullOrEmpty(WC_ID) ? "" : WC_ID.ToUpper();
 
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT");
+                query.AppendLine("SELECT DISTINCT");
                 query.AppendLine("EQ.EQ_ID,");
                 query.AppendLine("EQ.EQ_NAME, ");
                 query.AppendLine("CODE.NONWRK_CODE,");
@@ -665,6 +665,59 @@ namespace NexenHub.Class
                 query.AppendLine("ORDER BY PROD_DATE ");
                 DBOra db = new DBOra(query.ToString());
                 return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        /// <summary>
+        /// Year production
+        /// </summary>
+        /// <param name="year">YYYY format</param>
+        /// <returns></returns>
+        public DataTable GetProductionYear(int year = 0)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT /*+INDEX (PROD IX_PR_M_PROD_5)*/");
+                query.AppendLine("PROD.PROD_DATE AS DATETIME");
+                query.AppendLine(",PROD.WC_ID");
+                query.AppendLine(",SUM(PROD.PROD_QTY) AS PROD_QTY");
+                query.AppendLine("FROM TB_PR_M_PROD PROD");
+                query.AppendLine("WHERE PROD.PLANT_ID = 'P500'");
+                query.AppendLine("AND PROD.PROD_DATE LIKE '" + year + "%'");
+                query.AppendLine("AND SHIFT IS NOT NULL");
+                query.AppendLine("GROUP BY PROD.PROD_DATE,PROD.WC_ID");
+
+                DBOra db = new DBOra(query.ToString());
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetProductionYearControl(int year = 0)
+        {
+            try
+            {
+                // StringBuilder query = new StringBuilder();
+                //query.AppendLine("select PROD_DATE, WC_ID, SUM(PROD_QTY) PROD_QTY");
+                //query.AppendLine("from TB_PR_M_PROD PROD");
+                //query.AppendLine("join TB_EQ_M_EQUIP EQ on EQ.EQ_ID = PROD.EQ_ID");
+                //query.AppendLine("where PROD.PROD_DATE like '" + year + "%'");
+                //query.AppendLine("group by PROD_DATE, WC_ID");
+                //query.AppendLine("order by PROD.PROD_DATE");
+
+                //DBMic db = new DBMic(query.ToString());
+                DBMic db = new DBMic("NH_YEAR_PRODUCTION");
+                db.AddParameter("Year", year, System.Data.SqlDbType.VarChar );
+                //return db.ExecTable();
+                return db.ExecProcedure();
             }
             catch (Exception ex)
             {
