@@ -27,7 +27,7 @@ namespace NexenHub.Pages
         // private GlobalDatabase GlobalDb = new GlobalDatabase();
 
         public void OnGet()
-        {
+        { 
             yearProd = new YearProd();
         }
 

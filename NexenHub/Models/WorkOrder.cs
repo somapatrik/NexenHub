@@ -11,6 +11,7 @@ namespace NexenHub.Models
     {
         public string WO_NO { get; set; }
         public string WO_STIME { get; set; }
+        public string WO_ETIME { get; set; }
         public string PROD_TYPE { get; set; }
         public string ITEM_ID { get; set; }
         public string ITEM_NAME { get; set; }
@@ -21,7 +22,9 @@ namespace NexenHub.Models
         public string PROTOTYPE_ID { get; set; }
         public string PROTOTYPE_VER { get; set; }
         public string XCHPF { get; set; }
-
+        public string WO_PROC_STATE { get; set; }
+        public string DEL_FLAG { get; set; }
+        public string USE_YN { get; set; }
         public bool OE
         {
             get
@@ -30,12 +33,11 @@ namespace NexenHub.Models
                 return x;
             }
         }
-
         public bool WO_EXISTS { get; set; }
         public string WO_ChildItemID { get; set; }
         public string WO_ChildItemName { get; set; }
         public string WO_ChildItemCompound { get; set; }
-
+        public string STIME_DATE { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
@@ -96,6 +98,33 @@ namespace NexenHub.Models
                 }
 
             }
+        }
+
+        public void LoadById(string WONO)
+        {
+            WO_EXISTS = false;
+            if (WONO.Length == 15)
+            {
+                WO_NO = WONO;
+                DataTable dt = dbglob.LoadWorkOrderByWo(WONO);
+                if (dt.Rows.Count > 0)
+                {
+                    WO_EXISTS = true;
+                    WO_NO = dt.Rows[0]["WO_NO"].ToString();
+                    WO_STIME = dt.Rows[0]["WO_STIME"].ToString();
+                    WO_ETIME = dt.Rows[0]["WO_ETIME"].ToString();
+                    PROD_TYPE = dt.Rows[0]["PROD_TYPE"].ToString();
+                    ITEM_ID = dt.Rows[0]["ITEM_ID"].ToString();
+                    WO_QTY = dt.Rows[0]["WO_QTY"].ToString();
+                    PROD_QTY = dt.Rows[0]["PROD_QTY"].ToString();
+                    UNIT = dt.Rows[0]["UNIT"].ToString();
+                    TEST_YN = dt.Rows[0]["TEST_YN"].ToString();
+                    PROTOTYPE_ID = dt.Rows[0]["PROTOTYPE_ID"].ToString();
+                    PROTOTYPE_VER = dt.Rows[0]["PROTOTYPE_VER"].ToString();
+                    DEL_FLAG = dt.Rows[0]["DEL_FLAG"].ToString();
+                }
+            }
+
         }
     }
 }

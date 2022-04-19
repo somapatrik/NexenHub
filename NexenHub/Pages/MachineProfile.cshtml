@@ -91,6 +91,12 @@
 
             </div>
 
+            <div class="row mb-3">
+                <div class="col">
+                    @await Component.InvokeAsync("MachineWoList", @Model.machineBasic.EQ_ID)
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col">
                     @{
@@ -127,10 +133,10 @@
             <div class="row">
                 <div class="col">
                     <div class="card bg-soma-darklight">
+                        <div class="card-header">
+                            Shift downtimes
+                        </div>
                         <div class="card-body">
-                            <div class="card-title">
-                                Shift downtimes
-                            </div>
                             <canvas id="myChart" />
                         </div>
                     </div>
@@ -146,8 +152,8 @@
 
         <div class="col-lg-7 mb-3">
             <div class="card bg-soma-darklight">
+                <div class="card-header">Material in use</div>
                 <div class="card-body">
-                    <div class="card-title"><h5>Material in use</h5></div>
                     <table class="table table-sm table-borderless text-light" style="background-color:transparent;">
                         <tbody>
 
@@ -184,38 +190,35 @@
 
         <div class="col-lg-5 mb-3">
 
-                <div class="card @bgc @txtc">
-                <div class="card-body">
-
-            @{ if (Model.WO.TEST_YN == "Y")
-                {
-                    <div class="card-title">
-                        <h5>@Html.Raw("Prototype BOM")</h5>
-                    </div>
-                }
-                else
-                {
-                    <div class="card-title">
-                        <h5>@Html.Raw("BOM")</h5>
-                    </div>
-                }
-            }
-
-            <table class="table table-sm table-borderless @txtc">
-                <tbody>
-
-                    @{ foreach (var material in Model.BOM)
+            <div class="card @bgc @txtc">
+                <div class="card-header">
+                    @{ if (Model.WO.TEST_YN == "Y")
                         {
-                            <tr>
-                                <th scope="row">@material.ITEM_ID</th>
-                                <td>@material.ITEM_NAME</td>
-                            </tr>
+                         @Html.Raw("Prototype BOM")
+                        }
+                        else
+                        {
+                         @Html.Raw("BOM")
                         }
                     }
-                </tbody>
-            </table>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-borderless @txtc">
+                        <tbody>
 
-            </div></div>
+                            @{ foreach (var material in Model.BOM)
+                                {
+                                    <tr>
+                                        <th scope="row">@material.ITEM_ID</th>
+                                        <td>@material.ITEM_NAME</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
 
         </div>
     </div>

@@ -1,0 +1,27 @@
+﻿@model NexenHub.Models.WoList
+@{
+   
+}
+
+<div class="card bg-soma-darklight">
+    <h6 class="card-header">Workorders</h6>
+    <div class="card-body">
+        <table class="table table-sm text-light border-secondary" >
+            <tbody>
+                @{
+                    foreach (var wo in @Model.Workorders)
+                    {
+                        string stl = @wo.WO_PROC_STATE == "S" ? "" : "";
+                        string tst = @wo.TEST_YN == "Y" ? "table-warning" : "";
+
+                                <tr>
+                                    <td class="@stl">@wo.WO_NO</td>
+                                    <td>@wo.STIME_DATE</td>
+                                    <td class="@tst">@wo.ITEM_ID </td>
+                                </tr>
+                    }
+                }
+            </tbody>
+        </table>
+</div>
+</div>

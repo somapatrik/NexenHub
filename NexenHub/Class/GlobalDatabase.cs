@@ -11,6 +11,75 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable LoadWorkOrderList(string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT");
+                query.AppendLine("WO_NO,");
+                query.AppendLine("WO_STIME,");
+                query.AppendLine("to_date(WO_STIME,'YYYYMMDDHH24MISS') STIME_DATE,");
+                query.AppendLine("PROD_TYPE,");
+                query.AppendLine("ITEM_ID,");
+                query.AppendLine("WO_QTY,");
+                query.AppendLine("PROD_QTY,");
+                query.AppendLine("UNIT,");
+                query.AppendLine("TEST_YN,");
+                query.AppendLine("PROTOTYPE_ID,");
+                query.AppendLine("PROTOTYPE_VER,");
+                query.AppendLine("DEL_FLAG,");
+                query.AppendLine("WO_PROC_STATE");
+                query.AppendLine("FROM TB_PL_M_WRKORD");
+                query.AppendLine("WHERE PLANT_ID = 'P500'");
+                query.AppendLine("AND EQ_ID = :eq");
+                query.AppendLine("AND USE_YN = 'Y'");
+                query.AppendLine("AND WO_PROC_STATE IN('W', 'S')");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eq", EQ_ID, OracleDbType.NVarchar2);
+                DataTable dt = db.ExecTable();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+        public DataTable LoadWorkOrderByWo(string WO)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select");
+                query.AppendLine("WO_NO,");
+                query.AppendLine("WO_STIME,"); 
+                query.AppendLine("WO_ETIME,");
+                query.AppendLine("PROD_TYPE,");
+                query.AppendLine("ITEM_ID,");
+                query.AppendLine("WO_QTY,");
+                query.AppendLine("PROD_QTY,");
+                query.AppendLine("UNIT,");
+                query.AppendLine("TEST_YN,");
+                query.AppendLine("PROTOTYPE_ID,");
+                query.AppendLine("PROTOTYPE_VER,");
+                query.AppendLine("DEL_FLAG");
+                query.AppendLine("from TB_PL_M_WRKORD");
+                query.AppendLine("where WO_NO = :wo");
+                query.AppendLine("and PLANT_ID = 'P500'");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("wo", WO, OracleDbType.NVarchar2);
+                DataTable dt = db.ExecTable();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
         public DataTable LoadWOChildItem(string ID, string MiniPC)
         {
             try

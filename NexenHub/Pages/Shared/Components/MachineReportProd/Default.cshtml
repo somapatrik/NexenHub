@@ -1,13 +1,13 @@
 ﻿@model NexenHub.Models.MachineProdReport
 
-        <div class="card bg-soma-darklight text-light">
-            <div class="card-body">
-                <div class="card-title">
-                    <h5>Production chart</h5>
-                </div>
-                <canvas id="@Html.Raw(Model.UniqeName+"ProdChart")" style="display: block; box-sizing: border-box; " />
-            </div>
-        </div>
+<div class="card bg-soma-darklight text-light">
+    <h6 class="card-header">
+        Production
+    </h6>
+    <div class="card-body">
+        <canvas id="@Html.Raw(Model.UniqeName+"ProdChart")" style="display: block; box-sizing: border-box; " />
+    </div>
+</div>
 
     <script type="text/javascript">
 
