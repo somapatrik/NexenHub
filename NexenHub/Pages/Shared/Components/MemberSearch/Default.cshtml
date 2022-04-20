@@ -3,15 +3,7 @@
 }
 
 <input id="msInput" type="text" class="form-control" placeholder="Search member"/>
-<div id="msAutoCom" class="list-group" style="overflow-y:auto;max-height:20vh;">
-    @*@{
-        foreach (var mem in Model.MemberList)
-        {
-            <a href="/member/@mem.ID" class="list-group-item list-group-item-action">@mem.ID @mem.Name @mem.Phone</a>
-        }
-    }*@
-
-</div>
+<div id="msAutoCom" class="list-group" style="overflow-y:auto;max-height:20vh;"></div>
 
 <script type="text/javascript">
 
@@ -22,7 +14,7 @@
         var outMembers = [];
 
         for (var i = 0; i < msRows.length; i++) {
-            if (msRows[i].Name.includes(filterText))
+            if (msRows[i].ID.includes(filterText) || msRows[i].Name.includes(filterText) || msRows[i].Phone.includes(filterText))
                 outMembers.push(msRows[i]);
         }
 
@@ -30,10 +22,10 @@
     }
 
     msInputfield.onkeyup = function(e) {
-        var inputVal = document.getElementById('msInput').value;
+        var inputVal = document.getElementById('msInput').value.trim().replace(' ','');
         var showMembers = [];
 
-        if (inputVal.length > 0)
+        if (inputVal.length >= 3)
         {
             var autoCom = document.getElementById('msAutoCom');
             autoCom.innerHTML = '';
@@ -41,7 +33,8 @@
 
             for (var i = 0; i < showMembers.length; i++)
             {
-                autoCom.innerHTML += '<a href="/member/' + showMembers[i].ID + '" class="list-group-item list-group-item-action">' + showMembers[i].Name + '</a>';
+                autoCom.innerHTML += '<a href="/member/' + showMembers[i].ID + '" class="list-group-item list-group-item-action">' +
+                    showMembers[i].ID + ' ' + showMembers[i].Name + ' ' + showMembers[i].Phone + '</a>';
             }
             autoCom.style.display = 'block';
         }
