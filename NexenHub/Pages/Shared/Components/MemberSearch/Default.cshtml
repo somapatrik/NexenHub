@@ -1,0 +1,55 @@
+﻿@model NexenHub.Models.MemberSearchList  
+@{
+}
+
+<input id="msInput" type="text" class="form-control" placeholder="Search member"/>
+<div id="msAutoCom" class="list-group" style="overflow-y:auto;max-height:20vh;">
+    @*@{
+        foreach (var mem in Model.MemberList)
+        {
+            <a href="/member/@mem.ID" class="list-group-item list-group-item-action">@mem.ID @mem.Name @mem.Phone</a>
+        }
+    }*@
+
+</div>
+
+<script type="text/javascript">
+
+    var msRows = @Html.Raw(Model.jsonMembers) ;
+    var msInputfield = document.getElementById('msInput');
+
+    function msFilterInput(filterText) {
+        var outMembers = [];
+
+        for (var i = 0; i < msRows.length; i++) {
+            if (msRows[i].Name.includes(filterText))
+                outMembers.push(msRows[i]);
+        }
+
+        return outMembers;
+    }
+
+    msInputfield.onkeyup = function(e) {
+        var inputVal = document.getElementById('msInput').value;
+        var showMembers = [];
+
+        if (inputVal.length > 0)
+        {
+            var autoCom = document.getElementById('msAutoCom');
+            autoCom.innerHTML = '';
+            showMembers = msFilterInput(inputVal);
+
+            for (var i = 0; i < showMembers.length; i++)
+            {
+                autoCom.innerHTML += '<a href="/member/' + showMembers[i].ID + '" class="list-group-item list-group-item-action">' + showMembers[i].Name + '</a>';
+            }
+            autoCom.style.display = 'block';
+        }
+        else
+        {
+            showMembers = [];
+            autoCom.innerHTML = '';
+        }
+    }
+
+</script>

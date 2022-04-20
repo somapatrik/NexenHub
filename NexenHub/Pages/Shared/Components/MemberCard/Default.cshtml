@@ -1,19 +1,21 @@
 ﻿@model NexenHub.Models.Member
 @{
-
+    string specialStyle = Model.Special ? "bg-warning" : "";
 }
 
-<div class="card">
+<div class="card @specialStyle">
     <div class="card-header">
         <div class="row">
             <div class="col">
-                <h6 class="card-title">@Model.Name</h6>
+                <h6 class="card-title">
+                    @Model.Name
+                </h6>
                 <div class="text-muted card-subtitle">
                     @Model.Position
                 </div>
             </div>
-            <div class="col">
-
+            <div class="col text-end text-muted">
+                @Model.ID
             </div>
         </div>
     </div>

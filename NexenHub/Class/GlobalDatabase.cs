@@ -12,6 +12,31 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetMemberSearch()
+        {
+            try
+            {
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select distinct MEMBER_ID, MEMBER_NAME, MEM.EMAIL_ADDR EMAIL, BOOK.RCV_PHN_ID PHONE");
+                query.AppendLine("from TB_CM_M_MEMBER mem");
+                query.AppendLine("left join TB_CM_M_CALLBOOK book on BOOK.TEMP01 = MEM.MEMBER_ID");
+                query.AppendLine("where mem.PLANT_ID = 'P500'");
+                query.AppendLine("AND mem.USE_YN = 'Y'");
+                query.AppendLine("AND EMP_STATS = 1 ");
+                query.AppendLine("ORDER BY MEMBER_ID ");
+
+                DBOra db = new DBOra(query.ToString());
+                DataTable dt = db.ExecTable();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetMember(string ID)
         {
             try

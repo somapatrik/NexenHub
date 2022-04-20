@@ -26,6 +26,7 @@ namespace NexenHub.Models
         public string HeadDepartmentName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public bool Special { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
@@ -51,6 +52,9 @@ namespace NexenHub.Models
                     HeadDepartmentName = dt.Rows[0]["HEAD_DEPT_NAME"].ToString();
                     Phone = dt.Rows[0]["PHONE"].ToString();
                     Email = dt.Rows[0]["EMAIL"].ToString();
+
+                    // For the best
+                    Special = _ID == "40175001" ? true : false;
                 }
             }
         }

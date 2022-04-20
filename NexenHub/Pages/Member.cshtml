@@ -9,5 +9,8 @@
         <div class="col-6">
             @await Component.InvokeAsync("MemberCard", @Model.member)
         </div>
+        <div class="col-6">
+            @await Component.InvokeAsync("MemberSearch")
+        </div>
     </div>
 </div>
