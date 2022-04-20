@@ -25,73 +25,6 @@
         <div class="col-lg-7">
 
             <div class="row mb-3">
-
-                <div class="col">
-                    <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
-
-                        <div class="card-body">
-                            <div class="card-title ">
-                                <div class="d-flex">
-                                    <div class="flex-grow-1">
-                                        @{
-                                            if (@Model.WO.TEST_YN == "Y")
-                                            {
-                                                <div class="flex-fill badge bg-warning text-dark">PROTOTYPE</div>
-                                            }
-                                        }
-                                    </div>
-
-                                    @{
-
-                                        if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
-                                        {
-                                            <div>
-                                                <span class="badge bg-dark">@Model.WO.PROD_TYPE</span>
-                                            </div>
-                                        }
-
-                                        if (@Model.WO.OE)
-                                        {
-                                            <div>
-                                                <span class="badge bg-primary">OE</span>
-                                            </div>
-                                        }
-
-
-                                    }
-
-                                </div>
-                            </div>
-
-
-                            <div class="container">
-                                <div class="d-flex">
-                                    <div class="flex-grow-1">@Model.WO.WO_NO</div>
-                                    <div>@Model.WO.WO_STIME</div>
-                                </div>
-
-                                <div class="row mt-3 mb-3">
-                                    <div class="col text-center"><h3>@Model.WO.ITEM_ID <br /> @Model.WO.ITEM_NAME</h3></div>
-                                </div>
-
-                                @{
-                                    if (@Model.WO.TEST_YN == "Y")
-                                    {
-                                        <div class="row">
-                                            <div class="col text-center">@Model.WO.PROTOTYPE_ID <br /> @Model.WO.PROTOTYPE_VER </div>
-                                        </div>
-                                    }
-                                }
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row mb-3">
                 <div class="col">
                     @await Component.InvokeAsync("MachineWoList", @Model.machineBasic.EQ_ID)
                 </div>
@@ -111,6 +44,64 @@
         </div>
 
         <div class="col-lg-5">
+
+            <div class="row mb-3">
+
+                <div class="col">
+
+                    <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
+
+                        <div class="card-header">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    Current production
+                                </div>
+                                @{
+                                    if (@Model.WO.TEST_YN == "Y")
+                                    {
+                                        <div class="badge bg-warning text-dark">PROTOTYPE</div>
+                                    }
+
+                                    if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
+                                    {
+                                        <div>
+                                            <span class="badge bg-dark">@Model.WO.PROD_TYPE</span>
+                                        </div>
+                                    }
+
+                                    if (@Model.WO.OE)
+                                    {
+                                        <div>
+                                            <span class="badge bg-primary">OE</span>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="container">
+
+                                    <div class="row mt-3 mb-3">
+                                        <div class="col text-center"><h3>@Model.WO.ITEM_ID <br /> @Model.WO.ITEM_NAME</h3></div>
+                                    </div>
+
+                                    @{
+                                        if (@Model.WO.TEST_YN == "Y")
+                                        {
+                                            <div class="row">
+                                                <div class="col text-center">@Model.WO.PROTOTYPE_ID <br /> @Model.WO.PROTOTYPE_VER </div>
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+
+                            </div>
+                        </div>
+                </div>
+
+            </div>
 
             @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
                 {

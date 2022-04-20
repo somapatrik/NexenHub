@@ -11,6 +11,44 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public DataTable GetMember(string ID)
+        {
+            try
+            {
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select /*+ index(mem IX_CM_M_MEMBER_3)*/");
+                query.AppendLine("mem.MEMBER_ID,");
+                query.AppendLine("mem.MEMBER_NAME,");
+                query.AppendLine("mem.TTOUT1 POSITION,");
+                query.AppendLine("dept.DEPT_ID,");
+                query.AppendLine("dept.DEPT_NAME,");
+                query.AppendLine("head.DEPT_ID HEAD_DEPT_ID,");
+                query.AppendLine("head.DEPT_NAME HEAD_DEPT_NAME,");
+                query.AppendLine("RCV_PHN_ID PHONE,");
+                query.AppendLine("lower(MEM.EMAIL_ADDR) EMAIL");
+                query.AppendLine("from TB_CM_M_MEMBER mem");
+                query.AppendLine("left join TB_CM_M_DEPT dept on DEPT.DEPT_ID = mem.DEPT_ID");
+                query.AppendLine("left join TB_CM_M_DEPT head on head.DEPT_ID = DEPT.UP_DEPT_ID");
+                query.AppendLine("left join TB_CM_M_CALLBOOK book on book.TEMP01 = mem.MEMBER_ID");
+                query.AppendLine("where mem.MEMBER_ID = :id");
+                query.AppendLine("and mem.EMP_STATS = 1");
+                query.AppendLine("and mem.USE_YN = 'Y' ");
+                query.AppendLine("and mem.PLANT_ID='P500' ");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("id", ID, OracleDbType.NVarchar2);
+                DataTable dt = db.ExecTable();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable LoadWorkOrderList(string EQ_ID)
         {
             try
@@ -21,7 +59,8 @@ namespace NexenHub.Class
                 query.AppendLine("WO_STIME,");
                 query.AppendLine("to_date(WO_STIME,'YYYYMMDDHH24MISS') STIME_DATE,");
                 query.AppendLine("PROD_TYPE,");
-                query.AppendLine("ITEM_ID,");
+                query.AppendLine("wo.ITEM_ID,");
+                query.AppendLine("item.ITEM_NAME,");
                 query.AppendLine("WO_QTY,");
                 query.AppendLine("PROD_QTY,");
                 query.AppendLine("UNIT,");
@@ -30,10 +69,11 @@ namespace NexenHub.Class
                 query.AppendLine("PROTOTYPE_VER,");
                 query.AppendLine("DEL_FLAG,");
                 query.AppendLine("WO_PROC_STATE");
-                query.AppendLine("FROM TB_PL_M_WRKORD");
-                query.AppendLine("WHERE PLANT_ID = 'P500'");
+                query.AppendLine("FROM TB_PL_M_WRKORD wo");
+                query.AppendLine("LEFT JOIN TB_CM_M_ITEM item on wo.ITEM_ID=item.ITEM_ID");
+                query.AppendLine("WHERE wo.PLANT_ID = 'P500'");
                 query.AppendLine("AND EQ_ID = :eq");
-                query.AppendLine("AND USE_YN = 'Y'");
+                query.AppendLine("AND wo.USE_YN = 'Y'");
                 query.AppendLine("AND WO_PROC_STATE IN('W', 'S')");
 
                 DBOra db = new DBOra(query.ToString());

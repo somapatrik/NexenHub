@@ -14,13 +14,13 @@ namespace NexenHub.Models
 
         #region Properties
 
-        public string jsonDays { get => JsonConvert.SerializeObject(_Days, Formatting.Indented); }
+        public string jsonDays { get => JsonConvert.SerializeObject(_Days, Formatting.None); }
 
         public string jsonGtProd
         {
             get
             {
-                return JsonConvert.SerializeObject(_Gt, Formatting.Indented);
+                return JsonConvert.SerializeObject(_GtRawData, Formatting.None);
             }
         }
 
@@ -28,7 +28,23 @@ namespace NexenHub.Models
         {
             get
             {
-                return JsonConvert.SerializeObject(_Tire, Formatting.Indented);
+                return JsonConvert.SerializeObject(_TireRawData, Formatting.None);
+            }
+        }
+
+        public string jsonGtAvg
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(_GtAvg.Select(x => x.ToString(GlobalSettings.CzechNum)), Formatting.None);
+            }
+        }
+
+        public string jsonTireAvg
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(_TireAvg.Select(x => x.ToString(GlobalSettings.CzechNum)), Formatting.None);
             }
         }
 
@@ -52,11 +68,14 @@ namespace NexenHub.Models
         private List<string>[] _Days { get; set; }
 
         // Y data - Only production array (no days)
-        private List<string>[] _Gt { get; set; }
-        private List<string>[] _Tire { get; set; }
+        private List<string>[] _GtRawData { get; set; }
+        private List<string>[] _TireRawData { get; set; }
+
+        // AVG
+        private double[] _GtAvg { get; set; }
+        private double[] _TireAvg { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
-
 
         public YearProd()
         {
@@ -77,14 +96,19 @@ namespace NexenHub.Models
                 TireProd = new List<ChartXYDate>[12];
                 GTProd = new List<ChartXYDate>[12];
                 _Days = new List<string>[12];
-                _Gt = new List<string>[12];
-                _Tire = new List<string>[12];
+                _GtRawData = new List<string>[12];
+                _TireRawData = new List<string>[12];
+                _GtAvg = new double[12];
+                _TireAvg = new double[12];
 
                 // Prepares all object with init values
                 CreateData();
 
                 // Load from DB and fill objects
                 LoadProduction();
+
+                // Gets average
+                GetAvg();
             }
         }
 
@@ -139,8 +163,22 @@ namespace NexenHub.Models
             // Copy production from object to json objects
             for (int i = 0; i <= 11; i++)
             {
-                _Gt[i] = GTProd[i].Select(o => o.Value).ToList();
-                _Tire[i] = TireProd[i].Select(o => o.Value).ToList();
+                _GtRawData[i] = GTProd[i].Select(o => o.Value).ToList();
+                _TireRawData[i] = TireProd[i].Select(o => o.Value).ToList();
+            }
+        }
+
+        private void GetAvg()
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                var found = _GtRawData[i].FindAll(gi => double.Parse(gi) > 0);
+                if (found.Count > 0)
+                    _GtAvg[i] = Math.Round(found.Average(gj => double.Parse(gj)),0);
+
+                found = _TireRawData[i].FindAll(gi => double.Parse(gi) > 0);
+                if (found.Count > 0)
+                    _TireAvg[i] = Math.Round(found.Average(gj => double.Parse(gj)), 0);
             }
         }
 

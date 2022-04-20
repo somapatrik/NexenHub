@@ -1,0 +1,34 @@
+﻿@model NexenHub.Models.Member
+@{
+
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col">
+                <h6 class="card-title">@Model.Name</h6>
+                <div class="text-muted card-subtitle">
+                    @Model.Position
+                </div>
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col card-subtitle">
+                <div>@Model.HeadDepartmentName</div>
+                <div>@Model.DepartmentName</div>
+            </div>
+            <div class="col card-subtitle text-end">
+                <div>@Model.Phone</div>
+                <div>@Model.Email</div>
+            </div>
+        </div>
+
+    </div>
+</div>

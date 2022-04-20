@@ -2,24 +2,50 @@
 @{ 
 
 }
-
-<div class="card bg-soma-darklight">
-    @*<H5 class="card-header text-light"></H5>*@
-    <div class="card-body">
-        <canvas id="ypChart" />
+<div class="row mb-3">
+    <div class="col-3">
+        <div class="card bg-soma-darklight text-light text-center">
+            <div class="card-body">
+                <span id="GtAvg" class="display-6"></span>
+                <div style="color: #4bc0c0;">
+                    Average GT
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="card-footer">
-        <nav>
-            <ul class="pagination justify-content-center">
-                @{ for (int i = 1; i < 13; i++) {
-                    <li id="yp_pag_@i" class="page-item"><a class="page-link bg-soma-dark border-secondary text-light" onclick="updateYpChart(@i)">@i</a></li>
-                   }
-                 }
-            </ul>
-        </nav>
+
+    <div class="col-3">
+        <div class="card bg-soma-darklight text-light text-center">
+            <div class="card-body">
+                <span id="TireAvg" class="display-6"></span>
+                <div style="color: #36a3eb;">
+                    Average tires
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col">
+        <div class="card bg-soma-darklight">
+            <div class="card-body">
+                <canvas id="ypChart" />
+            </div>
+            <div class="card-footer">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        @{ for (int i = 1; i < 13; i++)
+                           {
+                           <li id="yp_pag_@i" class="page-item"><a class="page-link bg-soma-dark border-secondary text-light" onclick="updateYpChart(@i)">@i</a></li>
+                           }
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
 
@@ -27,8 +53,11 @@
     var yp_gtprod = @Html.Raw(Model.jsonGtProd);
     var yp_tireprod = @Html.Raw(Model.jsonTireProd);
     var yp_month = @Model.actMonth;
+    var yp_gtavg = @Html.Raw(Model.jsonGtAvg);
+    var yp_tireavg = @Html.Raw(Model.jsonTireAvg);
 
     document.getElementById('yp_pag_' + yp_month).classList.add("active");
+    updateYpNumbers(yp_month);
 
     var yp_ctx = document.getElementById('ypChart').getContext('2d');
     ypChart = new Chart(yp_ctx, {
@@ -91,6 +120,7 @@
         ypChart.data.datasets[1].data = yp_tireprod[month - 1];
         ypChart.update();
         selectYpPag(month);
+        updateYpNumbers(month);
         yp_month = month;
     }
 
@@ -99,6 +129,14 @@
             document.getElementById('yp_pag_' + i).classList.remove("active");
         }
         document.getElementById('yp_pag_' + month).classList.add("active");
+    }
+
+    function updateYpNumbers(month) {
+        var gtAvgButton = document.getElementById('GtAvg');
+        var tireAvgButton = document.getElementById('TireAvg');
+
+        gtAvgButton.textContent = yp_gtavg[month - 1];
+        tireAvgButton.textContent = yp_tireavg[month - 1];
     }
 
 </script>

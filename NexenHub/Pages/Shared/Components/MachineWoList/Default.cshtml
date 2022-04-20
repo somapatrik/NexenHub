@@ -11,17 +11,18 @@
                 @{
                     foreach (var wo in @Model.Workorders)
                     {
-                        string stl = @wo.WO_PROC_STATE == "S" ? "" : "";
+                        //string stl = @wo.WO_PROC_STATE == "S" ? "" : "";
                         string tst = @wo.TEST_YN == "Y" ? "table-warning" : "";
 
-                                <tr>
-                                    <td class="@stl">@wo.WO_NO</td>
+                                <tr class="@tst">
+                                    <td>@wo.WO_NO</td>
                                     <td>@wo.STIME_DATE</td>
-                                    <td class="@tst">@wo.ITEM_ID </td>
+                                    <td>@wo.ITEM_ID </td>
+                                    <td>@wo.ITEM_NAME </td>
                                 </tr>
                     }
                 }
             </tbody>
         </table>
-</div>
+    </div>
 </div>

@@ -38,6 +38,7 @@ namespace NexenHub.Models
                     wo.STIME_DATE = row["STIME_DATE"].ToString();
                     wo.PROD_TYPE = row["PROD_TYPE"].ToString();
                     wo.ITEM_ID = row["ITEM_ID"].ToString();
+                    wo.ITEM_NAME = row["ITEM_NAME"].ToString();
                     wo.WO_QTY = row["WO_QTY"].ToString();
                     wo.PROD_QTY = row["PROD_QTY"].ToString();
                     wo.UNIT = row["UNIT"].ToString();
