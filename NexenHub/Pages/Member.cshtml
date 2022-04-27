@@ -3,14 +3,15 @@
 @{
 }
 
-
 <div class="container">
+    <div class="row mb-2">
+        <div class="col">
+            @await Component.InvokeAsync("MemberSearch")
+        </div>
+    </div>
     <div class="row">
         <div class="col-6">
             @await Component.InvokeAsync("MemberCard", @Model.member)
-        </div>
-        <div class="col-6">
-            @await Component.InvokeAsync("MemberSearch")
         </div>
     </div>
 </div>

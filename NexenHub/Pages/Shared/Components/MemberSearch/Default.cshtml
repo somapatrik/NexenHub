@@ -2,8 +2,8 @@
 @{
 }
 
-<input id="msInput" type="text" class="form-control" placeholder="Search member"/>
-<div id="msAutoCom" class="list-group" style="overflow-y:auto;max-height:20vh;z-index:10;position:absolute;"></div>
+<input id="msInput" type="text" class="form-control" placeholder="Search employee"/>
+<div id="msAutoCom" class="list-group" style="overflow-y:auto;max-height:50vh;z-index:10;position:absolute;"></div>
 
 <script type="text/javascript">
 
@@ -14,7 +14,9 @@
         var outMembers = [];
 
         for (var i = 0; i < msRows.length; i++) {
-            if (msRows[i].ID.includes(filterText) || msRows[i].Name.includes(filterText) || msRows[i].Phone.includes(filterText))
+            if (msRows[i].ID.toLowerCase().includes(filterText.toLowerCase()) ||
+                msRows[i].Name.toLowerCase().includes(filterText.toLowerCase()) ||
+                msRows[i].Phone.toLowerCase().includes(filterText.toLowerCase()))
                 outMembers.push(msRows[i]);
         }
 
@@ -44,5 +46,10 @@
             autoCom.innerHTML = '';
         }
     }
+
+    //msInputfield.onblur = function (e) {
+    //    var autoCom = document.getElementById('msAutoCom');
+    //    autoCom.innerHTML = '';
+    //}
 
 </script>

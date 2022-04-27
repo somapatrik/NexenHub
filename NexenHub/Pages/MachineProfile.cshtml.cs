@@ -35,7 +35,6 @@ namespace NexenHub.Pages
         public string PROC_ID { get; set; }
 
         private GlobalDatabase db = new GlobalDatabase();
-
         public MachineBasicInfo(string EQID)
         {
             EQ_ID = EQID;
@@ -49,45 +48,18 @@ namespace NexenHub.Pages
         }
     }
 
-    public class DownTimeInfoScript
-    {
-        public string id { get; set; }
-
-        public string content { get; set; }
-        public string start { get; set; }
-        public string end { get; set; }
-        public string type => "background";
-        public string className => "negative";
-    }
-
     public class MachineProfileModel : PageModel
     {
-        public string chartlabels { get; set; }
-        public string chartdataset { get; set; }
+        public MachineProdReport machineProduction { get; set; }
+        public MachineDownTime machineDownTime { get; set; }
         public WorkOrder WO { get; set; }
         public List<InputedMaterial> Inputed { get; set; }
-
         public List<InputedMaterial> BOM { get; set; }
-
         public MachineBasicInfo machineBasic { get; set; }
-
-        public MachineProdReport machineProduction;
-
-        public List<DownTimeInfoScript> downInfo { get; set; }
-        public string downScript {get;set;}
-
-        [BindProperty]
-        public DateTime FilterDate { get; set; }
-
-        [BindProperty]
-        public bool IsA { get; set; }
-
 
         public string ActNonWork = "";
 
         private GlobalDatabase dbglob = new GlobalDatabase();
-        private ChartDownTimeDataSet ChartDataScript;
-        private List<string> labels;
 
         public void OnGet(string EQ_ID)
         {
@@ -100,17 +72,12 @@ namespace NexenHub.Pages
                 machineProduction = new MachineProdReport(EQ_ID);
 
                 // Get downtimes
-                DataTable dt = dbglob.GetNonWorkSum(EQ_ID);
-                ChartDataScript = new ChartDownTimeDataSet();
-                FillDataScript(dt);
+                machineDownTime = new MachineDownTime(EQ_ID);
 
                 // Act downtime
-                dt = dbglob.GetActNonWrk(EQ_ID);
+                DataTable dt = dbglob.GetActNonWrk(EQ_ID);
                 if (dt.Rows.Count > 0)
                     ActNonWork = dt.Rows[0][0].ToString();
-
-                chartdataset = JsonConvert.SerializeObject(ChartDataScript, Formatting.Indented);
-                chartlabels = JsonConvert.SerializeObject(labels, Formatting.Indented);
 
                 // Get WO
                 WO = new WorkOrder();
@@ -171,47 +138,6 @@ namespace NexenHub.Pages
             
             foreach (InputedMaterial input in Inputed)
                 input.IsInBom = BOM.Find(x => x.ITEM_ID == input.ITEM_ID) != null ? true : false;
-        }
-
-        public void FillDataScript(DataTable dt)
-        {
-            labels = new List<string>();
-
-            float sumtime = 0;
-
-            foreach (DataRow row in dt.Rows)
-            {
-                string stime = row[0].ToString();
-                float time = float.Parse(stime);
-                sumtime += time;
-                ChartDataScript.Add(stime);
-                labels.Add(row[1].ToString());
-            }
-
-            DateTime NowTime = DateTime.Now;
-            int NowHour = NowTime.Hour;
-            int Minutes = NowTime.Minute;
-
-            // Number of minutes in this shift
-            int FinalMinutes;
-
-            if (NowHour >= 6 && NowHour < 18) 
-                FinalMinutes = ((NowHour * 60) + Minutes) - (6 * 60);
-            else
-            {
-                if (NowHour >= 0 && NowHour < 6)
-                    FinalMinutes = ((NowHour * 60) + Minutes) + (6 * 60);
-                else
-                    FinalMinutes = ((NowHour * 60) + Minutes) - (18 * 60);
-            }
-            ChartDataScript.AddFirst((Math.Abs(FinalMinutes-sumtime)).ToString(), KnownColor.LimeGreen);
-            labels.Insert(0,"Work");
-
-        }
-
-        public void OnPost(string EQ_ID)
-        {
-            OnGet(EQ_ID);
         }
 
    }

@@ -22,7 +22,7 @@ namespace NexenHub.Models
         public DateTime filterStartDate;
         public DateTime filterEndDate;
 
-        // Updtime / downtime chart
+        // Uptime / downtime chart
         public double totalWorkSeconds;
         public double totalUpTimeSeconds;
         public double totalDownTimeSeconds;

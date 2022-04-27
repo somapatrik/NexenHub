@@ -19,25 +19,14 @@
         </div>
     </div>
 
-    <!-- WO + DownTimes -->
-    <div class="row mb-3">
+    <!-- WO + Current production -->
+    <div class="row mb-3 g-3">
 
         <div class="col-lg-7">
 
-            <div class="row mb-3">
-                <div class="col">
-                    @await Component.InvokeAsync("MachineWoList", @Model.machineBasic.EQ_ID)
-                </div>
-            </div>
-
             <div class="row">
                 <div class="col">
-                    @{
-                        if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
-                        {
-                            @await Component.InvokeAsync("MachineReportProd", Model.machineProduction)
-                        }
-                    }
+                    @await Component.InvokeAsync("MachineWoList", @Model.machineBasic.EQ_ID)
                 </div>
             </div>
 
@@ -77,28 +66,28 @@
                                     }
                                 }
                             </div>
-                            </div>
+                        </div>
 
-                            <div class="card-body">
-                                <div class="container">
+                        <div class="card-body">
+                            <div class="container">
 
-                                    <div class="row mt-3 mb-3">
-                                        <div class="col text-center"><h3>@Model.WO.ITEM_ID <br /> @Model.WO.ITEM_NAME</h3></div>
-                                    </div>
-
-                                    @{
-                                        if (@Model.WO.TEST_YN == "Y")
-                                        {
-                                            <div class="row">
-                                                <div class="col text-center">@Model.WO.PROTOTYPE_ID <br /> @Model.WO.PROTOTYPE_VER </div>
-                                            </div>
-                                        }
-                                    }
-
+                                <div class="row mt-3 mb-3">
+                                    <div class="col text-center"><h3>@Model.WO.ITEM_ID <br /> @Model.WO.ITEM_NAME</h3></div>
                                 </div>
 
+                                @{
+                                    if (@Model.WO.TEST_YN == "Y")
+                                    {
+                                        <div class="row">
+                                            <div class="col text-center">@Model.WO.PROTOTYPE_ID <br /> @Model.WO.PROTOTYPE_VER </div>
+                                        </div>
+                                    }
+                                }
+
                             </div>
+
                         </div>
+                    </div>
                 </div>
 
             </div>
@@ -106,7 +95,7 @@
             @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
                 {
 
-                    <div class="row mb-3">
+                    <div class="row">
                         <div class="col">
                             <div class="card text-white bg-danger">
 
@@ -121,27 +110,15 @@
                 }
             }
 
-            <div class="row">
-                <div class="col">
-                    <div class="card bg-soma-darklight">
-                        <div class="card-header">
-                            Shift downtimes
-                        </div>
-                        <div class="card-body">
-                            <canvas id="myChart" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
     </div>
 
     <!-- Material in use -->
-    <div class="row mb-3">
+    <div class="row mb-3 g-3">
 
-        <div class="col-lg-7 mb-3">
+        <div class="col-lg-7">
+
             <div class="card bg-soma-darklight">
                 <div class="card-header">Material in use</div>
                 <div class="card-body">
@@ -179,17 +156,17 @@
             </div>
         </div>
 
-        <div class="col-lg-5 mb-3">
+        <div class="col-lg-5">
 
             <div class="card @bgc @txtc">
                 <div class="card-header">
                     @{ if (Model.WO.TEST_YN == "Y")
                         {
-                         @Html.Raw("Prototype BOM")
+                            @Html.Raw("Prototype BOM")
                         }
                         else
                         {
-                         @Html.Raw("BOM")
+                            @Html.Raw("BOM")
                         }
                     }
                 </div>
@@ -212,33 +189,26 @@
             </div>
 
         </div>
+
+    </div>
+
+    <!-- Production chart -->
+    <div class="row mb-3">
+        <div class="col">
+            @{
+                if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
+                {
+                    @await Component.InvokeAsync("MachineReportProd", Model.machineProduction)
+                }
+            }
+        </div>
+    </div>
+
+    <!-- Uptime / Downtime -->
+    <div class="row mb-3">
+        <div class="col">
+            @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
+        </div>
     </div>
 
 </div>
-
-
-<script>
-
-    var ctx = document.getElementById('myChart');
-    var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: @Html.Raw(Model.chartlabels),
-            datasets: [@Html.Raw(Model.chartdataset)],
-            borderWidth: 0
-        },
-        options: {
-            maintainAspectRatio: true,
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'left',
-                    labels: {
-                        color: 'white'
-                    }
-                }
-            }
-        }
-    });
-
-</script>
