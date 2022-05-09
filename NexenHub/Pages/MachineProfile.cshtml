@@ -34,6 +34,24 @@
 
         <div class="col-lg-5">
 
+            @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
+                {
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card text-white bg-danger">
+
+                                <div class="card-header text-center">
+                                    @Model.ActNonWork
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+
             <div class="row mb-3">
 
                 <div class="col">
@@ -91,24 +109,6 @@
                 </div>
 
             </div>
-
-            @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
-                {
-
-                    <div class="row">
-                        <div class="col">
-                            <div class="card text-white bg-danger">
-
-                                <div class="card-header text-center">
-                                    @Model.ActNonWork
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                }
-            }
 
         </div>
 

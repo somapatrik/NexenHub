@@ -122,7 +122,7 @@ namespace NexenHub.Class
         {
             bool result = true;
 
-            if (!NoLifeCheckResult || !NoValidCheckResult)
+            if (!NoLifeCheckResult || !NoValidCheckResult || !ExpireCheckResult)
                 result = false;
 
             return result;

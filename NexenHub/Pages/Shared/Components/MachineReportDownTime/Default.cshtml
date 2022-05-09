@@ -1,27 +1,29 @@
 ﻿@model NexenHub.Models.MachineDownTime
 
-        <div class="row row-cols-1 row-cols-lg-2 g-4">
+        <div class="row row-cols-1 row-cols-lg-2 g-3">
             <div class="col">
                 <div class="card h-100 bg-soma-darklight text-light">
+                    <div class="card-header">
+                        Uptime
+                    </div>
                     <div class="card-body">
-                        <div class="card-title">
-                            <h5>Uptime</h5>
-                        </div>
                         <canvas id="sumDTchart" style="display: block; box-sizing: border-box;" />
                     </div>
-                    <div class="card-footer text-muted text-center">
-                        @Model.filterStartDate.ToString("yyyy-MM-dd HH:mm") - @Model.filterEndDate.ToString("yyyy-MM-dd HH:mm")
+                    <div class="card-footer text-center">
+                        <small>@Model.filterStartDate.ToString("yyyy-MM-dd HH:mm") - @Model.filterEndDate.ToString("yyyy-MM-dd HH:mm")</small>
                     </div>
                 </div>
             </div>
             <div class="col">
                 <div class="card h-100 bg-soma-darklight text-light">
+                    <div class="card-header">
+                        Downtimes
+                    </div>
                     <div class="card-body">
-                        <h5>Dowtimes</h5>
                         <canvas id="eachDTchart" style="display: block; box-sizing: border-box;" />
                     </div>
-                    <div class="card-footer text-muted text-center">
-                        @Model.filterStartDate.ToString("yyyy-MM-dd HH:mm") - @Model.filterEndDate.ToString("yyyy-MM-dd HH:mm")
+                    <div class="card-footer text-center">
+                        <small>@Model.filterStartDate.ToString("yyyy-MM-dd HH:mm") - @Model.filterEndDate.ToString("yyyy-MM-dd HH:mm")</small>
                     </div>
                 </div>
             </div>
