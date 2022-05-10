@@ -40,11 +40,59 @@ namespace NexenHub.Models
             }
         }
 
+        public string jsonGtAvgChart
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(_GtAvg.Select(x => x == 0 ? "NaN" : x.ToString()), Formatting.None);
+            }
+        }
+
         public string jsonTireAvg
         {
             get
             {
                 return JsonConvert.SerializeObject(_TireAvg.Select(x => x.ToString(GlobalSettings.CzechNum)), Formatting.None);
+            }
+        }
+
+        public string jsonTireAvgChart
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(_TireAvg.Select(x => x == 0 ? "NaN" : x.ToString()), Formatting.None);
+            }
+        }
+
+        public string jsonGtTotal
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(_GtTotal.Select(x => x.ToString(GlobalSettings.CzechNum)), Formatting.None);
+            }
+        }
+
+        public string jsonGtTotalChart
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(_GtTotal.Select(x => x == 0 ? "NaN" : x.ToString()), Formatting.None);
+            }
+        }
+
+        public string jsonTireTotal
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(_TireTotal.Select(x => x.ToString(GlobalSettings.CzechNum)), Formatting.None);
+            }
+        }
+
+        public string jsonTireTotalChart
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(_TireTotal.Select(x => x == 0 ? "NaN" : x.ToString()), Formatting.None);
             }
         }
 
@@ -75,6 +123,11 @@ namespace NexenHub.Models
         private double[] _GtAvg { get; set; }
         private double[] _TireAvg { get; set; }
 
+        // TOTAL
+        private double[] _GtTotal { get; set; }
+        private double[] _TireTotal { get; set; }
+
+
         private GlobalDatabase dbglob = new GlobalDatabase();
 
         public YearProd()
@@ -99,7 +152,9 @@ namespace NexenHub.Models
                 _GtRawData = new List<string>[12];
                 _TireRawData = new List<string>[12];
                 _GtAvg = new double[12];
+                _GtTotal = new double[12];                
                 _TireAvg = new double[12];
+                _TireTotal = new double[12];
 
                 // Prepares all object with init values
                 CreateData();
@@ -109,6 +164,9 @@ namespace NexenHub.Models
 
                 // Gets average
                 GetAvg();
+
+                // Gets total
+                GetTotal();
             }
         }
 
@@ -148,8 +206,8 @@ namespace NexenHub.Models
             //DataTable dt = dbglob.GetProductionYear(_Year);
             foreach (DataRow row in dt.Rows)
             {
-                DateTime prodtime = DateTime.ParseExact(row["PROD_DATE"].ToString(), "yyyyMMdd", CultureInfo.InvariantCulture);
-                //DateTime prodtime = DateTime.ParseExact(row["DATETIME"].ToString(), "yyyyMMdd", CultureInfo.InvariantCulture);
+                DateTime prodtime = DateTime.ParseExact(row["PROD_DATE"].ToString(), "yyyyMMdd", CultureInfo.InvariantCulture); // from controlling
+                //DateTime prodtime = DateTime.ParseExact(row["DATETIME"].ToString(), "yyyyMMdd", CultureInfo.InvariantCulture); // from mes
                 string qty = row["PROD_QTY"].ToString();
                 string wc = row["WC_ID"].ToString();
 
@@ -174,11 +232,20 @@ namespace NexenHub.Models
             {
                 var found = _GtRawData[i].FindAll(gi => double.Parse(gi) > 0);
                 if (found.Count > 0)
-                    _GtAvg[i] = Math.Round(found.Average(gj => double.Parse(gj)),0);
+                    _GtAvg[i] = Math.Round(found.Average(gj => double.Parse(gj)), 0);
 
                 found = _TireRawData[i].FindAll(gi => double.Parse(gi) > 0);
                 if (found.Count > 0)
                     _TireAvg[i] = Math.Round(found.Average(gj => double.Parse(gj)), 0);
+            }
+        }
+
+        private void GetTotal()
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                _GtTotal[i] = _GtRawData[i].Select(g => double.Parse(g)).Sum();
+                _TireTotal[i] = _TireRawData[i].Select(t => double.Parse(t)).Sum();
             }
         }
 

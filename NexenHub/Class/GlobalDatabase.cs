@@ -79,7 +79,7 @@ namespace NexenHub.Class
             try
             {
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT");
+                query.AppendLine("SELECT /*+ INDEX(TB_PL_M_WRKORD IX_PL_M_WRKORD_5)*/");
                 query.AppendLine("WO_NO,");
                 query.AppendLine("WO_STIME,");
                 query.AppendLine("to_date(WO_STIME,'YYYYMMDDHH24MISS') STIME_DATE,");
@@ -99,7 +99,8 @@ namespace NexenHub.Class
                 query.AppendLine("WHERE wo.PLANT_ID = 'P500'");
                 query.AppendLine("AND EQ_ID = :eq");
                 query.AppendLine("AND wo.USE_YN = 'Y'");
-                query.AppendLine("AND WO_PROC_STATE IN('W', 'S')");
+                query.AppendLine("AND (WO_PROC_STATE IN('W', 'S')");
+                query.AppendLine("OR WO_PROC_STATE = 'F' AND (TRUNC(SYSDATE - (6/24)) - (to_date(WO_ETIME,'YYYYMMDDHH24MISS')-(6/24)) BETWEEN -1 AND 1))");
 
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("eq", EQ_ID, OracleDbType.NVarchar2);

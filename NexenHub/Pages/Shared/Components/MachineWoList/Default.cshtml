@@ -1,30 +1,74 @@
 ﻿@model NexenHub.Models.WoList
 @{
-
+    string tst ;
 }
 
 <div class="card bg-soma-darklight">
-    <h6 class="card-header">Workorders</h6>
+    <div class="card-header">
+        <div class="d-flex">
+            <div class="flex-grow-1">Workorders</div>
+            <span class="badge bg-success" style="cursor:pointer;" onclick="wlToogle()">Toogle completed</span>
+        </div>
+    </div>
     <div class="card-body p-0" style="overflow-y:auto;max-height:30vh;">
+
+        <div id="wl_finishedWo" class="list-group list-group-flush" style="display:none;">
+            @{
+                foreach (var wo in @Model.Workorders.FindAll(w => w.WO_PROC_STATE == "F").ToList())
+                {
+                    tst = "list-group-item-danger";
+
+                    <div class="list-group-item @tst">
+                        <div class="d-flex w-100 justify-content-between mb-2">
+                            <span>@wo.WO_NO</span>
+                            <small>@wo.STIME_DATE</small>
+                        </div>
+                        <div class="d-flex w-100 justify-content-between">
+                            <span>@wo.ITEM_ID</span>
+                            <span>@wo.ITEM_NAME</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
         <div class="list-group list-group-flush">
             @{
-                foreach (var wo in @Model.Workorders)
+                foreach (var wo in @Model.Workorders.FindAll(w => w.WO_PROC_STATE != "F").ToList())
                 {
+                    tst = "bg-soma-darklight text-light";
 
-                    string tst = @wo.TEST_YN == "Y" ? "list-group-item-warning" : "bg-soma-darklight text-light";
+                    @if (wo.WO_PROC_STATE == "S")
+                    {
+                        tst = "list-group-item-success";
+                    }
+                    else if (wo.TEST_YN == "Y")
+                    {
+                        tst = "list-group-item-warning";
+                    }
 
-                        <div class="list-group-item @tst">
-                            <div class="d-flex w-100 justify-content-between mb-2">
-                                <span>@wo.WO_NO</span>
-                                <small>@wo.STIME_DATE</small>
-                            </div>
-                            <div class="d-flex w-100 justify-content-between">
-                                <span>@wo.ITEM_ID</span>
-                                <span>@wo.ITEM_NAME</span>
-                            </div>
+                    <div class="list-group-item @tst">
+                        <div class="d-flex w-100 justify-content-between mb-2">
+                            <span>@wo.WO_NO</span>
+                            <small>@wo.STIME_DATE</small>
                         </div>
-                } 
-             }
-                </div>
+                        <div class="d-flex w-100 justify-content-between">
+                            <span>@wo.ITEM_ID</span>
+                            <span>@wo.ITEM_NAME</span>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
     </div>
-</div>
+    </div>
+
+<script type="text/javascript">
+
+    function wlToogle()
+    {
+        var wlCompList = document.getElementById('wl_finishedWo');
+        wlCompList.style["display"] = wlCompList.style["display"] == "none" ? "block" : "none";
+    }
+
+</script>

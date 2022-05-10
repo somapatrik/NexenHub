@@ -16,6 +16,7 @@ namespace NexenHub.Models
 
         public WoList()
         {
+
         }
 
         public WoList(string EQID)

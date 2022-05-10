@@ -127,26 +127,22 @@
 
                             @{ foreach (var material in Model.Inputed)
                                 {
-                                    if (material.IsInBom)
-                                    {
-                                        <tr>
-                                            <td>@material.IO_POSID</td>
-                                            <td>@material.CART_ID</td>
-                                            <td><a class="btn-link" href="../lot/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
+                                    <tr>
+                                        <td>@material.IO_POSID</td>
+                                        <td>@material.CART_ID</td>
+                                        <td><a class="btn-link" href="../lot/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
+
+                                        @if (material.IsInBom)
+                                        {
                                             <td class="font-weight-bold">@material.ITEM_ID</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="font-weight-bold table-danger">@material.ITEM_ID</td>
+                                        }
+
                                             <td>@material.ITEM_NAME</td>
-                                        </tr>
-                                    }
-                                    else
-                                    {
-                                        <tr class="table-danger">
-                                            <td>@material.IO_POSID</td>
-                                            <td>@material.CART_ID</td>
-                                            <td><a class="btn-link" href="../lot/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
-                                            <td class="font-weight-bold">@material.ITEM_ID</td>
-                                            <td>@material.ITEM_NAME</td>
-                                        </tr>
-                                    }
+                                    </tr>
                                 }
                             }
                         </tbody>

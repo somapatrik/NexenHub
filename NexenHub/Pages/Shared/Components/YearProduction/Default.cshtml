@@ -2,49 +2,104 @@
 @{ 
 
 }
-<div class="row mb-3 g-3">
-    <div class="col-md-6 col-xl-3">
-        <div class="card bg-soma-darklight text-light text-center">
-            <div class="card-body">
-                <span id="GtAvg" class="display-6"></span>
-                <div style="color: #4bc0c0;">
-                    Average GT
+<div class="row g-2">
+
+    <div class="col-xl-7">
+
+        <div class="row mb-2 g-2">
+            <div class="col-md-6 col-xl-3">
+                <div class="card bg-soma-darklight text-light text-center">
+                    <div class="card-body">
+                        <span id="GtAvg" class="display-6"></span>
+                        <div style="color: #4bc0c0;">
+                            Average GT
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card bg-soma-darklight text-light text-center">
+                    <div class="card-body">
+                        <span id="TireAvg" class="display-6"></span>
+                        <div style="color: #36a3eb;">
+                            Average tires
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card bg-soma-darklight text-light text-center">
+                    <div class="card-body">
+                        <span id="GtTotal" class="display-6"></span>
+                        <div style="color: #4bc0c0;">
+                            Total GT
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="card bg-soma-darklight text-light text-center">
+                    <div class="card-body">
+                        <span id="TireTotal" class="display-6"></span>
+                        <div style="color: #36a3eb;">
+                            Total tires
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card bg-soma-darklight">
+                    <div class="card-body">
+                        <canvas id="ypChart" />
+                    </div>
+                    <div class="card-footer">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                @{ for (int i = 1; i < 13; i++)
+                                    {
+                                        <li id="yp_pag_@i" class="page-item"><a class="page-link bg-soma-dark border-secondary text-light" onclick="updateYpChart(@i)">@i</a></li>
+                                    }
+                                }
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-6 col-xl-3">
-        <div class="card bg-soma-darklight text-light text-center">
-            <div class="card-body">
-                <span id="TireAvg" class="display-6"></span>
-                <div style="color: #36a3eb;">
-                    Average tires
+    <div class="col-xl-5">
+
+        <!--Chart 1-->
+        <div class="row mb-2">
+            <div class="col">
+                <div class="card bg-soma-darklight">
+                    <div class="card-body">
+                        <canvas id="ypChart1" />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col">
-        <div class="card bg-soma-darklight">
-            <div class="card-body">
-                <canvas id="ypChart" />
-            </div>
-            <div class="card-footer">
-                <nav>
-                    <ul class="pagination justify-content-center">
-                        @{ for (int i = 1; i < 13; i++)
-                           {
-                           <li id="yp_pag_@i" class="page-item"><a class="page-link bg-soma-dark border-secondary text-light" onclick="updateYpChart(@i)">@i</a></li>
-                           }
-                        }
-                    </ul>
-                </nav>
+        <!--Chart 2-->
+        <div class="row mb-2">
+            <div class="col">
+                <div class="card bg-soma-darklight">
+                    <div class="card-body">
+                        <canvas id="ypChart2" />
+                    </div>
+                </div>
             </div>
         </div>
+
     </div>
+
 </div>
 
 <script type="text/javascript">
@@ -53,8 +108,13 @@
     var yp_gtprod = @Html.Raw(Model.jsonGtProd);
     var yp_tireprod = @Html.Raw(Model.jsonTireProd);
     var yp_month = @Model.actMonth;
+
+    // Display data
     var yp_gtavg = @Html.Raw(Model.jsonGtAvg);
     var yp_tireavg = @Html.Raw(Model.jsonTireAvg);
+
+    var yp_gttotal = @Html.Raw(Model.jsonGtTotal);
+    var yp_tirtotal = @Html.Raw(Model.jsonTireTotal);
 
     document.getElementById('yp_pag_' + yp_month).classList.add("active");
     updateYpNumbers(yp_month);
@@ -112,7 +172,125 @@
                     }
                 }
             }
-        });
+    });
+
+    var yp_ctx1 = document.getElementById('ypChart1').getContext('2d');
+    ypChart1 = new Chart(yp_ctx1, {
+        type: 'line',
+        data: {
+            labels: ["1","2","3","4","5","6","7","8","9","10","11","12"],
+            datasets: [
+                {
+                    label: 'Average GT',
+                    data: @Html.Raw(Model.jsonGtAvgChart),
+                    backgroundColor: ['rgba(75, 192, 192, 0.7)'],
+                    borderColor: ['rgba(75, 192, 192, 1)'],
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: 'Average Tires',
+                    data: @Html.Raw(Model.jsonTireAvgChart),
+                    backgroundColor: ['rgba(54, 162, 235, 0.7)'],
+                    borderColor: ['rgba(54, 162, 235, 1)'],
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill:false
+                }
+            ]
+        },
+        options: {
+            maintainAspectRatio: true,
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: 'rgba(255,255, 255,0.1)'
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255,255, 255,0.1)'
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: 'white'
+                    }
+                }
+            }
+        }
+    });
+
+    var yp_ctx2 = document.getElementById('ypChart2').getContext('2d');
+    ypChart2 = new Chart(yp_ctx2, {
+        type: 'line',
+        data: {
+            labels: ["1","2","3","4","5","6","7","8","9","10","11","12"],
+            datasets: [
+                {
+                    label: 'Total GT',
+                    data: @Html.Raw(Model.jsonGtTotalChart),
+                    backgroundColor: ['rgba(75, 192, 192, 0.7)'],
+                    borderColor: ['rgba(75, 192, 192, 1)'],
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: false
+                },
+                {
+                    label: 'Total Tires',
+                    data: @Html.Raw(Model.jsonTireTotalChart),
+                    backgroundColor: ['rgba(54, 162, 235, 0.7)'],
+                    borderColor: ['rgba(54, 162, 235, 1)'],
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill:false
+                }
+            ]
+        },
+        options: {
+            maintainAspectRatio: true,
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: 'rgba(255,255, 255,0.1)'
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                },
+                x: {
+                    grid: {
+                        color: 'rgba(255,255, 255,0.1)'
+                    },
+                    ticks: {
+                        color: 'white'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: 'white'
+                    }
+                }
+            }
+        }
+    });
 
     function updateYpChart(month) {
         ypChart.data.labels = yp_days[month - 1];
@@ -137,6 +315,13 @@
 
         gtAvgButton.textContent = yp_gtavg[month - 1];
         tireAvgButton.textContent = yp_tireavg[month - 1];
+
+        var gtTotalButton = document.getElementById('GtTotal');
+        gtTotalButton.textContent = yp_gttotal[month - 1];
+
+        var tireTotalButton = document.getElementById('TireTotal');
+        tireTotalButton.textContent = yp_tirtotal[month - 1];
+
     }
 
 </script>
