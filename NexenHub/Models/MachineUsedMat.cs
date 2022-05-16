@@ -103,7 +103,7 @@ namespace NexenHub.Models
                 string dbitemname = r["ITEM_NAME"].ToString();
                 DateTime date = DateTime.Parse(r["ENT_DT"].ToString());
 
-                string body = dbitemname + " - " + dbitemid + " </br> " + dbLOT + " - " +dbcartid;
+                string body = dbitemname + " - " + dbitemid + " </br> " + "<a href=\"/lot/" + dbLOT + "\" target=\"_blank\">" + dbLOT + "</a> - " +dbcartid;
 
                 if (IO == "I")
                 {

@@ -11,6 +11,27 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable IsMemberPresent(string member_id)
+        {
+            try
+            {
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT STATUS");
+                query.AppendLine("FROM VIEW_PRESLIST_OSOBA");
+                query.AppendLine("WHERE OSOBNICISLO = @memberid");
+
+                DBMic db = new DBMic(query.ToString(), DBMic.Database.Aktion);
+                db.AddParameter("memberid", member_id, SqlDbType.VarChar);
+                DataTable dt = db.ExecTable();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
 
         public DataTable GetMemberSearch()
         {

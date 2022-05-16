@@ -65,7 +65,11 @@ namespace NexenHub.Pages
             if (endArg != null && endArg != DateTime.MinValue)
                 DateTo = endArg.ToString("yyyy-MM-dd");
             else
-                DateTo = DateTime.Now.ToString("yyyy-MM-dd");
+                DateTo = DateFrom;
+            //DateTo = DateTime.Now.ToString("yyyy-MM-dd");
+
+            if (!string.IsNullOrEmpty(SelectedMachine))
+                Generate();
 
         }
 

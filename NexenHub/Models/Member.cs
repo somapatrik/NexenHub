@@ -28,6 +28,8 @@ namespace NexenHub.Models
         public string Email { get; set; }
         public bool Special { get; set; }
 
+        public bool IsPresent { get; set; }
+
         private GlobalDatabase dbglob = new GlobalDatabase();
 
         public Member() { }
@@ -55,6 +57,9 @@ namespace NexenHub.Models
 
                     // For the best
                     Special = _ID == "40175001" ? true : false;
+
+                    // Aktion
+                    IsPresent = dbglob.IsMemberPresent(_ID)?.Rows[0]["STATUS"].ToString() == "1" ? true : false;
                 }
             }
         }

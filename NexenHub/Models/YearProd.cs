@@ -20,7 +20,8 @@ namespace NexenHub.Models
         {
             get
             {
-                return JsonConvert.SerializeObject(_GtRawData, Formatting.None);
+                //return JsonConvert.SerializeObject(_GtRawData, Formatting.None);
+                return JsonConvert.SerializeObject(_GtRawData.Select(x => x.Select(y => y == "0" ? "NaN" : y)), Formatting.None);
             }
         }
 
@@ -28,7 +29,8 @@ namespace NexenHub.Models
         {
             get
             {
-                return JsonConvert.SerializeObject(_TireRawData, Formatting.None);
+                //return JsonConvert.SerializeObject(_TireRawData, Formatting.None);
+                return JsonConvert.SerializeObject(_TireRawData.Select(x=>x.Select(y=> y == "0" ? "NaN": y)), Formatting.None);
             }
         }
 

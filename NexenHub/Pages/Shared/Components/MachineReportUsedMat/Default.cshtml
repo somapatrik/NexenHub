@@ -87,7 +87,7 @@
     var @Html.Raw(Model.UniqeName + "opt") = {
                 start: "@Model.endFilterDate.AddHours(-3).ToString("yyyy-MM-ddTHH:mm:ss")",
                 end: "@Model.endFilterDate.ToString("yyyy-MM-ddTHH:mm:ss")",
-                editable:false
+                editable:'false'
                 };
 
     var timeline = new vis.Timeline(container);

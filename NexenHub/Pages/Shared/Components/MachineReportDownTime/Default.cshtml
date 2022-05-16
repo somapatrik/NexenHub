@@ -33,7 +33,7 @@
 
             const eachctx = document.getElementById('eachDTchart').getContext('2d');
             const eachDT = new Chart(eachctx, {
-                type: 'doughnut',
+                type: 'pie',
                 data: {
                     labels:@Html.Raw(Model.formatEaLabels),
                     datasets: [{
@@ -79,7 +79,7 @@
 
             const sumctx = document.getElementById('sumDTchart').getContext('2d');
             const sumDT = new Chart(sumctx, {
-                type: 'doughnut',
+                type: 'pie',
                 data: {
                     labels: @Html.Raw(Model.formatSumLabels),
                     datasets: [{

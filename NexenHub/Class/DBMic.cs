@@ -9,15 +9,22 @@ namespace NexenHub.Class
 {
     public class DBMic
     {
+        public enum Database { Controlling, Aktion}
+        public Database selectedDatabase = Database.Controlling;
+
         public SqlConnection Connection;
         public SqlCommand Command;
         private List<SqlParameter> Parameters = new List<SqlParameter>();
 
         public string query;
 
-        public DBMic(string query)
+        public DBMic(string query, Database database = Database.Controlling)
         {
-            this.Connection = new SqlConnection(GlobalSettings.DatabaseControlling);
+            if (database == Database.Aktion)
+                this.Connection = new SqlConnection(GlobalSettings.DatabaseAktion);
+            else
+                this.Connection = new SqlConnection(GlobalSettings.DatabaseControlling);
+            
             this.query = query;
             this.Command = new SqlCommand(this.query, this.Connection);
         }
