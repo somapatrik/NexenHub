@@ -1,4 +1,6 @@
 # NexenHub
+![example workflow](https://github.com/Nexen-Tire/NexenHub/actions/workflows/dotnet.yml/badge.svg)
+
 Web &amp; REST API
 
 # Used components
