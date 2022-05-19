@@ -180,7 +180,7 @@ namespace NexenHub.Models
                 DataTable dt = _Database.SP_IN_H_PROD_LAYOUT(_CART_ID);
                 if (dt.Rows.Count > 0)
                 {
-                    _LAYOUT = ReplaceClass(ReplaceLabels(dt.Rows[0]["LAYOUT"].ToString()));
+                    _LAYOUT = ReplaceWcBackground(ReplaceClass(ReplaceLabels(dt.Rows[0]["LAYOUT"].ToString())));
                 }
             }
 
@@ -238,6 +238,23 @@ namespace NexenHub.Models
                 LayoutRaw = LayoutRaw.Replace("{{CLASS_DIV_CART_STATE}}", "bg-danger text-light");
             else
                 LayoutRaw = LayoutRaw.Replace("{{CLASS_DIV_CART_STATE}}", "");
+
+            return LayoutRaw;
+        }
+
+        private string ReplaceWcBackground(string LayoutRaw)
+        {
+            if (WC_ID == "M")
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-dark");
+            else if (WC_ID == "E")
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-wc-ext");
+            else if (WC_ID == "B")
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-wc-bead");
+            else if (WC_ID == "P")
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-wc-cut text-dark");
+            else
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-dark");
+
 
             return LayoutRaw;
         }
