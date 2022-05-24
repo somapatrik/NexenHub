@@ -64,10 +64,16 @@ namespace NexenHub.Models
         public string AGING_TIME { get; set; }
         public string TREAD_WIDTH { get; set; }
         public string COMPOUND { get; set; }
+        public string SPEC1 { get; set; }
         public string IO_POSID { get; set; }
         public string EQ_NAME { get; set; }
         public string RCV_DT { get; set; }
         public string TEMP01 { get; set; }
+        public string COMP_TYPE { get; set; }
+        public string COMP_TYPE_NAME { get; set; }
+        public string BATCH_SNO { get; set; }
+        public string BATCH_ENO { get; set; }
+
         public List<string> COMMON_ITEM_ID
         {
             get
@@ -129,6 +135,7 @@ namespace NexenHub.Models
                     ITEM_NAME = dt.Rows[0]["ITEM_NAME"].ToString();
                     PROD_QTY = dt.Rows[0]["PROD_QTY"].ToString();
                     COMPOUND = dt.Rows[0]["COMPOUND"].ToString();
+                    SPEC1 = dt.Rows[0]["SPEC1"].ToString();
                     AGING_TIME = dt.Rows[0]["AGING_TIME"].ToString();
                     EXPIRY_DATE = dt.Rows[0]["EXPIRY_DATE"].ToString();
                     TREAD_WIDTH = dt.Rows[0]["TREAD_WIDTH"].ToString();
@@ -136,6 +143,14 @@ namespace NexenHub.Models
                     EQ_NAME = dt.Rows[0]["EQ_NAME"].ToString();
                     RCV_DT = dt.Rows[0]["RCV_DT"].ToString();
                     TEMP01 = dt.Rows[0]["TEMP01"].ToString();
+
+                    COMP_TYPE = dt.Rows[0]["COMP_TYPE"].ToString();
+
+                    COMP_TYPE_NAME = dt.Rows[0]["COMP_TYPE_NAME"].ToString();
+
+                    BATCH_SNO = dt.Rows[0]["BATCH_SNO"].ToString();
+
+                    BATCH_ENO = dt.Rows[0]["BATCH_ENO"].ToString();
 
                     for (int i = 1; i <= 10; i++)
                     {
@@ -205,8 +220,14 @@ namespace NexenHub.Models
             LayoutRaw = LayoutRaw.Replace("{{PROD_TYPE}}", PROD_TYPE);
             LayoutRaw = LayoutRaw.Replace("{{PROD_QTY}}", PROD_QTY);
             LayoutRaw = LayoutRaw.Replace("{{COMPOUND}}", COMPOUND);
+            LayoutRaw = LayoutRaw.Replace("{{SPEC1}}", SPEC1);
             LayoutRaw = LayoutRaw.Replace("{{AGING_TIME}}", AGING_TIME);
             LayoutRaw = LayoutRaw.Replace("{{EXPIRY_DATE}}", EXPIRY_DATE);
+
+            LayoutRaw = LayoutRaw.Replace("{{COMP_TYPE}}", COMP_TYPE);
+            LayoutRaw = LayoutRaw.Replace("{{COMP_TYPE_NAME}}", COMP_TYPE_NAME);
+            LayoutRaw = LayoutRaw.Replace("{{BATCH_SNO}}", BATCH_SNO);
+            LayoutRaw = LayoutRaw.Replace("{{BATCH_ENO}}", BATCH_ENO);
 
             string width;
             if (TREAD_WIDTH.ToLower() != "none" && !string.IsNullOrEmpty(TREAD_WIDTH))
@@ -245,15 +266,15 @@ namespace NexenHub.Models
         private string ReplaceWcBackground(string LayoutRaw)
         {
             if (WC_ID == "M")
-                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-dark");
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-dark text-light");
             else if (WC_ID == "E")
                 LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-wc-ext");
             else if (WC_ID == "B")
                 LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-wc-bead");
             else if (WC_ID == "P")
-                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-wc-cut text-dark");
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-wc-cut");
             else
-                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-dark");
+                LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-dark text-light");
 
 
             return LayoutRaw;

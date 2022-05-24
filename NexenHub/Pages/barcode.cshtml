@@ -1,0 +1,28 @@
+﻿@page "{argCart}"
+@model NexenHub.Pages.barcodeModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body class="p-1">
+
+    @*<div class="row">*@
+        @*<div class="col-auto">*@
+    <div style="width:235px;">
+        <img style="width:235px;" src="data:image/png;base64,@Model.BARCODE_128">
+        <div class="fw-bold text-center">@Model.CartId.ToUpper()</div>
+    </div>
+        @*</div>*@
+    @*</div>*@
+
+</body>
+</html>

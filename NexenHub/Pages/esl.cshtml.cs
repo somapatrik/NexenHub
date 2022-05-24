@@ -48,6 +48,10 @@ namespace NexenHub.Pages
                     LoadStatus = 1;
                 }   
             }
+            else if (input.Length == 10)
+            {
+
+            }
             else
             {
                 LoadStatus = 2;

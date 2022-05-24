@@ -59,7 +59,8 @@ namespace NexenHub.Models
                     Special = _ID == "40175001" ? true : false;
 
                     // Aktion
-                    IsPresent = dbglob.IsMemberPresent(_ID)?.Rows[0]["STATUS"].ToString() == "1" ? true : false;
+                    if (_ID != "40201035" & _ID != "40181023")
+                        IsPresent = dbglob.IsMemberPresent(_ID)?.Rows[0]["STATUS"].ToString() == "1" ? true : false;
                 }
             }
         }

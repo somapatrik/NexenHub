@@ -21,6 +21,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
 .bg-wc-ext {
     background-color: #0e5fc6;
+    color: white;
 }
 
 .bg-wc-cal {
@@ -28,11 +29,13 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 
 .bg-wc-cut {
-    background-color: #0eae00;
+    background-color: #198754;
+    color: white;
 }
 
 .bg-wc-bead {
     background-color: #df7e00;
+    color: white;
 }
 
 .bg-wc-tbm {
