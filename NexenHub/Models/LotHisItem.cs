@@ -7,11 +7,11 @@ namespace NexenHub.Models
 {
     public class LotHisItem
     {
-        public DateTime transDate;
-        public string locationName;
-        public string lotState;
-        public string itemState;
-        public string qtyUnit;
+        public DateTime transDate { get; set; }
+        public string locationName { get; set; }
+        public string lotState { get; set; }
+        public string itemState { get; set; }
+        public string qtyUnit { get; set; }
 
     }
 }
