@@ -116,6 +116,13 @@ namespace NexenHub.Models
                     Valid = true;
                 }
 
+            }
+        }
+
+        public void LoadHistory()
+        {
+            if (!string.IsNullOrEmpty(_LOT_ID))
+            {
                 foreach (DataRow row in dbglob.GetLotHis(_LOT_ID).Rows)
                 {
                     History.Add(new LotHisItem()
@@ -125,10 +132,9 @@ namespace NexenHub.Models
                         itemState = row["ITEMSTATE"].ToString(),
                         lotState = row["LOTSTATE"].ToString(),
                         qtyUnit = row["QTY"].ToString()
-                    }) ;
-                    
-                }
+                    });
 
+                }
             }
         }
 

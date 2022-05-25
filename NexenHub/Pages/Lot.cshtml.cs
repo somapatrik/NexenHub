@@ -18,6 +18,7 @@ namespace NexenHub.Pages
         public void OnGet()
         {
             lotitem = new LotItem(argLOT);
+            lotitem.LoadHistory();
         }
     }
 }
