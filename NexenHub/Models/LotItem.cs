@@ -138,6 +138,29 @@ namespace NexenHub.Models
             }
         }
 
+        public void RemoveUselessHistory()
+        {
+            if (History.Count > 0)
+            {
+                List<LotHisItem> temp = new List<LotHisItem>();
+                History.ForEach(x=>temp.Add(x));
+                History.Clear();
+
+                foreach (LotHisItem his in temp)
+                {
+                    // Don´t care about repeating history. HISTORY SHOULDN´T REPEAT ITSELF
+                    if (History.Find(x => x.itemState == his.itemState &&
+                                         x.locationName == his.locationName &&
+                                         x.lotState == his.lotState &&
+                                         x.qtyUnit == his.qtyUnit) == null)
+                    {
+                        History.Add(his);
+                    }
+                }
+
+            }
+        }
+
 
     }
 }

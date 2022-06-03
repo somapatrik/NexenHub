@@ -358,7 +358,7 @@ namespace NexenHub.Class
                 query.AppendLine("WHEN HIS.ITEM_STATE = 'S' THEN 'Scrap'");
                 query.AppendLine("ELSE +HIS.ITEM_STATE");
                 query.AppendLine("END ITEMSTATE,");
-                query.AppendLine("(HIS.CURRENT_QTY || HIS.UNIT) QTY");
+                query.AppendLine("(HIS.CURRENT_QTY || ' ' || HIS.UNIT) QTY");
                 query.AppendLine("from TB_IN_H_LOTHIS HIS");
                 query.AppendLine("left");
                 query.AppendLine("join TB_IN_M_LOC loc on LOC.LOC_ID = HIS.LOC_NO");

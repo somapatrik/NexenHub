@@ -19,21 +19,9 @@ namespace NexenHub.Controllers
             {
                 LotItem lot = new LotItem(lotid);
                 lot.LoadHistory();
-                List<LotHisItem> history = new List<LotHisItem>();
+                lot.RemoveUselessHistory();
 
-                foreach (LotHisItem his in lot.History)
-                {
-                    // Don´t care about repeating history. HISTORY SHOULDN´T REPEAT ITSELF
-                    if (history.Find(x=> x.itemState == his.itemState && 
-                                         x.locationName == his.locationName &&
-                                         x.lotState == his.lotState &&
-                                         x.qtyUnit == his.qtyUnit) == null)
-                    {
-                        history.Add(his);
-                    }
-                }
-
-                return history;
+                return lot.History;
             }
             else
             {

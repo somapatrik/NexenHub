@@ -1,0 +1,87 @@
+﻿@page
+@model NexenHub.Pages.Dashboard.TBMDefectModel
+@{
+    Layout = "_EmptyLayout";
+    ViewData["BgClass"] = "bg-dark";
+    ViewData["BodyStyle"] = "overflow-y:hidden;";
+}
+
+
+
+<div class="container-fluid">
+
+    <div class="row text-center text-light g-1">
+
+        <div class="col">
+            <div class="display-1 fw-bolder bg-soma-nexen">TBM</div>
+        </div>
+
+        <div class="col">
+            <div class="display-1 fw-bolder bg-soma-nexen">TBM</div>
+        </div>
+
+    </div>
+
+    <div class="row text-center g-1">
+        <div class="col">
+            <div class="display-2 fw-bolder" style="background-color: #5ff40b;">PLAN</div>
+        </div>
+        <div class="col">
+            <div class="display-2 fw-bolder" style="background-color: #37bf66;">PROD</div>
+        </div>
+        <div class="col">
+            <div class="display-2 fw-bolder" style="background-color: #5ff40b;">PLAN</div>
+        </div>
+        <div class="col">
+            <div class="display-2 fw-bolder" style="background-color: #37bf66;">PROD</div>
+        </div>
+    </div>
+
+    <div class="row text-center g-1">
+        <div class="col">
+            <div class="display-2 fw-bolder bg-white">X</div>
+        </div>
+        <div class="col">
+            <div class="display-2 fw-bolder bg-white">X</div>
+        </div>
+        <div class="col">
+            <div class="display-2 fw-bolder bg-white">X</div>
+        </div>
+        <div class="col">
+            <div class="display-2 fw-bolder bg-white">X</div>
+        </div>
+    </div>
+
+    <div class="row text-center g-1">
+
+        <div class="col-8">
+            <div style="height:70vh;">
+                <img style="object-position:top;object-fit:contain;height:100%;" src="@Model.Image64">
+            </div>
+        </div>
+
+        <div class="col" style="background-color: #eee5a8;">
+
+            <div class="row">
+                <div class="col">
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="display-2">Header</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="display-3 ">Desc</div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
