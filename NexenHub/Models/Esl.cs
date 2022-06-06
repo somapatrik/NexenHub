@@ -276,6 +276,7 @@ namespace NexenHub.Models
             else
                 LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-dark text-light");
 
+            //LayoutRaw = LayoutRaw.Replace("{{CLASS_WC_BACKGROUND}}", "bg-soma-nexen text-light");
 
             return LayoutRaw;
         }

@@ -11,6 +11,30 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public DataTable GetTbmPlan(string EQ_ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_DS_MP_TBM_MONITOR_DEFECT");
+               // db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_EQ_ID", EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_SHIFT_DATE",null, OracleDbType.Date);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable IsMemberPresent(string member_id)
         {
             try
