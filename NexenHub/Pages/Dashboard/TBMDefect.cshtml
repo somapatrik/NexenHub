@@ -1,87 +1,108 @@
-﻿@page "{ID:int:min(1):max(6)}"
+﻿@page "{ID:int:min(1):max(6)}/{Refresh:int:min(0):max(120)?}"
 @model NexenHub.Pages.Dashboard.TBMDefectModel
 @{
-    Layout = "_EmptyLayout";
-    ViewData["BgClass"] = "bg-dark";
-    ViewData["BodyStyle"] = "overflow-y:hidden;";
+    Layout = null;
+    bool doRefresh = Model.Refresh > 0;
 }
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    @{
+        if (doRefresh)
+        {
+            <meta http-equiv="refresh" content="@Model.Refresh">
+        }
+           
+    }
 
 
-<div class="container-fluid">
+    <title>@Model.LeftName | @Model.RightName</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body class="bg-dark" style="overflow-y:hidden;">
 
-    <div class="row text-center text-light g-1">
+    <div class="container-fluid">
 
-        <div class="col">
-            <div class="display-1 fw-bolder bg-soma-nexen">@Model.LeftName</div>
+        <div class="row text-center text-light g-1">
+
+            <div class="col">
+                <div class="display-1 fw-bolder bg-soma-nexen">@Model.LeftName</div>
+            </div>
+
+            <div class="col">
+                <div class="display-1 fw-bolder bg-soma-nexen">@Model.RightName</div>
+            </div>
+
         </div>
 
-        <div class="col">
-            <div class="display-1 fw-bolder bg-soma-nexen">@Model.RightName</div>
-        </div>
-
-    </div>
-
-    <div class="row text-center g-1">
-        <div class="col">
-            <div class="display-2 fw-bolder" style="background-color: #5ff40b;">PLAN</div>
-        </div>
-        <div class="col">
-            <div class="display-2 fw-bolder" style="background-color: #37bf66;">PROD</div>
-        </div>
-        <div class="col">
-            <div class="display-2 fw-bolder" style="background-color: #5ff40b;">PLAN</div>
-        </div>
-        <div class="col">
-            <div class="display-2 fw-bolder" style="background-color: #37bf66;">PROD</div>
-        </div>
-    </div>
-
-    <div class="row text-center g-1">
-        <div class="col">
-            <div class="display-2 fw-bolder bg-white">@Model.LeftPlan</div>
-        </div>
-        <div class="col">
-            <div class="display-2 fw-bolder bg-white">X</div>
-        </div>
-        <div class="col">
-            <div class="display-2 fw-bolder bg-white">@Model.RightPlan</div>
-        </div>
-        <div class="col">
-            <div class="display-2 fw-bolder bg-white">X</div>
-        </div>
-    </div>
-
-    <div class="row text-center g-1">
-
-        <div class="col-8">
-            <div style="height:70vh;">
-                <img style="object-position:top;object-fit:contain;height:100%;" src="@Model.Image64">
+        <div class="row text-center g-1">
+            <div class="col">
+                <div class="display-2 fw-bolder" style="background-color: #5ff40b;">PLAN</div>
+            </div>
+            <div class="col">
+                <div class="display-2 fw-bolder" style="background-color: #37bf66;">PROD</div>
+            </div>
+            <div class="col">
+                <div class="display-2 fw-bolder" style="background-color: #5ff40b;">PLAN</div>
+            </div>
+            <div class="col">
+                <div class="display-2 fw-bolder" style="background-color: #37bf66;">PROD</div>
             </div>
         </div>
 
-        <div class="col" style="background-color: #eee5a8;">
+        <div class="row text-center g-1">
+            <div class="col">
+                <div class="display-2 fw-bolder bg-white">@Model.planLeft.PlanSummary</div>
+            </div>
+            <div class="col">
+                <div class="display-2 fw-bolder bg-white">@Model.LeftProd</div>
+            </div>
+            <div class="col">
+                <div class="display-2 fw-bolder bg-white">@Model.planRight.PlanSummary</div>
+            </div>
+            <div class="col">
+                <div class="display-2 fw-bolder bg-white">@Model.RightProd</div>
+            </div>
+        </div>
 
-            <div class="row">
-                <div class="col">
+        <div class="row text-center g-1">
 
+            <div class="col-8">
+                <div style="height:70vh;">
+                    <img style="object-position:top;object-fit:contain;height:100%;" src="@Model.Image64">
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col">
-                    <div class="display-2">Header</div>
-                </div>
-            </div>
+            <div class="col" style="background-color: #eee5a8;">
 
-            <div class="row">
-                <div class="col">
-                    <div class="display-3 ">Desc</div>
+                @*<div class="row">
+                    <div class="col">
+
+                    </div>
+                </div>*@
+
+                <div class="row">
+                    <div class="col">
+                        <div class="display-2 fw-bold">@Model.DefectHeader</div>
+                    </div>
                 </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="display-3"></div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
 
     </div>
 
-</div>
+</body>
+</html>

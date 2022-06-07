@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NexenHub.Class;
+using NexenHub.Models;
 
 namespace NexenHub.Pages.Dashboard
 {
@@ -20,13 +21,19 @@ namespace NexenHub.Pages.Dashboard
         
         public string Left_EQ_ID { get; set; }
         public string Right_EQ_ID { get; set; }
-        
         public string LeftName { get; set; }
         public string RightName { get; set; }
-        public string LeftPlan { get; set; }
-        public string RightPlan { get; set; }
+        public string LeftProd { get; set; }
+        public string RightProd { get; set; }
 
+        public WorkorderPlanTBM planLeft { get; set; }
 
+        public WorkorderPlanTBM planRight { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public int Refresh { get; set; }
+
+        public string DefectHeader { get; set; }
 
         public void OnGet(int ID)
         {
@@ -72,23 +79,44 @@ namespace NexenHub.Pages.Dashboard
             }
 
             GetPlan();
-            GetImageFromFtp();
+            GetProd();
+            GetImageInfo();
+            //GetImageFromFtp();
         }
 
         private void GetPlan()
         {
-            DataTable dt = dbglob.GetTbmPlan("10033");
+            planLeft = new WorkorderPlanTBM(Left_EQ_ID);
+            planRight = new WorkorderPlanTBM(Right_EQ_ID);
+            
         }
 
-        private void GetImageFromFtp()
+        private void GetProd()
+        {
+            LeftProd = dbglob.MachineProdActDay(Left_EQ_ID).Rows[0]["PROD"].ToString();
+            RightProd = dbglob.MachineProdActDay(Right_EQ_ID).Rows[0]["PROD"].ToString();
+        }
+
+        private void GetImageInfo()
+        {
+            DataTable dt = dbglob.GetDefectMonitoringPicture();
+            if (dt.Rows.Count > 0)
+            {
+                DefectHeader = dt.Rows[0]["BAD_ID"].ToString();
+                GetImageFromFtp(dt.Rows[0]["IMG_NAME"].ToString());
+            }
+        }
+
+        private void GetImageFromFtp(string imgname)
         {
             string ftp = "ftp://172.15.0.99:21/";
-            string ftpFolder = "EP/WORK_GUIDE/";
+            string ftpFolder = "EP/DEFECT_MONITORING/";
             try
             {
-                string fileName = "EV-11760-VM-003-000.png";
+                //string fileName = "EV-11760-VM-003-000.png";
 
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftp + ftpFolder + fileName);
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftp + ftpFolder + imgname);
+               // FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://"+fullpath);
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
 
                 request.Credentials = new NetworkCredential("NXMESEP_FTP", "P500@12345!#");

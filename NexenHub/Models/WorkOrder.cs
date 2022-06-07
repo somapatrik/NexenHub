@@ -45,7 +45,8 @@ namespace NexenHub.Models
         {
             WO_EXISTS = false;
             DataTable dt = dbglob.GetWorkOrderFromEQ(eq_id);
-            if (dt.Rows.Count > 0) {
+            if (dt.Rows.Count > 0) 
+            {
                 WO_EXISTS = true;
                 WO_NO = dt.Rows[0]["WO_NO"].ToString();
                 WO_STIME = dt.Rows[0]["WO_STIME"].ToString();

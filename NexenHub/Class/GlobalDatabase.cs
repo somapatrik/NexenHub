@@ -12,6 +12,27 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetDefectMonitoringPicture()
+        {
+            try
+            {
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select BAD_ID, IMG_NAME, IMG_PATH");
+                query.AppendLine("from TB_QA_M_DEFECT_MON");
+                query.AppendLine("where DISPLAY_YN = 'Y'");
+
+                DBOra db = new DBOra(query.ToString());
+                DataTable dt = db.ExecTable();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetTbmPlan(string EQ_ID)
         {
             try
@@ -671,7 +692,7 @@ namespace NexenHub.Class
             }
         }
 
-        public DataTable MachineProdAct(string EQ_ID)
+        public DataTable MachineProdActByHour(string EQ_ID)
         {
             try
             {
@@ -683,6 +704,27 @@ namespace NexenHub.Class
                 query.AppendLine("AND EQ_ID=:EQID");
                 query.AppendLine("GROUP BY SUBSTR(PROD_TIME,9,2)");
                 query.AppendLine("ORDER BY HOURPROD");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("EQID", EQ_ID, OracleDbType.Varchar2);
+                return db.ExecTable();
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable MachineProdActDay(string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT SUM(PROD_QTY) AS PROD");
+                query.AppendLine("FROM TB_PR_M_PROD ");
+                query.AppendLine("WHERE PROD_DATE = (SELECT TO_CHAR(SYSDATE - 6/24, 'YYYYMMDD') FROM DUAL)");
+                query.AppendLine("AND USE_YN='Y'");
+                query.AppendLine("AND EQ_ID=:EQID");
 
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("EQID", EQ_ID, OracleDbType.Varchar2);
@@ -769,7 +811,6 @@ namespace NexenHub.Class
             }
         }
 
-        // TODO: CART_SELECT
         public DataTable GetInputedMaterial(string EQ_ID)
         {
             try
@@ -852,11 +893,6 @@ namespace NexenHub.Class
             }
         }
 
-        /// <summary>
-        /// Year production
-        /// </summary>
-        /// <param name="year">YYYY format</param>
-        /// <returns></returns>
         public DataTable GetProductionYear(int year = 0)
         {
             try
