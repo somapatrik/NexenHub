@@ -102,7 +102,7 @@ namespace NexenHub.Pages.Dashboard
             DataTable dt = dbglob.GetDefectMonitoringPicture();
             if (dt.Rows.Count > 0)
             {
-                DefectHeader = dt.Rows[0]["BAD_ID"].ToString();
+                //DefectHeader = dt.Rows[0]["BAD_ID"].ToString();
                 GetImageFromFtp(dt.Rows[0]["IMG_NAME"].ToString());
             }
         }

@@ -9,19 +9,20 @@ namespace NexenHub.Models
 {
     public class WorkorderPlanTBM
     {
-        public List<WorkorderPlanItem> plannedWorkorders { get; set; }
-
         public string EQ_ID { get; set; }
 
-        public int PlanSummary { 
-            get 
+        public int PlanSummary
+        {
+            get
             {
                 if (plannedWorkorders != null)
                     return plannedWorkorders.Select(x => x.FINAL_PLAN).Sum();
                 else
                     return 0;
-            } 
+            }
         }
+
+        public List<WorkorderPlanItem> plannedWorkorders { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
