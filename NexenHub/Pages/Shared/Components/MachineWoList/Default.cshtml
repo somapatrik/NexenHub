@@ -18,16 +18,20 @@
                 {
                     tst = "list-group-item-danger";
 
-                    <div class="list-group-item @tst">
-                        <div class="d-flex w-100 justify-content-between mb-2">
-                            <span>@wo.WO_NO</span>
-                            <small>@wo.STIME_DATE</small>
+                        <div class="list-group-item @tst">
+                            <div class="d-flex w-100 justify-content-between mb-2">
+                                <span>@wo.WO_NO</span>
+                                <small>@wo.STIME_DATE.ToString("dd.MM. HH:mm:ss") @Html.Raw(" -> ") @wo.ETIME_DATE.ToString("dd.MM. HH:mm:ss")</small>
+                            </div>
+                            <div class="d-flex w-100 justify-content-between">
+                                <span>@wo.ITEM_ID</span>
+                                <span>@wo.ITEM_NAME</span>
+                            </div>
+                            <div class="d-flex w-100 justify-content-between">
+                                <span></span>
+                                <span>@wo.WO_QTY @wo.UNIT</span>
+                            </div>
                         </div>
-                        <div class="d-flex w-100 justify-content-between">
-                            <span>@wo.ITEM_ID</span>
-                            <span>@wo.ITEM_NAME</span>
-                        </div>
-                    </div>
                 }
             }
         </div>
@@ -47,16 +51,32 @@
                         tst = "list-group-item-warning";
                     }
 
-                    <div class="list-group-item @tst">
-                        <div class="d-flex w-100 justify-content-between mb-2">
-                            <span>@wo.WO_NO</span>
-                            <small>@wo.STIME_DATE</small>
-                        </div>
-                        <div class="d-flex w-100 justify-content-between">
-                            <span>@wo.ITEM_ID</span>
-                            <span>@wo.ITEM_NAME</span>
-                        </div>
-                    </div>
+            <div class="list-group-item @tst">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                    <span>@wo.WO_NO</span>
+                    <small>
+                        @{
+                            if (wo.WO_PROC_STATE == "S")
+                            {
+                                @wo.STIME_DATE.ToString("dd.MM. HH:mm:ss")
+                            }
+                            else if (wo.WO_PROC_STATE == "W" && !string.IsNullOrEmpty(wo.PLAN_STIME) && !string.IsNullOrEmpty(wo.PLAN_ETIME))
+                            {
+                                @wo.PLAN_STIME_DATE.ToString("dd.MM. HH:mm:ss") @Html.Raw(" -> ") @wo.PLAN_ETIME_DATE.ToString("dd.MM. HH:mm:ss")
+                            }
+                        }
+
+                    </small>
+                </div>
+                <div class="d-flex w-100 justify-content-between">
+                    <span>@wo.ITEM_ID</span>
+                    <span>@wo.ITEM_NAME</span>
+                </div>
+                <div class="d-flex w-100 justify-content-between">
+                    <span></span>
+                    <span>@wo.WO_QTY @wo.UNIT</span>
+                </div>
+            </div>
                 }
             }
         </div>

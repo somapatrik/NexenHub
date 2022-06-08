@@ -147,8 +147,10 @@ namespace NexenHub.Class
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT /*+ INDEX(TB_PL_M_WRKORD IX_PL_M_WRKORD_5)*/");
                 query.AppendLine("WO_NO,");
-                query.AppendLine("WO_STIME,");
-                query.AppendLine("to_date(WO_STIME,'YYYYMMDDHH24MISS') STIME_DATE,");
+                query.AppendLine("to_date(WO_STIME,'YYYYMMDDHH24MISS') WO_STIME,");
+                query.AppendLine("to_date(WO_ETIME,'YYYYMMDDHH24MISS') WO_ETIME,");
+                query.AppendLine("to_date(MIXER_PROD_STIME,'YYYYMMDDHH24MISS') PLAN_STIME,");
+                query.AppendLine("to_date(MIXER_PROD_ETIME,'YYYYMMDDHH24MISS') PLAN_ETIME,");
                 query.AppendLine("PROD_TYPE,");
                 query.AppendLine("wo.ITEM_ID,");
                 query.AppendLine("item.ITEM_NAME,");
@@ -186,8 +188,10 @@ namespace NexenHub.Class
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("select");
                 query.AppendLine("WO_NO,");
-                query.AppendLine("WO_STIME,"); 
-                query.AppendLine("WO_ETIME,");
+                query.AppendLine("to_date(WO_STIME,'yyyymmddhh24miss') WO_STIME,"); 
+                query.AppendLine("to_date(WO_ETIME,'yyyymmddhh24miss') WO_ETIME,");
+                query.AppendLine("to_date(MIXER_PROD_STIME,'YYYYMMDDHH24MISS') PLAN_STIME,");
+                query.AppendLine("to_date(MIXER_PROD_ETIME,'YYYYMMDDHH24MISS') PLAN_ETIME,");
                 query.AppendLine("PROD_TYPE,");
                 query.AppendLine("ITEM_ID,");
                 query.AppendLine("WO_QTY,");
@@ -841,7 +845,7 @@ namespace NexenHub.Class
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT ");
                 query.AppendLine("WO_NO,  ");
-                query.AppendLine("TO_DATE(WO_STIME,'YYYYMMDDHH24MISS') AS WO_STIME, ");
+                query.AppendLine("to_date(WO_STIME,'yyyymmddhh24miss') WO_STIME, ");
                 query.AppendLine("PROD_TYPE,  ");
                 query.AppendLine("WRK.ITEM_ID AS ITEM_ID, ");
                 query.AppendLine("ITEM_NAME, WO_QTY, PROD_QTY, UNIT, TEST_YN, PROTOTYPE_ID, PROTOTYPE_VER, FN_CM_GET_ITEM_CHANEL_XCHPF('P500',WRK.ITEM_ID) AS XCHPF ");

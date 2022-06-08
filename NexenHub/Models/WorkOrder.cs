@@ -12,6 +12,8 @@ namespace NexenHub.Models
         public string WO_NO { get; set; }
         public string WO_STIME { get; set; }
         public string WO_ETIME { get; set; }
+        public string PLAN_STIME { get; set; }
+        public string PLAN_ETIME { get; set; }
         public string PROD_TYPE { get; set; }
         public string ITEM_ID { get; set; }
         public string ITEM_NAME { get; set; }
@@ -37,7 +39,34 @@ namespace NexenHub.Models
         public string WO_ChildItemID { get; set; }
         public string WO_ChildItemName { get; set; }
         public string WO_ChildItemCompound { get; set; }
-        public string STIME_DATE { get; set; }
+
+        public DateTime STIME_DATE { 
+            get 
+            {
+                return string.IsNullOrEmpty(WO_STIME) ? DateTime.MinValue : DateTime.Parse(WO_STIME);
+            } 
+        }
+
+        public DateTime ETIME_DATE {
+            get
+            {
+                return string.IsNullOrEmpty(WO_ETIME) ? DateTime.MinValue : DateTime.Parse(WO_ETIME);
+            }
+        }
+
+        public DateTime PLAN_STIME_DATE {
+            get
+            {
+                return string.IsNullOrEmpty(PLAN_STIME) ? DateTime.MinValue : DateTime.Parse(PLAN_STIME);
+            }
+        }
+
+        public DateTime PLAN_ETIME_DATE {
+            get
+            {
+                return string.IsNullOrEmpty(PLAN_ETIME) ? DateTime.MinValue : DateTime.Parse(PLAN_ETIME);
+            }
+        }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
@@ -114,6 +143,8 @@ namespace NexenHub.Models
                     WO_NO = dt.Rows[0]["WO_NO"].ToString();
                     WO_STIME = dt.Rows[0]["WO_STIME"].ToString();
                     WO_ETIME = dt.Rows[0]["WO_ETIME"].ToString();
+                    PLAN_STIME = dt.Rows[0]["PLAN_STIME"].ToString();
+                    PLAN_ETIME = dt.Rows[0]["PLAN_ETIME"].ToString();
                     PROD_TYPE = dt.Rows[0]["PROD_TYPE"].ToString();
                     ITEM_ID = dt.Rows[0]["ITEM_ID"].ToString();
                     WO_QTY = dt.Rows[0]["WO_QTY"].ToString();

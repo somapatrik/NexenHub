@@ -36,7 +36,9 @@ namespace NexenHub.Models
                     WorkOrder wo = new WorkOrder();
                     wo.WO_NO = row["WO_NO"].ToString();
                     wo.WO_STIME = row["WO_STIME"].ToString();
-                    wo.STIME_DATE = row["STIME_DATE"].ToString();
+                    wo.WO_ETIME = row["WO_ETIME"].ToString();
+                    wo.PLAN_STIME = row["PLAN_STIME"].ToString();
+                    wo.PLAN_ETIME = row["PLAN_ETIME"].ToString();
                     wo.PROD_TYPE = row["PROD_TYPE"].ToString();
                     wo.ITEM_ID = row["ITEM_ID"].ToString();
                     wo.ITEM_NAME = row["ITEM_NAME"].ToString();
