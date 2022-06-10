@@ -41,25 +41,37 @@
                                 Machines
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/MachineList">List of machines</a>
+                                <a class="dropdown-item" href="/MachineList">List</a>
                                 <a class="dropdown-item" href="/MachineReport">Report</a>
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/CartsInfo">E-paper</a>
+                            <a class="nav-link" asp-area="" asp-page="/CartsInfo">ESL</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-page="/Rex">ReX</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dashboards
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/status/T">TBM</a>
-                                <a class="dropdown-item" href="/Status/M">Mix</a>
-                                <a class="dropdown-item" href="/status/C">Calender</a>
-                                <a class="dropdown-item" href="/Status/B">Bead</a>
-                                <a class="dropdown-item" href="/Status/E">Extruder</a>
-                                <a class="dropdown-item" href="/Status/P">Cutting</a>
-                                <a class="dropdown-item" href="/Status">All</a>
+                                <a class="dropdown-item" target="_blank" href="/dashboard/tv">PM & Network</a>
+                                <a class="dropdown-item" target="_blank" href="/dashboard/tbmdefect/1/60">TBM Defect monitoring</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Downtimes
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" target="_blank" href="/dashboard/status/T">TBM</a>
+                                <a class="dropdown-item" target="_blank" href="/dashboard/Status/M">Mix</a>
+                                <a class="dropdown-item" target="_blank" href="/dashboard/status/C">Calender</a>
+                                <a class="dropdown-item" target="_blank" href="/dashboard/Status/B">Bead</a>
+                                <a class="dropdown-item" target="_blank" href="/dashboard/Status/E">Extruder</a>
+                                <a class="dropdown-item" target="_blank" href="/dashboard/Status/P">Cutting</a>
+                                <a class="dropdown-item" target="_blank" href="/dashboard/Status">All</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -75,7 +87,6 @@
 
                     <div class="d-flex">
                         <div class="input-group">
-                            <a class="btn btn-success" asp-page="/Rex">Download ReX</a>
                             <input class="text-center form-control" placeholder="LOT" onkeyup="searchMat(event,this)" />
                         </div>
                     </div>

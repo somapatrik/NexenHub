@@ -5,79 +5,139 @@
 
 <div class="container">
 
-    <div class="btn-toolbar mb-3" role="toolbar">
+    <div class="accordion accordion-flush" id="accordionControl">
 
-        <div class="btn-group " role="group">
+        @{foreach (string proc in Model.Procs)
+            {
 
-            <form method="get">
-                <button class="page-link bg-dark text-light border-secondary mr-3">ALL</button>
-            </form>
 
-            <form method="post">
-                <nav>
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="M">MIX</button>
-                        </li>
-                        <li class="page-item">
-                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="C">CAL</button>
-                        </li>
-                        <li class="page-item">
-                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="B">BEAD</button>
-                        </li>
-                        <li class="page-item">
-                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="E">EXT</button>
-                        </li>
-                        <li class="page-item">
-                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="P">CUT</button>
-                        </li>
-                        <li class="page-item">
-                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="T">TBM</button>
-                        </li>
-                        <li class="page-item">
-                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="U">CUR</button>
-                        </li>
-                    </ul>
-                </nav>
-            </form>
+                <div class="accordion-item">
 
-        </div>
+                    <h2 class="accordion-header" id="heading_@proc">
+                        <button class="accordion-button text-light" style="background-color: #434c57; " type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@proc" aria-expanded="true" aria-controls="#collapse_@proc">
+                            @Html.Raw(proc)
+                        </button>
+                    </h2>
+
+                    <div id="collapse_@proc" class="bg-soma-dark accordion-collapse collapse " aria-labelledby="heading_@proc" data-bs-parent="#accordionControl">
+                        <div class="accordion-body">
+
+                            <div class="row row-cols-1 row-cols-md-4 g-4 mb-4">
+
+                                @foreach (Class.MachineListObject man in Model.DbList.FindAll(x => x.WC_ID == proc))
+                                {
+
+                                    <div class="col">
+                                        <div class="card h-100 caption-top">
+                                            <div class="card-header">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>@man.Name</div>
+                                                    <div>@man.EQ_ID</div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-evenly">
+                                                    <div>@man.WC_ID</div>
+                                                    <div>@man.PROC_ID</div>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <a class="flex-grow-1 btn btn-success btn-sm m-1" href="/MachineProfile/@man.EQ_ID">Detail</a>
+                                                    <a class="flex-grow-1 btn btn-primary btn-sm m-1" href="/MachineReport/@man.EQ_ID/@DateTime.Now.AddHours(-6).ToString("yyyy-MM-dd")">Report</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+            }
+        }
+
+
     </div>
+                    </div>
+                    @*<div class="btn-toolbar mb-3" role="toolbar">
 
-    <div>
-        <table class="table table-sm table-striped table-hover table-secondary text-center">
+                        <div class="btn-group " role="group">
 
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col" class="text-left">NAME</th>
-                    <th scope="col">WC</th>
-                    <th scope="col">PROC</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
+                            <form method="get">
+                                <button class="page-link bg-dark text-light border-secondary mr-3">ALL</button>
+                            </form>
 
-                @{ foreach (var machine in Model.DbList)
-                    {
+                            <form method="post">
+                                <nav>
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item">
+                                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="M">MIX</button>
+                                        </li>
+                                        <li class="page-item">
+                                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="C">CAL</button>
+                                        </li>
+                                        <li class="page-item">
+                                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="B">BEAD</button>
+                                        </li>
+                                        <li class="page-item">
+                                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="E">EXT</button>
+                                        </li>
+                                        <li class="page-item">
+                                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="P">CUT</button>
+                                        </li>
+                                        <li class="page-item">
+                                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="T">TBM</button>
+                                        </li>
+                                        <li class="page-item">
+                                            <button class="page-link bg-dark text-light border-secondary" asp-page-handler="filter" asp-route-id="U">CUR</button>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </form>
 
-                        
+                        </div>
+                    </div>
+
+                    <div>
+                        <table class="table table-sm table-striped table-hover table-secondary text-center">
+
+                            <thead>
                                 <tr>
-                                    <th scope="row">@machine.EQ_ID</th>
-                                    <td>@machine.Name</td>
-                                    <td>@machine.WC_ID</td>
-                                    <td>@machine.PROC_ID</td>
-                                    <td class="justify-content-between">
-                                        <a class="btn btn-success btn-sm" href="/MachineProfile/@machine.EQ_ID">Detail</a>
-                                        <a class="btn btn-primary btn-sm" href="/MachineReport/@machine.EQ_ID/@DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd")/@DateTime.Now.ToString("yyyy-MM-dd")">Week report</a>
-                                    </td>
+                                    <th scope="col">ID</th>
+                                    <th scope="col" class="text-left">NAME</th>
+                                    <th scope="col">WC</th>
+                                    <th scope="col">PROC</th>
+                                    <th scope="col"></th>
                                 </tr>
-                        
-                    }
-                }
+                            </thead>
+                            <tbody>
 
-            </tbody>
-        </table>
-    </div>
+                                @{ foreach (var machine in Model.DbList)
+                                    {
 
-</div>
+
+                                                <tr>
+                                                    <th scope="row">@machine.EQ_ID</th>
+                                                    <td>@machine.Name</td>
+                                                    <td>@machine.WC_ID</td>
+                                                    <td>@machine.PROC_ID</td>
+                                                    <td class="justify-content-between">
+                                                        <a class="btn btn-success btn-sm" href="/MachineProfile/@machine.EQ_ID">Detail</a>
+                                                        <a class="btn btn-primary btn-sm" href="/MachineReport/@machine.EQ_ID/@DateTime.Now.AddHours(-6).ToString("yyyy-MM-dd")">Shift report</a>
+                                                    </td>
+                                                </tr>
+
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>*@
+
+

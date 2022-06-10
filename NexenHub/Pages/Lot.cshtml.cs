@@ -15,10 +15,16 @@ namespace NexenHub.Pages
 
         public LotItem lotitem;
 
+        public Esl eslLayout { get; set; }
+
         public void OnGet()
         {
             lotitem = new LotItem(argLOT);
             lotitem.LoadHistory();
+
+            eslLayout = new Esl();
+            eslLayout.LOT_ID = argLOT;
+            eslLayout.LoadLayout();
         }
     }
 }

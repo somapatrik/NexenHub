@@ -12,6 +12,31 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable BarcodeToLotId(string code)
+        {
+            try
+            {
+                
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT");
+                query.AppendLine("VMI_BARCODE BARCODE,");
+                query.AppendLine("VMI_LOT_ID TBM_LOT_ID,");
+                query.AppendLine("CURE_LOT_ID CURE_LOT_ID");
+                query.AppendLine("FROM TB_IN_M_BARCODE_TRACE");
+                query.AppendLine("where (VMI_BARCODE = :code AND LENGTH(:code) = 10) ");
+                query.AppendLine("OR ((VMI_LOT_ID = :code OR CURE_LOT_ID = :code) AND LENGTH(:code) = 15)");
+
+                DBOra db = new DBOra(query.ToString());
+                DataTable dt = db.ExecTable();
+                return dt;
+            } 
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetDefectMonitoringPicture()
         {
             try

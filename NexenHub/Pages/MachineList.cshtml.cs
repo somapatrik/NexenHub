@@ -11,7 +11,14 @@ namespace NexenHub.Pages
 {
     public class MachineListModel : PageModel
     {
-        public DataTable DbData { get; set; }
+        public List<MachineListObject> MixMachines => DbList.FindAll(x => x.WC_ID == "M");
+        public List<MachineListObject> ExtMachines => DbList.FindAll(x => x.WC_ID == "E");
+
+        public List<MachineListObject> CalMachines => DbList.FindAll(x => x.WC_ID == "C");
+
+        public List<String> Procs => DbList.GroupBy(x => x.WC_ID).Select(f=>f.Key).ToList();
+
+
         public List<MachineListObject> DbList;
 
         private GlobalDatabase dbglobal = new GlobalDatabase();
@@ -30,7 +37,7 @@ namespace NexenHub.Pages
 
         private void CreateList()
         {
-
+            // Make static
             string[] DoNotShow =
             {
                 "10004",

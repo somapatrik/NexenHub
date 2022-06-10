@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NexenHub.Class;
 
-namespace NexenHub.Pages
+namespace NexenHub.Pages.Dashboard
 {
     public class tvModel : PageModel
     {
