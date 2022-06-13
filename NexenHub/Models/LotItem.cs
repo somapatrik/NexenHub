@@ -26,6 +26,16 @@ namespace NexenHub.Models
             }
         }
 
+        public DateTime dateLotTime
+        {
+            get
+            {
+                DateTime outdate = DateTime.MinValue;
+                DateTime.TryParseExact(LotTime, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out outdate);
+                return outdate;
+            }
+        }
+
         public DateTime dateExpiry
         {
             get
@@ -46,23 +56,32 @@ namespace NexenHub.Models
             }
         }
 
-        public string LotID;
-        public string ID;
-        public string Name;
-        public string State;
-        public string CartState;
-        public double StockQty;
-        public string LotState;
-        public string Grp;
-        public string Kind;
-        public string ProcId;
-        public string ExpiryDate;
-        public string EventTime;
-        public bool ExpiryDateResult;
-        public string Division;
-        public bool Valid;
+        public string LotID { get; set; }
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public string State { get; set; }
+        public string EQ_ID { get; set; }
+        public string CartState { get; set; }
+        public double StockQty { get; set; }
+        public string LotState { get; set; }
+        public string Grp { get; set; }
+        public string Kind { get; set; }
+        public string WC_ID { get; set; }
+        public string ProcId { get; set; }
+        
+        public string LotTime; // { get; set; }
+        
+        public string ExpiryDate; // { get; set; }
+        
+        public string EventTime; // { get; set; }
+        public bool ExpiryDateResult { get; set; }
+        public string Division { get; set; }
 
-        public List<LotHisItem> History;
+        public bool Test { get; set; }
+
+        public bool Valid { get; set; }
+
+        public List<LotHisItem> History { get; set; }
 
         public LotItem(string LOTID)
         {
@@ -99,20 +118,24 @@ namespace NexenHub.Models
                 DataTable dt = dbglob.GetLotInfo(_LOT_ID);
                 if (dt.Rows.Count > 0)
                 {
-                    LotID = dt.Rows[0]["INPUT_LOT_ID"].ToString();
-                    ID = dt.Rows[0]["INPUT_ITEM_ID"].ToString();
-                    Name = dt.Rows[0]["INPUT_ITEM_NAME"].ToString();
-                    State = dt.Rows[0]["INPUT_ITEM_STATE"].ToString();
-                    CartState = dt.Rows[0]["INPUT_ITEM_CART_STATE"].ToString();
-                    StockQty = double.Parse(dt.Rows[0]["INPUT_ITEM_STOCK_QTY"].ToString());
-                    LotState = dt.Rows[0]["INPUT_ITEM_LOT_STATE"].ToString();
-                    Grp = dt.Rows[0]["INPUT_ITEM_GRP"].ToString();
-                    Kind = dt.Rows[0]["INPUT_ITEM_KIND"].ToString();
-                    ProcId = dt.Rows[0]["INPUT_ITEM_PROC_ID"].ToString();
-                    ExpiryDate = dt.Rows[0]["INPUT_ITEM_EXPIRY_DATE"].ToString();
-                    EventTime = dt.Rows[0]["INPUT_ITEM_EVENT_TIME"].ToString();
-                    ExpiryDateResult = dt.Rows[0]["INPUT_ITEM_EXPIRY_DATE_RESULT"].ToString() == "1" ? true : false;
-                    Division = dt.Rows[0]["INPUT_ITEM_DEVISION"].ToString();
+                    LotID = dt.Rows[0]["LOT_ID"].ToString();
+                    ID = dt.Rows[0]["ITEM_ID"].ToString();
+                    Name = dt.Rows[0]["ITEM_NAME"].ToString();
+                    State = dt.Rows[0]["ITEM_STATE"].ToString();
+                    CartState = dt.Rows[0]["CART_STATE"].ToString();
+                    StockQty = double.Parse(dt.Rows[0]["STOCK_QTY"].ToString());
+                    LotState = dt.Rows[0]["ITEM_STATE"].ToString();
+                    Grp = dt.Rows[0]["ITEM_GRP"].ToString();
+                    Kind = dt.Rows[0]["ITEM_KIND"].ToString();
+                    ProcId = dt.Rows[0]["ITEM_PROC_ID"].ToString();
+                    LotTime = dt.Rows[0]["LOT_TIME"].ToString();
+                    ExpiryDate = dt.Rows[0]["EXPIRY_DATE"].ToString();
+                    EventTime = dt.Rows[0]["EVENT_TIME"].ToString();
+                    ExpiryDateResult = dt.Rows[0]["EXPIRY_DATE_RESULT"].ToString() == "1" ? true : false;
+                    Division = dt.Rows[0]["DEVISION"].ToString();
+                    Test = dt.Rows[0]["PROD_TEST_YN"].ToString() == "Y";
+                    WC_ID = dt.Rows[0]["PROD_WC_ID"].ToString();
+                    EQ_ID = dt.Rows[0]["EQ_ID"].ToString();
                     Valid = true;
                 }
 

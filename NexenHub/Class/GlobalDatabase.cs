@@ -12,6 +12,26 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable LoadItem(string ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_MON_ITEM");
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_ITEM_ID", ID, OracleDbType.Varchar2);
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+                DataTable dt = db.ExecProcedure();
+                return dt;
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable BarcodeToLotId(string code)
         {
             try
@@ -28,6 +48,7 @@ namespace NexenHub.Class
                 query.AppendLine("OR ((VMI_LOT_ID = :code OR CURE_LOT_ID = :code) AND LENGTH(:code) = 15)");
 
                 DBOra db = new DBOra(query.ToString());
+                db.AddParameter("code", code, OracleDbType.Varchar2);
                 DataTable dt = db.ExecTable();
                 return dt;
             } 
@@ -455,7 +476,7 @@ namespace NexenHub.Class
         {
             try
             {
-                DBOra db = new DBOra("SP_MO_MR_INPUT_ITEM_INFO");
+                DBOra db = new DBOra("SP_MO_MR_INPUT_ITEM_INFO_2");
 
                 db.AddParameter("AS_PLANT_ID", "P500", OracleDbType.Varchar2);
                 db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
