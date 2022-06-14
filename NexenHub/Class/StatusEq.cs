@@ -13,6 +13,8 @@ namespace NexenHub.Class
         public string Item_id { get; set; }
         public string BgColor { get; set; }
         public string FrColor { get; set; }
+
+        public DateTime Start { get; set; }
     }
 
 }

@@ -718,7 +718,8 @@ namespace NexenHub.Class
                 query.AppendLine("CODE.NONWRK_CODE,");
                 query.AppendLine("CODE.NONWRK_NAME_1033 as NON_NAME, ");
                 query.AppendLine("WRK.ITEM_ID,");
-                query.AppendLine("EQ.WC_ID");
+                query.AppendLine("EQ.WC_ID,");
+                query.AppendLine("to_date(NON.NONWRK_STIME, 'yyyymmddhh24miss') STIME");
                 query.AppendLine("FROM TB_EQ_M_EQUIP EQ");
                 query.AppendLine("LEFT JOIN TB_CM_M_NONWRK NON ON NON.EQ_ID = EQ.EQ_ID AND NON.NONWRK_ETIME is null");
                 query.AppendLine("LEFT JOIN TB_CM_M_NONWRKCODE CODE on CODE.NONWRK_CODE = NON.NONWRK_CODE");
