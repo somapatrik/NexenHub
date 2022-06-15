@@ -60,7 +60,12 @@ namespace NexenHub.Models
                 LOT_HISTORY = lotItem.History,
                 TEST = lotItem.Test,
                 ITEM_DETAIL = lotItem.WC_ID == "U" ? FillItemInfo(new Item(lotItem.ID)) : null,
-                EQ_ID = lotItem.EQ_ID
+                EQ_ID = lotItem.EQ_ID,
+                PROD_TYPE = lotItem.ProdType,
+                PROD_TYPE_DESC = lotItem.ProdTypeDesc,
+                EQ_NAME = lotItem.EQ_NAME,
+                USER_NAME = lotItem.USER_NAME,
+                USER_ID = lotItem.USER_ID
                 
             };
             return productionInfo;
@@ -99,11 +104,13 @@ namespace NexenHub.Models
         {
             public string EQ_ID { get; set; }
             public string EQ_NAME { get; set; }
+            public string PROD_TYPE { get; set; }
+            public string PROD_TYPE_DESC { get; set; }
             public DateTime PRODUCTION_DATE { get; set; }
             public string ITEM_ID { get; set; }
             public string ITEM_NAME { get; set; }
             public bool TEST { get; set; }
-           // public string MEMBER_ID { get; set; }
+            public string USER_ID { get; set; }
             public string USER_NAME { get; set; }
             public ItemInfo ITEM_DETAIL { get; set; }
             public List<LotHisItem> LOT_HISTORY { get; set; }

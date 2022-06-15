@@ -37,20 +37,20 @@
                             <td>@Model.Division</td>
                         </tr>
                         <tr>
-                            <th scope="row">Valid</th>
-                            <td>@Model.Valid</td>
+                            <th scope="row">Test</th>
+                            <td>@Model.Test.ToString()</td>
                             <th scope="row"></th>
                             <td></td>
                         </tr>
                         <tr>
-                            <th scope="row">Event time?</th>
-                            <td>@Model.dateEvent.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <th scope="row">Production date</th>
+                            <td>@Model.dateLotTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
                             <th scope="row"></th>
                             <td></td>
                         </tr>
                         <tr>
                             <th scope="row">Expiry date</th>
-                            <td>@Model.dateExpiry.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>@Model.dateEvent.ToString("yyyy-MM-dd HH:mm:ss")</td>
                             <th scope="row"></th>
                             <td></td>
                         </tr>

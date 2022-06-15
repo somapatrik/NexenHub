@@ -34,6 +34,9 @@ namespace NexenHub.Models
         public string formatSumLabels;
         public string formatSumDatas;
 
+        public double perUp;
+        public double perDown;
+
         // Downtimes chart
         public string formatEaLabels;
         public string formatEaDatas;
@@ -146,8 +149,8 @@ namespace NexenHub.Models
             List<string> sumLabels = new List<string>();
             List<string> sumDatas = new List<string>();
 
-            double perDown = Math.Round((totalDownTimeSeconds / totalWorkSeconds) * 100,1);
-            double perUp = Math.Round((totalUpTimeSeconds / totalWorkSeconds) * 100,1);
+            perDown = Math.Round((totalDownTimeSeconds / totalWorkSeconds) * 100,1);
+            perUp = Math.Round((totalUpTimeSeconds / totalWorkSeconds) * 100,1);
 
             spanDown = TimeSpan.FromSeconds(totalDownTimeSeconds);
             spanUp = TimeSpan.FromSeconds(totalUpTimeSeconds);

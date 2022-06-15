@@ -8,14 +8,46 @@
     <div class="accordion accordion-flush" id="accordionControl">
 
         @{foreach (string proc in Model.Procs)
-            {
+                        {
 
+                            string ProcName;
+                            switch (proc)
+                            {
+                                case "M":
+                                    ProcName = "Mixing";
+                                    break;
+                                case "E":
+                                    ProcName = "Extruding";
+                                    break;
+                                case "C":
+                                    ProcName = "Calendering";
+                                    break;
+                                case "P":
+                                    ProcName = "Cutting";
+                                    break;
+                                case "B":
+                                    ProcName = "Bead";
+                                    break;
+                                case "T":
+                                    ProcName = "TBM";
+                                    break;
+                                case "U":
+                                    ProcName = "Curing";
+                                    break;
+                                case "O":
+                                    ProcName = "Foaming";
+                                    break;
+                                default:
+                                    ProcName = proc;
+                                    break;
+
+                            }
 
                 <div class="accordion-item">
 
                     <h2 class="accordion-header" id="heading_@proc">
                         <button class="accordion-button text-light" style="background-color: #434c57; " type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@proc" aria-expanded="true" aria-controls="#collapse_@proc">
-                            @Html.Raw(proc)
+                            @Html.Raw(ProcName)
                         </button>
                     </h2>
 
@@ -119,7 +151,7 @@
                             <tbody>
 
                                 @{ foreach (var machine in Model.DbList)
-                                    {
+                {
 
 
                                                 <tr>

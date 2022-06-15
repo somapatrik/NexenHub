@@ -61,6 +61,7 @@ namespace NexenHub.Models
         public string Name { get; set; }
         public string State { get; set; }
         public string EQ_ID { get; set; }
+        public string EQ_NAME { get; set; }
         public string CartState { get; set; }
         public double StockQty { get; set; }
         public string LotState { get; set; }
@@ -68,19 +69,17 @@ namespace NexenHub.Models
         public string Kind { get; set; }
         public string WC_ID { get; set; }
         public string ProcId { get; set; }
-        
-        public string LotTime; // { get; set; }
-        
-        public string ExpiryDate; // { get; set; }
-        
-        public string EventTime; // { get; set; }
+        public string ProdType { get; set; }
+        public string ProdTypeDesc { get; set; }
+        public string LotTime { get; set; }
+        public string ExpiryDate { get; set; }
+        public string EventTime { get; set; }
         public bool ExpiryDateResult { get; set; }
         public string Division { get; set; }
-
         public bool Test { get; set; }
-
+        public string USER_ID { get; set; }
+        public string USER_NAME { get; set; }
         public bool Valid { get; set; }
-
         public List<LotHisItem> History { get; set; }
 
         public LotItem(string LOTID)
@@ -124,7 +123,7 @@ namespace NexenHub.Models
                     State = dt.Rows[0]["ITEM_STATE"].ToString();
                     CartState = dt.Rows[0]["CART_STATE"].ToString();
                     StockQty = double.Parse(dt.Rows[0]["STOCK_QTY"].ToString());
-                    LotState = dt.Rows[0]["ITEM_STATE"].ToString();
+                    LotState = dt.Rows[0]["LOT_STATE"].ToString();
                     Grp = dt.Rows[0]["ITEM_GRP"].ToString();
                     Kind = dt.Rows[0]["ITEM_KIND"].ToString();
                     ProcId = dt.Rows[0]["ITEM_PROC_ID"].ToString();
@@ -136,6 +135,13 @@ namespace NexenHub.Models
                     Test = dt.Rows[0]["PROD_TEST_YN"].ToString() == "Y";
                     WC_ID = dt.Rows[0]["PROD_WC_ID"].ToString();
                     EQ_ID = dt.Rows[0]["EQ_ID"].ToString();
+                    EQ_NAME = dt.Rows[0]["EQ_NAME"].ToString();
+                    ProdType = dt.Rows[0]["PROD_TYPE"].ToString();
+                    ProdTypeDesc = dt.Rows[0]["PROD_TYPE_DESC"].ToString();
+
+                    USER_ID = dt.Rows[0]["USER_ID"].ToString();
+                    USER_NAME = dt.Rows[0]["USER_NAME"].ToString();
+
                     Valid = true;
                 }
 

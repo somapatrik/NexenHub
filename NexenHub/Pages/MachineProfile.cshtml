@@ -189,8 +189,8 @@
     </div>
 
     <!-- Production chart -->
-    <div class="row mb-3">
-        <div class="col">
+    <div class="row mb-3 g-3">
+        <div class="col-lg-7">
             @{
                 if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
                 {
@@ -198,13 +198,16 @@
                 }
             }
         </div>
+        <div class="col-lg-5">
+            @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
+        </div>
     </div>
 
     <!-- Uptime / Downtime -->
     <div class="row mb-3">
-        <div class="col">
+        @*<div class="col-8">
             @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
-        </div>
+        </div>*@
     </div>
 
 </div>

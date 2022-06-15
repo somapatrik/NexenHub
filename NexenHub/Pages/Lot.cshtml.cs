@@ -21,6 +21,7 @@ namespace NexenHub.Pages
         {
             lotitem = new LotItem(argLOT);
             lotitem.LoadHistory();
+            lotitem.RemoveUselessHistory();
 
             eslLayout = new Esl();
             eslLayout.LOT_ID = argLOT;
