@@ -12,6 +12,36 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public int GetICSCount()
+        {
+            try
+            {
+                DBOra db = new DBOra("SELECT COUNT(*) FROM TB_CM_M_MONITORING_CONFIG WHERE USE_YN = 'Y'");
+                DataTable dt = db.ExecTable();
+                return dt.Rows.Count > 0 ? int.Parse(dt.Rows[0][0].ToString()) : 0;
+
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
+        public DataTable GetLatestCountICS()
+        {
+            try
+            {
+                DBOra db = new DBOra("SELECT COUNT(*) LATESTCOUNT, VERSION_ACT FROM TB_CM_M_MONITORING_CONFIG WHERE USE_YN = 'Y' AND TO_DATE(VERSION_ACT, 'YYYY-MM-DD') = (SELECT MAX(TO_DATE(VERSION_ACT, 'YYYY-MM-DD')) FROM TB_CM_M_MONITORING_CONFIG WHERE USE_YN = 'Y') GROUP BY VERSION_ACT");
+                DataTable dt = db.ExecTable();
+                return dt; //.Rows.Count > 0 ? int.Parse(dt.Rows[0][0].ToString()) : 0;
+
+            }
+            catch(Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable LoadItem(string ID)
         {
             try

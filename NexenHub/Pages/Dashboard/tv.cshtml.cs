@@ -20,6 +20,10 @@ namespace NexenHub.Pages.Dashboard
         public bool isPM;
         public List<StatusEq> MachinesPM;
 
+        public int LatestCount;
+        public int ICSCount;
+        public string LatestICSVersion;
+
         private GlobalDatabase dbglob = new GlobalDatabase();
 
         public void OnGet()
@@ -46,6 +50,9 @@ namespace NexenHub.Pages.Dashboard
             allPingOK = FailPing.Count > 0 ? false : true;
 
 
+            LatestCount = int.Parse(dbglob.GetLatestCountICS().Rows[0][0].ToString());
+            LatestICSVersion = dbglob.GetLatestCountICS().Rows[0][1].ToString();
+            ICSCount = dbglob.GetICSCount();
         }
 
         public class PingDevice
