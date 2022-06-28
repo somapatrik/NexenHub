@@ -313,7 +313,6 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
-
         public DataTable GetPremiumGtInfo(string ITEM_ID)
         {
             try
@@ -357,8 +356,6 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
-
-        // TODO: FACT_ID
         public DataTable NoValidCheck(string EQ_ID, string LOT_ID, string WO_NO, string BOM_ITEM_ID, string BOM_ITEM_NAME, string BOM_ITEM_COMPOUND)
         {
             try
@@ -386,7 +383,6 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
-
         public DataTable FIFOCheck(string LOT_ID)
         {
             try
@@ -408,7 +404,6 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
-
         public DataTable AgingCheck(string LOT_ID)
         {
             try

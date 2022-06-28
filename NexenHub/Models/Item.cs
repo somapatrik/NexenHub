@@ -73,7 +73,7 @@ namespace NexenHub.Models
                     SECTION_WIDTH = dt.Rows[0]["SECTION_WIDTH"].ToString();
                     SERIES = dt.Rows[0]["SERIES"].ToString();
                     INCH = dt.Rows[0]["INCH"].ToString();
-                    OE = dt.Rows[0]["COMPOUND"].ToString() == "Y";
+                    OE = dt.Rows[0]["OE"].ToString() == "Y";
 
 
                 }
