@@ -22,5 +22,10 @@ namespace NexenHub.Pages
             
             return File(version.GetRelativeFilePath(), version.GetContentType(), version.GetFileName());
         }
+
+        public ActionResult OnGetDownloadTest()
+        {
+            return File("download/com.nexentire.tire_inspection-Signed.apk", "application/vnd.android.package-archive", "tire-inspection.apk");
+        }
     }
 }

@@ -28,32 +28,27 @@ namespace NexenHub.Models
 
         public DateTime dateLotTime
         {
-            get
-            {
-                DateTime outdate = DateTime.MinValue;
-                DateTime.TryParseExact(LotTime, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out outdate);
-                return outdate;
-            }
+            get => ConvertDate(LotTime);
         }
 
         public DateTime dateExpiry
         {
-            get
-            {
-                DateTime outdate = DateTime.MinValue;
-                DateTime.TryParseExact(ExpiryDate,"yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out outdate );
-                return outdate;
-            }
+            get => ConvertDate(ExpiryDate);
         }
 
         public DateTime dateEvent
         {
-            get
-            {
-                DateTime outdate = DateTime.MinValue;
-                DateTime.TryParseExact(EventTime, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out outdate);
-                return outdate;
-            }
+            get => ConvertDate(EventTime);
+        }
+
+        public DateTime dateAgingTime
+        {
+            get => ConvertDate(AgingTime);
+        }
+
+        public DateTime dateProdTime
+        {
+            get => ConvertDate(ProdTime);
         }
 
         public string LotID { get; set; }
@@ -71,6 +66,8 @@ namespace NexenHub.Models
         public string ProcId { get; set; }
         public string ProdType { get; set; }
         public string ProdTypeDesc { get; set; }
+        public string ProdTime { get; set; }
+        public string AgingTime { get; set; }
         public string LotTime { get; set; }
         public string ExpiryDate { get; set; }
         public string EventTime { get; set; }
@@ -105,6 +102,15 @@ namespace NexenHub.Models
             EventTime = "";
             ExpiryDateResult = false;
             Division = "";
+            ProdTime = "";
+            AgingTime = "";
+            Test = false;
+            WC_ID = "";
+            EQ_ID = "";
+            EQ_NAME = "";
+            ProdType = "";
+            ProdTypeDesc = "";
+
             Valid = false;
 
             History = new List<LotHisItem>();
@@ -128,6 +134,10 @@ namespace NexenHub.Models
                     Kind = dt.Rows[0]["ITEM_KIND"].ToString();
                     ProcId = dt.Rows[0]["ITEM_PROC_ID"].ToString();
                     LotTime = dt.Rows[0]["LOT_TIME"].ToString();
+
+                    ProdTime = dt.Rows[0]["PROD_TIME"].ToString();
+                    AgingTime = dt.Rows[0]["AGING_TIME"].ToString();
+
                     ExpiryDate = dt.Rows[0]["EXPIRY_DATE"].ToString();
                     EventTime = dt.Rows[0]["EVENT_TIME"].ToString();
                     ExpiryDateResult = dt.Rows[0]["EXPIRY_DATE_RESULT"].ToString() == "1" ? true : false;
@@ -190,6 +200,13 @@ namespace NexenHub.Models
             }
         }
 
+
+        private DateTime ConvertDate(string time)
+        {
+            DateTime outdate = DateTime.MinValue;
+            DateTime.TryParseExact(time, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out outdate);
+            return outdate;
+        }
 
     }
 }

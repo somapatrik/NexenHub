@@ -12,6 +12,28 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public string Cart2Lot(string CART_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT PROD.LOT_ID");
+                query.AppendLine("FROM TB_PR_M_PROD PROD");
+                query.AppendLine("WHERE PROD.CART_ID = :cart");
+                query.AppendLine("AND PROD.PROD_TIME = (SELECT MAX(PROD_TIME) FROM TB_PR_M_PROD WHERE CART_ID = :cart AND USE_YN = 'Y')");
+                query.AppendLine("AND PROD.USE_YN = 'Y'");
+                query.AppendLine("AND PROD.PLANT_ID = 'P500'");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("cart", CART_ID.ToUpper(), OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+                return dt.Rows.Count > 0 ? dt.Rows[0][0].ToString() : "";
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
         public int GetICSCount()
         {
             try
