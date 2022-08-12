@@ -13,6 +13,8 @@ namespace NexenHub.Models
         public ProductionInfo GtProduction { get; set; }
         public ProductionInfo TireProduction { get; set; }
 
+        public 
+
         private GlobalDatabase dbglob = new GlobalDatabase();
         public TireInspection(string CodeId)
         {
@@ -89,7 +91,6 @@ namespace NexenHub.Models
             return itemdetail;
         }
 
-
         public class ItemInfo
         {
             public string ITEM_ID { get; set; }
@@ -120,6 +121,22 @@ namespace NexenHub.Models
 
         }
 
+        public class FertInspectionResult
+        {
+            public int SEQ { get; set; }
+            public string PROC { get; set; }
+            public DateTime InspectionTime { get; set; }
+            public string SHIFT { get; set; }
+            public string SHIFT_RBG { get; set; }
+            public string BAD_ID { get; set; }
+            public string BAD_GRADE { get; set; }
+            public string LOC_MOLD { get; set; }
+            public string LOC_SIDE { get; set; }
+            public string LOC_ZONE { get; set; }
+            public string LOC_POSITION { get; set; }
+            public string CQ2 { get; set; }
+            public string UserName { get; set; }
+        }
 
     }
 }
