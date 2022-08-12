@@ -4,24 +4,54 @@
 }
 
 <div class="container">
+    <div class="row g-4">
+        <div class="col-lg-8">
 
-    <div class="card bg-soma-darklight text-light">
-        <h5 class="card-header"><b>ReX</b> - Zobrazení informací o materiálu pro Android (@Model.version.Version.ToString("yyyy-MM-dd"))</h5>
-        <div class="card-body">
-            <div class="card-text">
-                <ul>
-                    <li>Minimální verze Android: <b>Pie 9.0</b></li>
-                    <li>Povolte instalaci z neznámých zdrojů</li>
-                    <li>NFC není vyžadováno</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card-footer text-muted ">
-            <div class="d-flex justify-content-end">
-                <a href="@Url.Page("rex", "Download")" class="btn btn-success m-1">Download</a>
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex">
+                        <div class="flex-grow-1">
+                            <b>ReX</b> - Informace o materiálu
+                        </div>
+                        <div>
+                            @Html.Raw("v") @Model.version.Version.ToString("yyyy-MM-dd")
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+
+                        <ul>
+                            <li>
+                                Minimální verze Android: <b>Oreo 8.0</b>
+                            </li>
+                            <li>
+                                Po zadání čísla vozíku nebo lot zobrazí aktuální informace o materiálu
+                            </li>
+                            <li>
+                                Lze využít NFC pro načtení RFID čipů na vozících
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <a href="@Url.Page("rex", "Download")" class="btn btn-success m-1">Download</a>
+                    </div>
+                </div>
             </div>
 
         </div>
+
+        <div class="col-lg-4 g-4">
+
+            <div class="card">
+                <div class="card-header">QR ke stažení</div>
+                <div class="card-body">
+                    <img src="~/images/RexDownload.png" class="img-fluid"/>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
 </div>

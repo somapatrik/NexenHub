@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using NexenHub.Class;
 
 namespace NexenHub.Controllers
 {
@@ -18,6 +19,13 @@ namespace NexenHub.Controllers
             TireInspection tireInspection;
             tireInspection = new TireInspection(code);
             return tireInspection;
+        }
+
+        [HttpGet("version")]
+        public ActionResult<DateTime> Get()
+        {
+            var version = new AppVersionTireInspection();
+            return version.VersionDate;
         }
     }
 }
