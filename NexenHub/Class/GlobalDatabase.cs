@@ -12,6 +12,43 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetFertInspectionResult(string barcode)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT");
+                query.AppendLine("INSP_SEQ,");
+                query.AppendLine("FN_CM_GET_CODE_NAME('QA', '01', PROC_ID, '1033') AS PROC_ID,");
+                query.AppendLine("TO_CHAR(TO_DATE(INSP_DT, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AS INSPECTION_TIME,");
+                query.AppendLine("SHIFT,");
+                query.AppendLine("SHIFT_RGB,");
+                query.AppendLine("BAD_ID,");
+                query.AppendLine("BAD_GRADE,");
+                query.AppendLine("LOC_MOLD,");
+                query.AppendLine("LOC_SIDE,");
+                query.AppendLine("LOC_ZONE,");
+                query.AppendLine("LOC_POSITION,");
+                query.AppendLine("CQ2,");
+                query.AppendLine("FN_CM_GET_USER_INFO(PLANT_ID, ENT_USER_ID, 'MEMBER_NAME') AS ENT_USER");
+                query.AppendLine("FROM");
+                query.AppendLine("TB_QA_H_PROC_BAD_DETAIL");
+                query.AppendLine("WHERE");
+                query.AppendLine("BARCODE_NO = :barcode");
+                query.AppendLine("ORDER BY 3");
+
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("barcode", barcode, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+}
+
         public string Cart2Lot(string CART_ID)
         {
             try

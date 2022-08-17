@@ -12,10 +12,11 @@ namespace NexenHub.Models
         public string Barcode { get; set; }
         public ProductionInfo GtProduction { get; set; }
         public ProductionInfo TireProduction { get; set; }
+        public FertInspectionResult TireInspectionResult { get; set; }
 
-        public 
 
         private GlobalDatabase dbglob = new GlobalDatabase();
+        
         public TireInspection(string CodeId)
         {
             // Can load barcode or LOT_ID
@@ -35,6 +36,8 @@ namespace NexenHub.Models
                         CureLot.RemoveUselessHistory();
    
                         TireProduction = FillProductionInfo(CureLot);
+
+                        TireInspectionResult = FillInspectionResult(Barcode);
                     }
 
                     if (!string.IsNullOrEmpty(tbmLot)) 
@@ -50,6 +53,29 @@ namespace NexenHub.Models
 
             }
 
+        }
+
+        private FertInspectionResult FillInspectionResult(string lot)
+        {
+            DataTable dt = dbglob.GetFertInspectionResult(lot);
+            FertInspectionResult res = new FertInspectionResult();
+            if (dt.Rows.Count > 0)
+            {
+                res.SEQ = int.Parse(dt.Rows[0]["INSP_SEQ"].ToString());
+                res.PROC = dt.Rows[0]["PROC_ID"].ToString();
+                res.InspectionTime = DateTime.Parse(dt.Rows[0]["INSPECTION_TIME"].ToString());
+                res.SHIFT = dt.Rows[0]["SHIFT"].ToString();
+                res.SHIFT_RBG = dt.Rows[0]["SHIFT_RGB"].ToString();
+                res.BAD_ID = dt.Rows[0]["BAD_ID"].ToString();
+                res.BAD_GRADE = dt.Rows[0]["BAD_GRADE"].ToString();
+                res.LOC_MOLD = dt.Rows[0]["LOC_MOLD"].ToString();
+                res.LOC_SIDE = dt.Rows[0]["LOC_SIDE"].ToString();
+                res.LOC_ZONE = dt.Rows[0]["LOC_ZONE"].ToString();
+                res.LOC_POSITION = dt.Rows[0]["LOC_POSITION"].ToString();
+                res.CQ2 = dt.Rows[0]["CQ2"].ToString();
+                res.UserName = dt.Rows[0]["ENT_USER"].ToString();
+            }
+            return res;
         }
 
         private ProductionInfo FillProductionInfo(LotItem lotItem)
