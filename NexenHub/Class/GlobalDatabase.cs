@@ -20,7 +20,7 @@ namespace NexenHub.Class
                 query.AppendLine("SELECT");
                 query.AppendLine("INSP_SEQ,");
                 query.AppendLine("FN_CM_GET_CODE_NAME('QA', '01', PROC_ID, '1033') AS PROC_ID,");
-                query.AppendLine("TO_CHAR(TO_DATE(INSP_DT, 'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') AS INSPECTION_TIME,");
+                query.AppendLine("TO_DATE(INSP_DT, 'YYYYMMDDHH24MISS') AS INSPECTION_TIME,");
                 query.AppendLine("SHIFT,");
                 query.AppendLine("SHIFT_RGB,");
                 query.AppendLine("BAD_ID,");

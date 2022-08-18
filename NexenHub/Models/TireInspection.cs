@@ -12,7 +12,7 @@ namespace NexenHub.Models
         public string Barcode { get; set; }
         public ProductionInfo GtProduction { get; set; }
         public ProductionInfo TireProduction { get; set; }
-        public FertInspectionResult TireInspectionResult { get; set; }
+        public List<FertInspectionResult> TireInspectionResult { get; set; }
 
 
         private GlobalDatabase dbglob = new GlobalDatabase();
@@ -37,7 +37,7 @@ namespace NexenHub.Models
    
                         TireProduction = FillProductionInfo(CureLot);
 
-                        TireInspectionResult = FillInspectionResult(Barcode);
+                        FillInspectionResult(Barcode);
                     }
 
                     if (!string.IsNullOrEmpty(tbmLot)) 
@@ -55,27 +55,32 @@ namespace NexenHub.Models
 
         }
 
-        private FertInspectionResult FillInspectionResult(string lot)
+        private void FillInspectionResult(string lot)
         {
+            TireInspectionResult = new List<FertInspectionResult>();
+            
             DataTable dt = dbglob.GetFertInspectionResult(lot);
-            FertInspectionResult res = new FertInspectionResult();
-            if (dt.Rows.Count > 0)
+            
+            foreach (DataRow row in dt.Rows)
             {
-                res.SEQ = int.Parse(dt.Rows[0]["INSP_SEQ"].ToString());
-                res.PROC = dt.Rows[0]["PROC_ID"].ToString();
-                res.InspectionTime = DateTime.Parse(dt.Rows[0]["INSPECTION_TIME"].ToString());
-                res.SHIFT = dt.Rows[0]["SHIFT"].ToString();
-                res.SHIFT_RBG = dt.Rows[0]["SHIFT_RGB"].ToString();
-                res.BAD_ID = dt.Rows[0]["BAD_ID"].ToString();
-                res.BAD_GRADE = dt.Rows[0]["BAD_GRADE"].ToString();
-                res.LOC_MOLD = dt.Rows[0]["LOC_MOLD"].ToString();
-                res.LOC_SIDE = dt.Rows[0]["LOC_SIDE"].ToString();
-                res.LOC_ZONE = dt.Rows[0]["LOC_ZONE"].ToString();
-                res.LOC_POSITION = dt.Rows[0]["LOC_POSITION"].ToString();
-                res.CQ2 = dt.Rows[0]["CQ2"].ToString();
-                res.UserName = dt.Rows[0]["ENT_USER"].ToString();
+                FertInspectionResult res = new FertInspectionResult();
+
+                res.SEQ = int.Parse(row["INSP_SEQ"].ToString());
+                res.PROC = row["PROC_ID"].ToString();
+                res.InspectionTime = DateTime.Parse(row["INSPECTION_TIME"].ToString());
+                res.SHIFT = row["SHIFT"].ToString();
+                res.SHIFT_RBG = row["SHIFT_RGB"].ToString();
+                res.BAD_ID = row["BAD_ID"].ToString();
+                res.BAD_GRADE = row["BAD_GRADE"].ToString();
+                res.LOC_MOLD = row["LOC_MOLD"].ToString();
+                res.LOC_SIDE = row["LOC_SIDE"].ToString();
+                res.LOC_ZONE = row["LOC_ZONE"].ToString();
+                res.LOC_POSITION = row["LOC_POSITION"].ToString();
+                res.CQ2 = row["CQ2"].ToString();
+                res.UserName = row["ENT_USER"].ToString();
+
+                TireInspectionResult.Add(res);
             }
-            return res;
         }
 
         private ProductionInfo FillProductionInfo(LotItem lotItem)
