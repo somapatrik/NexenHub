@@ -61,7 +61,7 @@ namespace NexenHub.Class
                 query.AppendLine("AND PROD.USE_YN = 'Y'");
                 query.AppendLine("AND PROD.PLANT_ID = 'P500'");
 
-                DBOra db = new DBOra(query.ToString());
+                DBOra db = new DBOra("SELECT FN_IN_CART_TO_LOT(:cart) FROM DUAL ");
                 db.AddParameter("cart", CART_ID.ToUpper(), OracleDbType.Varchar2);
                 DataTable dt = db.ExecTable();
                 return dt.Rows.Count > 0 ? dt.Rows[0][0].ToString() : "";
