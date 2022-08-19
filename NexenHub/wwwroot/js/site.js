@@ -15,7 +15,7 @@ function searchMat(x, e) {
     if (x.keyCode == 13)
     {
         var searchVal = e.value;//document.getElementById("txtSearchGlobal").value;
-        if (searchVal.length == 15) {
+        if (searchVal.length == 15 || searchVal.length == 5) {
             window.location.href = "/lot/" + searchVal;
         }
     }
