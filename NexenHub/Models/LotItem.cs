@@ -74,6 +74,8 @@ namespace NexenHub.Models
         public bool ExpiryDateResult { get; set; }
         public string Division { get; set; }
         public bool Test { get; set; }
+        public string PROTOTYPE_ID { get; set; }
+        public string PROTOTYPE_VER { get; set; }
         public string USER_ID { get; set; }
         public string USER_NAME { get; set; }
         public bool Valid { get; set; }
@@ -148,6 +150,9 @@ namespace NexenHub.Models
                     EQ_NAME = dt.Rows[0]["EQ_NAME"].ToString();
                     ProdType = dt.Rows[0]["PROD_TYPE"].ToString();
                     ProdTypeDesc = dt.Rows[0]["PROD_TYPE_DESC"].ToString();
+
+                    PROTOTYPE_ID = dt.Rows[0]["PROTOTYPE_ID"].ToString();
+                    PROTOTYPE_VER = dt.Rows[0]["PROTOTYPE_VER"].ToString();
 
                     USER_ID = dt.Rows[0]["USER_ID"].ToString();
                     USER_NAME = dt.Rows[0]["USER_NAME"].ToString();

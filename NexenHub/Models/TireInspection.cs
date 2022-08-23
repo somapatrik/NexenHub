@@ -14,6 +14,7 @@ namespace NexenHub.Models
         public ProductionInfo TireProduction { get; set; }
         public List<FertInspectionResult> TireInspectionResult { get; set; }
 
+        public EMR TireEMR { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
         
@@ -47,6 +48,9 @@ namespace NexenHub.Models
                         TbmLot.RemoveUselessHistory();
 
                         GtProduction = FillProductionInfo(TbmLot);
+
+                        if (!string.IsNullOrEmpty(TbmLot.PROTOTYPE_ID))
+                            TireEMR = new EMR(TbmLot.PROTOTYPE_ID);
                     }
 
                 }

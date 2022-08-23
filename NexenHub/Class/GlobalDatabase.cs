@@ -12,6 +12,26 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetEMRInfo(string PRD_REQ_NO)
+        {
+            try 
+            {
+                DBOra db = new DBOra("SP_PL_MR_TEST_REQ_INFO");
+                db.AddParameter("AS_REQ_NO", PRD_REQ_NO, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetFertInspectionResult(string barcode)
         {
             try
