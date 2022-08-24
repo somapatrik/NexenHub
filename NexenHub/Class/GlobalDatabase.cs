@@ -799,7 +799,7 @@ namespace NexenHub.Class
                 query.AppendLine("ORDER BY PROD_DATE_S");
 
                 DBOra db = new DBOra(query.ToString());
-                db.AddParameter("startdt", date.ToString("yyyyMMdd"), OracleDbType.Varchar2);
+                db.AddParameter("startdt", date.AddHours(-6).ToString("yyyyMMdd"), OracleDbType.Varchar2);
                 db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
 
                 return db.ExecTable();
