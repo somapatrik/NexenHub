@@ -167,7 +167,7 @@ namespace NexenHub.Class
             }
         }
 
-        public DataTable GetDefectMonitoringPicture()
+        public DataTable GetDefectMonitoringPicture(string WC_ID)
         {
             try
             {
@@ -175,9 +175,10 @@ namespace NexenHub.Class
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("select BAD_ID, IMG_NAME, IMG_PATH");
                 query.AppendLine("from TB_QA_M_DEFECT_MON");
-                query.AppendLine("where DISPLAY_YN = 'Y'");
+                query.AppendLine("where DISPLAY_YN = 'Y' and WC_ID=:wc");
 
                 DBOra db = new DBOra(query.ToString());
+                db.AddParameter("wc",WC_ID, OracleDbType.Varchar2);
                 DataTable dt = db.ExecTable();
                 return dt;
 

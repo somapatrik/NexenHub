@@ -34,11 +34,13 @@
                 <div class="display-1 fw-bolder bg-soma-nexen">@Model.LeftName</div>
             </div>
 
+            <div class="col-1" style="width:20px;"></div>
+
             <div class="col">
                 <div class="display-1 fw-bolder bg-soma-nexen">@Model.RightName</div>
             </div>
 
-        </div>
+            </div>
 
         <div class="row text-center g-1">
             <div class="col">
@@ -47,6 +49,9 @@
             <div class="col">
                 <div class="display-2 fw-bolder" style="background-color: #37bf66;">PROD</div>
             </div>
+
+            <div class="col-1" style="width:20px;"></div>
+
             <div class="col">
                 <div class="display-2 fw-bolder" style="background-color: #5ff40b;">PLAN</div>
             </div>
@@ -62,6 +67,9 @@
             <div class="col">
                 <div class="display-2 fw-bolder bg-white">@Model.LeftProd</div>
             </div>
+
+            <div class="col-1" style="width:20px;"></div>
+
             <div class="col">
                 <div class="display-2 fw-bolder bg-white">@Model.planRight.PlanSummary</div>
             </div>
@@ -74,7 +82,7 @@
 
             <div class="col">
                 <div style="height:70vh;">
-                    <img style="object-position:top;object-fit:contain;height:100%;" src="@Model.Image64">
+                    <img style="object-position:top;object-fit:fill;height:100%;width:100%;" src="@Model.Image64">
                 </div>
             </div>
 

@@ -40,40 +40,40 @@ namespace NexenHub.Pages.Dashboard
             switch (ID)
             {
                 case 1:
-                    Left_EQ_ID = "10033";
-                    Right_EQ_ID = "10039";
-                    LeftName = "TBM 11";
-                    RightName = "TBM 21";
+                    Right_EQ_ID = "10033";
+                    Left_EQ_ID = "10039";
+                    RightName = "TBM 11";
+                    LeftName = "TBM 21";
                     break;
                 case 2:
-                    Left_EQ_ID = "10034";
-                    Right_EQ_ID = "10040";
-                    LeftName = "TBM 12";
-                    RightName = "TBM 22";
+                    Right_EQ_ID = "10034";
+                    Left_EQ_ID = "10040";
+                    RightName = "TBM 12";
+                    LeftName = "TBM 22";
                     break;
                 case 3:
-                    Left_EQ_ID = "10035";
-                    Right_EQ_ID = "10041";
-                    LeftName = "TBM 13";
-                    RightName = "TBM 23";
+                    Right_EQ_ID = "10035";
+                    Left_EQ_ID = "10041";
+                    RightName = "TBM 13";
+                    LeftName = "TBM 23";
                     break;
                 case 4:
-                    Left_EQ_ID = "10036";
-                    Right_EQ_ID = "10042";
-                    LeftName = "TBM 14";
-                    RightName = "TBM 24";
+                    Right_EQ_ID = "10036";
+                    Left_EQ_ID = "10042";
+                    RightName = "TBM 14";
+                    LeftName = "TBM 24";
                     break;
                 case 5:
-                    Left_EQ_ID = "10037";
-                    Right_EQ_ID = "10043";
-                    LeftName = "TBM 15";
-                    RightName = "TBM 25";
+                    Right_EQ_ID = "10037";
+                    Left_EQ_ID = "10043";
+                    RightName = "TBM 15";
+                    LeftName = "TBM 25";
                     break;
                 case 6:
-                    Left_EQ_ID = "10038";
-                    Right_EQ_ID = "10044";
-                    LeftName = "TBM 16";
-                    RightName = "TBM 26";
+                    Right_EQ_ID = "10038";
+                    Left_EQ_ID = "10044";
+                    RightName = "TBM 16";
+                    LeftName = "TBM 26";
                     break;
 
             }
@@ -99,7 +99,7 @@ namespace NexenHub.Pages.Dashboard
 
         private void GetImageInfo()
         {
-            DataTable dt = dbglob.GetDefectMonitoringPicture();
+            DataTable dt = dbglob.GetDefectMonitoringPicture("T");
             if (dt.Rows.Count > 0)
             {
                 //DefectHeader = dt.Rows[0]["BAD_ID"].ToString();
