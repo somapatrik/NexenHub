@@ -1,11 +1,64 @@
 ﻿@model NexenHub.Models.MachineProdReport
 
-<div class="card bg-soma-darklight text-light">
-    <h6 class="card-header">
-        Production
-    </h6>
-    <div class="card-body">
-        <canvas id="@Html.Raw(Model.UniqeName+"ProdChart")" style="display: block; box-sizing: border-box; " />
+<div class="row row-cols-1 row-cols-md-4 g-2 mb-2">
+   
+    <div class="col">
+        <div class="card bg-soma-darklight text-light text-center">
+            <div class="card-body">
+                <span class="display-6">@Model.minValue</span>
+                <div style="color: #4bc0c0;">
+                    Min
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-soma-darklight text-light text-center">
+            <div class="card-body">
+                <span class="display-6">@Model.avgValue</span>
+                <div style="color: #36a3eb;">
+                    Average
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-soma-darklight text-light text-center">
+            <div class="card-body">
+                <span class="display-6">@Model.maxValue</span>
+                <div style="color: #4bc0c0;">
+                    Max
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card bg-soma-darklight text-light text-center">
+            <div class="card-body">
+                <span class="display-6">@Model.sumValue</span>
+                <div style="color: #36a3eb;">
+                    Total
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card bg-soma-darklight text-light">
+            <h6 class="card-header">
+                Production
+            </h6>
+            <div class="card-body">
+                <canvas id="@Html.Raw(Model.UniqeName+"ProdChart")" style="display: block; box-sizing: border-box; " />
+            </div>
+        </div>
     </div>
 </div>
 
