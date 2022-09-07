@@ -16,7 +16,7 @@ namespace NexenHub.Models
         public ProductionInfo TireProduction { get; set; }
         public List<FertInspectionResult> TireInspectionResult { get; set; }
         public EMR TireEMR { get; set; }
-        public UsedHALB TireUsedHALB { get; set; }
+        public List<UsedHALB> TireUsedHALB { get; set; }
 
         #endregion
 
@@ -68,28 +68,32 @@ namespace NexenHub.Models
         private void FillUsedHALB(string barcode)
         {
             DataTable dt = dbglob.GetUsedHalb(barcode);
-            TireUsedHALB = new UsedHALB();
-            if (dt.Rows.Count > 0)
+
+            TireUsedHALB = new List<UsedHALB>();
+
+            foreach (DataRow row in dt.Rows)
             {
-                TireUsedHALB = new UsedHALB() 
+                UsedHALB used = new UsedHALB() 
                 {
-                    ITEM_ID = dt.Rows[0]["ITEM_ID"].ToString(),
-                    ITEM_NAME = dt.Rows[0]["ITEM_NAME"].ToString(),
-                    CART_ID = dt.Rows[0]["CART_ID"].ToString(),
-                    INPUT_LOT_ID = dt.Rows[0]["INPUT_LOT_ID"].ToString(),
-                    EQ_NAME = dt.Rows[0]["EQ_NAME"].ToString(),
-                    EQ_ID = dt.Rows[0]["EQ_ID"].ToString(),
-                    PROD_DATE = DateTime.Parse(dt.Rows[0]["PROD_DATE"].ToString()),
-                    INPUT_TIME = DateTime.Parse(dt.Rows[0]["INPUT_TIME"].ToString()),
-                    AGING_T = dt.Rows[0]["AGING_T"].ToString(),
-                    IO_POSID = dt.Rows[0]["IO_POSID"].ToString(),
-                    SHIFT = dt.Rows[0]["SHIFT"].ToString(),
-                    MEMBER_NAME = dt.Rows[0]["MEMBER_NAME"].ToString(),
-                    CP_LOT_ID = dt.Rows[0]["CP_LOT_ID"].ToString(),
-                    CP_CART_ID = dt.Rows[0]["CP_CART_ID"].ToString(),
-                    LOT_CHECK = dt.Rows[0]["LOT_CHECK"].ToString(),
+                    ITEM_ID = row["ITEM_ID"].ToString(),
+                    ITEM_NAME = row["ITEM_NAME"].ToString(),
+                    CART_ID = row["CART_ID"].ToString(),
+                    INPUT_LOT_ID = row["INPUT_LOT_ID"].ToString(),
+                    EQ_NAME = row["EQ_NAME"].ToString(),
+                    EQ_ID = row["EQ_ID"].ToString(),
+                    PROD_DATE = DateTime.Parse(row["PROD_DATE"].ToString()),
+                    INPUT_TIME = DateTime.Parse(row["INPUT_TIME"].ToString()),
+                    AGING_T = row["AGING_T"].ToString(),
+                    IO_POSID = row["IO_POSID"].ToString(),
+                    SHIFT = row["SHIFT"].ToString(),
+                    MEMBER_NAME = row["MEMBER_NAME"].ToString(),
+                    CP_LOT_ID = row["CP_LOT_ID"].ToString(),
+                    CP_CART_ID = row["CP_CART_ID"].ToString(),
+                    LOT_CHECK = row["LOT_CHECK"].ToString() == "True",
 
                 };
+
+                TireUsedHALB.Add(used);
 
             }
         }
@@ -179,7 +183,7 @@ namespace NexenHub.Models
             public string MEMBER_NAME { get; set; }
             public string CP_LOT_ID { get; set; }
             public string CP_CART_ID { get; set; }
-            public string LOT_CHECK { get; set; }
+            public bool LOT_CHECK { get; set; }
         }
 
         public class ItemInfo
