@@ -82,6 +82,7 @@ namespace NexenHub.Class
                 if (!_workOrder.WO_EXISTS)
                     return;
 
+
                 Task expireTask = Task.Run(() => { ExpireCheck(); });
                 Task agingTask = Task.Run(() => { AgingCheck(); });
                 Task fifoTask = Task.Run(() => { FIFOCheck(); });
@@ -159,13 +160,18 @@ namespace NexenHub.Class
 
         private bool FIFOCheck()
         {
+            // X - There is no OLDER UNUSED LOT
+            // O - There IS OLDER LOT THAT CAN BE USED
+
             bool result = false;
 
             DataTable dt = dbglob.FIFOCheck(_LOT_ID);
-            if (dt.Rows.Count > 0)
-                result = dt.Rows[0][0].ToString() == "O" ? true : false;
 
-           // Logger.Log("FIFO check: " + result);
+            if (dt.Rows.Count > 0)
+                result = int.Parse(dt.Rows[0]["COUNT_PREV_LOT"].ToString()) > 0 ? false : true;
+
+
+            // Logger.Log("FIFO check: " + result);
             FIFOCheckResult = result;
             return result;
         }

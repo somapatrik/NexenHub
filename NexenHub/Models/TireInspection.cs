@@ -9,15 +9,19 @@ namespace NexenHub.Models
 {
     public class TireInspection
     {
+        #region JSON properties
+
         public string Barcode { get; set; }
         public ProductionInfo GtProduction { get; set; }
         public ProductionInfo TireProduction { get; set; }
         public List<FertInspectionResult> TireInspectionResult { get; set; }
-
         public EMR TireEMR { get; set; }
+        public UsedHALB TireUsedHALB { get; set; }
+
+        #endregion
 
         private GlobalDatabase dbglob = new GlobalDatabase();
-        
+
         public TireInspection(string CodeId)
         {
             // Can load barcode or LOT_ID
@@ -30,19 +34,21 @@ namespace NexenHub.Models
                     string tbmLot = dt.Rows[0]["TBM_LOT_ID"].ToString();
                     string cureLot = dt.Rows[0]["CURE_LOT_ID"].ToString();
 
-                    if (!string.IsNullOrEmpty(cureLot)) 
-                    { 
+                    if (!string.IsNullOrEmpty(cureLot))
+                    {
                         LotItem CureLot = new LotItem(cureLot);
                         CureLot.LoadHistory();
                         CureLot.RemoveUselessHistory();
-   
+
                         TireProduction = FillProductionInfo(CureLot);
 
                         FillInspectionResult(Barcode);
+
+                        FillUsedHALB(Barcode);
                     }
 
-                    if (!string.IsNullOrEmpty(tbmLot)) 
-                    { 
+                    if (!string.IsNullOrEmpty(tbmLot))
+                    {
                         LotItem TbmLot = new LotItem(tbmLot);
                         TbmLot.LoadHistory();
                         TbmLot.RemoveUselessHistory();
@@ -59,12 +65,41 @@ namespace NexenHub.Models
 
         }
 
+        private void FillUsedHALB(string barcode)
+        {
+            DataTable dt = dbglob.GetUsedHalb(barcode);
+            TireUsedHALB = new UsedHALB();
+            if (dt.Rows.Count > 0)
+            {
+                TireUsedHALB = new UsedHALB() 
+                {
+                    ITEM_ID = dt.Rows[0]["ITEM_ID"].ToString(),
+                    ITEM_NAME = dt.Rows[0]["ITEM_NAME"].ToString(),
+                    CART_ID = dt.Rows[0]["CART_ID"].ToString(),
+                    INPUT_LOT_ID = dt.Rows[0]["INPUT_LOT_ID"].ToString(),
+                    EQ_NAME = dt.Rows[0]["EQ_NAME"].ToString(),
+                    EQ_ID = dt.Rows[0]["EQ_ID"].ToString(),
+                    PROD_DATE = DateTime.Parse(dt.Rows[0]["PROD_DATE"].ToString()),
+                    INPUT_TIME = DateTime.Parse(dt.Rows[0]["INPUT_TIME"].ToString()),
+                    AGING_T = dt.Rows[0]["AGING_T"].ToString(),
+                    IO_POSID = dt.Rows[0]["IO_POSID"].ToString(),
+                    SHIFT = dt.Rows[0]["SHIFT"].ToString(),
+                    MEMBER_NAME = dt.Rows[0]["MEMBER_NAME"].ToString(),
+                    CP_LOT_ID = dt.Rows[0]["CP_LOT_ID"].ToString(),
+                    CP_CART_ID = dt.Rows[0]["CP_CART_ID"].ToString(),
+                    LOT_CHECK = dt.Rows[0]["LOT_CHECK"].ToString(),
+
+                };
+
+            }
+        }
+
         private void FillInspectionResult(string lot)
         {
             TireInspectionResult = new List<FertInspectionResult>();
-            
+
             DataTable dt = dbglob.GetFertInspectionResult(lot);
-            
+
             foreach (DataRow row in dt.Rows)
             {
                 FertInspectionResult res = new FertInspectionResult();
@@ -105,7 +140,7 @@ namespace NexenHub.Models
                 USER_NAME = lotItem.USER_NAME,
                 USER_ID = lotItem.USER_ID,
                 LOT_ID = lotItem.LOT_ID
-                
+
             };
             return productionInfo;
         }
@@ -124,6 +159,27 @@ namespace NexenHub.Models
             };
 
             return itemdetail;
+        }
+
+        #region Models
+
+        public class UsedHALB
+        {
+            public string ITEM_ID { get; set; }
+            public string ITEM_NAME { get; set; }
+            public string CART_ID { get; set; }
+            public string INPUT_LOT_ID { get; set; }
+            public string EQ_NAME { get; set; }
+            public string EQ_ID { get; set; }
+            public DateTime PROD_DATE { get; set; }
+            public DateTime INPUT_TIME { get; set; }
+            public string AGING_T { get; set; }
+            public string IO_POSID { get; set; }
+            public string SHIFT { get; set; }
+            public string MEMBER_NAME { get; set; }
+            public string CP_LOT_ID { get; set; }
+            public string CP_CART_ID { get; set; }
+            public string LOT_CHECK { get; set; }
         }
 
         public class ItemInfo
@@ -172,6 +228,8 @@ namespace NexenHub.Models
             public string CQ2 { get; set; }
             public string UserName { get; set; }
         }
+
+        #endregion
 
     }
 }

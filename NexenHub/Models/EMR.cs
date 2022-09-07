@@ -21,6 +21,8 @@ namespace NexenHub.Models
             } 
         }
         public string REQ_NO { get; set; }
+        public string REQ_MEMBER { get; set; }
+        public string REQ_DEPT { get; set; }
         public string TIRE_CODE { get; set; }
         public string PATTERN { get; set; }
         public string TIRE_SIZE { get; set; }
@@ -58,6 +60,10 @@ namespace NexenHub.Models
             if (dt.Rows.Count > 0)
             {
                 REQ_NO = dt.Rows[0]["REQ_NO"].ToString();
+
+                REQ_MEMBER = dt.Rows[0]["REQ_MEMBER"].ToString();
+                REQ_DEPT = dt.Rows[0]["REQ_DEPT"].ToString();
+
                 TIRE_CODE = dt.Rows[0]["TIRE_CODE"].ToString();
                 PATTERN = dt.Rows[0]["PATTERN"].ToString();
                 TIRE_SIZE = dt.Rows[0]["TIRE_SIZE"].ToString();

@@ -12,6 +12,27 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetUsedHalb(string barcode)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_PR_MR_TIRE_HALB_INFO");
+                db.AddParameter("AS_TIRE_NO", barcode, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                return dt;
+            
+            } 
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetEMRInfo(string PRD_REQ_NO)
         {
             try 
@@ -467,10 +488,10 @@ namespace NexenHub.Class
         {
             try
             {
-                DBOra db = new DBOra("SP_MO_MR_FIFO_CHECK");
+                DBOra db = new DBOra("SP_MO_MR_FIFO_CHECK_2");
 
-                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
                 db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
 
                 db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
                 db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
@@ -799,7 +820,7 @@ namespace NexenHub.Class
                 query.AppendLine("ORDER BY PROD_DATE_S");
 
                 DBOra db = new DBOra(query.ToString());
-                db.AddParameter("startdt", date.AddHours(-6).ToString("yyyyMMdd"), OracleDbType.Varchar2);
+                db.AddParameter("startdt", date.ToString("yyyyMMdd"), OracleDbType.Varchar2);
                 db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
 
                 return db.ExecTable();
