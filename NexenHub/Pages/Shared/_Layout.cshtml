@@ -22,6 +22,12 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    @{
+        string machineSelected = (string)ViewData["mainSelected"] == "machines" ? "active" : "";
+        string eslSelected = (string)ViewData["mainSelected"] == "esl" ? "active" : "";
+        string rexSelected = (string)ViewData["mainSelected"] == "rex" ? "active" : "";
+    }
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-soma-darklight text-light mb-3">
             <div class="container-fluid">
@@ -38,7 +44,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-center">
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle @machineSelected" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Machines
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -47,7 +53,7 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/CartsInfo">ESL</a>
+                            <a class="nav-link @eslSelected" asp-area="" asp-page="/CartsInfo">ESL</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,11 +75,10 @@
                                 <a class="dropdown-item" target="_blank" href="/dashboard/Status/B">Bead</a>
                                 <a class="dropdown-item" target="_blank" href="/dashboard/Status/E">Extruder</a>
                                 <a class="dropdown-item" target="_blank" href="/dashboard/Status/P">Cutting</a>
-                                <a class="dropdown-item" target="_blank" href="/dashboard/Status">All</a>
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Rex">ReX</a>
+                            <a class="nav-link @rexSelected" asp-area="" asp-page="/Rex">ReX</a>
                         </li>
                     </ul>
 
