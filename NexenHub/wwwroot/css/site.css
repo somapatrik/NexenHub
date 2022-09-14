@@ -1,14 +1,35 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+:root {
+    --github-light: #f6f8fa;
+    --github-dark: #24292f;
+    --github-green: #2da44e;
+    --soma-darklight: #434c57;
+    --soma-dark: #22272e;
+}
+
+
+.bg-github-light {
+    background-color: var(--github-light);
+}
+
+.bg-github-dark {
+    background-color: var(--github-dark);
+}
+
+.bg-github-green{
+    background-color:var(--github-green);
+}
+
 
 .bg-soma-dark {
-    background-color: #22272e;
+    background-color: var(--soma-dark);
 }
 
 
 .bg-soma-darklight {
-    background-color: #434c57;
+    background-color: var(--soma-darklight);
 }
 
 .bg-soma-nexen {
