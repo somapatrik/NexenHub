@@ -10,8 +10,8 @@ namespace NexenHub.Class
         public AppVersionTireInspection()
         {
             fileName = "TireInspection.apk";
-            filePath = "download/com.nexentire.tire_inspection-Signed.apk";
-            VersionDate = new DateTime(2022, 08, 12, 0,0,0);
+            filePath = "download/com.nexentire.tire_inspection.apk";
+            VersionDate = new DateTime(2022,9,12, 0,0,0);
         }
     }
 }

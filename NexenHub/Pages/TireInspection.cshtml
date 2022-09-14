@@ -1,0 +1,52 @@
+﻿@page
+@model NexenHub.Pages.TireInspectionModel
+@{
+}
+
+
+<div class="container">
+    <div class="row g-4">
+        <div class="col-lg-8">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex">
+                        <div class="flex-grow-1">
+                            <b>Tire inspection</b>
+                        </div>
+                        <div>
+                            @Html.Raw("v") @Model.version.VersionDate.ToString("yyyy-MM-dd")
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="card-text">
+
+                        <ul>
+                            <li>
+                                Minimální verze Android: <b>Oreo 8.0</b>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <a href="@Url.Page("TireInspection", "Download")" class="btn btn-success m-1">Download</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 g-4">
+
+            <div class="card">
+                <div class="card-header">QR ke stažení</div>
+                <div class="card-body">
+                    <img src="~/images/tireInsp.png" class="img-fluid" />
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

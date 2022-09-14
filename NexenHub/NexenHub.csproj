@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\lib\Images\logo_light.png" />
+    <None Include="wwwroot\images\logo\logo_light.png" />
   </ItemGroup>
 
   <ItemGroup>
