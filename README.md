@@ -1,7 +1,7 @@
 ![NexenHub logo](https://github.com/Nexen-Tire/NexenHub/blob/master/Images/logo_dark_background.png) 
-![example workflow](https://github.com/Nexen-Tire/NexenHub/actions/workflows/dotnet.yml/badge.svg)
 
 # NexenHub
+![example workflow](https://github.com/Nexen-Tire/NexenHub/actions/workflows/dotnet.yml/badge.svg)
 Web data visualisation and RestAPI
 
 # Used components
