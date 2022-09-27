@@ -35,7 +35,7 @@ namespace NexenHub.Controllers
             if (lotid.Length == 15)
             {
                 LotItem lot = new LotItem(lotid);
-                lot.LoadHistory();
+                lot.LoadHistoryClean();
                 lot.RemoveUselessHistory();
 
                 return lot;

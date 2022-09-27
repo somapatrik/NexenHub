@@ -182,6 +182,25 @@ namespace NexenHub.Models
             }
         }
 
+        public void LoadHistoryClean()
+        {
+            if (!string.IsNullOrEmpty(_LOT_ID))
+            {
+                foreach (DataRow row in dbglob.GetLotHisClean(_LOT_ID).Rows)
+                {
+                    History.Add(new LotHisItem()
+                    {
+                        transDate = DateTime.Parse(row["TRANDATE"].ToString()),
+                        locationName = row["LOCATION"].ToString(),
+                        itemState = row["ITEMSTATE"].ToString(),
+                        lotState = row["LOTSTATE"].ToString(),
+                        qtyUnit = row["QTY"].ToString()
+                    });
+
+                }
+            }
+        }
+
         public void RemoveUselessHistory()
         {
             if (History.Count > 0)

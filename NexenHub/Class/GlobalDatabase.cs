@@ -598,6 +598,41 @@ namespace NexenHub.Class
             }
         }
 
+        /// <summary>
+        /// Without status translation
+        /// </summary>
+        /// <param name="LOT_ID"></param>
+        /// <returns></returns>
+        public DataTable GetLotHisClean(string LOT_ID)
+        {
+            try
+            {
+                // Jo, je to natvrdo
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT ");
+                query.AppendLine("to_date(HIS.TRAN_TIME, 'YYYYMMDDHH24MISS') TRANDATE,");
+                query.AppendLine("LOC.LOC_DESC_1033 LOCATION,");
+                query.AppendLine("HIS.LOT_STATE LOTSTATE,");
+                query.AppendLine("HIS.ITEM_STATE ITEMSTATE,");
+                query.AppendLine("(HIS.CURRENT_QTY || ' ' || HIS.UNIT) QTY");
+                query.AppendLine("from TB_IN_H_LOTHIS HIS");
+                query.AppendLine("left");
+                query.AppendLine("join TB_IN_M_LOC loc on LOC.LOC_ID = HIS.LOC_NO");
+                query.AppendLine("where LOT_ID = :lot");
+                query.AppendLine("order by TRAN_TIME");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("lot", LOT_ID, OracleDbType.Varchar2);
+
+                DataTable dt = db.ExecTable();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetLotInfo(string LOT_ID)
         {
             try
