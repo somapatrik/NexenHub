@@ -77,181 +77,188 @@
                     </div>
                 </div>
             </div>
-            } 
         }
-            <!-- WO + Current production -->
-            <div class="row mb-3 g-3 mt-3">
+    }
 
-                <div class="col-lg-5">
+</div>
+<div class="container">
 
-                    <div class="row mb-3">
+    <!-- WO + Current production -->
+    <div class="row mb-3 g-3 mt-3">
+        <!--
+        <div class="col-lg-5">
 
-                        <div class="col">
+            <div class="row mb-3">
 
-                            <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
+                <div class="col">
 
-                                <div class="card-header">
-                                    <div class="d-flex">
-                                        <div class="flex-grow-1">
-                                            Current production
-                                        </div>
-                                        @{
-                                            if (@Model.WO.TEST_YN == "Y")
-                                            {
-                                                <div class="badge bg-warning text-dark">PROTOTYPE</div>
-                                            }
+                    <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
 
-                                            if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
-                                            {
-                                                <div>
-                                                    <span class="badge bg-dark">@Model.WO.PROD_TYPE</span>
-                                                </div>
-                                            }
-
-                                            if (@Model.WO.OE)
-                                            {
-                                                <div>
-                                                    <span class="badge bg-primary">OE</span>
-                                                </div>
-                                            }
-                                        }
-                                    </div>
+                        <div class="card-header">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    Current production
                                 </div>
+                                @{
+                                    if (@Model.WO.TEST_YN == "Y")
+                                    {
+                                        <div class="badge bg-warning text-dark">PROTOTYPE</div>
+                                    }
 
-                                <div class="card-body">
-                                    <div class="container">
-
-                                        <div class="row mt-3 mb-3">
-                                            <div class="col text-center"><h3>@Model.WO.ITEM_ID <br /> @Model.WO.ITEM_NAME</h3></div>
+                                    if (!string.IsNullOrEmpty(@Model.WO.PROD_TYPE))
+                                    {
+                                        <div>
+                                            <span class="badge bg-dark">@Model.WO.PROD_TYPE</span>
                                         </div>
+                                    }
 
-                                        @{
-                                            if (@Model.WO.TEST_YN == "Y")
-                                            {
-                                                <div class="row">
-                                                    <div class="col text-center">@Model.WO.PROTOTYPE_ID <br /> @Model.WO.PROTOTYPE_VER </div>
-                                                </div>
-                                            }
-                                        }
-
-                                    </div>
-
-                                </div>
+                                    if (@Model.WO.OE)
+                                    {
+                                        <div>
+                                            <span class="badge bg-primary">OE</span>
+                                        </div>
+                                    }
+                                }
                             </div>
                         </div>
 
-                    </div>
-
-                </div>
-
-                <div class="col-lg-7">
-
-                    <div class="row">
-                        <div class="col">
-                            @await Component.InvokeAsync("MachineWoList", @Model.machineBasic.EQ_ID)
-                        </div>
-                    </div>
-
-                </div>
-
-
-
-            </div>
-
-            <!-- Material in use -->
-            <div class="row mb-3 g-3">
-
-                <div class="col-lg-7">
-
-                    <div class="card bg-soma-darklight">
-                        <div class="card-header">Material in use</div>
                         <div class="card-body">
-                            <table class="table table-sm table-borderless text-light" style="background-color:transparent;">
-                                <tbody>
+                            <div class="container">
 
-                                    @{ foreach (var material in Model.Inputed)
-                                        {
-                                            <tr>
-                                                <td>@material.IO_POSID</td>
-                                                <td>@material.CART_ID</td>
-                                                <td><a class="btn-link" href="../lot/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
+                                <div class="row mt-3 mb-3">
+                                    <div class="col text-center"><h3>@Model.WO.ITEM_ID <br /> @Model.WO.ITEM_NAME</h3></div>
+                                </div>
 
-                                                @if (material.IsInBom)
-                                                {
-                                                    <td class="font-weight-bold">@material.ITEM_ID</td>
-                                                }
-                                                else
-                                                {
-                                                    <td class="font-weight-bold table-danger">@material.ITEM_ID</td>
-                                                }
-
-                                                <td>@material.ITEM_NAME</td>
-                                            </tr>
-                                        }
+                                @{
+                                    if (@Model.WO.TEST_YN == "Y")
+                                    {
+                                        <div class="row">
+                                            <div class="col text-center">@Model.WO.PROTOTYPE_ID <br /> @Model.WO.PROTOTYPE_VER </div>
+                                        </div>
                                     }
-                                </tbody>
-                            </table>
+                                }
+
+                            </div>
 
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-5">
-
-                    <div class="card @bgc @txtc">
-                        <div class="card-header">
-                            @{ if (Model.WO.TEST_YN == "Y")
-                                {
-                                    @Html.Raw("Prototype BOM")
-                                }
-                                else
-                                {
-                                    @Html.Raw("BOM")
-                                }
-                            }
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-sm table-borderless @txtc">
-                                <tbody>
-
-                                    @{ foreach (var material in Model.BOM)
-                                        {
-                                            <tr>
-                                                <th scope="row">@material.ITEM_ID</th>
-                                                <td>@material.ITEM_NAME</td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- Production chart -->
-            <div class="row mb-3 g-3">
-                <div class="col-lg-7">
-                    @{
-                        if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
-                        {
-                            @await Component.InvokeAsync("MachineReportProd", Model.machineProduction)
-                        }
-                    }
-                </div>
-                <div class="col-lg-5">
-                    @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
-                </div>
-            </div>
-
-            <!-- Uptime / Downtime -->
-            <div class="row mb-3">
-                @*<div class="col-8">
-                        @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
-                    </div>*@
             </div>
 
         </div>
+
+        -->
+
+
+        <div class="col-7">
+
+            <div class="row">
+                <div class="col">
+                    @await Component.InvokeAsync("MachineWoList", @Model.machineBasic.EQ_ID)
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <!-- Material in use -->
+    <div class="row mb-3 g-3">
+
+        <div class="col-lg-7">
+
+            <div class="card bg-soma-darklight">
+                <div class="card-header">Material in use</div>
+                <div class="card-body">
+                    <table class="table table-sm table-borderless text-light" style="background-color:transparent;">
+                        <tbody>
+
+                            @{ foreach (var material in Model.Inputed)
+                                {
+                                    <tr>
+                                        <td>@material.IO_POSID</td>
+                                        <td>@material.CART_ID</td>
+                                        <td><a class="btn-link" href="../lot/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
+
+                                        @if (material.IsInBom)
+                                        {
+                                            <td class="font-weight-bold">@material.ITEM_ID</td>
+                                        }
+                                        else
+                                        {
+                                            <td class="font-weight-bold table-danger">@material.ITEM_ID</td>
+                                        }
+
+                                        <td>@material.ITEM_NAME</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+
+            <div class="card @bgc @txtc">
+                <div class="card-header">
+                    @{ if (Model.WO.TEST_YN == "Y")
+                        {
+                            @Html.Raw("Prototype BOM")
+                        }
+                        else
+                        {
+                            @Html.Raw("BOM")
+                        }
+                    }
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-borderless @txtc">
+                        <tbody>
+
+                            @{ foreach (var material in Model.BOM)
+                                {
+                                    <tr>
+                                        <th scope="row">@material.ITEM_ID</th>
+                                        <td>@material.ITEM_NAME</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Production chart -->
+    <div class="row mb-3 g-3">
+        <div class="col-lg-7">
+            @{
+                if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
+                {
+                    @await Component.InvokeAsync("MachineReportProd", Model.machineProduction)
+                }
+            }
+        </div>
+        <div class="col-lg-5">
+            @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
+        </div>
+    </div>
+
+    <!-- Uptime / Downtime -->
+    <div class="row mb-3">
+        @*<div class="col-8">
+                @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
+            </div>*@
+    </div>
+
+</div>
