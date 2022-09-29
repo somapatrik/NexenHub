@@ -57,7 +57,19 @@ namespace NexenHub.Pages
         public List<InputedMaterial> BOM { get; set; }
         public MachineBasicInfo machineBasic { get; set; }
 
-        public string downtimeMessage = "";
+        private string _DownTimeMessage;
+        public string DownTimeMessage 
+        { 
+            get => _DownTimeMessage;
+            set 
+            {
+                _DownTimeMessage = value;
+                if (_DownTimeMessage == "PM")
+                    IsPM = true;
+                else
+                    IsDowntime = true;
+            }
+        }
 
         public bool IsPM;
         public bool IsDowntime;
@@ -80,7 +92,7 @@ namespace NexenHub.Pages
                 // Act downtime
                 DataTable dt = dbglob.GetActNonWrk(EQ_ID);
                 if (dt.Rows.Count > 0)
-                    downtimeMessage = dt.Rows[0][0].ToString();
+                    DownTimeMessage = dt.Rows[0][0].ToString();
 
                 // Get WO
                 WO = new WorkOrder();

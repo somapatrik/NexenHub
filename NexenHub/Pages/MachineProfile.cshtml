@@ -73,7 +73,7 @@
             <div class="row border-2 border-bottom p-2 bg-danger text-white">
                 <div class="col">
                     <div class="d-flex justify-content-center">
-                        <h5 class="p-2">@Model.downtimeMessage</h5>
+                        <h5 class="p-2">@Model.DownTimeMessage</h5>
                     </div>
                 </div>
             </div>
@@ -81,23 +81,34 @@
     }
 
 </div>
+
 <div class="container">
 
     <!-- WO + Current production -->
-    <div class="row mb-3 g-3 mt-3">
-        <!--
-        <div class="col-lg-5">
+    <div class="row my-3 g-4">
+
+        <div class="col-lg-8">
+
+            <div class="row">
+                <div class="col">
+                    @await Component.InvokeAsync("MachineWoList", @Model.machineBasic.EQ_ID)
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col">
 
             <div class="row mb-3">
 
                 <div class="col">
 
-                    <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
+                    <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("") } }">
 
                         <div class="card-header">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
-                                    Current production
+                                    Produced item
                                 </div>
                                 @{
                                     if (@Model.WO.TEST_YN == "Y")
@@ -147,21 +158,6 @@
             </div>
 
         </div>
-
-        -->
-
-
-        <div class="col-7">
-
-            <div class="row">
-                <div class="col">
-                    @await Component.InvokeAsync("MachineWoList", @Model.machineBasic.EQ_ID)
-                </div>
-            </div>
-
-        </div>
-
-
 
     </div>
 
