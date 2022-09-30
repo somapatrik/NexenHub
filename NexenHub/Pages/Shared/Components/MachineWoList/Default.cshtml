@@ -16,7 +16,7 @@
 
         <table id="wl_finishedWo" class="table table-striped table-hover mb-0" style="display:none;">
             @{
-                foreach (var wo in @Model.Workorders.FindAll(w => w.WO_PROC_STATE == "F").ToList())
+                foreach (var wo in @Model.Workorders.FindAll(w => w.WO_PROC_STATE == "F").OrderBy(x=>x.WO_ETIME))
                 {
                     tst = "table-danger";
 
@@ -30,7 +30,7 @@
             }
         </table>
 
-        <table class="table table-striped table-hover">
+        <table class="table table-hover">
             @{
                 foreach (var wo in @Model.Workorders.FindAll(w => w.WO_PROC_STATE != "F").ToList())
                 {
