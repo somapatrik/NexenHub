@@ -1,0 +1,62 @@
+﻿@model NexenHub.Models.MaterialInUseViewModel
+@{
+
+}
+
+
+<div class="card">
+    <div class="card-header">Material in use</div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <tbody>
+
+                    @{ foreach (var material in Model.CheckedMaterial)
+                        {
+                            <tr>
+                                <td>@material.Item1.IO_POSID</td>
+                                <td>
+                                    <a class="link-primary" href="../lot/@material.Item1.LOT_ID" target="_blank">@material.Item1.LOT_ID</a>
+                                </td>
+                                <td>@material.Item1.CART_ID</td>
+                                <td class="fw-bold">@material.Item1.ITEM_ID</td>
+                                <td>@material.Item1.ITEM_NAME</td>
+                                <td>
+                                    
+
+                                        <div class="btn-group m-0" role="group">
+
+                                            @{
+                                                string en = material.Item2.NoLifeCheckResult ? "btn-primary" : "btn-outline-danger";
+                                                //  string spc = material.Item2.NoValidCheckResult ? "btn-primary" : "btn-outline-danger";
+                                                string exp = material.Item2.ExpireCheckResult ? "btn-primary" : "btn-outline-danger";
+                                                string ag = material.Item2.AgingCheckResult ? "btn-primary" : "btn-outline-danger";
+                                                string ff = material.Item2.FIFOCheckResult ? "btn-primary" : "btn-outline-danger";
+                                                string pr = material.Item2.PremiumGtResult ? "btn-primary" : "btn-outline-danger";
+                                                string gtd = material.Item2.IsGtDOnlyResult ? "btn-primary" : "btn-outline-danger";
+
+                                                string spc = "btn-outline-secondary";
+                                                if (material.Item1.MiniPC_ID != null)
+                                                {
+                                                    spc = material.Item2.NoValidCheckResult ? "btn-primary" : "btn-outline-danger";
+                                                }
+
+                                            }
+
+                                            <span type="button" class="btn btn-sm @en" title="Enabled">EN</span>
+                                            <span type="button" class="btn btn-sm @spc" title="Specification">SPC</span>
+                                            <span type="button" class="btn btn-sm @exp" title="Expiration">EXP</span>
+                                            <span type="button" class="btn btn-sm @ag" title="Aging">AG</span>
+                                            <span type="button" class="btn btn-sm @ff" title="FIFO">FF</span>
+                                            <span type="button" class="btn btn-sm @pr" title="Premium">PR</span>
+                                            <span type="button" class="btn btn-sm @gtd" title="GT D">GTD</span>
+                                        </div>    
+                                </td>
+                            </tr>
+                                                }
+                    }
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>

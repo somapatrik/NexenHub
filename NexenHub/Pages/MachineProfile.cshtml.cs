@@ -14,40 +14,6 @@ using NexenHub.Models;
 
 namespace NexenHub.Pages
 {
-
-    public class InputedMaterial
-    {
-        public string IO_POSID { get; set; }
-        public string LOT_ID { get; set; }
-        public string ITEM_ID { get; set; }
-        public string ITEM_NAME { get; set; }
-        public string CART_ID { get; set; }
-        public string EQ_ID { get; set; }
-        public Boolean IsInBom { get; set; }
-
-    }
-
-    public class MachineBasicInfo
-    {
-        public string Name { get; set; }
-        public string EQ_ID { get; set; }
-        public string WC_ID { get; set; }
-        public string PROC_ID { get; set; }
-
-        private GlobalDatabase db = new GlobalDatabase();
-        public MachineBasicInfo(string EQID)
-        {
-            EQ_ID = EQID;
-            DataTable dt = db.GetMachineList(EQ_ID);
-            if (dt.Rows.Count > 0)
-            {
-                Name = dt.Rows[0]["Name"].ToString();
-                WC_ID = dt.Rows[0]["WC_ID"].ToString();
-                PROC_ID = dt.Rows[0]["PROC_ID"].ToString();
-            }
-        }
-    }
-
     public class MachineProfileModel : PageModel
     {
         public MachineProdReport machineProduction { get; set; }
@@ -56,6 +22,8 @@ namespace NexenHub.Pages
         public List<InputedMaterial> Inputed { get; set; }
         public List<InputedMaterial> BOM { get; set; }
         public MachineBasicInfo machineBasic { get; set; }
+
+        #region DownTime
 
         private string _DownTimeMessage;
         public string DownTimeMessage 
@@ -73,6 +41,8 @@ namespace NexenHub.Pages
 
         public bool IsPM;
         public bool IsDowntime;
+
+        #endregion
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 

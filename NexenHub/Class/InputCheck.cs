@@ -78,7 +78,11 @@ namespace NexenHub.Class
                 PremiumGtResult = false;
                 AllCheck = false;
 
-                _workOrder.LoadLikeICS(_EQ_ID, _MINIPC_ID);
+                if (string.IsNullOrEmpty(_MINIPC_ID))
+                    _workOrder.LoadFromMachine(_EQ_ID);
+                else
+                    _workOrder.LoadLikeICS(_EQ_ID, _MINIPC_ID);
+                
                 if (!_workOrder.WO_EXISTS)
                     return;
 
@@ -181,7 +185,7 @@ namespace NexenHub.Class
         {
             bool result = false;
 
-            if (_workOrder.ITEM_ID != null)
+            if (_workOrder.WO_ChildItemID != null)
             {
                 DataTable dt = dbglob.NoValidCheck(
                     _EQ_ID,
@@ -199,7 +203,6 @@ namespace NexenHub.Class
                     result = _lotInfo.Kind == "Z23" ? true : false;
             }
 
-           // Logger.Log("NoValid check: " + result);
             NoValidCheckResult = result;
             return result;
         }

@@ -13,6 +13,7 @@
     }
 }
 
+<!-- Top bar - Machine name etc... -->
 <div class="container-fluid">
 
     <!-- PM -->
@@ -81,6 +82,7 @@
     }
 
 </div>
+
 
 <div class="container">
 
@@ -162,44 +164,12 @@
     </div>
 
     <!-- Material in use -->
-    <div class="row mb-3 g-3">
-
-        <div class="col-lg-7">
-
-            <div class="card bg-soma-darklight">
-                <div class="card-header">Material in use</div>
-                <div class="card-body">
-                    <table class="table table-sm table-borderless text-light" style="background-color:transparent;">
-                        <tbody>
-
-                            @{ foreach (var material in Model.Inputed)
-                                {
-                                    <tr>
-                                        <td>@material.IO_POSID</td>
-                                        <td>@material.CART_ID</td>
-                                        <td><a class="btn-link" href="../lot/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
-
-                                        @if (material.IsInBom)
-                                        {
-                                            <td class="font-weight-bold">@material.ITEM_ID</td>
-                                        }
-                                        else
-                                        {
-                                            <td class="font-weight-bold table-danger">@material.ITEM_ID</td>
-                                        }
-
-                                        <td>@material.ITEM_NAME</td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
+    <div class="row my-3 g-4">
+        <div class="col-lg-9">
+            @await Component.InvokeAsync("MachineMaterialInUse", @Model.machineBasic.EQ_ID)
         </div>
 
-        <div class="col-lg-5">
+        <div class="col">
 
             <div class="card @bgc @txtc">
                 <div class="card-header">
@@ -232,7 +202,6 @@
             </div>
 
         </div>
-
     </div>
 
     <!-- Production chart -->
