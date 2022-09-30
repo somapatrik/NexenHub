@@ -84,10 +84,10 @@
 </div>
 
 
-<div class="container">
+<div class="container-fluid">
 
     <!-- WO + Current production -->
-    <div class="row my-3 g-4">
+    <div class="row my-2 g-4">
 
         <div class="col-lg-8">
 
@@ -163,15 +163,19 @@
 
     </div>
 
+</div>
+
+<div class="container-fluid">
+
     <!-- Material in use -->
-    <div class="row my-3 g-4">
-        <div class="col-lg-9">
+    <div class="row my-2 g-4">
+        <div class="col-lg-8">
             @await Component.InvokeAsync("MachineMaterialInUse", @Model.machineBasic.EQ_ID)
         </div>
 
         <div class="col">
 
-            <div class="card @bgc @txtc">
+            <div class="card">
                 <div class="card-header">
                     @{ if (Model.WO.TEST_YN == "Y")
                         {
@@ -184,7 +188,7 @@
                     }
                 </div>
                 <div class="card-body">
-                    <table class="table table-sm table-borderless @txtc">
+                    <table class="table table-borderless table-hover">
                         <tbody>
 
                             @{ foreach (var material in Model.BOM)
@@ -204,9 +208,12 @@
         </div>
     </div>
 
+</div>
+
+<div class="container-fluid">
     <!-- Production chart -->
-    <div class="row mb-3 g-3">
-        <div class="col-lg-7">
+    <div class="row my-2 g-4">
+        <div class="col-lg-6">
             @{
                 if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
                 {
@@ -214,16 +221,10 @@
                 }
             }
         </div>
-        <div class="col-lg-5">
-            @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
-        </div>
-    </div>
 
-    <!-- Uptime / Downtime -->
-    <div class="row mb-3">
-        @*<div class="col-8">
-                @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
-            </div>*@
+        @*<div class="col">
+            @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
+        </div>*@
     </div>
 
 </div>
