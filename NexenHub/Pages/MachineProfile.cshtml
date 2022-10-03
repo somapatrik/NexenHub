@@ -59,7 +59,7 @@
                 <div class="col">
                     <div class="d-flex flex-row-reverse">
                         <div class="p-2">
-                            <a class="btn btn-sm btn-outline-success" href="#">Generate report</a>
+                            <a class="btn btn-sm btn-outline-dark" href="/MachineReport/@Model.machineBasic.EQ_ID">Generate report</a>
                         </div>
                     </div>
                 </div>
@@ -211,22 +211,3 @@
 
 </div>
 
-<div class="container">
-
-    <!-- Production chart -->
-    <div class="row my-2 g-4">
-        <div class="col-lg-6">
-            @{
-                if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
-                {
-                    @await Component.InvokeAsync("MachineReportProd", Model.machineProduction)
-                }
-            }
-        </div>
-
-        @*<div class="col">
-            @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
-        </div>*@
-    </div>
-
-</div>

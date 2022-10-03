@@ -56,23 +56,24 @@
                         <!-- data-bs-parent="#accordionControl"-->
                         <div class="accordion-body p-0">
 
-                            <table class="table table-sm table-hover">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover text-center align-middle">
 
-                                @foreach (Class.MachineListObject man in Model.DbList.FindAll(x => x.WC_ID == proc))
-                                {
-                                    <tr>
-                                        <td>@man.EQ_ID</td>
-                                        <td>@man.Name</td>
-                                        <td>@man.WC_ID</td>
-                                        <td>@man.PROC_ID</td>
-                                        <td>
-                                            <a class="flex-grow-1 btn btn-success btn-sm m-1" href="/MachineProfile/@man.EQ_ID">Shift info</a>
-                                            <!-- <a class="flex-grow-1 btn btn-primary btn-sm m-1" href="/MachineReport/@man.EQ_ID/@DateTime.Now.AddHours(-6).ToString("yyyy-MM-dd")">Report</a>-->
-                                        </td>
-                                    </tr>
-                                }
+                                    @foreach (Class.MachineListObject man in Model.DbList.FindAll(x => x.WC_ID == proc))
+                                    {
+                                        <tr>
+                                            <td class="text-start">@man.EQ_ID</td>
+                                            <td>@man.Name</td>
+                                            <td>@man.WC_ID</td>
+                                            <td>@man.PROC_ID</td>
+                                            <td class="text-end">
+                                                <a class="flex-grow-1 btn btn-primary btn-sm m-1" href="/MachineProfile/@man.EQ_ID">Detail</a>
+                                            </td>
+                                        </tr>
+                                    }
 
-                            </table>
+                                </table>
+                            </div>
 
 
                         </div>
