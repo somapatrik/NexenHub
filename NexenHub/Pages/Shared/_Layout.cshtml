@@ -12,7 +12,7 @@
     <link href="~/lib/vis/dist/vis.min.css" rel="stylesheet" type="text/css" />
 
 </head>
-<body class="bg-soma-dark">
+<body class="bg-github-light">
 
     <script src="~/lib/chart/dist/chart.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -29,7 +29,7 @@
     }
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-soma-darklight text-light mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-github-dark text-white">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
                     <img src="/images/logo/logo_light.png" width="200" />
@@ -48,19 +48,15 @@
                                 Machines
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/MachineList">List</a>
-                                <a class="dropdown-item" href="/MachineReport">Report</a>
+                                <a class="dropdown-item" href="/MachineList">List of machines</a>
+                                <a class="dropdown-item" href="/MachineReport">Report generator</a>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link @eslSelected" asp-area="" asp-page="/CartsInfo">ESL</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dashboards
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" target="_blank" href="/dashboard/tv">PM & Network</a>
                                 <a class="dropdown-item" target="_blank" href="/dashboard/tbmdefect/1/60">TBM Defect monitoring</a>
                             </div>
                         </li>
@@ -94,16 +90,16 @@
 
     </header>
 
-    <div class="container-fluid">
+    @*<div class="container-fluid">*@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
+    @*</div>*@
 
-    <footer class="footer text-muted bg-soma-darklight">
+    <footer class="footer text-muted bg-github-dark">
         <div class="container">
             <div class="row">
-                <div class="col">&copy; 2021 - NexenHub</div>
+                <div class="col">&copy; @DateTime.Now.Year - Patrik Šoma</div>
             </div>
         </div>
     </footer>

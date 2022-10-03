@@ -3,31 +3,32 @@
 @{
 }
 
-<div class="container text-light text-center">
-    <div class="row g-2">
+<div class="container text-center">
+
+    <div class="row my-2">
         <div class="col">
             <h3>@Model.argLOT</h3>
         </div>
     </div>
-    <div class="row g-2">
-        <div class="col-xl-7">
 
-            <div class="row g-2">
-                <div class="col">
-                    @await Component.InvokeAsync("LotItemInfo", Model.lotitem)
-                </div>
-            </div>
+    <div class="row my-2 g-3">
 
-            <div class="row g-2">
-                <div class="col">
-                    @Html.Raw(Model.eslLayout.GetLayout())
-                </div>
-            </div>
+        <div class="col">
+            @Html.Raw(Model.eslLayout.GetLayout())
+        </div>
 
-            
+    </div>
+
+    <div class="row my-2 g-3">
+
+        <div class="col">
+            @await Component.InvokeAsync("LotItemInfo", Model.lotitem)
         </div>
         <div class="col">
             @await Component.InvokeAsync("LotItemHis", Model.lotitem)
         </div>
+
+
     </div>
+
 </div>

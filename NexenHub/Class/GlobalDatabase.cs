@@ -12,6 +12,32 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataRow Pos2MiniPc(string POSID, string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT MINIPC_ID");
+                query.AppendLine("FROM TB_CM_M_MONITORING_READER");
+                query.AppendLine("WHERE POSID = :pos");
+                query.AppendLine("AND EQ_ID = :eq");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("pos", POSID, OracleDbType.Varchar2);
+                db.AddParameter("eq", EQ_ID, OracleDbType.Varchar2);
+
+                DataTable dt = db.ExecTable();
+                if (dt.Rows.Count > 0)
+                    return dt.Rows[0];
+            }
+            catch (Exception ex)
+            {
+               
+            }
+
+            return null;
+        }
+
         public DataTable GetUsedHalb(string barcode)
         {
             try
@@ -1035,7 +1061,7 @@ namespace NexenHub.Class
                 query.AppendLine("AND POS.IO_POSGB='I' ");
                 query.AppendLine("AND POS.USE_YN='Y' ");
                 query.AppendLine("AND POS.CART_SELECT='Y' ");
-                query.AppendLine("ORDER BY POS.ITEM_ID DESC ");
+                query.AppendLine("ORDER BY IO_POSID");
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
                 return db.ExecTable();

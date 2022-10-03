@@ -3,58 +3,52 @@
     string tst ;
 }
 
-<div class="card bg-soma-darklight">
+<div class="card">
     <div class="card-header">
         <div class="d-flex">
-            <div class="flex-grow-1">Workorders</div>
-            <span class="badge bg-success" style="cursor:pointer;" onclick="wlToogle()">Toogle completed</span>
+            <h6 class="flex-grow-1">Workorders</h6>
+            <span id="wl_showFinished" class="badge bg-primary" style="cursor:pointer;" onclick="wlToogle(true)">Show finished</span>
+            <span id="wl_hideFinished" class="badge bg-danger" style="cursor:pointer;display:none;" onclick="wlToogle(false)">Hide finished</span>
         </div>
     </div>
-    <div class="card-body p-0" style="overflow-y:auto;max-height:30vh;">
 
-        <div id="wl_finishedWo" class="list-group list-group-flush" style="display:none;">
+    <div class="card-body p-0" style="overflow-y:auto;height:25vh;">
+
+        <table id="wl_finishedWo" class="table table-striped table-hover mb-0" style="display:none;">
             @{
-                foreach (var wo in @Model.Workorders.FindAll(w => w.WO_PROC_STATE == "F").ToList())
+                foreach (var wo in @Model.Workorders.FindAll(w => w.WO_PROC_STATE == "F").OrderBy(x=>x.WO_ETIME))
                 {
-                    tst = "list-group-item-danger";
+                    tst = "table-danger";
 
-                        <div class="list-group-item @tst">
-                            <div class="d-flex w-100 justify-content-between mb-2">
-                                <span>@wo.WO_NO</span>
-                                <small>@wo.STIME_DATE.ToString("dd.MM. HH:mm:ss") @Html.Raw(" -> ") @wo.ETIME_DATE.ToString("dd.MM. HH:mm:ss")</small>
-                            </div>
-                            <div class="d-flex w-100 justify-content-between">
-                                <span>@wo.ITEM_ID</span>
-                                <span>@wo.ITEM_NAME</span>
-                            </div>
-                            <div class="d-flex w-100 justify-content-between">
-                                <span></span>
-                                <span>@wo.WO_QTY @wo.UNIT</span>
-                            </div>
-                        </div>
+                        <tr class="@tst">
+                                <td>@wo.WO_NO</td>
+                                <td>@wo.STIME_DATE.ToString("dd.MM. HH:mm:ss") @Html.Raw(" -> ") @wo.ETIME_DATE.ToString("dd.MM. HH:mm:ss")</td>
+                                <td>@wo.ITEM_ID</td>
+                                <td>@wo.ITEM_NAME</td>
+                        </tr>
                 }
             }
-        </div>
+        </table>
 
-        <div class="list-group list-group-flush">
+        <table class="table table-hover">
             @{
                 foreach (var wo in @Model.Workorders.FindAll(w => w.WO_PROC_STATE != "F").ToList())
                 {
-                    tst = "bg-soma-darklight text-light";
+                    tst = "";
 
                     @if (wo.WO_PROC_STATE == "S")
                     {
-                        tst = "list-group-item-success";
+                        tst = "table-primary";
                     }
                     else if (wo.TEST_YN == "Y")
                     {
-                        tst = "list-group-item-warning";
+                        tst = "table-warning";
                     }
 
-            <div class="list-group-item @tst">
-                <div class="d-flex w-100 justify-content-between mb-2">
-                    <span>@wo.WO_NO</span>
-                    <small>
+             <tr class="@tst">
+               
+                    <td>@wo.WO_NO</td>
+                    <td>
                         @{
                             if (wo.WO_PROC_STATE == "S")
                             {
@@ -66,29 +60,38 @@
                             }
                         }
 
-                    </small>
-                </div>
-                <div class="d-flex w-100 justify-content-between">
-                    <span>@wo.ITEM_ID</span>
-                    <span>@wo.ITEM_NAME</span>
-                </div>
-                <div class="d-flex w-100 justify-content-between">
-                    <span></span>
-                    <span>@wo.WO_QTY @wo.UNIT</span>
-                </div>
-            </div>
+                    </td>
+                    <td>@wo.ITEM_ID</td>
+                    <td>@wo.ITEM_NAME</td>
+                
+            </tr>
                 }
             }
-        </div>
+        </table>
     </div>
     </div>
 
 <script type="text/javascript">
 
-    function wlToogle()
+    function wlToogle(show)
     {
         var wlCompList = document.getElementById('wl_finishedWo');
-        wlCompList.style["display"] = wlCompList.style["display"] == "none" ? "block" : "none";
+        var wlShowButton = document.getElementById('wl_showFinished');
+        var wlHideButton = document.getElementById('wl_hideFinished');
+
+        if (show)
+        {
+            wlCompList.style["display"] = "table";
+            wlShowButton.style["display"] = "none";
+            wlHideButton.style["display"] = "block";
+        }
+        else
+        {
+            wlCompList.style["display"] = "none";
+            wlShowButton.style["display"] = "block";
+            wlHideButton.style["display"] = "none";
+        }
+        
     }
 
 </script>

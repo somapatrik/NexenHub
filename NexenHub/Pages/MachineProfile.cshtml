@@ -13,18 +13,83 @@
     }
 }
 
-<div class="container text-light">
+<!-- Top bar - Machine name etc... -->
+<div class="container-fluid">
 
-    <div class="row mb-3">
-        <div class="col d-flex justify-content-center mb-3">
-            <h4>@Model.machineBasic.Name</h4>
+    <!-- PM -->
+    @{ if (Model.IsPM)
+        {
+            <div class="row border-2 border-bottom p-2 bg-warning text-dark">
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+                        <h5>Preventive maintenance is in progress</h5>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+
+    <!-- Main info -->
+    <div class="row border-bottom border-2 p-3" style="background-color: #f7f7f7;">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h4>@Model.machineBasic.Name</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex flex-row text-muted">
+
+                        <div class="p-2">@Model.machineBasic.WC_ID</div>
+
+                        <div class="p-2">/</div>
+                        <div class="p-2">@Model.machineBasic.PROC_ID</div>
+
+                        <div class="p-2">/</div>
+                        <div class="p-2">@Model.machineBasic.EQ_ID</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex flex-row-reverse">
+                        <div class="p-2">
+                            <a class="btn btn-sm btn-outline-dark" href="/MachineReport/@Model.machineBasic.EQ_ID">Generate report</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- WO + Current production -->
-    <div class="row mb-3 g-3">
+    <!-- Downtime -->
+    @{ if (Model.IsDowntime)
+        {
+            <div class="row border-2 border-bottom p-2 bg-danger text-white">
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+                        <h5 class="p-2">@Model.DownTimeMessage</h5>
+                    </div>
+                </div>
+            </div>
+        }
+    }
 
-        <div class="col-lg-7">
+</div>
+
+
+<div class="container">
+
+    <!-- WO + Current production -->
+    <div class="row my-2 g-4">
+
+        <div class="col-lg-8">
 
             <div class="row">
                 <div class="col">
@@ -34,36 +99,18 @@
 
         </div>
 
-        <div class="col-lg-5">
-
-            @{ if (!string.IsNullOrEmpty(Model.ActNonWork))
-                {
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="card text-white bg-danger">
-
-                                <div class="card-header text-center">
-                                    @Model.ActNonWork
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                }
-            }
+        <div class="col">
 
             <div class="row mb-3">
 
                 <div class="col">
 
-                    <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("bg-soma-darklight") } }">
+                    <div class="card @{if (Model.WO.TEST_YN == "Y") { @Html.Raw("bg-warning text-dark") } else { @Html.Raw("") } }">
 
                         <div class="card-header">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
-                                    Current production
+                                    Produced item
                                 </div>
                                 @{
                                     if (@Model.WO.TEST_YN == "Y")
@@ -116,47 +163,20 @@
 
     </div>
 
+</div>
+
+<div class="container">
+
     <!-- Material in use -->
-    <div class="row mb-3 g-3">
+    <div class="row my-2 g-4">
 
-        <div class="col-lg-7">
-
-            <div class="card bg-soma-darklight">
-                <div class="card-header">Material in use</div>
-                <div class="card-body">
-                    <table class="table table-sm table-borderless text-light" style="background-color:transparent;">
-                        <tbody>
-
-                            @{ foreach (var material in Model.Inputed)
-                                {
-                                    <tr>
-                                        <td>@material.IO_POSID</td>
-                                        <td>@material.CART_ID</td>
-                                        <td><a class="btn-link" href="../lot/@material.LOT_ID" target="_blank">@material.LOT_ID</a></td>
-
-                                        @if (material.IsInBom)
-                                        {
-                                            <td class="font-weight-bold">@material.ITEM_ID</td>
-                                        }
-                                        else
-                                        {
-                                            <td class="font-weight-bold table-danger">@material.ITEM_ID</td>
-                                        }
-
-                                            <td>@material.ITEM_NAME</td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-
-                </div>
-            </div>
+        <div class="col-lg-8">
+            @await Component.InvokeAsync("MachineMaterialInUse", @Model.machineBasic.EQ_ID)
         </div>
 
-        <div class="col-lg-5">
+        <div class="col">
 
-            <div class="card @bgc @txtc">
+            <div class="card">
                 <div class="card-header">
                     @{ if (Model.WO.TEST_YN == "Y")
                         {
@@ -169,7 +189,7 @@
                     }
                 </div>
                 <div class="card-body">
-                    <table class="table table-sm table-borderless @txtc">
+                    <table class="table table-borderless table-hover">
                         <tbody>
 
                             @{ foreach (var material in Model.BOM)
@@ -187,29 +207,7 @@
             </div>
 
         </div>
-
-    </div>
-
-    <!-- Production chart -->
-    <div class="row mb-3 g-3">
-        <div class="col-lg-7">
-            @{
-                if (!string.IsNullOrEmpty(Model.machineBasic.EQ_ID))
-                {
-                    @await Component.InvokeAsync("MachineReportProd", Model.machineProduction)
-                }
-            }
-        </div>
-        <div class="col-lg-5">
-            @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
-        </div>
-    </div>
-
-    <!-- Uptime / Downtime -->
-    <div class="row mb-3">
-        @*<div class="col-8">
-            @await Component.InvokeAsync("MachineReportDownTime", Model.machineDownTime)
-        </div>*@
     </div>
 
 </div>
+
