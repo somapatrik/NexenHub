@@ -57,6 +57,7 @@ namespace NexenHub.Models
         public string State { get; set; }
         public string EQ_ID { get; set; }
         public string EQ_NAME { get; set; }
+        public string CART_ID { get; set; }
         public string CartState { get; set; }
         public double StockQty { get; set; }
         public string LotState { get; set; }
@@ -94,6 +95,7 @@ namespace NexenHub.Models
             ID = "";
             Name = "";
             State = "";
+            CART_ID = "";
             CartState = "";
             StockQty = 0;
             LotState = "";
@@ -129,6 +131,7 @@ namespace NexenHub.Models
                     ID = dt.Rows[0]["ITEM_ID"].ToString();
                     Name = dt.Rows[0]["ITEM_NAME"].ToString();
                     State = dt.Rows[0]["ITEM_STATE"].ToString();
+                    CART_ID = dt.Rows[0]["CART_ID"].ToString();
                     CartState = dt.Rows[0]["CART_STATE"].ToString();
                     StockQty = double.Parse(dt.Rows[0]["STOCK_QTY"].ToString());
                     LotState = dt.Rows[0]["LOT_STATE"].ToString();

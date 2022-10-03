@@ -22,6 +22,13 @@ namespace NexenHub.Controllers
             return rexver;
         }
 
+        [HttpGet("latest/{ip}/{usedversion}")]
+        public ActionResult<DateTime> GetLatest(string ip,string usedversion)
+        {
+            AppVersionRex version = new AppVersionRex();
+            return version.VersionDate;
+        }
+
         [HttpGet("lotitem/{code}")]
         public ActionResult<LotItem> Get(string code)
         {

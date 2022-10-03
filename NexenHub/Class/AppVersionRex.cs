@@ -11,7 +11,7 @@ namespace NexenHub.Class
         {
             fileName = "rex.apk";
             filePath = "download/com.nexentire.rex.apk";
-            VersionDate = new DateTime(2022, 9, 29, 0, 0, 0);
+            VersionDate = new DateTime(2022, 10, 3, 0, 0, 0);
         }
     }
 }

@@ -23,6 +23,8 @@ namespace NexenHub.Pages
         public List<InputedMaterial> BOM { get; set; }
         public MachineBasicInfo machineBasic { get; set; }
 
+        //public Shift ShiftInfo { get; set; }
+
         #region DownTime
 
         private string _DownTimeMessage;
@@ -74,8 +76,10 @@ namespace NexenHub.Pages
                 else
                     LoadBOM(WO.ITEM_ID);
 
+                // ShiftInfo = new Shift();
+
                 // Get inputed material
-                LoadInputedMaterial(EQ_ID);
+                //LoadInputedMaterial(EQ_ID);
             }
         }
 

@@ -11,6 +11,60 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetShiftDownTimes(string EQ_ID, DateTime StartTime, DateTime EndTime)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT ");
+                query.AppendLine("TO_DATE(NONWRK_STIME, 'YYYYMMDDHH24MISS') STIME, ");
+                query.AppendLine("TO_DATE(NVL(NONWRK_ETIME, to_char(SYSDATE, 'YYYYMMDDHH24MISS')), 'YYYYMMDDHH24MISS') ETIME, ");
+                query.AppendLine("NON.NONWRK_CODE, ");
+                query.AppendLine("CODE.NONWRK_NAME_1033 NONWRK_NAME");
+                query.AppendLine("FROM TB_CM_M_NONWRK NON");
+                query.AppendLine("LEFT JOIN TB_CM_M_NONWRKCODE CODE on CODE.NONWRK_CODE = NON.NONWRK_CODE");
+                query.AppendLine("WHERE EQ_ID = :EQ_ID");
+                query.AppendLine("AND((NONWRK_ETIME >= :STIME AND NONWRK_STIME <= :ETIME)");
+                query.AppendLine("OR(NONWRK_ETIME IS NULL AND NONWRK_STIME IS NOT NULL))");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("EQ_ID", EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("STIME", StartTime.ToString("yyyyMMddHHmmss"), OracleDbType.Varchar2);
+                db.AddParameter("ETIME", EndTime.ToString("yyyyMMddHHmmss"), OracleDbType.Varchar2);
+                return db.ExecTable();
+
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetShiftInfo()
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select");
+                query.AppendLine("SHIFT,");
+                query.AppendLine("SHIFT_RGB,");
+                query.AppendLine("to_date(START_DT, 'YYYYMMDDHH24MISS') STIME,");
+                query.AppendLine("to_date(END_DT, 'YYYYMMDDHH24MISS') ETIME,");
+                query.AppendLine("((to_date(END_DT, 'YYYYMMDDHH24MISS') - to_date(START_DT, 'YYYYMMDDHH24MISS')) * 24 * 60 * 60) REAL_WORK_SEC,");
+                query.AppendLine("(WEEK) W");
+                query.AppendLine("from TB_CM_M_CALENDAR");
+                query.AppendLine("WHERE(TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS') BETWEEN START_DT AND END_DT)");
+                query.AppendLine("AND SHIFT IN('A', 'C')");
+
+                DBOra db = new DBOra(query.ToString());
+                return db.ExecTable();
+
+            }
+            catch(Exception ex)
+            {
+                return new DataTable();
+            }
+        }
 
         public DataRow Pos2MiniPc(string POSID, string EQ_ID)
         {

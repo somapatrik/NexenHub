@@ -16,7 +16,7 @@ namespace NexenHub.Pages
 
 
         public LotItem lotitem;
-        public Esl eslLayout { get; set; }
+        // public Esl eslLayout { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
         public void OnGet()
@@ -29,9 +29,9 @@ namespace NexenHub.Pages
             lotitem.LoadHistory();
             lotitem.RemoveUselessHistory();
 
-            eslLayout = new Esl();
-            eslLayout.LOT_ID = argLOT;
-            eslLayout.LoadLayout();
+            //eslLayout = new Esl();
+            //eslLayout.LOT_ID = argLOT;
+            //eslLayout.LoadLayout();
         }
     }
 }
