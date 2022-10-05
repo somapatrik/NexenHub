@@ -11,6 +11,46 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public string GetExtCompound(string LOT_ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("select FN_CM_GET_EXT_COMPOUND(:lot) FROM DUAL");
+                db.AddParameter("lot", LOT_ID, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+
+                if (dt.Rows.Count > 0)
+                    return dt.Rows[0][0].ToString();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return null;
+        }
+
+
+        public string GetTreadWidth(string LOT_ID)
+        {
+            try
+            {
+                DBOra db = new DBOra("select FN_CM_GET_TREAD_WIDTH(:lot) FROM DUAL");
+                db.AddParameter("lot", LOT_ID, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+            
+                if (dt.Rows.Count > 0)
+                    return dt.Rows[0][0].ToString();
+            } 
+            catch (Exception ex)
+            {
+                
+            }
+
+            return null;
+        }
+
         public DataTable GetShiftDownTimes(string EQ_ID, DateTime StartTime, DateTime EndTime)
         {
             try

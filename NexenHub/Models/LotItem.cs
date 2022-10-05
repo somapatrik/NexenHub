@@ -13,15 +13,16 @@ namespace NexenHub.Models
 
         GlobalDatabase dbglob = new GlobalDatabase();
 
-        private string _LOT_ID;
+        #region Properties
 
+        private string _LOT_ID;
         public string LOT_ID
         {
             get { return _LOT_ID; }
             set
             {
                 _LOT_ID = value;
-                InitValues();
+               // InitValues();
                 LoadFromDb();
             }
         }
@@ -79,14 +80,28 @@ namespace NexenHub.Models
         public string PROTOTYPE_VER { get; set; }
         public string USER_ID { get; set; }
         public string USER_NAME { get; set; }
+        public string TREAD_WIDTH { get; set; }
+        public string COMPOUND { get; set; }
+
         public bool Valid { get; set; }
         public List<LotHisItem> History { get; set; }
+
+        #endregion
 
         public LotItem(string LOTID)
         {
             _LOT_ID = LOTID;
-            InitValues();
+
+            // InitValues();
+             History = new List<LotHisItem>();
+
             LoadFromDb();
+
+            if (ProcId == "E1" || ProcId == "E2") 
+            { 
+                LoadTreadWidth();
+                LoadExtCompound();
+            }
         }
 
         private void InitValues()
@@ -122,6 +137,7 @@ namespace NexenHub.Models
 
         private void LoadFromDb()
         {
+            Valid = false;
             if (!string.IsNullOrEmpty(_LOT_ID))
             {
                 DataTable dt = dbglob.GetLotInfo(_LOT_ID);
@@ -147,7 +163,7 @@ namespace NexenHub.Models
                     EventTime = dt.Rows[0]["EVENT_TIME"].ToString();
                     ExpiryDateResult = dt.Rows[0]["EXPIRY_DATE_RESULT"].ToString() == "1" ? true : false;
                     Division = dt.Rows[0]["DEVISION"].ToString();
-                    Test = dt.Rows[0]["PROD_TEST_YN"].ToString() == "Y";
+                    Test = dt.Rows[0]["LOT_TEST_YN"].ToString() == "Y";
                     WC_ID = dt.Rows[0]["PROD_WC_ID"].ToString();
                     EQ_ID = dt.Rows[0]["EQ_ID"].ToString();
                     EQ_NAME = dt.Rows[0]["EQ_NAME"].ToString();
@@ -160,11 +176,15 @@ namespace NexenHub.Models
                     USER_ID = dt.Rows[0]["USER_ID"].ToString();
                     USER_NAME = dt.Rows[0]["USER_NAME"].ToString();
 
+                    //COMPOUND = NullIfEmpty(dt.Rows[0]["COMPOUND_NAME"].ToString());
+
                     Valid = true;
                 }
 
             }
         }
+
+        #region History
 
         public void LoadHistory()
         {
@@ -227,6 +247,24 @@ namespace NexenHub.Models
             }
         }
 
+        #endregion
+
+        public void LoadTreadWidth()
+        {
+            TREAD_WIDTH = NullIfEmpty(dbglob.GetTreadWidth(LOT_ID));
+        }
+
+        public void LoadExtCompound()
+        {
+            COMPOUND = NullIfEmpty(dbglob.GetExtCompound(LOT_ID));
+        }
+
+        #region Utility
+
+        private string NullIfEmpty(string str)
+        {
+            return string.IsNullOrEmpty(str) ? null : str;
+        }
 
         private DateTime ConvertDate(string time)
         {
@@ -235,5 +273,6 @@ namespace NexenHub.Models
             return outdate;
         }
 
+        #endregion
     }
 }

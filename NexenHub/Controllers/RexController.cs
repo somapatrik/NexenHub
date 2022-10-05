@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using NexenHub.Class;
 using NexenHub.Models;
 using System;
@@ -22,9 +23,14 @@ namespace NexenHub.Controllers
             return rexver;
         }
 
-        [HttpGet("latest/{ip}/{usedversion}")]
-        public ActionResult<DateTime> GetLatest(string ip,string usedversion)
+        [HttpPost("latest")]
+        public ActionResult<DateTime> PostLatest()
         {
+            HttpRequest request = HttpContext.Request;
+
+            string ip = request.Headers.ContainsKey("ip") ? request.Headers["ip"].ToString() : "";
+            string versionName = request.Headers.ContainsKey("versionName") ? request.Headers["versionName"].ToString() : "";
+
             AppVersionRex version = new AppVersionRex();
             return version.VersionDate;
         }
