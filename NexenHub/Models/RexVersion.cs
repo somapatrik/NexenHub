@@ -12,7 +12,7 @@ namespace NexenHub.Models
         string _fileName = "rex.apk";
         string _filepath = "download/com.nexentire.rex.apk";
 
-        DateTime _actversion = new DateTime(2022, 1, 1, 0, 0, 0);
+        DateTime _actversion = new DateTime(2022, 10, 5, 0, 0, 0);
         bool _force = false;
 
         public DateTime Version

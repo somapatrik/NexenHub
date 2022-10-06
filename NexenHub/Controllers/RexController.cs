@@ -59,6 +59,12 @@ namespace NexenHub.Controllers
             }
         }
 
+        [HttpGet("commongt/{lotid}")]
+        public ActionResult<List<string>> GetCommonGt(string lotid)
+        {
+            return dbglob.GetCommonGt(lotid);
+        }
+
 
     }
 }

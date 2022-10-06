@@ -12,6 +12,32 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public List<string> GetCommonGt(string LOT_ID, string ITEM_ID = "")
+        {
+            List<string> results = new List<string>();
+
+            try
+            {
+                DBOra db = new DBOra("SP_CM_M_BOM_COMMON_GT");
+                db.AddParameter("AS_ITEM_ID", ITEM_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                DataTable dt = db.ExecProcedure();
+                foreach (DataRow row in dt.Rows)
+                    results.Add(row["GT_ITEM_ID"].ToString());
+            } 
+            catch (Exception ex)
+            {
+               
+            }
+
+            return results;
+        }
+
         public string GetExtCompound(string LOT_ID)
         {
             try
