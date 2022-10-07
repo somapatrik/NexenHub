@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NexenHub.Class
 {
-    public class AndroidAppVersion
+    public abstract class AndroidAppVersion
     {
 
         private string _contentType = "application/vnd.android.package-archive";

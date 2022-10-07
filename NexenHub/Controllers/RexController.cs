@@ -13,26 +13,43 @@ namespace NexenHub.Controllers
     [ApiController]
     public class RexController : ControllerBase
     {
-        RexVersion rexver = new RexVersion();
         GlobalDatabase dbglob = new GlobalDatabase();
-
 
         [HttpGet("version")]
         public ActionResult<RexVersion> Get()
         {
+            RexVersion rexver = new RexVersion();
             return rexver;
         }
 
-        [HttpPost("latest")]
-        public ActionResult<DateTime> PostLatest()
+        [HttpGet("latestversion")]
+        public ActionResult<DateTime> GetLatestVersion()
         {
-            HttpRequest request = HttpContext.Request;
-
-            string ip = request.Headers.ContainsKey("ip") ? request.Headers["ip"].ToString() : "";
-            string versionName = request.Headers.ContainsKey("versionName") ? request.Headers["versionName"].ToString() : "";
-
             AppVersionRex version = new AppVersionRex();
             return version.VersionDate;
+        }
+
+
+        [HttpPost("reportversion")]
+        public ActionResult PostReportVersion()
+        {
+            try 
+            { 
+                HttpRequest request = HttpContext.Request;
+
+                string ip = request.Headers.ContainsKey("ip") ? request.Headers["ip"].ToString() : "";
+                string versionName = request.Headers.ContainsKey("versionName") ? request.Headers["versionName"].ToString() : "";
+                string appId = request.Headers.ContainsKey("appId") ? request.Headers["appId"].ToString() : "";
+
+                dbglob.UpdateVersion(appId, ip, versionName);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
         }
 
         [HttpGet("lotitem/{code}")]
@@ -58,6 +75,7 @@ namespace NexenHub.Controllers
                 return BadRequest();
             }
         }
+
 
         [HttpGet("commongt/{lotid}")]
         public ActionResult<List<string>> GetCommonGt(string lotid)

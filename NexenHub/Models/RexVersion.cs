@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NexenHub.Class;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,14 +13,16 @@ namespace NexenHub.Models
         string _fileName = "rex.apk";
         string _filepath = "download/com.nexentire.rex.apk";
 
-        DateTime _actversion = new DateTime(2022, 10, 5, 0, 0, 0);
+        //DateTime _actversion = new DateTime(2022, 10, 5, 0, 0, 0);
+        AppVersionRex appVersion = new AppVersionRex();
+
         bool _force = false;
 
         public DateTime Version
         {
             get
             {
-                return _actversion;
+                return appVersion.VersionDate;
             }
         }
 
