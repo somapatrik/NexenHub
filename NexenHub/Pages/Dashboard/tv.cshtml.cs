@@ -22,7 +22,11 @@ namespace NexenHub.Pages.Dashboard
 
         public int LatestCount;
         public int ICSCount;
-        public string LatestICSVersion;
+        public DateTime LatestICSVersion;
+
+        public int LatestCountRex;
+        public int RexCount;
+        public DateTime LatestRexVersion;
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
@@ -50,9 +54,23 @@ namespace NexenHub.Pages.Dashboard
             allPingOK = FailPing.Count > 0 ? false : true;
 
 
-            LatestCount = int.Parse(dbglob.GetLatestCountICS().Rows[0][0].ToString());
-            LatestICSVersion = dbglob.GetLatestCountICS().Rows[0][1].ToString();
-            ICSCount = dbglob.GetICSCount();
+            DataTable dt = dbglob.GetLatestSoftwareCount("ics");
+            if (dt.Rows.Count > 0)
+            {
+                LatestCount = int.Parse(dt.Rows[0][0].ToString());
+                LatestICSVersion = DateTime.Parse(dt.Rows[0][1].ToString());
+                ICSCount = dbglob.GetICSCount();
+            }
+
+            dt = dbglob.GetLatestSoftwareCount("rex");
+            if (dt.Rows.Count > 0)
+            {
+                LatestCountRex = int.Parse(dt.Rows[0][0].ToString());
+                LatestRexVersion = DateTime.Parse(dt.Rows[0][1].ToString());
+                RexCount = dbglob.GetRexCount();
+            }
+
+
         }
 
         public class PingDevice

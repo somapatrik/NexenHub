@@ -143,7 +143,7 @@ namespace NexenHub.Models
                 DataTable dt = dbglob.GetLotInfo(_LOT_ID);
                 if (dt.Rows.Count > 0)
                 {
-                    LotID = dt.Rows[0]["LOT_ID"].ToString();
+                    //LotID = dt.Rows[0]["LOT_ID"].ToString();
                     ID = dt.Rows[0]["ITEM_ID"].ToString();
                     Name = dt.Rows[0]["ITEM_NAME"].ToString();
                     State = dt.Rows[0]["ITEM_STATE"].ToString();

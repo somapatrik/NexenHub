@@ -16,7 +16,6 @@ namespace NexenHub.Class
             try
             {
                 DBOra db = new DBOra("SP_CM_M_VERSION_UPDATE");
-
                 db.AddParameter("AS_IP", IP, OracleDbType.Varchar2);
                 db.AddParameter("AS_SOFTWARE_ID", appID, OracleDbType.Varchar2);
                 db.AddParameter("AS_VERSION_NAME", VersionName, OracleDbType.Varchar2);
@@ -295,16 +294,54 @@ namespace NexenHub.Class
             }
         }
 
-        public DataTable GetLatestCountICS()
+        public int GetRexCount()
         {
             try
             {
-                DBOra db = new DBOra("SELECT COUNT(*) LATESTCOUNT, VERSION_ACT FROM TB_CM_M_MONITORING_CONFIG WHERE USE_YN = 'Y' AND TO_DATE(VERSION_ACT, 'YYYY-MM-DD') = (SELECT MAX(TO_DATE(VERSION_ACT, 'YYYY-MM-DD')) FROM TB_CM_M_MONITORING_CONFIG WHERE USE_YN = 'Y') GROUP BY VERSION_ACT");
+                DBOra db = new DBOra("SELECT COUNT(*) FROM TB_CM_M_VERSION WHERE SOFTWARE_ID = 'rex'");
                 DataTable dt = db.ExecTable();
-                return dt; //.Rows.Count > 0 ? int.Parse(dt.Rows[0][0].ToString()) : 0;
+                return dt.Rows.Count > 0 ? int.Parse(dt.Rows[0][0].ToString()) : 0;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
+        //public DataTable GetLatestCountICS()
+        //{
+        //    try
+        //    {
+        //        DBOra db = new DBOra("SELECT COUNT(*) LATESTCOUNT, VERSION_ACT FROM TB_CM_M_MONITORING_CONFIG WHERE USE_YN = 'Y' AND TO_DATE(VERSION_ACT, 'YYYY-MM-DD') = (SELECT MAX(TO_DATE(VERSION_ACT, 'YYYY-MM-DD')) FROM TB_CM_M_MONITORING_CONFIG WHERE USE_YN = 'Y') GROUP BY VERSION_ACT");
+        //        DataTable dt = db.ExecTable();
+        //        return dt; //.Rows.Count > 0 ? int.Parse(dt.Rows[0][0].ToString()) : 0;
+
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return new DataTable();
+        //    }
+        //}
+
+        public DataTable GetLatestSoftwareCount(string SOFTWARE_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT COUNT(*) LATESTCOUNT, VERSION_NAME ");
+                query.AppendLine("FROM TB_CM_M_VERSION");
+                query.AppendLine("WHERE SOFTWARE_ID = :soft");
+                query.AppendLine("AND VERSION_NAME = (SELECT MAX(VERSION_NAME) FROM TB_CM_M_VERSION WHERE SOFTWARE_ID = :soft)");
+                query.AppendLine("GROUP BY VERSION_NAME");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("soft", SOFTWARE_ID, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+                return dt;
+
+            }
+            catch (Exception ex)
             {
                 return new DataTable();
             }
