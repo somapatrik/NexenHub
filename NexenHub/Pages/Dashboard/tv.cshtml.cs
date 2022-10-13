@@ -28,6 +28,10 @@ namespace NexenHub.Pages.Dashboard
         public int RexCount;
         public DateTime LatestRexVersion;
 
+        public int LatestCountIO;
+        public int IOCount;
+        public DateTime LatestIOVersion;
+
         private GlobalDatabase dbglob = new GlobalDatabase();
 
         public void OnGet()
@@ -59,8 +63,9 @@ namespace NexenHub.Pages.Dashboard
             {
                 LatestCount = int.Parse(dt.Rows[0][0].ToString());
                 LatestICSVersion = DateTime.Parse(dt.Rows[0][1].ToString());
-                ICSCount = dbglob.GetICSCount();
             }
+
+            
 
             dt = dbglob.GetLatestSoftwareCount("rex");
             if (dt.Rows.Count > 0)
@@ -70,6 +75,15 @@ namespace NexenHub.Pages.Dashboard
                 RexCount = dbglob.GetRexCount();
             }
 
+            dt = dbglob.GetLatestSoftwareCount("ioserver");
+            if (dt.Rows.Count > 0)
+            {
+                LatestCountIO = int.Parse(dt.Rows[0][0].ToString());
+                LatestIOVersion = DateTime.Parse(dt.Rows[0][1].ToString());
+            }
+
+            ICSCount = dbglob.GetICSCount();
+            IOCount = dbglob.GetIOServerCount();
 
         }
 

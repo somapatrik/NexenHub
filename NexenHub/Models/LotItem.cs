@@ -83,6 +83,8 @@ namespace NexenHub.Models
         public string TREAD_WIDTH { get; set; }
         public string COMPOUND { get; set; }
 
+        public string MOLD_NO { get; set; }
+
         public bool Valid { get; set; }
         public List<LotHisItem> History { get; set; }
 
@@ -173,10 +175,11 @@ namespace NexenHub.Models
                     PROTOTYPE_ID = dt.Rows[0]["PROTOTYPE_ID"].ToString();
                     PROTOTYPE_VER = dt.Rows[0]["PROTOTYPE_VER"].ToString();
 
+                    MOLD_NO = dt.Rows[0]["MOLD_NO"].ToString();
+
                     USER_ID = dt.Rows[0]["USER_ID"].ToString();
                     USER_NAME = dt.Rows[0]["USER_NAME"].ToString();
 
-                    //COMPOUND = NullIfEmpty(dt.Rows[0]["COMPOUND_NAME"].ToString());
 
                     Valid = true;
                 }

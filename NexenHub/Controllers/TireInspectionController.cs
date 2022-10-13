@@ -44,8 +44,6 @@ namespace NexenHub.Controllers
         [HttpPost("defectUpload")]
         public async Task<ActionResult> Post()
         {
-            //[RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
-            //[RequestSizeLimit(209715200)]
             try
             {
                 var httpRequest = HttpContext.Request;
