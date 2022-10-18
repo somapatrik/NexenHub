@@ -6,32 +6,35 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NexenHub.Models;
 using NexenHub.Class;
+using NetBarcode;
 
 namespace NexenHub.Pages
 {
     public class LotModel : PageModel
     {
         [BindProperty(SupportsGet = true)]
-        public string argLOT { get; set; }
+        public string arglot { get; set; }
+        
+        public LotItem lotitem { get; set; }
 
-
-        public LotItem lotitem;
-        // public Esl eslLayout { get; set; }
+        public Barcode lotBarcode { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
+
+
         public void OnGet()
         {
 
-            if (argLOT.Length == 5)
-                argLOT = dbglob.Cart2Lot(argLOT);
+            if (arglot.Length == 5)
+                arglot = dbglob.Cart2Lot(arglot);
 
-            lotitem = new LotItem(argLOT);
+
+            lotitem = new LotItem(arglot);
             lotitem.LoadHistory();
             lotitem.RemoveUselessHistory();
 
-            //eslLayout = new Esl();
-            //eslLayout.LOT_ID = argLOT;
-            //eslLayout.LoadLayout();
+            lotBarcode = new Barcode(lotitem.LOT_ID, NetBarcode.Type.Code128B) ;
+
         }
     }
 }

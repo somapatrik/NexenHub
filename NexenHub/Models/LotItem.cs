@@ -82,7 +82,6 @@ namespace NexenHub.Models
         public string USER_NAME { get; set; }
         public string TREAD_WIDTH { get; set; }
         public string COMPOUND { get; set; }
-
         public string MOLD_NO { get; set; }
 
         public bool Valid { get; set; }
