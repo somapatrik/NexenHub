@@ -1,6 +1,27 @@
 ﻿@page "{arglot}"
 @model NexenHub.Pages.LotModel
 @{
+    ViewData["pageTitle"] = Model.lotitem.LOT_ID;
+
+    string lotStateStyle = Model.lotitem.LotState == "H" || Model.lotitem.LotState == "Z" ? "bg-warning" : "";
+
+    string itemStateStyle;
+
+    if (Model.lotitem.State == "S" || Model.lotitem.State == "B")
+        itemStateStyle = "bg-danger text-white";
+    else if (Model.lotitem.State == "H")
+        itemStateStyle = "bg-warning";
+    else
+        itemStateStyle = "";
+
+    string cartStateStyle = Model.lotitem.CartState == "E" ? "bg-warning" : "";
+
+    DateTime nowDate = DateTime.Now;
+
+    string ageTimeStyle = Model.lotitem.dateAgingTime > nowDate ? "list-group-item-danger" : "";
+    string expiryTimeStyle = Model.lotitem.dateExpiry <= nowDate ? "list-group-item-danger" : "";
+
+
 }
 
 <!-- Top bar -->
@@ -70,6 +91,7 @@
         </div>
 
         <div class="col-md-4 text-center">
+
             <div class="row text-muted">
                 <div class="col">
                     <h5>@Model.lotitem.ID</h5>
@@ -83,6 +105,25 @@
                 </div>
 
             </div>
+
+            @{ if (!string.IsNullOrEmpty(Model.lotitem.PROTOTYPE_ID))
+                {
+                    <div class="row mt-1 text-muted">
+                        <div class="col">
+                            <h5>@Model.lotitem.PROTOTYPE_ID</h5>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col">
+                            <h4>@Model.lotitem.PROTOTYPE_VER</h4>
+                        </div>
+
+                    </div>
+                }
+
+            }
 
         </div>
 
@@ -110,12 +151,35 @@
 
 </div>
 
+<!-- Main content -->
 <div class="container-fluid">
 
     <div class="row">
 
         <div class="col-3 bg-white">
-            <h5 class="m-3"></h5>
+            <h5 class="m-3">Made from</h5>
+
+            <div class="list-group-flush p-0 mt-3 h-100">
+
+                @{
+                    foreach (Models.LotItem parent in Model.Parents)
+                    {
+                                <a class="list-group-item list-group-item-action" href="~/lot/@parent.LOT_ID" target="_blank">
+
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">@parent.LOT_ID</span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end">
+                                        <span class="text-muted">@parent.Name</span>
+                                    </div>
+
+                                </a>
+                    }
+                }
+
+            </div>
+
         </div>
 
         <div class="col-6 bg-white">
@@ -124,7 +188,7 @@
 
                 <div class="col">
 
-                    <div class="card">
+                    <div class="card @lotStateStyle">
                         <div class="card-header text-center">
                             LOT STATE
                         </div>
@@ -139,7 +203,7 @@
 
                 <div class="col">
 
-                    <div class="card">
+                    <div class="card @itemStateStyle">
                         <div class="card-header text-center">
                             ITEM STATE
                         </div>
@@ -208,11 +272,11 @@
                             <td>Produced</td>
                             <td>@Model.lotitem.dateProdTime</td>
                         </tr>
-                        <tr>
+                        <tr  class="@ageTimeStyle">
                             <td>Aging</td>
                             <td>@Model.lotitem.dateAgingTime</td>
                         </tr>
-                        <tr>
+                        <tr class="@expiryTimeStyle">
                             <td>Expiry</td>
                             <td>@Model.lotitem.dateExpiry</td>
                         </tr>
@@ -290,9 +354,7 @@
 
         </div>
 
-
         <div class="col bg-white justify-content-center">
-            @*@await Component.InvokeAsync("LotItemHis", Model.lotitem)*@
 
             <h5 class="m-3">History</h5>
 

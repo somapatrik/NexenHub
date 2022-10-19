@@ -11,6 +11,23 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public DataTable GetLotParents(string LOT)
+        {
+            try
+            {
+                DBOra db = new DBOra("select INPUT_LOT_ID from TB_IN_M_ITEM_TRACE where PROD_LOT_ID = :lot");
+                db.AddParameter("lot", LOT, OracleDbType.Varchar2);
+
+                DataTable dt = db.ExecTable();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public void UpdateVersion(string appID, string IP, string VersionName)
         {
             try

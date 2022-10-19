@@ -69,14 +69,27 @@ namespace NexenHub.Class
 
         public DataTable ExecTable()
         {
-            this.Command = new OracleCommand(this.query, this.Connection);
-            SendParameters();
-            this.Connection.Open();
+            //this.Command = new OracleCommand(this.query, this.Connection);
+            //SendParameters();
+            //this.Connection.Open();
+
+            //DataTable dt = new DataTable();
+            //OracleDataAdapter da = new OracleDataAdapter(this.Command);
+            //da.Fill(dt);
+            //this.Connection.Close();
 
             DataTable dt = new DataTable();
-            OracleDataAdapter da = new OracleDataAdapter(this.Command);
-            da.Fill(dt);
-            this.Connection.Close();
+            SendParameters();
+            using (OracleConnection c = this.Connection)
+            {
+                c.Open();
+                using (OracleCommand cmd = this.Command)
+                {
+                    OracleDataAdapter da = new OracleDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+            }
+
             return dt;
         }
 

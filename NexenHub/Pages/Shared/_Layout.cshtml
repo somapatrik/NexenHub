@@ -1,9 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string machineSelected = (string)ViewData["mainSelected"] == "machines" ? "active" : "";
+    string eslSelected = (string)ViewData["mainSelected"] == "esl" ? "active" : "";
+    string rexSelected = (string)ViewData["mainSelected"] == "rex" ? "active" : "";
+    string pageTitle = string.IsNullOrEmpty((string)ViewData["pageTitle"]) ? "NexenHub" : (string)ViewData["pageTitle"];
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NexenHub</title>
+    <title>@pageTitle</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -21,12 +28,6 @@
     <script src="~/lib/vis/dist/vis.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
-
-    @{
-        string machineSelected = (string)ViewData["mainSelected"] == "machines" ? "active" : "";
-        string eslSelected = (string)ViewData["mainSelected"] == "esl" ? "active" : "";
-        string rexSelected = (string)ViewData["mainSelected"] == "rex" ? "active" : "";
-    }
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-github-dark text-white">
@@ -91,9 +92,9 @@
     </header>
 
     @*<div class="container-fluid">*@
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
     @*</div>*@
 
     <footer class="footer text-muted bg-github-dark">
