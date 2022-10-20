@@ -12,6 +12,30 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetAllParents(string LOT)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select PROD_LOT_ID, INPUT_LOT_ID, to_date(EVENT_TIME, 'YYMMDDHH24MISS') EVENT_TIME");
+                query.AppendLine("from TB_IN_M_ITEM_TRACE");
+                query.AppendLine("CONNECT BY PRIOR INPUT_LOT_ID = PROD_LOT_ID");
+                query.AppendLine("START WITH PROD_LOT_ID = :lot");
+                query.AppendLine("GROUP BY PROD_LOT_ID,INPUT_LOT_ID,EVENT_TIME");
+                query.AppendLine("ORDER BY EVENT_TIME, PROD_LOT_ID");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("lot", LOT, OracleDbType.Varchar2);
+
+                DataTable dt = db.ExecTable();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetLotParents(string LOT)
         {
             try
