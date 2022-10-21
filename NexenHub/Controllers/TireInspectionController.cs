@@ -53,14 +53,14 @@ namespace NexenHub.Controllers
 
                     foreach (var file in httpRequest.Form.Files)
                     {
+                        // Image root directory
                         var filePath = Path.Combine(_environment.ContentRootPath, "images");
-
-                        if (!Directory.Exists(filePath))
-                            Directory.CreateDirectory(filePath);
+                        // TODO: Tire directory name
 
                         using (var memoryStream = new MemoryStream())
                         {
-                            await file.CopyToAsync(memoryStream); System.IO.File.WriteAllBytes(Path.Combine(filePath, file.FileName), memoryStream.ToArray());
+                            await file.CopyToAsync(memoryStream); 
+                            System.IO.File.WriteAllBytes(Path.Combine(filePath, file.FileName), memoryStream.ToArray());
                         }
 
                         return Ok();
