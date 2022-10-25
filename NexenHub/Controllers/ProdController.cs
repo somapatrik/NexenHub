@@ -14,6 +14,9 @@ namespace NexenHub.Controllers
     [ApiController]
     public class ProdController : ControllerBase
     {
+
+        GlobalDatabase dbglob = new GlobalDatabase();
+
         [HttpGet("{proc}")]
         public async Task<ActionResult<string>> Get(string proc)
         {
@@ -50,6 +53,26 @@ namespace NexenHub.Controllers
             {
                 return "error";
             }
+        }
+
+
+        [HttpGet("PM")]
+        public ActionResult<List<StatusEq>> GetPM()
+        {
+            List<StatusEq> MachinesPM = new List<StatusEq>();
+
+            foreach (DataRow row in dbglob.GetDashboardStatus("").Rows)
+            {
+                if (row["NONWRK_CODE"].ToString() == "N016" && row["WC_ID"].ToString() != "U")
+                    MachinesPM.Add(new StatusEq()
+                    {
+                        Name = row["EQ_NAME"].ToString(),
+                        Downtime = row["NON_NAME"].ToString(),
+                        Start = DateTime.Parse(row["STIME"].ToString())
+                    });
+            }
+
+            return MachinesPM;
         }
     }
 }
