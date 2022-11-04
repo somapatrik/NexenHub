@@ -4,52 +4,53 @@
     ViewData["mainSelected"] = "rex";
 }
 
-<div class="container">
-    <div class="row g-4">
+<div class="container pt-3 bg-white">
+
+    <div class="row">
+        <div class="col text-center">
+            <h1>Rex</h1>
+            <div class="text-muted">@Html.Raw("v")@Model.RexVer.VersionDate.ToString("yyyy-MM-dd")</div>
+        </div>
+    </div>
+
+    <div class="row g-3">
         <div class="col-lg-8">
 
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex">
-                        <div class="flex-grow-1">
-                            <b>ReX</b> - Informace o materiálu
-                        </div>
-                        <div>
-                            @Html.Raw("Verze:") @Model.RexVer.VersionDate.ToString("yyyy-MM-dd")
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="card-text">
+            <h2>Požadavky</h2>
+            <ul>
+                <li>Android 8.0 a vyšší</li>
+                <li>Telefon připojený k síti Nexen, schopný připojit se k tomuto webu.</li>
+            </ul>
 
-                        <ul>
-                            <li>
-                                Minimální verze Android: <b>Oreo 8.0</b>
-                            </li>
-                            <li>
-                                Po zadání čísla vozíku nebo lot zobrazí aktuální informace o materiálu
-                            </li>
-                            <li>
-                                Lze využít NFC pro načtení RFID čipů na vozících
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <a href="@Url.Page("rex", "Download")" class="btn btn-success m-1">Download</a>
-                    </div>
-                </div>
-            </div>
+        <h2>Instalace</h2>
+        <ol>
+            <li>Stáhnout soubor rex.apk</li>
+            <li>Stiskem souboru se pustí instalace.</li>
+            <li>Odsouhlasit všechny hlášky, povolit všechno co telefon vyžaduje.</li>
+            <li>Po prvním spuštění nemusí fungovat skenování čárového kódu, stačí restartovat.</li>
+        </ol>
+
+        <h2>Použití</h2>
+        <ul>
+            <li>Tlačítko "Zadat" - Manuální zadání čísla LOT / Vozíku.</li>
+            <li>Tlačítko "Skenovat" - Přečte čárový / QR kód pomocí kamery. Ignoruje typy kódů, které nejsou součástí výroby.</li>
+            <li>NFC - Po zapnutí NFC lze přiložit telefon na RFID čip vozíku.</li>
+        </ul>
 
         </div>
 
-        <div class="col-lg-4 g-4">
+        <div class="col-lg-4">
 
-            <div class="card">
-                <div class="card-header">QR ke stažení</div>
-                <div class="card-body">
-                    <img src="~/images/RexDownload.png" class="img-fluid"/>
-                </div>
-            </div>
+                    <div class="flex-column">
+
+                        <a href="@Url.Page("rex", "Download")" class="btn btn-primary m-1 w-100">Stáhnout</a>
+
+                        <div class="w-100 d-none d-lg-block">
+                            <img src="~/images/RexDownload.png" class="img-fluid"/>
+                        </div>
+
+                    </div>
+
 
         </div>
 

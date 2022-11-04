@@ -61,7 +61,7 @@ namespace NexenHub.Class
                 db.AddParameter("AS_SOFTWARE_ID", appID, OracleDbType.Varchar2);
                 db.AddParameter("AS_VERSION_NAME", VersionName, OracleDbType.Varchar2);
 
-                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+               // db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
                 db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
                 db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
 
@@ -302,13 +302,13 @@ namespace NexenHub.Class
         {
             try
             {
-                StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT PROD.LOT_ID");
-                query.AppendLine("FROM TB_PR_M_PROD PROD");
-                query.AppendLine("WHERE PROD.CART_ID = :cart");
-                query.AppendLine("AND PROD.PROD_TIME = (SELECT MAX(PROD_TIME) FROM TB_PR_M_PROD WHERE CART_ID = :cart AND USE_YN = 'Y')");
-                query.AppendLine("AND PROD.USE_YN = 'Y'");
-                query.AppendLine("AND PROD.PLANT_ID = 'P500'");
+                //StringBuilder query = new StringBuilder();
+                //query.AppendLine("SELECT PROD.LOT_ID");
+                //query.AppendLine("FROM TB_PR_M_PROD PROD");
+                //query.AppendLine("WHERE PROD.CART_ID = :cart");
+                //query.AppendLine("AND PROD.PROD_TIME = (SELECT MAX(PROD_TIME) FROM TB_PR_M_PROD WHERE CART_ID = :cart AND USE_YN = 'Y')");
+                //query.AppendLine("AND PROD.USE_YN = 'Y'");
+                //query.AppendLine("AND PROD.PLANT_ID = 'P500'");
 
                 DBOra db = new DBOra("SELECT FN_IN_CART_TO_LOT(:cart) FROM DUAL ");
                 db.AddParameter("cart", CART_ID.ToUpper(), OracleDbType.Varchar2);

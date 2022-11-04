@@ -55,12 +55,19 @@ namespace NexenHub.Controllers
                     {
                         // Image root directory
                         var filePath = Path.Combine(_environment.ContentRootPath, "images");
-                        // TODO: Tire directory name
+
+                        // Tire directory name
+                        string barcode = file.FileName.Split("_")[0];
+
+                        // Save folder
+                        string folderPath = Path.Combine(filePath, barcode);
+                        Directory.CreateDirectory(folderPath);
+
 
                         using (var memoryStream = new MemoryStream())
                         {
                             await file.CopyToAsync(memoryStream); 
-                            System.IO.File.WriteAllBytes(Path.Combine(filePath, file.FileName), memoryStream.ToArray());
+                            System.IO.File.WriteAllBytes(Path.Combine(folderPath, file.FileName), memoryStream.ToArray());
                         }
 
                         return Ok();

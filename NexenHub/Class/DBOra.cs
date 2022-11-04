@@ -95,17 +95,6 @@ namespace NexenHub.Class
 
         public DataTable ExecProcedure()
         {
-            //this.Command = new OracleCommand(this.query, this.Connection);
-            //this.Command.CommandType = CommandType.StoredProcedure;
-            //SendParameters();
-            //this.Connection.Open();
-
-            //DataSet ds = new DataSet();
-            //OracleDataAdapter da = new OracleDataAdapter(this.Command);
-            //da.Fill(ds);
-            //this.Connection.Close();
-            //return ds.Tables[0];
-
             this.Command = new OracleCommand(this.query, this.Connection);
             this.Command.CommandType = CommandType.StoredProcedure;
             SendParameters();

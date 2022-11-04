@@ -22,29 +22,61 @@
 </head>
 
 <body class="" style="background-color:#000000;">
+
     <div class="container-fluid">
 
-        @{
-            if (!@Model.isPM)
-            {
-                <div class="alert alert-primary text-center mt-2" role="alert">
-                    <h2 class="alert-heading">No PM is in progress</h2>
-                </div>
-            }
-            else
-            {
-                <div class="alert alert-warning text-center mt-2" role="alert">
-                    <h2 class="alert-heading">PM in progress</h2>
+        <div class="row">
+
+            <div class="row row-cols-1 row-cols-md-3 g-2">
+
+                <div class="col">
+                    <div class=" card h-100 @stlIO text-center">
+                        <div class="card-header display-5">IO Server</div>
+                        <div class="card-body display-5">
+                            <div>@Model.LatestIOVersion.ToString("yy-MM-dd")</div>
+                            <div>@Model.LatestCountIO / @Model.IOCount</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-xl-5 g-2">
-                    @foreach (var dev in @Model.MachinesPM)
+                <div class="col">
+                    <div class=" card h-100 @stl text-center">
+                        <div class="card-header display-5">ICS</div>
+                        <div class="card-body display-5">
+                            <div>@Model.LatestICSVersion.ToString("yy-MM-dd")</div>
+                            <div>@Model.LatestCount / @Model.ICSCount</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class=" card h-100 @stlRex text-center">
+                        <div class="card-header display-5">Rex</div>
+                        <div class="card-body display-5">
+                            <div>@Model.LatestRexVersion.ToString("yy-MM-dd")</div>
+                            <div>@Model.LatestCountRex / @Model.RexCount</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        @{
+            if (@Model.isPM)
+            {
+                <div class="row mt-2">
+
+                    <div class="row row-cols-1 row-cols-md-3 g-2">
+
+                        @foreach (var dev in @Model.MachinesPM)
                     {
 
                         <div class="col">
                             <div class="card h-100 bg-warning text-dark">
                                 <div class="card-header text-center">
-                                    <h2> @dev.Name</h2>
+                                    <h2>PM - @dev.Name</h2>
                                 </div>
                                 <div class="card-body text-center">
                                     <h3>@dev.Start.ToString("HH:mm")</h3>
@@ -53,6 +85,8 @@
                         </div>
 
                     }
+
+                    </div>
                 </div>
             }
         }
@@ -60,49 +94,32 @@
         @{
             if (!Model.allPingOK)
             {
-                <div class="alert alert-danger text-center mt-2" role="alert">
-                    <h2 class="alert-heading">Unreachable devices</h2>
-                </div>
 
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-xl-5 g-2">
-                    @foreach (var dev in @Model.FailPing)
+                <div class="row mt-2">
+                    <div class="row row-cols-1 row-cols-md-3 g-2">
+                        @foreach (var dev in @Model.FailPing)
                     {
 
                         <div class="col">
                             <div class="card h-100 bg-danger text-light">
                                 <div class="card-header text-center">
-                                    <h2> @dev.Name </h2>
+                                    <h2>@dev.Name</h2>
                                 </div>
                                 <div class="card-body text-center">
-                                    <h3>@dev.IP</h3>
+                                    <div><h3>@dev.IP</h3></div>
+                                    <div><h3>Disconnected</h3></div>
                                 </div>
                             </div>
                         </div>
 
                     }
+                    </div>
                 </div>
 
             }
-            else
-            {
-                <div class="alert alert-primary text-center mt-2" role="alert">
-                    <h2 class="alert-heading">All NMP / ICS (@Model.PingDevices.Count) are online</h2>
-                </div>
-            }
+
 
         }
-
-        <div class="alert @stlIO text-center mt-2" role="alert">
-            <h2 class="alert-heading">IO Server version: @Model.LatestIOVersion.ToString("yy-MM-dd") | Installed on @Model.LatestCountIO / @Model.IOCount</h2>
-        </div>
-
-        <div class="alert @stl text-center mt-2" role="alert">
-            <h2 class="alert-heading">ICS version: @Model.LatestICSVersion.ToString("yy-MM-dd") | Installed on @Model.LatestCount / @Model.ICSCount</h2>
-        </div>
-
-        <div class="alert @stlRex text-center mt-2" role="alert">
-            <h2 class="alert-heading">Rex version: @Model.LatestRexVersion.ToString("yy-MM-dd") | Installed on @Model.LatestCountRex / @Model.RexCount</h2>
-        </div>
 
     </div>
 </body>
