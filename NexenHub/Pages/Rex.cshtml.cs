@@ -22,9 +22,7 @@ namespace NexenHub.Pages
 
         public ActionResult OnGetDownload()
         {
-            // return File(version.GetRelativeFilePath(), version.GetContentType(), version.GetFileName());
-            return File(RexVer.filePath, RexVer.contentType, RexVer.fileName);
-            
+            return File(RexVer.filePath, RexVer.contentType, RexVer.fileName);   
         }
     }
 }
