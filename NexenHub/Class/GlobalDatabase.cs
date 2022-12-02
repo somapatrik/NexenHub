@@ -268,7 +268,8 @@ namespace NexenHub.Class
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT");
                 query.AppendLine("INSP_SEQ,");
-                query.AppendLine("FN_CM_GET_CODE_NAME('QA', '01', PROC_ID, '1033') AS PROC_ID,");
+                query.AppendLine("PROC_ID,");
+                query.AppendLine("FN_CM_GET_CODE_NAME('QA', '01', PROC_ID, '1033') AS PROC_ID_FULLNAME,");
                 query.AppendLine("TO_DATE(INSP_DT, 'YYYYMMDDHH24MISS') AS INSPECTION_TIME,");
                 query.AppendLine("SHIFT,");
                 query.AppendLine("SHIFT_RGB,");

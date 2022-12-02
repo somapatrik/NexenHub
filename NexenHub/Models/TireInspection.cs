@@ -110,6 +110,7 @@ namespace NexenHub.Models
 
                 res.SEQ = int.Parse(row["INSP_SEQ"].ToString());
                 res.PROC = row["PROC_ID"].ToString();
+                res.PROC_FULLNAME = row["PROC_ID_FULLNAME"].ToString();
                 res.InspectionTime = DateTime.Parse(row["INSPECTION_TIME"].ToString());
                 res.SHIFT = row["SHIFT"].ToString();
                 res.SHIFT_RBG = row["SHIFT_RGB"].ToString();
@@ -222,6 +223,7 @@ namespace NexenHub.Models
         {
             public int SEQ { get; set; }
             public string PROC { get; set; }
+            public string PROC_FULLNAME { get; set; }
             public DateTime InspectionTime { get; set; }
             public string SHIFT { get; set; }
             public string SHIFT_RBG { get; set; }
