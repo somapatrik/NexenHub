@@ -48,16 +48,23 @@ namespace NexenHub.Controllers
             {
                 var httpRequest = HttpContext.Request;
 
-                if (httpRequest.Form.Files.Count > 0)
+                if (httpRequest.Form.Files.Count > 0 && httpRequest.Form.ContainsKey("barcode") && httpRequest.Form.ContainsKey("inspectionResult"))
                 {
 
+                    // Barcode
+                    string barcode = httpRequest.Form["barcode"].ToString();
+
+                    // Inspection result
+                    FertInspectionResult res = JsonConvert.DeserializeObject<FertInspectionResult>(httpRequest.Form["inspectionResult"].ToString());
+
+                    // Reading files
                     foreach (var file in httpRequest.Form.Files)
                     {
                         // Image root directory
                         var filePath = Path.Combine(_environment.ContentRootPath, "images");
 
                         // Tire directory name
-                        string barcode = file.FileName.Split("_")[0];
+                        //string barcode = file.FileName.Split("_")[0];
 
                         // Save folder
                         string folderPath = Path.Combine(filePath, barcode);
@@ -72,6 +79,7 @@ namespace NexenHub.Controllers
 
                         return Ok();
                     }
+
                 }
             }
             catch (Exception e)
