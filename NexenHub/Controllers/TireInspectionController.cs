@@ -9,6 +9,9 @@ using NexenHub.Class;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Data;
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Http;
 
 namespace NexenHub.Controllers
 {
@@ -19,7 +22,6 @@ namespace NexenHub.Controllers
 
         private readonly IWebHostEnvironment _environment;
         private readonly ILogger<TireInspectionController> _logger;
-
         private GlobalDatabase dbglob = new GlobalDatabase();
 
         public TireInspectionController(ILogger<TireInspectionController> logger, IWebHostEnvironment environment)
@@ -67,8 +69,6 @@ namespace NexenHub.Controllers
                     // Photo name
                     string originalName = Path.GetFileNameWithoutExtension(file.FileName);
                     string originalExtension = Path.GetExtension(file.FileName);
-                    
-                    // Get photo SEQ
                     int seq = dbglob.GetBadPhotoSeq(barcode, res.SEQ, res.PROC, res.InspectionTime.ToString("yyyyMMddHHmmss"), res.BAD_ID);
 
                     string photoName = $"{originalName}_{seq}{originalExtension}";
@@ -93,11 +93,43 @@ namespace NexenHub.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "error");
+                _logger.LogError(e.Message, "error");
                 return new StatusCodeResult(500);
             }
 
             return BadRequest();
+        }
+
+        [HttpPost("defectGallery")]
+        public ActionResult<List<string>> GetDefectGallery()
+        {
+            try
+            {
+                var httpRequest = HttpContext.Request;
+
+                if (!httpRequest.Form.ContainsKey("barcode") || !httpRequest.Form.ContainsKey("inspectionResult"))
+                    return BadRequest();
+
+                // Barcode
+                string barcode = httpRequest.Form["barcode"].ToString();
+
+                // Inspection result
+                FertInspectionResult inspection = JsonConvert.DeserializeObject<FertInspectionResult>(httpRequest.Form["inspectionResult"].ToString());
+
+                DataTable dt = dbglob.GetDefectGalleryPaths(barcode, inspection.SEQ, inspection.PROC, inspection.InspectionTime, inspection.BAD_ID);
+                
+                List<string> data = new List<string>();
+                
+                foreach (DataRow row in dt.Rows)
+                    data.Add(Path.Combine(row["SERVER_URL"].ToString(), row["SERVER_DIRECTORY"].ToString(), row["PHOTO_NAME"].ToString()));
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "error");
+                return new StatusCodeResult(500);
+            }
         }
     }
 }

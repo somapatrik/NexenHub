@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using NexenHub.Class;
@@ -12,7 +13,24 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
-
+        public DataTable GetDefectGalleryPaths(string AS_BARCODE_NO, int AS_INSP_SEQ, string AS_PROC_ID, DateTime AS_INSP_DT, string AS_BAD_ID)
+        {
+            try 
+            { 
+                DBOra db = new DBOra("SP_PROC_BAD_PHOTO_GALLERY");
+                db.AddParameter("AS_BARCODE_NO", AS_BARCODE_NO, OracleDbType.Varchar2);
+                db.AddParameter("AS_INSP_SEQ", AS_INSP_SEQ, OracleDbType.Int16);
+                db.AddParameter("AS_PROC_ID", AS_PROC_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_INSP_DT", AS_INSP_DT.ToString("yyyyMMddHHmmss"), OracleDbType.Varchar2);
+                db.AddParameter("AS_BAD_ID", AS_BAD_ID, OracleDbType.Varchar2);
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                return db.ExecProcedure();
+            }
+            catch
+            {
+                return new DataTable();
+            }
+        }
         public void SaveInspectionPhotoInfo(string AS_BARCODE_NO,int AS_INSP_SEQ,string AS_PROC_ID,DateTime AS_INSP_DT,string AS_BAD_ID,string AS_DIR,string AS_PHOTO_NAME,string AS_NOTE,int AS_PHOTO_SEQ)
         {
             try
