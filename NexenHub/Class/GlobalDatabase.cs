@@ -5,12 +5,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NexenHub.Class;
+using NexenHub.Models;
 using Oracle.ManagedDataAccess.Client;
 
 namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public void SaveInspectionPhotoInfo(string AS_BARCODE_NO,int AS_INSP_SEQ,string AS_PROC_ID,DateTime AS_INSP_DT,string AS_BAD_ID,string AS_DIR,string AS_PHOTO_NAME,string AS_NOTE,int AS_PHOTO_SEQ)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_PROC_BAD_PHOTO_NEW");
+                db.AddParameter("AS_BARCODE_NO", AS_BARCODE_NO, OracleDbType.Varchar2);
+                db.AddParameter("AS_INSP_SEQ", AS_INSP_SEQ, OracleDbType.Int16);
+                db.AddParameter("AS_PROC_ID", AS_PROC_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_INSP_DT", AS_INSP_DT.ToString("yyyyMMddHHmmss"), OracleDbType.Varchar2);
+                db.AddParameter("AS_BAD_ID", AS_BAD_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_DIR", AS_DIR, OracleDbType.Varchar2);
+                db.AddParameter("AS_PHOTO_NAME", AS_PHOTO_NAME, OracleDbType.Varchar2);
+                db.AddParameter("AS_NOTE", AS_NOTE, OracleDbType.Varchar2);
+                db.AddParameter("AS_PHOTO_SEQ", AS_PHOTO_SEQ, OracleDbType.Int16);
+                db.ExecProcedure();
+            }
+            catch
+            {
+
+            }
+        }
+
+        public int GetBadPhotoSeq(string AS_BARCODE_NO,int AS_INSP_SEQ,string AS_PROC_ID,string AS_INSP_DT,string AS_BAD_ID)
+        {
+            try 
+            { 
+                DBOra db = new DBOra("select FN_QA_DEFECT_PHOTO_SEQ(:AS_BARCODE_NO,:AS_INSP_SEQ,:AS_PROC_ID,:AS_INSP_DT,:AS_BAD_ID) FROM DUAL");
+                db.AddParameter("AS_BARCODE_NO", AS_BARCODE_NO, OracleDbType.Varchar2);
+                db.AddParameter("AS_INSP_SEQ", AS_INSP_SEQ, OracleDbType.Int16); 
+                db.AddParameter("AS_PROC_ID", AS_PROC_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_INSP_DT", AS_INSP_DT, OracleDbType.Varchar2);
+                db.AddParameter("AS_BAD_ID", AS_BAD_ID, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+                return int.Parse(dt.Rows[0][0].ToString());
+            }
+            catch
+            {
+                return 0;
+            }
+
+}
 
         public DataTable GetAllParents(string LOT)
         {
@@ -118,7 +161,6 @@ namespace NexenHub.Class
 
             return null;
         }
-
 
         public string GetTreadWidth(string LOT_ID)
         {
@@ -303,24 +345,17 @@ namespace NexenHub.Class
         {
             try
             {
-                //StringBuilder query = new StringBuilder();
-                //query.AppendLine("SELECT PROD.LOT_ID");
-                //query.AppendLine("FROM TB_PR_M_PROD PROD");
-                //query.AppendLine("WHERE PROD.CART_ID = :cart");
-                //query.AppendLine("AND PROD.PROD_TIME = (SELECT MAX(PROD_TIME) FROM TB_PR_M_PROD WHERE CART_ID = :cart AND USE_YN = 'Y')");
-                //query.AppendLine("AND PROD.USE_YN = 'Y'");
-                //query.AppendLine("AND PROD.PLANT_ID = 'P500'");
-
                 DBOra db = new DBOra("SELECT FN_IN_CART_TO_LOT(:cart) FROM DUAL ");
                 db.AddParameter("cart", CART_ID.ToUpper(), OracleDbType.Varchar2);
                 DataTable dt = db.ExecTable();
                 return dt.Rows.Count > 0 ? dt.Rows[0][0].ToString() : "";
             }
-            catch (Exception ex)
+            catch
             {
                 return "";
             }
         }
+
         public int GetICSCount()
         {
             try
@@ -330,7 +365,7 @@ namespace NexenHub.Class
                 return dt.Rows.Count > 0 ? int.Parse(dt.Rows[0][0].ToString()) : 0;
 
             }
-            catch (Exception ex)
+            catch
             {
                 return 0;
             }
@@ -345,7 +380,7 @@ namespace NexenHub.Class
                 return dt.Rows.Count > 0 ? int.Parse(dt.Rows[0][0].ToString()) : 0;
 
             }
-            catch (Exception ex)
+            catch
             {
                 return 0;
             }
@@ -360,7 +395,7 @@ namespace NexenHub.Class
                 return dt.Rows.Count > 0 ? int.Parse(dt.Rows[0][0].ToString()) : 0;
 
             }
-            catch (Exception ex)
+            catch
             {
                 return 0;
             }
@@ -383,7 +418,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -403,7 +438,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch
             {
                 return new DataTable();
             }
@@ -948,7 +983,7 @@ namespace NexenHub.Class
 
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -973,7 +1008,7 @@ namespace NexenHub.Class
 
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch
             {
                 return new DataTable();
             }
@@ -1008,7 +1043,7 @@ namespace NexenHub.Class
 
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch
             {
                 return new DataTable();
             }

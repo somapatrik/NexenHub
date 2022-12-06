@@ -20,6 +20,8 @@ namespace NexenHub.Controllers
         private readonly IWebHostEnvironment _environment;
         private readonly ILogger<TireInspectionController> _logger;
 
+        private GlobalDatabase dbglob = new GlobalDatabase();
+
         public TireInspectionController(ILogger<TireInspectionController> logger, IWebHostEnvironment environment)
         {
             _logger = logger;
@@ -57,28 +59,35 @@ namespace NexenHub.Controllers
                     // Inspection result
                     FertInspectionResult res = JsonConvert.DeserializeObject<FertInspectionResult>(httpRequest.Form["inspectionResult"].ToString());
 
-                    // Reading files
-                    foreach (var file in httpRequest.Form.Files)
+                    var file = httpRequest.Form.Files[0];
+
+                    // Image root directory
+                    var filePath = Path.Combine(_environment.ContentRootPath, "images");
+
+                    // Photo name
+                    string originalName = Path.GetFileNameWithoutExtension(file.FileName);
+                    string originalExtension = Path.GetExtension(file.FileName);
+                    
+                    // Get photo SEQ
+                    int seq = dbglob.GetBadPhotoSeq(barcode, res.SEQ, res.PROC, res.InspectionTime.ToString("yyyyMMddHHmmss"), res.BAD_ID);
+
+                    string photoName = $"{originalName}_{seq}{originalExtension}";
+
+                    // Save folder
+                    string folderPath = Path.Combine(filePath, barcode);
+                    Directory.CreateDirectory(folderPath);
+
+                    using (var memoryStream = new MemoryStream())
                     {
-                        // Image root directory
-                        var filePath = Path.Combine(_environment.ContentRootPath, "images");
-
-                        // Tire directory name
-                        //string barcode = file.FileName.Split("_")[0];
-
-                        // Save folder
-                        string folderPath = Path.Combine(filePath, barcode);
-                        Directory.CreateDirectory(folderPath);
-
-
-                        using (var memoryStream = new MemoryStream())
-                        {
-                            await file.CopyToAsync(memoryStream); 
-                            System.IO.File.WriteAllBytes(Path.Combine(folderPath, file.FileName), memoryStream.ToArray());
-                        }
-
-                        return Ok();
+                        await file.CopyToAsync(memoryStream); 
+                        System.IO.File.WriteAllBytes(Path.Combine(folderPath, photoName), memoryStream.ToArray());
                     }
+
+                    // Save info about photo to db
+                    dbglob.SaveInspectionPhotoInfo(barcode, res.SEQ, res.PROC, res.InspectionTime, res.BAD_ID, barcode, photoName, null, seq);
+
+                    return Ok();
+
 
                 }
             }
