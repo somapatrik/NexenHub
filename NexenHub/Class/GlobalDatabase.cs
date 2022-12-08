@@ -13,6 +13,52 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public string GetNameUser(string id)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT USER_NAME");
+                query.AppendLine("FROM TB_CM_M_USER");
+                query.AppendLine("WHERE USER_ID = :id");
+                query.AppendLine("AND USE_YN = 'Y'");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("id", id, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+                if (dt.Rows.Count>0)
+                    return dt.Rows[0][0].ToString();
+            }
+            catch
+            {
+
+            }
+
+            return "";
+        }
+        public bool Login(string ID, string password)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT *");
+                query.AppendLine("FROM TB_CM_M_USER");
+                query.AppendLine("WHERE USER_ID = :id");
+                query.AppendLine("AND SUBSTR(CAL_SHA256(:password),1,64) = SUBSTR(PWD, 1, 64)");
+                query.AppendLine("AND USE_YN = 'Y'");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("id", ID, OracleDbType.Varchar2);
+                db.AddParameter("password", password, OracleDbType.Varchar2);
+
+                return db.ExecReader().HasRows;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public DataTable GetDefectGalleryPaths(string AS_BARCODE_NO, int AS_INSP_SEQ, string AS_PROC_ID, DateTime AS_INSP_DT, string AS_BAD_ID)
         {
             try 
@@ -31,6 +77,7 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
+        
         public void SaveInspectionPhotoInfo(string AS_BARCODE_NO,int AS_INSP_SEQ,string AS_PROC_ID,DateTime AS_INSP_DT,string AS_BAD_ID,string AS_DIR,string AS_PHOTO_NAME,string AS_NOTE,int AS_PHOTO_SEQ)
         {
             try
@@ -52,7 +99,7 @@ namespace NexenHub.Class
 
             }
         }
-
+        
         public int GetBadPhotoSeq(string AS_BARCODE_NO,int AS_INSP_SEQ,string AS_PROC_ID,string AS_INSP_DT,string AS_BAD_ID)
         {
             try 
@@ -658,6 +705,7 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
+
         public DataTable LoadWorkOrderByWo(string WO)
         {
             try
@@ -693,6 +741,7 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
+
         public DataTable LoadWOChildItem(string ID, string MiniPC)
         {
             try
@@ -714,6 +763,7 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
+
         public DataTable GetPremiumGtInfo(string ITEM_ID)
         {
             try
@@ -757,6 +807,7 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
+
         public DataTable NoValidCheck(string EQ_ID, string LOT_ID, string WO_NO, string BOM_ITEM_ID, string BOM_ITEM_NAME, string BOM_ITEM_COMPOUND)
         {
             try
@@ -784,6 +835,7 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
+
         public DataTable FIFOCheck(string LOT_ID)
         {
             try
@@ -805,6 +857,7 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
+
         public DataTable AgingCheck(string LOT_ID)
         {
             try
@@ -898,11 +951,6 @@ namespace NexenHub.Class
             }
         }
 
-        /// <summary>
-        /// Without status translation
-        /// </summary>
-        /// <param name="LOT_ID"></param>
-        /// <returns></returns>
         public DataTable GetLotHisClean(string LOT_ID)
         {
             try
@@ -1007,6 +1055,7 @@ namespace NexenHub.Class
             }
         }
 
+        // To be deleted
         public DataTable GetJandiMsg()
         {
             try
@@ -1512,11 +1561,7 @@ namespace NexenHub.Class
             }
         }
 
-        /// <summary>
-        /// Gets HTML layout for ESL
-        /// </summary>
-        /// <param name="CART_ID"></param>
-        /// <returns></returns>
+        // ESL: Delete
         public DataTable SP_IN_H_PROD_LAYOUT(string CART_ID)
         {
             try
@@ -1535,11 +1580,7 @@ namespace NexenHub.Class
             }
         }
 
-        /// <summary>
-        /// Loads basic info from ESL inerface table
-        /// </summary>
-        /// <param name="CART_ID"></param>
-        /// <returns></returns>
+        // ESL: Delete
         public DataTable SP_DC_H_PROD_API_ESL(string CART_ID, string LOT_ID)
         {
             try

@@ -10,7 +10,7 @@ namespace NexenHub.Class
 
         public bool IsLogged { get; set; }
 
-        //public bool Login()
+        //public bool Login(string username, string password)
         //{
 
         //}
