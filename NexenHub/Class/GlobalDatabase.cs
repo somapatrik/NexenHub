@@ -36,6 +36,7 @@ namespace NexenHub.Class
 
             return "";
         }
+     
         public bool Login(string ID, string password)
         {
             try
@@ -57,6 +58,40 @@ namespace NexenHub.Class
             {
                 return false;
             }
+        }
+
+        public User CardLogin(string hexCardId)
+        {
+            //User user = new User();
+
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT US.USER_ID, US.USER_NAME, CARD.CARD_ID_HEX, US.USE_YN");
+                query.AppendLine("FROM TB_CM_M_USER US");
+                query.AppendLine("JOIN TB_CM_M_MEMBERS_CARD CARD ON CARD.MEMBER_ID=US.USER_ID");
+                query.AppendLine("WHERE US.USE_YN='Y'");
+                query.AppendLine("AND CARD.USE_YN='Y'");
+                query.AppendLine("AND CARD.CARD_ID_HEX = :hex");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("hex", hexCardId, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+                if (dt.Rows.Count > 0)
+                    return new User()
+                    {
+                        UserId = dt.Rows[0]["USER_ID"].ToString(),
+                        Name = dt.Rows[0]["USER_NAME"].ToString(),
+                        CardHex = hexCardId
+                    };
+
+            }
+            catch
+            {
+
+            }
+
+            return null;
         }
 
         public DataTable GetDefectGalleryPaths(string AS_BARCODE_NO, int AS_INSP_SEQ, string AS_PROC_ID, DateTime AS_INSP_DT, string AS_BAD_ID)

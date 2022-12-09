@@ -29,7 +29,7 @@ namespace NexenHub.Controllers
             return version.VersionDate;
         }
 
-
+        // REDO: Do not use headers
         [HttpPost("reportversion")]
         public ActionResult PostReportVersion()
         {
