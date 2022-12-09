@@ -14,19 +14,6 @@ namespace NexenHub.Controllers
     {
         GlobalDatabase dbglob = new GlobalDatabase();
 
-        [HttpGet("login/{id}/{password}")]
-        public ActionResult<bool> GetLogin(string id, string password)
-        {
-            return dbglob.Login(id, password);
-        }
-
-        [HttpGet("name/{id}")]
-        public ActionResult<string> GetNameUser(string id)
-        {
-            string name = dbglob.GetNameUser(id);
-            return name;
-        }
-
         [HttpPost("cardLogin")]
         public async Task<ActionResult<Models.User>> PostCardLogin()
         {
