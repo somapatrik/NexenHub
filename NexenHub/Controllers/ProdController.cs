@@ -18,7 +18,7 @@ namespace NexenHub.Controllers
         GlobalDatabase dbglob = new GlobalDatabase();
 
         [HttpGet("{proc}")]
-        public async Task<ActionResult<string>> Get(string proc)
+        public ActionResult<string> GetProd(string proc)
         {
             try
             {
@@ -55,6 +55,12 @@ namespace NexenHub.Controllers
             }
         }
 
+        [HttpGet("MonthProdPlan")]
+        public ActionResult<List<int>> GetProdPlan()
+        {
+            return dbglob.GetTBMMonthPlan();
+        }
+
 
         [HttpGet("PM")]
         public ActionResult<List<StatusEq>> GetPM()
@@ -74,5 +80,8 @@ namespace NexenHub.Controllers
 
             return MachinesPM;
         }
+
+
+
     }
 }

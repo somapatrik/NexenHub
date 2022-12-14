@@ -13,6 +13,35 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public List<int> GetTBMMonthPlan()
+        {
+
+            StringBuilder query = new StringBuilder();
+            query.AppendLine("SELECT DD01,DD02,DD03,DD04,DD05,DD06,DD07,DD08,DD09,DD10,DD11,DD12,DD13,DD14,DD15,");
+            query.AppendLine("DD16,DD17,DD18,DD19,DD20,DD21,DD22,DD23,DD24,DD25,DD26,DD27,DD28,DD29,DD30,DD31");
+            query.AppendLine("FROM TB_PL_M_KPI_GOAL_DAY ");
+            query.AppendLine("WHERE GOAL_MONTH=TO_CHAR(SYSDATE,'MM') ");
+            query.AppendLine("AND GOAL_YEAR = TO_CHAR(SYSDATE,'YYYY')");
+            query.AppendLine("AND MNG_TYPE='LOG'");
+            query.AppendLine("AND MNG_GOAL = 'DT3'");
+
+            DBOra db = new DBOra(query.ToString());
+            DataTable dt = db.ExecTable();
+            List<string> days = new List<string>();
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+                foreach (DataColumn col in dt.Columns)
+                    days.Add(row[col].ToString());
+            }
+
+            List<int> numbers = days.Select(x => string.IsNullOrEmpty(x) ? 0 : int.Parse(x)).ToList();
+
+            return numbers;
+        }
+
         public string GetNameUser(string id)
         {
             try
@@ -62,7 +91,7 @@ namespace NexenHub.Class
 
         public User CardLogin(string hexCardId)
         {
-            //User user = new User();
+            User user = new User();
 
             try
             {
@@ -78,7 +107,7 @@ namespace NexenHub.Class
                 db.AddParameter("hex", hexCardId, OracleDbType.Varchar2);
                 DataTable dt = db.ExecTable();
                 if (dt.Rows.Count > 0)
-                    return new User()
+                    user =  new User()
                     {
                         UserId = dt.Rows[0]["USER_ID"].ToString(),
                         Name = dt.Rows[0]["USER_NAME"].ToString(),
@@ -91,7 +120,7 @@ namespace NexenHub.Class
 
             }
 
-            return null;
+            return user;
         }
 
         public DataTable GetDefectGalleryPaths(string AS_BARCODE_NO, int AS_INSP_SEQ, string AS_PROC_ID, DateTime AS_INSP_DT, string AS_BAD_ID)
