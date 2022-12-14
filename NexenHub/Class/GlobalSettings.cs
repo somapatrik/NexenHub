@@ -16,5 +16,15 @@ namespace NexenHub.Class
         public static string CzechNum = "### ### ### ###.##";
 
         public static string PLANT_ID = "P500";
+
+        public static string[] IgnoredMachines = {
+                "10004",
+                "10005",
+                "10006",
+                "10007",
+                "10017",
+                "10024",
+                "10032"
+            };
     }
 }

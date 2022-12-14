@@ -1600,12 +1600,12 @@ namespace NexenHub.Class
             try
             {
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT EQ_ID, EQ_NAME as Name, WC_ID, PROC_ID ");
+                query.AppendLine("SELECT EQ_ID, EQ_NAME as Name, WC_ID, PROC_ID, FACT_ID ");
                 query.AppendLine("FROM TB_EQ_M_EQUIP ");
                 query.AppendLine("WHERE EQ_TYPE = 'P' ");
                 query.AppendLine("AND USE_YN='Y' ");
                 query.AppendLine("AND PLANT_ID='P500' ");
-                query.AppendLine("AND FACT_ID='NEX1' ");
+                query.AppendLine("AND FACT_ID IN ('NEX1','NEX2') ");
 
                 if (!string.IsNullOrEmpty(EQ_ID))
                     query.AppendLine("AND EQ_ID=:eqid ");

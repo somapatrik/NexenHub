@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{argBarcode}"
 @model NexenHub.Pages.TireModel
 @{
 }
@@ -6,48 +6,85 @@
 <!-- Main bar -->
 <div class="container-fluid">
 
-    <!-- Main info -->
-    <div class="row border-bottom border-2 p-3" style="background-color: #f7f7f7;">
+    @if (Model.tire.IsTire) {
 
-        <div class="col-md-4">
+        <!-- Main info -->
+        <div class="row border-bottom border-2 p-3" style="background-color: #f7f7f7;">
 
-            <div class="row">
-                <div class="col">
-                    <h4>Tire</h4>
-                </div>
-            </div>
+            <div class="col-md-4">
 
-            <div class="row">
-                <div class="col">
-                    <div class="d-flex flex-row text-muted">
-
-                        <div class="p-2"></div>
-
-                        <div class="p-2"></div>
-                        <div class="p-2"></div>
-
-                        <div class="p-2"></div>
-                        <div class="p-2"></div>
+                <div class="row">
+                    <div class="col">
+                        <h4>@Model.argBarcode</h4>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-md-4 text-center">
-
-            <div class="row text-muted">
-                <div class="col">
-                    <h5></h5>
-                </div>
-            </div>
-
-            <div class="row">
-
-                <div class="col">
-                    <h4></h4>
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex flex-row text-muted">
+                            <div class="p-2">@Model.tire.GtLot.EQ_NAME</div>
+                            <div class="p-2">/</div>
+                            <div class="p-2">@Model.tire.TireLot.EQ_NAME</div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
+
+            <div class="col-md-4 text-center">
+
+                <div class="row text-muted">
+                    <div class="col">
+                        <h5>@Model.tire.TireItem.ID</h5>
+                    </div>
+                </div>
+
+                                <div class="row">
+                    <div class="col">
+                        @{
+                            switch (Model.tire.TireItem.PATTERN)
+                            {
+                                case "N'blue 4Season": 
+                                    <img src="~/images/tirelogo/nblue_4season.png" />
+                                    break; 
+                                case "N'blue 4Season 2":
+                                    <img src="~/images/tirelogo/nblue_4season2.png" />
+                                    break;
+                                case "N'blue HD Plus":
+                                    <img src="~/images/tirelogo/nblue_hd_plus.png" />
+                                    break;
+                                case "N'FERA Primus":
+                                    <img src="~/images/tirelogo/nfera_primus.png" />
+                                    break;
+                                case "N'FERA Sport":
+                                case "N'FERA Sport AS":
+                                case "N'FERA Sport SUV":
+                                    <img src="~/images/tirelogo/nfera_sport.png" />
+                                    break;
+                                case "N'FERA RU1":
+                                case "N'FERA AU7":
+                                    <img src="~/images/tirelogo/nfera_su1.png" />
+                                    break;
+                                case "WINGUARD Snow'G 3":
+                                    <img src="~/images/tirelogo/wg_snowg3.png" />
+                                    break;
+                                case "WINGUARD Sport 2":
+                                case "WINGUARD Sport 2 SUV":
+                                    <img src="~/images/tirelogo/wg_sport2.png" />
+                                    break;
+                            }
+                        }
+                        
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <h4>@Model.tire.TireLot.Name</h4>
+                    </div>
+                </div>
+
+
 
         </div>
 
@@ -55,13 +92,28 @@
             <div class="row">
                 <div class="col">
                     <div class="d-flex flex-row-reverse">
-                        @*<img class="img-fluid img-thumbnail" src="data:image/png;base64, @Model.lotBarcode.GetBase64Image()" style="max-height:10vh;width:100%;" />*@
+                        
+                        @if (Model.showBarcode)
+                        {
+                        <img class="img-fluid img-thumbnail" src="data:image/png;base64, @Model.tireBarcode.GetBase64Image()" style="max-height:10vh;width:100%;" />
+                        }
+                        
                     </div>
                 </div>
             </div>
 
         </div>
 
-    </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="row">
+            <div class="col text-center">
+                <h2 class="p-5">That´s not a tire!</h2>
+            </div>
+        </div>
+    }
 
 </div>

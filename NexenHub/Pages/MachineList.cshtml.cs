@@ -11,12 +11,7 @@ namespace NexenHub.Pages
 {
     public class MachineListModel : PageModel
     {
-        public List<MachineListObject> MixMachines => DbList.FindAll(x => x.WC_ID == "M");
-        public List<MachineListObject> ExtMachines => DbList.FindAll(x => x.WC_ID == "E");
-        public List<MachineListObject> CalMachines => DbList.FindAll(x => x.WC_ID == "C");
-
         public List<String> Procs => DbList.GroupBy(x => x.WC_ID).Select(f=>f.Key).ToList();
-
 
         public List<MachineListObject> DbList;
 
@@ -28,34 +23,17 @@ namespace NexenHub.Pages
             CreateList();
         }
 
-        public void OnPostFilter(string id)
-        {
-            CreateList();
-            DbList = DbList.FindAll(m => { return m.WC_ID == id; });
-        }
-
         private void CreateList()
         {
-            // Make static
-            string[] DoNotShow =
-            {
-                "10004",
-                "10005",
-                "10006",
-                "10007",
-                "10017",
-                "10024",
-                "10032"
-            };
-
             DataTable dt = dbglobal.GetMachineList(); ;
             DbList = new List<MachineListObject>();
             foreach (DataRow r in dt.Rows)
             {
-                if (!DoNotShow.Contains(r["EQ_ID"].ToString()))
+                if (!GlobalSettings.IgnoredMachines.Contains(r["EQ_ID"].ToString()))
                     DbList.Add(new MachineListObject
                     {
-                        EQ_ID = r["EQ_ID"].ToString(), 
+                        EQ_ID = r["EQ_ID"].ToString(),
+                        FACT_ID = r["FACT_ID"].ToString(),
                         Name = r["Name"].ToString(),
                         WC_ID = r["WC_ID"].ToString(),
                         PROC_ID = r["PROC_ID"].ToString()

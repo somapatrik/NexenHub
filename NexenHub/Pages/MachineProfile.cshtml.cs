@@ -16,14 +16,10 @@ namespace NexenHub.Pages
 {
     public class MachineProfileModel : PageModel
     {
-        public MachineProdReport machineProduction { get; set; }
-        public MachineDownTime machineDownTime { get; set; }
         public WorkOrder WO { get; set; }
         public List<InputedMaterial> Inputed { get; set; }
         public List<InputedMaterial> BOM { get; set; }
         public MachineBasicInfo machineBasic { get; set; }
-
-        //public Shift ShiftInfo { get; set; }
 
         #region DownTime
 
@@ -55,12 +51,6 @@ namespace NexenHub.Pages
                 // Machine info
                 machineBasic = new MachineBasicInfo(EQ_ID);
 
-                // Machine production - TODO when 1 day show hours
-                machineProduction = new MachineProdReport(EQ_ID);
-
-                // Get downtimes
-                machineDownTime = new MachineDownTime(EQ_ID);
-
                 // Act downtime
                 DataTable dt = dbglob.GetActNonWrk(EQ_ID);
                 if (dt.Rows.Count > 0)
@@ -76,10 +66,6 @@ namespace NexenHub.Pages
                 else
                     LoadBOM(WO.ITEM_ID);
 
-                // ShiftInfo = new Shift();
-
-                // Get inputed material
-                //LoadInputedMaterial(EQ_ID);
             }
         }
 
@@ -109,25 +95,25 @@ namespace NexenHub.Pages
             }
         }
 
-        public void LoadInputedMaterial(string EQ_ID)
-        {
-            Inputed = new List<InputedMaterial>();
-            DataTable dt = dbglob.GetInputedMaterial(EQ_ID);
-            foreach (DataRow row in dt.Rows)
-            {
-                InputedMaterial material = new InputedMaterial();
-                material.EQ_ID = EQ_ID;
-                material.LOT_ID = row["LOT_ID"].ToString();
-                material.IO_POSID = row["IO_POSID"].ToString();
-                material.ITEM_ID = row["ITEM_ID"].ToString();
-                material.ITEM_NAME = row["ITEM_NAME"].ToString();
-                material.CART_ID = row["CART_ID"].ToString();
-                Inputed.Add(material);
-            }
+        //public void LoadInputedMaterial(string EQ_ID)
+        //{
+        //    Inputed = new List<InputedMaterial>();
+        //    DataTable dt = dbglob.GetInputedMaterial(EQ_ID);
+        //    foreach (DataRow row in dt.Rows)
+        //    {
+        //        InputedMaterial material = new InputedMaterial();
+        //        material.EQ_ID = EQ_ID;
+        //        material.LOT_ID = row["LOT_ID"].ToString();
+        //        material.IO_POSID = row["IO_POSID"].ToString();
+        //        material.ITEM_ID = row["ITEM_ID"].ToString();
+        //        material.ITEM_NAME = row["ITEM_NAME"].ToString();
+        //        material.CART_ID = row["CART_ID"].ToString();
+        //        Inputed.Add(material);
+        //    }
             
-            foreach (InputedMaterial input in Inputed)
-                input.IsInBom = BOM.Find(x => x.ITEM_ID == input.ITEM_ID) != null ? true : false;
-        }
+        //    foreach (InputedMaterial input in Inputed)
+        //        input.IsInBom = BOM.Find(x => x.ITEM_ID == input.ITEM_ID) != null ? true : false;
+        //}
 
    }
 }

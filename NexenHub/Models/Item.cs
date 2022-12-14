@@ -79,7 +79,7 @@ namespace NexenHub.Models
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
 
             }
