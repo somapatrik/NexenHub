@@ -13,6 +13,43 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetPrototypeProgressChart()
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT ");
+                query.AppendLine("    PROD.PROTOTYPE_ID EMR_ID,");
+                query.AppendLine("    TO_DATE(EMR.REQ_YMD, 'YYYYMMDD') REQ_DATE,");
+                query.AppendLine("    EMR.REQ_QTY,");
+                query.AppendLine("    PROD.ITEM_ID, ");
+                query.AppendLine("    ITEM.ITEM_NAME, ");
+                query.AppendLine("    CASE");
+                query.AppendLine("    WHEN ITEM.XCHPF = 'X' THEN 'OE'");
+                query.AppendLine("    ELSE 'RE'");
+                query.AppendLine("    END OE,");
+                query.AppendLine("    COUNT(PROD.LOT_ID) TBM, ");
+                query.AppendLine("    COUNT(BAR.CURE_LOT_ID) CURE");
+                query.AppendLine("FROM TB_PR_M_PROD PROD");
+                query.AppendLine("JOIN TB_PL_M_TEST_REQ EMR ON EMR.PRD_REQ_NO=PROD.PROTOTYPE_ID");
+                query.AppendLine("JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID=PROD.ITEM_ID");
+                query.AppendLine("LEFT JOIN TB_IN_M_BARCODE_TRACE BAR on BAR.VMI_LOT_ID=PROD.LOT_ID AND BAR.CURE_LOT_ID IS NOT NULL");
+                query.AppendLine("WHERE TO_DATE(EMR.REQ_YMD, 'YYYYMMDD') BETWEEN TO_DATE('20220927', 'YYYYMMDD') AND TO_DATE('20221005', 'YYYYMMDD')");
+                query.AppendLine("AND PROD.USE_YN = 'Y'");
+                query.AppendLine("AND PROD.WC_ID = 'T'");
+                query.AppendLine("GROUP BY PROD.PROTOTYPE_ID,EMR.REQ_YMD,EMR.REQ_QTY, PROD.ITEM_ID,ITEM.ITEM_NAME, ITEM.XCHPF");
+                query.AppendLine("ORDER BY REQ_DATE");
+
+                DBOra db = new DBOra(query.ToString());
+                return db.ExecTable();
+            }
+            catch
+            {
+                return new DataTable();
+            }
+
+            
+        }
 
         public List<int> GetTBMMonthPlan()
         {

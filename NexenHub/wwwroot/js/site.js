@@ -11,12 +11,29 @@ const CHART_COLORS = {
 };
 
 
-function searchMat(x, e) {
+function searchMat(x, e)
+{
+
     if (x.keyCode == 13)
     {
-        var searchVal = e.value;//document.getElementById("txtSearchGlobal").value;
-        if (searchVal.length == 15 || searchVal.length == 5) {
+        var lotReg = /^\d{11}[a|c]\d{3}$/i;
+        var cartReg = /^[a|b|c|d|e|t|w]\d{4}$/i;
+        var tireReg = /^40\d{8}$/i;
+
+        var searchVal = e.value;
+        var lotResult = lotReg.test(searchVal);
+        var cartResult = cartReg.test(searchVal);
+        var tireResult = tireReg.test(searchVal);
+
+
+
+        if (lotResult || cartResult)
             window.location.href = "/lot/" + searchVal;
-        }
+        else if (tireResult)
+            window.location.href = "/tire/" + searchVal;
+
+        /*if (searchVal.length == 15 || searchVal.length == 5) {
+            window.location.href = "/lot/" + searchVal;
+        }*/
     }
 }

@@ -39,12 +39,12 @@
 
 
     <!-- BAD SCRAP -->
-    @{ if (Model.lotitem.State == "B" || Model.lotitem.State == "S")
+    @if (Model.lotitem.State == "B" || Model.lotitem.State == "S")
         {
             <div class="row border-2 border-bottom p-2 bg-danger text-white">
                 <div class="col">
                     <div class="d-flex justify-content-center">
-                        @{ if (Model.lotitem.State == "B")
+                        @if (Model.lotitem.State == "B")
                             {
                                 <h5 class="p-2">BAD</h5>
                             }
@@ -52,26 +52,23 @@
                             {
                                 <h5 class="p-2">SCRAP</h5>
                             }
-                        }
                     </div>
                 </div>
             </div>
         }
-    }
 
     <!-- TEST -->
-    @{ if (Model.lotitem.Test)
+    @if (Model.lotitem.Test)
         {
             <div class="row border-2 border-bottom p-2 bg-warning text-dark">
                 <div class="col">
                     <div class="d-flex justify-content-center">
-                        <h5>Test</h5>
+                        <h5>Prototype</h5>
                     </div>
                 </div>
             </div>
 
         }
-    }
 
     <!-- Main info -->
     <div class="row border-bottom border-2 p-3" style="background-color: #f7f7f7;">
@@ -111,7 +108,7 @@
             <div class="row">
 
                 <div class="col">
-                    <h4>@Model.lotitem.Name</h4>
+                    <h3>@Model.lotitem.Name</h3>
                 </div>
 
             </div>
@@ -327,50 +324,7 @@
 
                 </div>
 
-                @*<div class="col-3">
-
-                        <div class="row my-2">
-                            <div class="col">
-
-                                <div class="card bg-info">
-                                    <div class="card-header text-center">
-                                        LOT STATE
-                                    </div>
-                                    <div class="card-body">
-                                        <h1 class="text-center">
-                                            @Model.lotitem.LotState
-                                        </h1>
-                                    </div>
-                                    <div class="card-footer">
-                                        LOT STATE
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="row my-2">
-                            <div class="col">
-
-                                <div class="card">
-                                    <div class="card-header text-center">
-                                        ITEM STATE
-                                    </div>
-                                    <div class="card-body">
-                                        <h1 class="text-center">
-                                            @Model.lotitem.State
-                                        </h1>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>*@
-
             </div>
-
-            @*@await Component.InvokeAsync("LotItemInfo", Model.lotitem)*@
 
         </div>
 

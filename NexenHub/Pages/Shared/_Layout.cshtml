@@ -1,5 +1,7 @@
 ﻿@{
     string machineSelected = (string)ViewData["mainSelected"] == "machines" ? "active" : "";
+
+    string radSelected = (string)ViewData["mainSelected"] == "rad" ? "active" : "";
     string eslSelected = (string)ViewData["mainSelected"] == "esl" ? "active" : "";
     string rexSelected = (string)ViewData["mainSelected"] == "rex" ? "active" : "";
     string pageTitle = string.IsNullOrEmpty((string)ViewData["pageTitle"]) ? "NexenHub" : (string)ViewData["pageTitle"];
@@ -49,18 +51,26 @@
                                 Production
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/MachineList">List of machines</a>
+                                <a class="dropdown-item" href="/MachineList">Machine list</a>
                                 <a class="dropdown-item" href="/MachineReport">Report generator</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle @radSelected" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                R&D
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/RAD/PrototypeProgress">Prototype progress</a>
+                            </div>
+                        </li>
+@*                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dashboards
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" target="_blank" href="/dashboard/tbmdefect/1/60">TBM Defect monitoring</a>
                             </div>
-                        </li>
+                        </li>*@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Downtimes
@@ -81,7 +91,7 @@
 
                     <div class="d-flex">
                         <div class="input-group">
-                            <input class="text-center form-control" placeholder="CART / LOT" onkeyup="searchMat(event,this)" />
+                            <input class="text-center form-control" placeholder="CART / LOT / TIRE" onkeyup="searchMat(event,this)" />
                         </div>
                     </div>
 

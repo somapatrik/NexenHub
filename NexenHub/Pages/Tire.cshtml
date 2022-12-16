@@ -1,86 +1,70 @@
 ﻿@page "{argBarcode}"
 @model NexenHub.Pages.TireModel
 @{
+    ViewData["pageTitle"] = Model.tire.Barcode;
 }
 
-<!-- Main bar -->
+@if (Model.tire.IsTire)
+{
+
+<!-- TOP bar -->
 <div class="container-fluid">
 
-    @if (Model.tire.IsTire) {
-
-        <!-- Main info -->
-        <div class="row border-bottom border-2 p-3" style="background-color: #f7f7f7;">
-
-            <div class="col-md-4">
-
-                <div class="row">
-                    <div class="col">
-                        <h4>@Model.argBarcode</h4>
+        <!-- TEST -->
+        @if (Model.tire.TireLot.Test)
+        {
+            <div class="row border-2 border-bottom p-2 bg-warning text-dark">
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+                        <h5>Prototype</h5>
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col">
-                        <div class="d-flex flex-row text-muted">
-                            <div class="p-2">@Model.tire.GtLot.EQ_NAME</div>
-                            <div class="p-2">/</div>
-                            <div class="p-2">@Model.tire.TireLot.EQ_NAME</div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
-            <div class="col-md-4 text-center">
+        }
+
+    <!-- Top info -->
+    <div class="row border-bottom border-2 p-3" style="background-color: #f7f7f7;">
+
+        <div class="col-md-4">
+
+            <div class="row">
+                <div class="col">
+                    <h4>@Model.argBarcode</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                    <!-- Tire logo -->
+                    <div class="col">
+                        @if (string.IsNullOrEmpty(Model.imageTireLogo))
+                        {
+                            <h3 class="NexenR fw-bold fst-italic">@Model.tire.TireItem.PATTERN</h3>
+                        }
+                        else
+                        {
+                            <img src="~/images/tirelogo/@Model.imageTireLogo"
+                         class="img-fluid"
+                         alt="@Model.tire.TireItem.PATTERN"
+                         title="@Model.tire.TireItem.PATTERN" />
+                        }
+                    </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4 text-center">
 
                 <div class="row text-muted">
                     <div class="col">
                         <h5>@Model.tire.TireItem.ID</h5>
                     </div>
                 </div>
-
-                                <div class="row">
-                    <div class="col">
-                        @{
-                            switch (Model.tire.TireItem.PATTERN)
-                            {
-                                case "N'blue 4Season": 
-                                    <img src="~/images/tirelogo/nblue_4season.png" />
-                                    break; 
-                                case "N'blue 4Season 2":
-                                    <img src="~/images/tirelogo/nblue_4season2.png" />
-                                    break;
-                                case "N'blue HD Plus":
-                                    <img src="~/images/tirelogo/nblue_hd_plus.png" />
-                                    break;
-                                case "N'FERA Primus":
-                                    <img src="~/images/tirelogo/nfera_primus.png" />
-                                    break;
-                                case "N'FERA Sport":
-                                case "N'FERA Sport AS":
-                                case "N'FERA Sport SUV":
-                                    <img src="~/images/tirelogo/nfera_sport.png" />
-                                    break;
-                                case "N'FERA RU1":
-                                case "N'FERA AU7":
-                                    <img src="~/images/tirelogo/nfera_su1.png" />
-                                    break;
-                                case "WINGUARD Snow'G 3":
-                                    <img src="~/images/tirelogo/wg_snowg3.png" />
-                                    break;
-                                case "WINGUARD Sport 2":
-                                case "WINGUARD Sport 2 SUV":
-                                    <img src="~/images/tirelogo/wg_sport2.png" />
-                                    break;
-                            }
-                        }
-                        
-                    </div>
-                </div>
+                    
 
                 <div class="row">
                     <div class="col">
-                        <h4>@Model.tire.TireLot.Name</h4>
+                        <h3>@Model.tire.TireLot.Name</h3>
                     </div>
                 </div>
 
@@ -104,7 +88,200 @@
 
         </div>
 
-        </div>
+    </div>
+        
+</div>
+
+    <!-- Main content -->
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-xl-3 bg-white">
+
+            </div>
+
+
+            <div class="col-xl-6 bg-white">
+
+                <div class="row my-2 g-3">
+
+                    <!-- Tire logo -->
+                    <div class="col">
+                        <h4 class="NexenR fw-bold fst-italic">@Model.tire.TireItem.PATTERN</h4>
+                    </div>
+
+                    
+
+                </div>
+
+                <div class="row g-3">
+                    <div class="col">
+                        <h4>
+                            @Model.tire.TireItem.SECTION_WIDTH /
+                            @Model.tire.TireItem.SERIES /
+                            @Html.Raw($"R{Model.tire.TireItem.INCH}")
+                        </h4>
+                    </div>
+                </div>
+
+               @* <div class="row my-3 g-3">
+
+                    <div class="col-lg">
+
+                        <div class="card">
+                            <div class="card-header text-center">
+                                
+                            </div>
+                            <div class="card-body">
+                                <h3 class="text-center">
+                                    @Model.tire.TireItem.SEASON_TYPE
+                                </h3>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg">
+
+                        <div class="card">
+                            <div class="card-header text-center">
+                                Size
+                            </div>
+                            <div class="card-body">
+                                <h3 class="text-center">
+                                    @Model.tire.TireItem.SECTION_WIDTH /
+                                    @Model.tire.TireItem.SERIES /
+                                    @Html.Raw($"R{Model.tire.TireItem.INCH}")
+                                </h3>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg">
+
+                        <div class="card">
+                            <div class="card-header text-center">
+                                Production
+                            </div>
+                            <div class="card-body">
+                                <h3 class="text-center">
+                                    @Model.tire.TireLot.ProdType
+                                </h3>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>*@
+
+                <div class="row my-3">
+                    
+                    <div class="col-md-7">
+                        <table class="table table-hover">
+                        <tr>
+                            <td>Produced</td>
+                            <td>@Model.tire.TireLot.dateProdTime</td>
+                        </tr>
+                        <tr>
+                            <td>Cured in</td>
+                            <td>@Model.tire.TireLot.EQ_NAME</td>
+                        </tr>
+                        <tr class="">
+                            <td>Mold no.</td>
+                            <td>@Model.tire.TireLot.MOLD_NO</td>
+                        </tr>
+                        </table>
+
+                    </div>
+                    
+                    <div class="col-md-5">
+
+                        <table class="table table-hover">
+                            <tr>
+                                <td>Group</td>
+                                    <td>@Model.tire.TireLot.Grp</td>
+                            </tr>
+                            <tr>
+                                <td>Process</td>
+                                    <td>@Model.tire.TireLot.ProcId</td>
+                            </tr>
+                            <tr>
+                                <td>Kind</td>
+                                    <td>@Model.tire.TireLot.Kind</td>
+                            </tr>
+                        </table>
+
+                </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-xl-3 bg-white justify-content-center">
+
+                    <div class="row">
+                        <h5 class="my-3">Tire history</h5>
+
+                        <ul class="list-group-flush p-0 h-100">
+
+                            @foreach (Models.LotHisItem history in Model.tire.TireLot.History.OrderByDescending(x => x.transDate))
+                            {
+                                <li class="list-group-item list-group-item-action">
+
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">@history.transDate.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                                        <span class="text-muted">@history.qtyUnit</span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <span class="fw-bold">@history.locationName</span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <span>@history.lotState</span>
+                                        <span>@history.itemState</span>
+                                    </div>
+
+                                </li>
+                            }
+                        </ul>
+                </div>
+
+                <div class="row">
+                    <h5 class="my-3">GT history</h5>
+                    <ul class="list-group-flush p-0 h-100">
+
+                        @{
+                            foreach (Models.LotHisItem history in Model.tire.GtLot.History.OrderByDescending(x => x.transDate))
+                            {
+                                <li class="list-group-item list-group-item-action">
+
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">@history.transDate.ToString("yyyy-MM-dd HH:mm:ss")</span>
+                                        <span class="text-muted">@history.qtyUnit</span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <span class="fw-bold">@history.locationName</span>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between">
+                                        <span>@history.lotState</span>
+                                        <span>@history.itemState</span>
+                                    </div>
+
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+
+            </div>
+
+    </div>
+</div>
 
     }
     else
@@ -116,4 +293,3 @@
         </div>
     }
 
-</div>

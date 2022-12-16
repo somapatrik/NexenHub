@@ -27,6 +27,7 @@ namespace NexenHub.Models
         public string SERIES;
         public string INCH;
         public bool OE;
+        public string SEASON_TYPE;
 
 
         public string ID
@@ -74,6 +75,7 @@ namespace NexenHub.Models
                     SERIES = dt.Rows[0]["SERIES"].ToString();
                     INCH = dt.Rows[0]["INCH"].ToString();
                     OE = dt.Rows[0]["OE"].ToString() == "Y";
+                    SEASON_TYPE = dt.Rows[0]["SEASON_TYPE"].ToString();
 
 
                 }

@@ -8,10 +8,10 @@
 
         <div class="row mb-2 g-2">
             <div class="col-md-6 col-xl-3">
-                <div class="card bg-soma-darklight text-light text-center">
+                <div class="card text-center">
                     <div class="card-body">
                         <span id="GtAvg" class="display-6"></span>
-                        <div style="color: #4bc0c0;">
+                        <div class="fw-bold" style="color: #4bc0c0;">
                             Average GT
                         </div>
                     </div>
@@ -19,10 +19,10 @@
             </div>
 
             <div class="col-md-6 col-xl-3">
-                <div class="card bg-soma-darklight text-light text-center">
+                <div class="card text-center">
                     <div class="card-body">
                         <span id="TireAvg" class="display-6"></span>
-                        <div style="color: #36a3eb;">
+                        <div class="fw-bold" style="color: #36a3eb;">
                             Average tires
                         </div>
                     </div>
@@ -30,10 +30,10 @@
             </div>
 
             <div class="col-md-6 col-xl-3">
-                <div class="card bg-soma-darklight text-light text-center">
+                <div class="card text-center">
                     <div class="card-body">
                         <span id="GtTotal" class="display-6"></span>
-                        <div style="color: #4bc0c0;">
+                        <div class="fw-bold" style="color: #4bc0c0;">
                             Total GT
                         </div>
                     </div>
@@ -41,10 +41,10 @@
             </div>
 
             <div class="col-md-6 col-xl-3">
-                <div class="card bg-soma-darklight text-light text-center">
+                <div class="card text-center">
                     <div class="card-body">
                         <span id="TireTotal" class="display-6"></span>
-                        <div style="color: #36a3eb;">
+                        <div class="fw-bold" style="color: #36a3eb;">
                             Total tires
                         </div>
                     </div>
@@ -54,21 +54,26 @@
 
         <div class="row">
             <div class="col">
-                <div class="card bg-soma-darklight">
+                <div class="card">
                     <div class="card-body">
-                        <canvas id="ypChart" />
+                        <div>
+                            <canvas id="ypChart" />
+                        </div>
+
                     </div>
-                    <div class="card-footer">
-                        <nav>
-                            <ul class="pagination justify-content-center">
-                                @{ for (int i = 1; i < 13; i++)
-                                    {
-                                        <li id="yp_pag_@i" class="page-item"><a class="page-link bg-soma-dark border-secondary text-light" onclick="updateYpChart(@i)">@i</a></li>
-                                    }
+                </div>
+
+                <div class="mt-3">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            @{
+                                for (int i = 1; i < 13; i++)
+                                {
+                                    <li id="yp_pag_@i" class="page-item"><a class="page-link" onclick="updateYpChart(@i)">@i</a></li>
                                 }
-                            </ul>
-                        </nav>
-                    </div>
+                            }
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -79,7 +84,7 @@
         <!--Chart 1-->
         <div class="row mb-2">
             <div class="col">
-                <div class="card bg-soma-darklight">
+                <div class="card">
                     <div class="card-body">
                         <canvas id="ypChart1" />
                     </div>
@@ -90,7 +95,7 @@
         <!--Chart 2-->
         <div class="row mb-2">
             <div class="col">
-                <div class="card bg-soma-darklight">
+                <div class="card">
                     <div class="card-body">
                         <canvas id="ypChart2" />
                     </div>
@@ -126,18 +131,20 @@
                 labels: yp_days[yp_month - 1],
                 datasets: [
                     {
-                        label: 'GreenTire',
+                        label: 'GT',
                         data: yp_gtprod[yp_month - 1],
-                        backgroundColor: ['rgba(75, 192, 192, 0.7)'],
+                        backgroundColor: ['rgba(75, 192, 192, 0.5)'],
                         borderColor: ['rgba(75, 192, 192, 1)'],
-                        borderWidth: 1
+                        borderWidth: 1,
+                        tension:0.3
                     },
                     {
-                        label: 'Finished Tire',
+                        label: 'Tire',
                         data: yp_tireprod[yp_month - 1],
-                        backgroundColor: ['rgba(54, 162, 235, 0.7)'],
-                        borderColor: ['rgba(54, 162, 235, 1)'],
-                        borderWidth: 1
+                    backgroundColor: 'rgba(54, 162, 235,0.5)',
+                    borderColor: 'rgba(54, 162, 235,1)',
+                        borderWidth: 1,
+                        tension:0.3
                     }
                 ]
             },
@@ -147,19 +154,21 @@
                 scales: {
                     y: {
                         beginAtZero: false,
+                        stacked: false,
                         grid: {
-                            color: 'rgba(255,255, 255,0.1)'
+                            //color: 'rgba(255,255, 255,0.1)'
                         },
                         ticks: {
-                            color: 'white'
+                            //color: 'white'
                         }
                     },
                     x: {
+                        stacked:true,
                         grid: {
-                            color: 'rgba(255,255, 255,0.1)'
+                            //color: 'rgba(255,255, 255,0.1)'
                         },
                         ticks: {
-                            color: 'white'
+                            //color: 'white'
                         }
                     }
                 },
@@ -167,7 +176,7 @@
                     legend: {
                         position: 'top',
                         labels: {
-                            color: 'white'
+                            //color: 'white'
                         }
                     }
                 }
@@ -207,18 +216,18 @@
                 y: {
                     beginAtZero: false,
                     grid: {
-                        color: 'rgba(255,255, 255,0.1)'
+                        //color: 'rgba(255,255, 255,0.1)'
                     },
                     ticks: {
-                        color: 'white'
+                        //color: 'white'
                     }
                 },
                 x: {
                     grid: {
-                        color: 'rgba(255,255, 255,0.1)'
+                        //color: 'rgba(255,255, 255,0.1)'
                     },
                     ticks: {
-                        color: 'white'
+                        //color: 'white'
                     }
                 }
             },
@@ -226,7 +235,7 @@
                 legend: {
                     position: 'top',
                     labels: {
-                        color: 'white'
+                        //color: 'white'
                     }
                 }
             }
@@ -266,18 +275,18 @@
                 y: {
                     beginAtZero: false,
                     grid: {
-                        color: 'rgba(255,255, 255,0.1)'
+                        //color: 'rgba(255,255, 255,0.1)'
                     },
                     ticks: {
-                        color: 'white'
+                        //color: 'white'
                     }
                 },
                 x: {
                     grid: {
-                        color: 'rgba(255,255, 255,0.1)'
+                        //color: 'rgba(255,255, 255,0.1)'
                     },
                     ticks: {
-                        color: 'white'
+                        //color: 'white'
                     }
                 }
             },
@@ -285,7 +294,7 @@
                 legend: {
                     position: 'top',
                     labels: {
-                        color: 'white'
+                        //color: 'white'
                     }
                 }
             }
@@ -302,14 +311,16 @@
         yp_month = month;
     }
 
-    function selectYpPag(month) {
+    function selectYpPag(month) 
+    {
         for (var i = 1; i < 13; i++) {
             document.getElementById('yp_pag_' + i).classList.remove("active");
         }
         document.getElementById('yp_pag_' + month).classList.add("active");
     }
 
-    function updateYpNumbers(month) {
+    function updateYpNumbers(month) 
+    {
         var gtAvgButton = document.getElementById('GtAvg');
         var tireAvgButton = document.getElementById('TireAvg');
 
