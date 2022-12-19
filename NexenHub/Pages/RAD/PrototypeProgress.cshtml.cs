@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NexenHub.Class;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 
 namespace NexenHub.Pages.RAD
@@ -15,16 +17,25 @@ namespace NexenHub.Pages.RAD
         public List<string> yTBM = new List<string>();
         public List<string> yCUR = new List<string>();
 
+        [BindProperty(SupportsGet =true)]
+        public DateTime DateFrom { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public DateTime DateTo { get; set; }
+
         public void OnGet()
         {
-            DataTable dt = dbglob.GetPrototypeProgressChart();
-            foreach (DataRow r in dt.Rows)
-            {
-                xLegend.Add(r["EMR_ID"].ToString());
-                yREQ.Add(r["REQ_QTY"].ToString());
-                yTBM.Add(r["TBM"].ToString());
-                yCUR.Add(r["CURE"].ToString());
-            }
+
+            
+
+            //DataTable dt = dbglob.GetPrototypeProgressChart();
+            //foreach (DataRow r in dt.Rows)
+            //{
+            //    xLegend.Add(r["EMR_ID"].ToString());
+            //    yREQ.Add(r["REQ_QTY"].ToString());
+            //    yTBM.Add(r["TBM"].ToString());
+            //    yCUR.Add(r["CURE"].ToString());
+            //}
 
         }
     }
