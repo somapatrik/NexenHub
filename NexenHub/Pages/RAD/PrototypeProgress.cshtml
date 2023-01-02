@@ -2,46 +2,64 @@
 @model NexenHub.Pages.RAD.PrototypeProgressModel
 @{
 }
-<div class="container">
-
+<div class="container-fluid bg-white my-3 p-3">
+    
     <div class="row">
-        <div class="col">
 
-            <div class="row my-2">
+        <div class="col-2">
 
-                <div class="col text-center">
-                    <h1>Prototype progress</h1>
+            <div class="row mb-3">
+
+                <div class="col">
+                    <h4>Prototype progress</h4>
                 </div>
 
             </div>
 
+            <form method="post">
+
             <div class="row">
                 <div class="col">
-                    <div class="input-daterange input-group mb-3">
-                        <span class="input-group-text">From</span>
-                        <input type="text" class="form-control">
-                        <span class="input-group-text">To</span>
-                        <input type="text" class="form-control">
+
+                    <div class="input-daterange">
+                        
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">From</span>
+                            <input id="inputFrom" type="text" class="form-control" asp-for="DateFrom">
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">To</span>
+                            <input id="inputTo" type="text" class="form-control" asp-for="DateTo">
+                        </div>
+
                     </div>
+
                 </div>
             </div>
 
             <div class="row">
 
                 <div class="col">
-
+                    <div class="d-flex">
+                    <button class="flex-grow-1 btn btn-primary" asp-page-handler="Generate">Search</button>
                     </div>
+                </div>
 
             </div>
+            </form>
 
+        </div>
 
+        <div class="col-10">
+            <canvas id="@Html.Raw("PrototypeChart")" style="display: block; box-sizing: border-box; " />
         </div>
 
 
-
-
-        </div>
     </div>
+
+</div>
+
 
 <script type="text/javascript">
 
@@ -50,6 +68,70 @@
         maxViewMode: 1,
         calendarWeeks: true,
         todayHighlight: true,
+        format: 'yyyy-mm-dd'
+    });
+
+    var prodctx = document.getElementById("PrototypeChart").getContext('2d');
+    var prodmyChart = new Chart(prodctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Model.xEMRValues),
+            datasets: [
+                {
+                    label: 'CURE',
+                    data: @Html.Raw(Model.yCUREValues),
+                    backgroundColor: ['rgb(11,94,215,.7)'],
+                    borderColor: ['rgba(11,94,215,0)'],
+                    borderWidth: 1
+                },
+                {
+                    label: 'TBM',
+                    data: @Html.Raw(Model.yTBMValues),
+                    backgroundColor: ['rgb(255,193,7,.7)'],
+                    borderColor: ['rgba(255,193,7,0)'],
+                    borderWidth: 1
+                },
+                {
+                    label: 'Request',
+                    data: @Html.Raw(Model.yReqValues),
+                    backgroundColor: ['rgba(0, 130, 255, 0.0)'],
+                    borderColor: ['rgba(0, 130, 255, 1)'],
+                    borderWidth: 1
+                }
+                
+            ]
+        },
+        options: {
+            maintainAspectRatio: true,
+            responsive: true,
+            indexAxis: 'y',
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stacked: true,
+                    grid: {
+                        //color: 'rgba(255,255, 255,0.2)'
+                    },
+                    ticks: {
+                        //color: 'white'
+                    }
+                },
+                x: {
+                    stacked: false,
+                    grid: {
+                        //color: 'rgba(255,255, 255,0.2)'
+                    },
+                    ticks: {
+                        //color: 'white'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
     });
     
 </script>

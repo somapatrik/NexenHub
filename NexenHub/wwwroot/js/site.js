@@ -7,7 +7,9 @@ const CHART_COLORS = {
     green: 'rgb(75, 192, 192)',
     blue: 'rgb(54, 162, 235)',
     purple: 'rgb(153, 102, 255)',
-    grey: 'rgb(201, 203, 207)'
+    grey: 'rgb(201, 203, 207)',
+    primary: 'rgb(11,94,215)',
+    warning: 'rgb(255,193,7)'
 };
 
 

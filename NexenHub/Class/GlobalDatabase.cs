@@ -13,10 +13,13 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
-        public DataTable GetPrototypeProgressChart()
+        public DataTable GetPrototypeProgressChart(DateTime From , DateTime To)
         {
             try
             {
+                string FromFormat = From.ToString("yyyyMMdd");
+                string ToFormat = To.ToString("yyyyMMdd");
+
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT ");
                 query.AppendLine("    PROD.PROTOTYPE_ID EMR_ID,");
@@ -34,13 +37,16 @@ namespace NexenHub.Class
                 query.AppendLine("JOIN TB_PL_M_TEST_REQ EMR ON EMR.PRD_REQ_NO=PROD.PROTOTYPE_ID");
                 query.AppendLine("JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID=PROD.ITEM_ID");
                 query.AppendLine("LEFT JOIN TB_IN_M_BARCODE_TRACE BAR on BAR.VMI_LOT_ID=PROD.LOT_ID AND BAR.CURE_LOT_ID IS NOT NULL");
-                query.AppendLine("WHERE TO_DATE(EMR.REQ_YMD, 'YYYYMMDD') BETWEEN TO_DATE('20220927', 'YYYYMMDD') AND TO_DATE('20221005', 'YYYYMMDD')");
+                // query.AppendLine("WHERE TO_DATE(EMR.REQ_YMD, 'YYYYMMDD') BETWEEN TO_DATE('20220927', 'YYYYMMDD') AND TO_DATE('20221005', 'YYYYMMDD')");
+                query.AppendLine("WHERE EMR.REQ_YMD BETWEEN :fromDate AND :toDate");
                 query.AppendLine("AND PROD.USE_YN = 'Y'");
                 query.AppendLine("AND PROD.WC_ID = 'T'");
                 query.AppendLine("GROUP BY PROD.PROTOTYPE_ID,EMR.REQ_YMD,EMR.REQ_QTY, PROD.ITEM_ID,ITEM.ITEM_NAME, ITEM.XCHPF");
                 query.AppendLine("ORDER BY REQ_DATE");
 
                 DBOra db = new DBOra(query.ToString());
+                db.AddParameter("fromDate", FromFormat, OracleDbType.Varchar2);
+                db.AddParameter("toDate", ToFormat, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
             catch
@@ -103,12 +109,14 @@ namespace NexenHub.Class
             return "";
         }
      
-        public bool Login(string ID, string password)
+        public User Login(string ID, string password)
         {
+            User user = new User();
+
             try
             {
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT *");
+                query.AppendLine("SELECT USER_ID, USER_NAME");
                 query.AppendLine("FROM TB_CM_M_USER");
                 query.AppendLine("WHERE USER_ID = :id");
                 query.AppendLine("AND SUBSTR(CAL_SHA256(:password),1,64) = SUBSTR(PWD, 1, 64)");
@@ -117,13 +125,20 @@ namespace NexenHub.Class
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("id", ID, OracleDbType.Varchar2);
                 db.AddParameter("password", password, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
 
-                return db.ExecReader().HasRows;
+                if (dt.Rows.Count > 0)
+                {
+                    user.UserId = dt.Rows[0]["USER_ID"].ToString();
+                    user.Name = dt.Rows[0]["USER_NAME"].ToString();
+                }
             }
             catch
             {
-                return false;
+                
             }
+
+            return user;
         }
 
         public User CardLogin(string hexCardId)

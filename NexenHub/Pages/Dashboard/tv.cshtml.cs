@@ -47,7 +47,7 @@ namespace NexenHub.Pages.Dashboard
                     });
             }
 
-            isPM = MachinesPM.Count > 0 ? true : false;
+            isPM = MachinesPM.Count > 0;
 
 
             PingDevices = new List<PingDevice>();
@@ -55,7 +55,7 @@ namespace NexenHub.Pages.Dashboard
                 PingDevices.Add(new PingDevice() { Name = row["DISPLAYNAME"].ToString(), IP = row["IP"].ToString() });
 
             FailPing = PingDevices.FindAll(d => d.PingResult == false);
-            allPingOK = FailPing.Count > 0 ? false : true;
+            allPingOK = FailPing.Count == 0;
 
 
             DataTable dt = dbglob.GetLatestSoftwareCount("ics");
@@ -64,8 +64,6 @@ namespace NexenHub.Pages.Dashboard
                 LatestCount = int.Parse(dt.Rows[0][0].ToString());
                 LatestICSVersion = DateTime.Parse(dt.Rows[0][1].ToString());
             }
-
-            
 
             dt = dbglob.GetLatestSoftwareCount("rex");
             if (dt.Rows.Count > 0)
