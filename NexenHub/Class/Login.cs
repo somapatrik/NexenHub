@@ -16,6 +16,8 @@ namespace NexenHub.Class
 
         public static bool IsLogged { get; set; }
 
+        public static User CurrentUser { get; set; }
+
         public static async Task<bool> LogIn(HttpContext context, string username, string password)
         {
             bool logged = false;
@@ -62,7 +64,7 @@ namespace NexenHub.Class
 
                 await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
             }
-
+            IsLogged = logged;
             return logged;
         }
 
