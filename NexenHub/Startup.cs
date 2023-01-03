@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NexenHub.Class;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace NexenHub
 {
@@ -30,6 +33,18 @@ namespace NexenHub
             {
                 opt.JsonSerializerOptions.PropertyNamingPolicy = null;
             }).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                options.SlidingExpiration = true;
+                options.AccessDeniedPath = "/Forbidden";
+                options.LoginPath = "/Login";
+            });
+
+            //services.AddAuthorization(options =>
+            //    options.AddPolicy("CanRAD",
+            //        policy => policy.RequireClaim(ClaimTypes.Role, "Administrator", "R&D")));
 
             GlobalSettings.Test = Configuration.GetSection("AppSettings").GetValue<bool>("Test");
             GlobalSettings.DatabaseConnection = Configuration.GetConnectionString("NXMESEP");
@@ -56,7 +71,14 @@ namespace NexenHub
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+            };
+            app.UseCookiePolicy(cookiePolicyOptions);
 
             app.UseEndpoints(endpoints =>
             {

@@ -4,12 +4,14 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NexenHub.Class;
 
 namespace NexenHub.Pages
 {
+    [Authorize(Roles = "Operator")]
     public class _3dchartModel : PageModel
     {
 

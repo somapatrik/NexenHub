@@ -1,10 +1,17 @@
-﻿@{
+﻿@using NexenHub.Class;
+@using NexenHub.Models;
+@{
     string machineSelected = (string)ViewData["mainSelected"] == "machines" ? "active" : "";
 
     string radSelected = (string)ViewData["mainSelected"] == "rad" ? "active" : "";
     string eslSelected = (string)ViewData["mainSelected"] == "esl" ? "active" : "";
     string rexSelected = (string)ViewData["mainSelected"] == "rex" ? "active" : "";
     string pageTitle = string.IsNullOrEmpty((string)ViewData["pageTitle"]) ? "NexenHub" : (string)ViewData["pageTitle"];
+
+    bool isLogged = Login.IsLoggedIn(Model.HttpContext);
+    string Username = isLogged ? Login.Username(Model.HttpContext) : "";
+    string Role = isLogged ? Login.Role(Model.HttpContext) : "";
+    Member user = isLogged ? Login.Member(Model.HttpContext) : null;
 }
 
 <!DOCTYPE html>
@@ -34,17 +41,25 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-github-dark text-white">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">
+
+                <a class="navbar-brand" asp-page="/Index">
                     <img src="/images/logo/logo_light.png" width="200" />
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#navbarSupportedContent" 
+                        aria-controls="navbarSupportedContent" 
+                        aria-expanded="false" 
+                        aria-label="Toggle navigation">
+
+                        <span class="navbar-toggler-icon"></span>
+
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-center">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle @machineSelected" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,14 +78,6 @@
                                 <a class="dropdown-item" href="/RAD/PrototypeProgress">Prototype progress</a>
                             </div>
                         </li>
-@*                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dashboards
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" target="_blank" href="/dashboard/tbmdefect/1/60">TBM Defect monitoring</a>
-                            </div>
-                        </li>*@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Downtimes
@@ -85,32 +92,47 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @rexSelected" asp-area="" asp-page="/Rex">ReX</a>
+                            <a class="nav-link @rexSelected" asp-page="/Rex">ReX</a>
                         </li>
                     </ul>
 
+                    @if (isLogged)
+                    {
+                        <ul class="navbar-nav mb-2 mb-lg-0 mx-3">
+                            <li class="nav-item dropdown text-end">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @user.Name
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="#">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    }
+
                     <div class="d-flex">
-                        <div class="input-group">
+
+                        <div class="input-group flex-grow-1">
                             <input class="text-center form-control" placeholder="CART / LOT / TIRE" onkeyup="searchMat(event,this)" />
                         </div>
-                    </div>
 
-                </div>
+                        
+                    </div>
+              </div>
             </div>
         </nav>
+     
 
     </header>
 
-    @*<div class="container-fluid">*@
     <main role="main" class="pb-3">
         @RenderBody()
     </main>
-    @*</div>*@
 
     <footer class="footer text-muted bg-github-dark">
         <div class="container">
             <div class="row">
-                <div class="col">&copy; @DateTime.Now.Year - Patrik Šoma</div>
+                <div class="col">&copy; 2021 - @DateTime.Now.Year</div>
             </div>
         </div>
     </footer>

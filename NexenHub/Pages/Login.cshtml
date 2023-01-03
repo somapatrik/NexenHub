@@ -16,21 +16,21 @@
 
             <div class="bg-white p-3">
 
-                <form>
+                <form method="post">
                     <div class="input-group  mb-3">
-                        <input type="text" class="form-control" placeholder="Employee ID">
+                        <input type="text" class="form-control" placeholder="Employee ID" asp-for="Username">
                     </div>
 
                     <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="MES Password">
+                        <input type="password" class="form-control" placeholder="MES Password" asp-for="Password">
                     </div>
 
                     <div class="d-flex">
                         <div class="flex-grow-1">
-
+                            
                         </div>
                         <div>
-                            <button type="submit" class="btn btn-primary">Sign in</button>
+                            <button type="submit" class="btn btn-primary" asp-page-handler="Login">Sign in</button>
                         </div>
                     </div>
 

@@ -8,15 +8,38 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Principal;
 
 namespace NexenHub.Class
 {
     public static class Login
     {
 
-        public static bool IsLogged { get; set; }
+        public static bool IsLoggedIn(HttpContext context)
+        {
+            return context.User.Identity.IsAuthenticated;
+        }
 
-        public static User CurrentUser { get; set; }
+        public static string Username(HttpContext context)
+        {
+            return context.User.Identity.Name;
+        }
+
+        public static string Role(HttpContext context)
+        {
+            return context.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).SingleOrDefault();
+        }
+
+        public static string NexenID(HttpContext context)
+        {
+            return context.User.Claims.Where(c => c.Type == "USER_ID").Select(c => c.Value).SingleOrDefault();
+        }
+
+        public static Member Member(HttpContext context)
+        {
+            string id = NexenID(context);
+            return new Member(id);
+        }
 
         public static async Task<bool> LogIn(HttpContext context, string username, string password)
         {
@@ -24,14 +47,14 @@ namespace NexenHub.Class
             GlobalDatabase db = new GlobalDatabase();
             User user = db.Login(username, password);
 
-            if (!string.IsNullOrEmpty(user.UserId))
+            if (user.IsValid)
             {
 
                 var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, user.Name),
                             new Claim("USER_ID", user.UserId),
-                            new Claim(ClaimTypes.Role, "Administrator"),
+                            new Claim(ClaimTypes.Role, "Administrator")
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -61,16 +84,18 @@ namespace NexenHub.Class
                     // redirect response value.
                 };
 
-
                 await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+                logged = true;
+
             }
-            IsLogged = logged;
+
             return logged;
         }
 
-        public static async Task Logout(HttpContext context)
+        public static async Task<bool> Logout(HttpContext context)
         {
             await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return true;
 
         }
 

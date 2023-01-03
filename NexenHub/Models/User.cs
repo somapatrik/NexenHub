@@ -6,5 +6,7 @@
         public string UserId { get; set; }
         public string CardHex { get; set; }
 
+        public bool IsValid => !string.IsNullOrEmpty(UserId);
+
     }
 }
