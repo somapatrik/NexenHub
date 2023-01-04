@@ -27,6 +27,11 @@ namespace NexenHub.Pages
         public void OnGet()
         {
             yearProd = new YearProd();
+
+            DBNX db = new DBNX("select getdate()");
+            DataTable dt = db.ExecTable();
+
+
         }
 
         

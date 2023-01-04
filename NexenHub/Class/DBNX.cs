@@ -1,8 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
-using static NexenHub.Class.DBMic;
-
-namespace NexenHub.Class
+﻿namespace NexenHub.Class
 {
+    /// <summary>
+    /// NexenHub MSSQL database
+    /// </summary>
     public class DBNX : DBMS
     {
         public DBNX(string query) : base(query, GlobalSettings.DatabaseNXMSQL)

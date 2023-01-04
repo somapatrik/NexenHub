@@ -706,7 +706,7 @@ namespace NexenHub.Class
                 query.AppendLine("FROM VIEW_PRESLIST_OSOBA");
                 query.AppendLine("WHERE OSOBNICISLO = @memberid");
 
-                DBMic db = new DBMic(query.ToString(), DBMic.Database.Aktion);
+                DBAKT db = new DBAKT(query.ToString());
                 db.AddParameter("memberid", member_id, SqlDbType.VarChar);
                 DataTable dt = db.ExecTable();
                 return dt;
@@ -1607,7 +1607,7 @@ namespace NexenHub.Class
                 //query.AppendLine("order by PROD.PROD_DATE");
 
                 //DBMic db = new DBMic(query.ToString());
-                DBMic db = new DBMic("NH_YEAR_PRODUCTION");
+                DBCTRL db = new DBCTRL("NH_YEAR_PRODUCTION");
                 db.AddParameter("Year", year, System.Data.SqlDbType.VarChar );
                 //return db.ExecTable();
                 return db.ExecProcedure();

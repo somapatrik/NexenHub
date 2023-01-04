@@ -7,9 +7,6 @@ namespace NexenHub.Class
 {
     public class DBMS
     {
-        public enum Database { Controlling, Aktion }
-        //public Database selectedDatabase = Database.Controlling;
-
         public SqlConnection Connection;
         public SqlCommand Command;
         private List<SqlParameter> Parameters = new List<SqlParameter>();
@@ -19,7 +16,6 @@ namespace NexenHub.Class
         public DBMS(string query,string connectString)
         {
             this.Connection = new SqlConnection(connectString);
-
             this.query = query;
             this.Command = new SqlCommand(this.query, this.Connection);
         }
