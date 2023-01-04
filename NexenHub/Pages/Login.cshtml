@@ -17,24 +17,46 @@
             <div class="bg-white p-3">
 
                 <form method="post">
-                    <div class="input-group  mb-3">
-                        <input type="text" class="form-control" placeholder="Employee ID" asp-for="Username">
-                    </div>
 
-                    <div class="input-group mb-3">
-                        <input type="password" class="form-control" placeholder="MES Password" asp-for="Password">
-                    </div>
+                    @if (!string.IsNullOrEmpty(Model.ErrorMsg)){
 
-                    <div class="d-flex">
-                        <div class="flex-grow-1">
-                            
+                    <div class="row">
+                        <div class="col">
+                            <div class="alert alert-danger" role="alert">
+                                    @Model.ErrorMsg
+                            </div>
                         </div>
-                        <div>
-                            <button type="submit" class="btn btn-primary" asp-page-handler="Login">Sign in</button>
+                    </div>
+
+                    }
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group  mb-3">
+                                <input type="text" class="form-control" placeholder="Employee ID" asp-for="Username">
+                            </div>
+                       
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group mb-3">
+                                <input type="password" class="form-control" placeholder="MES Password" asp-for="Password">
+                            </div>
+                         </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group">
+                                <button type="submit" class="btn btn-primary w-100" asp-page-handler="Login">Sign in</button>
+                            </div>
                         </div>
                     </div>
 
                 </form>
+
             </div>
 
         </div>

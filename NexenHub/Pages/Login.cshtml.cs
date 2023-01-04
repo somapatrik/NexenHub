@@ -16,6 +16,9 @@ namespace NexenHub.Pages
         [BindProperty]
         public string Password { get; set; }
 
+        [BindProperty]
+        public string ErrorMsg { get; set; }
+
         public void OnGet()
         {
 
@@ -25,20 +28,15 @@ namespace NexenHub.Pages
         {           
             bool logged = await Login.LogIn(HttpContext, Username, Password);
 
-            if (logged)
+            if (logged) 
+            { 
                 return LocalRedirect("/index");
+            }
             else
+            {
+                ErrorMsg = "Unable to login";
                 return Page();
+            }
         }
-
-        //public async Task<IActionResult> OnPostLogout()
-        //{
-        //    await Login.Logout(HttpContext);
-
-        //    //if (logged)
-        //    //    return LocalRedirect("/index");
-        //    //else
-        //        return Page();
-        //}
     }
 }
