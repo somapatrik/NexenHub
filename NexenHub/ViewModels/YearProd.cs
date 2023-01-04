@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using NexenHub.Class;
 using Newtonsoft.Json;
 
-namespace NexenHub.Models
+namespace NexenHub.ViewModels
 {
     public class YearProd
     {
@@ -30,7 +30,7 @@ namespace NexenHub.Models
             get
             {
                 //return JsonConvert.SerializeObject(_TireRawData, Formatting.None);
-                return JsonConvert.SerializeObject(_TireRawData.Select(x=>x.Select(y=> y == "0" ? "NaN": y)), Formatting.None);
+                return JsonConvert.SerializeObject(_TireRawData.Select(x => x.Select(y => y == "0" ? "NaN" : y)), Formatting.None);
             }
         }
 
@@ -98,12 +98,12 @@ namespace NexenHub.Models
             }
         }
 
-        public int actMonth 
-        { 
+        public int actMonth
+        {
             get
             {
                 return _Year == DateTime.Now.Year ? DateTime.Now.Month : 1;
-            } 
+            }
         }
 
         #endregion
@@ -154,7 +154,7 @@ namespace NexenHub.Models
                 _GtRawData = new List<string>[12];
                 _TireRawData = new List<string>[12];
                 _GtAvg = new double[12];
-                _GtTotal = new double[12];                
+                _GtTotal = new double[12];
                 _TireAvg = new double[12];
                 _TireTotal = new double[12];
 
@@ -175,7 +175,7 @@ namespace NexenHub.Models
         private void CreateData()
         {
             // Prepare days for each month
-            for (int month = 1; month <=12; month++)
+            for (int month = 1; month <= 12; month++)
             {
                 var gtlist = new List<ChartXYDate>();
                 var tirelist = new List<ChartXYDate>();
@@ -196,9 +196,9 @@ namespace NexenHub.Models
 
                 GTProd[month - 1] = gtlist;
                 TireProd[month - 1] = tirelist;
-                    
+
                 _Days[month - 1] = daysInMonth.Select(day => day.Day.ToString()).ToList();
-            }  
+            }
         }
 
         private void LoadProduction()

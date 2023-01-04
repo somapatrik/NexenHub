@@ -75,7 +75,7 @@
     var prodmyChart = new Chart(prodctx, {
         type: 'bar',
         data: {
-            labels: @Html.Raw(Model.xEMRValues),
+            labels: @Html.Raw(Model.xValues),
             datasets: [
                 {
                     label: 'CURE',
@@ -106,23 +106,35 @@
             responsive: true,
             indexAxis: 'y',
             scales: {
-                y: {
+                x: {
                     beginAtZero: true,
+                    stacked: false,
+                    grid: {},
+                    ticks: {}
+                },
+                y:{
                     stacked: true,
-                    grid: {
-                        //color: 'rgba(255,255, 255,0.2)'
-                    },
+                    grid: {},
                     ticks: {
-                        //color: 'white'
+                        callback: function(label) {
+                            let realLabel = this.getLabelForValue(label);
+                            return EMR = realLabel.split(";")[0];
+                        }
                     }
                 },
-                x: {
-                    stacked: false,
+                yAxis2:
+                {
+                    type: "category",
                     grid: {
-                        //color: 'rgba(255,255, 255,0.2)'
+                        drawOnChartArea: false, // only want the grid lines for one axis to show up
                     },
-                    ticks: {
-                        //color: 'white'
+                    ticks:{
+                        callback: function(label) {
+                            let realLabel = this.getLabelForValue(label)
+                            var EMR = realLabel.split(";")[0];
+                            var REQDATE = realLabel.split(";")[1];
+                            return REQDATE;
+                        }
                     }
                 }
             },
