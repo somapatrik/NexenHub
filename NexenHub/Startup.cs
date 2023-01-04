@@ -51,6 +51,7 @@ namespace NexenHub
             GlobalSettings.DatabaseConnectionDevelopment = Configuration.GetConnectionString("NXMESEPDEV");
             GlobalSettings.DatabaseControlling = Configuration.GetConnectionString("NXCONTROL");
             GlobalSettings.DatabaseAktion = Configuration.GetConnectionString("AKTION");
+            GlobalSettings.DatabaseNXMSQL = Configuration.GetConnectionString("NXMSQL");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

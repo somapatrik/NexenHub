@@ -18,6 +18,7 @@ namespace NexenHub.Class
         public static string DatabaseConnectionDevelopment;
         public static string DatabaseControlling;
         public static string DatabaseAktion;
+        public static string DatabaseNXMSQL;
 
         public static string CzechNum = "### ### ### ###.##";
 

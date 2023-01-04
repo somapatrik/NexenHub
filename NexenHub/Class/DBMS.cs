@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Data.SqlClient;
 using System.Data;
+using System;
 
 namespace NexenHub.Class
 {
-    public class DBMic
+    public class DBMS
     {
-        public enum Database { Controlling, Aktion}
+        public enum Database { Controlling, Aktion }
         //public Database selectedDatabase = Database.Controlling;
 
         public SqlConnection Connection;
@@ -18,20 +16,17 @@ namespace NexenHub.Class
 
         public string query;
 
-        public DBMic(string query, Database database = Database.Controlling)
+        public DBMS(string query,string connectString)
         {
-            if (database == Database.Aktion)
-                this.Connection = new SqlConnection(GlobalSettings.DatabaseAktion);
-            else
-                this.Connection = new SqlConnection(GlobalSettings.DatabaseControlling);
-            
+            this.Connection = new SqlConnection(connectString);
+
             this.query = query;
             this.Command = new SqlCommand(this.query, this.Connection);
         }
 
         public void AddParameter(string name, object value, System.Data.SqlDbType type)
         {
-            SqlParameter parameter = new SqlParameter("@"+name, type);
+            SqlParameter parameter = new SqlParameter("@" + name, type);
             parameter.Value = value;
             this.Parameters.Add(parameter);
         }
