@@ -1,64 +1,90 @@
-﻿@page "{DateFrom:DateTime?}/{DateTo:DateTime?}"
+﻿@page
 @model NexenHub.Pages.RAD.PrototypeProgressModel
 @{
 }
-<div class="container-fluid bg-white my-3 p-3">
-    
-    <div class="row">
+<div class="container-fluid">
 
-        <div class="col-2">
-
-            <div class="row mb-3">
-
-                <div class="col">
-                    <h4>Prototype progress</h4>
-                </div>
-
+    <div class="row border-bottom border-2 p-3" style="background-color: #f7f7f7;">
+        <div class="row mb-3">
+            <div class="col">
+                <h4>Prototype progress</h4>
             </div>
+        </div>
 
-            <form method="post">
+        <form method="post">
 
-            <div class="row">
-                <div class="col">
+            <div class="row justify-content-center mb-2">
+                <div class="col-xl-6">
 
-                    <div class="input-daterange">
-                        
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">From</span>
-                            <input id="inputFrom" type="text" class="form-control" asp-for="DateFrom">
-                        </div>
-                        
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">To</span>
-                            <input id="inputTo" type="text" class="form-control" asp-for="DateTo">
-                        </div>
+                    <div class="input-group mb-2">
+
+                        <span class="input-group-text">EMR</span>
+                        <input type="text" class="form-control text-center" asp-for="@Model.selectedEMR">
+
+                        <span class="input-group-text">Test type</span>
+                        <select class="form-control" asp-items="@Model.TestTypes" asp-for="@Model.SelectedTestType">
+                            <option value=""></option>
+                        </select>
+
+                        <input asp-for="@Model.IsOE" type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btncheck1">OE</label>
+
+                        <input asp-for="@Model.IsRe" type="checkbox" class="btn-check text-center" id="btncheck2" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="btncheck2">RE</label>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">Item ID</span>
+                        <input type="text" class="form-control text-center" asp-for="@Model.selectedItemID">
+
+                        <span class="input-group-text">Item name</span>
+                        <input type="text" class="form-control text-center" asp-for="@Model.selectedItemName">
 
                     </div>
 
                 </div>
             </div>
 
-            <div class="row">
+        <div class="row justify-content-center">
 
-                <div class="col">
-                    <div class="d-flex">
-                    <button class="flex-grow-1 btn btn-primary" asp-page-handler="Generate">Search</button>
+            <div class="col-xl-6">
+                <div class="input-daterange">
+                <div class="input-group">
+                        
+                        <span class="input-group-text">From</span>
+                        <input id="inputFrom" type="text" class="form-control" asp-for="DateFrom">
+                        <span class="input-group-text">To</span>
+                        <input id="inputTo" type="text" class="form-control" asp-for="DateTo">
+                    
+                        <button class="flex-grow-1 btn btn-primary" asp-page-handler="Generate">Search</button>
+
                     </div>
-                </div>
-
+                    </div>
             </div>
-            </form>
 
         </div>
 
-        <div class="col-10">
+        </form>
+
+    </div>
+</div>
+
+
+<div class="container-fluid bg-white">
+    <div class="row">
+
+        <div class="col-9">
             <canvas id="@Html.Raw("PrototypeChart")" style="display: block; box-sizing: border-box; " />
         </div>
 
-
+        <div class="col-3">
+            @*<img src="https://media.tenor.com/QgzNRcWIqMIAAAAC/ryan-kakao.gif" class="img-fluid"/>*@
+        </div>
     </div>
-
 </div>
+
 
 
 <script type="text/javascript">
@@ -68,10 +94,13 @@
         maxViewMode: 1,
         calendarWeeks: true,
         todayHighlight: true,
-        format: 'yyyy-mm-dd'
+        format: 'yyyy-mm-dd',
+        endDate: '+0d'
+
     });
 
     var prodctx = document.getElementById("PrototypeChart").getContext('2d');
+
     var prodmyChart = new Chart(prodctx, {
         type: 'bar',
         data: {
@@ -118,7 +147,7 @@
                     ticks: {
                         callback: function(label) {
                             let realLabel = this.getLabelForValue(label);
-                            return EMR = realLabel.split(";")[0];
+                            return realLabel.split(";")[0];
                         }
                     }
                 },
@@ -126,14 +155,12 @@
                 {
                     type: "category",
                     grid: {
-                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                        drawOnChartArea: false,
                     },
                     ticks:{
                         callback: function(label) {
-                            let realLabel = this.getLabelForValue(label)
-                            var EMR = realLabel.split(";")[0];
-                            var REQDATE = realLabel.split(";")[1];
-                            return REQDATE;
+                            let realLabel = this.getLabelForValue(label);
+                            return realLabel.split(";")[1];;
                         }
                     }
                 }
@@ -141,9 +168,20 @@
             plugins: {
                 legend: {
                     display: true
+                    ,position: 'top'
+                },
+                tooltip:{
+                    callbacks:{
+                        title: function(context){
+                            return context[0].label.split(';')[0];
+                        }
+                    }
+                },
+                title:{
+                    display:true,
+                    text:@Html.Raw("'" + Model.ChartTitle + "'")
                 }
             }
         }
     });
-    
 </script>

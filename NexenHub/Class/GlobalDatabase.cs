@@ -37,7 +37,6 @@ namespace NexenHub.Class
                 query.AppendLine("JOIN TB_PL_M_TEST_REQ EMR ON EMR.PRD_REQ_NO=PROD.PROTOTYPE_ID");
                 query.AppendLine("JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID=PROD.ITEM_ID");
                 query.AppendLine("LEFT JOIN TB_IN_M_BARCODE_TRACE BAR on BAR.VMI_LOT_ID=PROD.LOT_ID AND BAR.CURE_LOT_ID IS NOT NULL");
-                // query.AppendLine("WHERE TO_DATE(EMR.REQ_YMD, 'YYYYMMDD') BETWEEN TO_DATE('20220927', 'YYYYMMDD') AND TO_DATE('20221005', 'YYYYMMDD')");
                 query.AppendLine("WHERE EMR.REQ_YMD BETWEEN :fromDate AND :toDate");
                 query.AppendLine("AND PROD.USE_YN = 'Y'");
                 query.AppendLine("AND PROD.WC_ID = 'T'");

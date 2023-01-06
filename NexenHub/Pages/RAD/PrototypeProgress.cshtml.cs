@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using NexenHub.Class;
 using System;
@@ -15,37 +16,77 @@ namespace NexenHub.Pages.RAD
     {
         GlobalDatabase dbglob = new GlobalDatabase();
 
+        #region Chart data
+        public string ChartTitle { get; set; }
         public string xValues => JsonConvert.SerializeObject(_xLegend.Select(x => x), Formatting.None);
-
-        public string xEMRValues => JsonConvert.SerializeObject(_EMR, Formatting.None);
-
         public string yReqValues => JsonConvert.SerializeObject(_yREQ, Formatting.None);
         public string yTBMValues => JsonConvert.SerializeObject(_yTBM, Formatting.None);
         public string yCUREValues => JsonConvert.SerializeObject(_yCUR, Formatting.None);
 
         private List<string> _xLegend = new List<string>();
-
         private List<string> _ReqDates = new List<string>();
         private List<string> _EMR = new List<string>();
         private List<string> _yREQ = new List<string>();
         private List<string> _yTBM = new List<string>();
         private List<string> _yCUR = new List<string>();
+        #endregion
 
-        [BindProperty(SupportsGet =true)]
+        [BindProperty]
         public DateTime DateFrom { get; set; }
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
         public DateTime DateTo { get; set; }
+
+        [BindProperty]
+        public string SelectedTestType { get; set; }
+
+        [BindProperty]
+        public List<SelectListItem> TestTypes => LoadTestTypes();
+
+        [BindProperty]
+        public bool IsOE { get; set; }
+
+        [BindProperty]
+        public bool IsRe { get; set; }
+
+        [BindProperty]
+        public bool selectedEMR { get; set; }
+
+        [BindProperty]
+        public bool selectedItemID { get; set; }
+
+        [BindProperty]
+        public bool selectedItemName { get; set; }
+
+
 
         public void OnGet()
         {
             CheckDates();
-            GenerateChart();
+        }
+
+        public List<SelectListItem> LoadTestTypes()
+        {
+            List<SelectListItem> Result = new List<SelectListItem>();
+
+            DBOra db = new DBOra("select distinct(TEST_TYPE) from TB_PL_M_TEST_REQ where TEST_TYPE is not null");
+            foreach (DataRow r in db.ExecTable().Rows)
+            {
+                Result.Add( new SelectListItem() {Value = r[0].ToString(), Text = r[0].ToString() });
+            }
+
+            return Result;
+        }
+
+        public void SetTitle()
+        {
+            ChartTitle = DateFrom.ToString("dd.MM.") + " - " + DateTo.ToString("dd.MM.");
         }
 
         public void OnPostGenerate()
         {
             CheckDates();
+            SetTitle();
             GenerateChart();
         }
 
@@ -74,6 +115,10 @@ namespace NexenHub.Pages.RAD
                 DateFrom = temp;
             }
 
+            // Limit searcch
+            if (DateTo > DateFrom.AddMonths(1))
+               DateFrom = DateTo.AddMonths(-1);
+
         }
 
         private void GenerateChart()
@@ -81,7 +126,6 @@ namespace NexenHub.Pages.RAD
             DataTable dt = dbglob.GetPrototypeProgressChart(DateFrom, DateTo);
             foreach (DataRow r in dt.Rows)
             {
-                //_xLegend.Add(r["EMR_ID"].ToString() + ";" + DateTime.Parse(r["REQ_DATE"].ToString()).ToString("dd.MM.yyyy") );
                 _ReqDates.Add(DateTime.Parse(r["REQ_DATE"].ToString()).ToString("dd.MM.yyyy"));
                 _EMR.Add(r["EMR_ID"].ToString());
                 _yREQ.Add(r["REQ_QTY"].ToString());
@@ -95,15 +139,6 @@ namespace NexenHub.Pages.RAD
             {
                 if (!NewReqs.Contains(reqdate)) 
                 {
-                    // Last position
-                    //List<string> found = _ReqDates.FindAll(x => x == reqdate).ToList();
-                    //int lastIndex = found.LastIndexOf(reqdate);
-
-                    //for (int i = 0; i < lastIndex; i++)
-                    //    NewReqs.Add("");
-
-                    //NewReqs.Add(reqdate);
-
                     //First position
                     List<string> found = _ReqDates.FindAll(x => x == reqdate).ToList();
                     NewReqs.Add(reqdate);
