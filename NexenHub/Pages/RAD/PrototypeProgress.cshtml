@@ -9,20 +9,17 @@
             <div class="col">
                 <h4>Prototype progress</h4>
             </div>
+            <div class="col text-end">
+                <a class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" href="#collapseFilters" role="button">
+                    Filters
+                </a>
+            </div>
         </div>
 
         <form method="post">
 
-            <div class="row justify-content-center mb-2">
-                <div class="col-xl-8 text-center">
-                    <a class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" href="#collapseFilters" role="button">
-                        Filters
-                    </a>
-                </div>
-            </div>
-
             <div class="collapse" id="collapseFilters" >
-            <div class="row justify-content-center mb-2">
+            <div class="row justify-content-center mb-3">
                 <div class="col-xl-8">
 
                     <div class="input-group mb-2">
@@ -88,7 +85,7 @@
     <div class="row">
 
         <div class="col-9">
-            <canvas id="@Html.Raw("PrototypeChart")" style="display: block; box-sizing: border-box; " />
+            <canvas id="PrototypeChart" style="display: block; box-sizing: border-box; " />
         </div>
 
         <div class="col-3">
@@ -110,7 +107,7 @@
         endDate: '+0d'
 
     });
-
+    
     var prodctx = document.getElementById("PrototypeChart").getContext('2d');
 
     var prodmyChart = new Chart(prodctx, {
@@ -194,6 +191,33 @@
                     text:@Html.Raw("'" + Model.ChartTitle + "'")
                 }
             }
+            
         }
     });
+
+    document.getElementById("PrototypeChart").onclick = function(e) {
+
+        // Anywhere click, only return index. Can´t make it work
+        //const canvasPosition = Chart.helpers.getRelativePosition(e, prodmyChart);
+        //const datay = prodmyChart.scales.y.getValueForPixel(canvasPosition.y);
+        //console.log("dataY: " + datay);
+
+        // Bar click - returns EMR
+        let points = prodmyChart.getElementsAtEventForMode(e, 'nearest', { intersect: true, axis: 'y' });
+
+        if (points.length) 
+        {
+            const firstPoint = points[0];
+            var label = prodmyChart.data.labels[firstPoint.index].split(';')[0];
+            //var value = prodmyChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+            //let label = prodmyChart.scales['y'].getLabelForValue(firstPoint.index, firstPoint.datasetIndex);
+            displayEMR(label);
+        }
+    };
+
+
+    function displayEMR(emr){
+        alert(emr);
+    }
+
 </script>
