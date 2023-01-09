@@ -50,14 +50,13 @@ namespace NexenHub.Pages.RAD
         public bool IsRe { get; set; }
 
         [BindProperty]
-        public bool selectedEMR { get; set; }
+        public string selectedEMR { get; set; }
 
         [BindProperty]
-        public bool selectedItemID { get; set; }
+        public string selectedItemID { get; set; }
 
         [BindProperty]
-        public bool selectedItemName { get; set; }
-
+        public string selectedItemName { get; set; }
 
 
         public void OnGet()
@@ -65,11 +64,18 @@ namespace NexenHub.Pages.RAD
             CheckDates();
         }
 
+        public void OnPostGenerate()
+        {
+            CheckDates();
+            SetTitle();
+            GenerateChart();
+        }
+
         public List<SelectListItem> LoadTestTypes()
         {
             List<SelectListItem> Result = new List<SelectListItem>();
 
-            DBOra db = new DBOra("select distinct(TEST_TYPE) from TB_PL_M_TEST_REQ where TEST_TYPE is not null");
+            DBOra db = new DBOra("select distinct(TEST_TYPE) from TB_PL_M_TEST_REQ where TEST_TYPE is not null order by TEST_TYPE");
             foreach (DataRow r in db.ExecTable().Rows)
             {
                 Result.Add( new SelectListItem() {Value = r[0].ToString(), Text = r[0].ToString() });
@@ -80,14 +86,10 @@ namespace NexenHub.Pages.RAD
 
         public void SetTitle()
         {
-            ChartTitle = DateFrom.ToString("dd.MM.") + " - " + DateTo.ToString("dd.MM.");
-        }
-
-        public void OnPostGenerate()
-        {
-            CheckDates();
-            SetTitle();
-            GenerateChart();
+            if (!string.IsNullOrEmpty(selectedEMR))
+                ChartTitle = selectedEMR.ToUpper();
+            else
+                ChartTitle = DateFrom.ToString("dd.MM.") + " - " + DateTo.ToString("dd.MM.");
         }
 
         private void CheckDates()
@@ -123,16 +125,25 @@ namespace NexenHub.Pages.RAD
 
         private void GenerateChart()
         {
-            DataTable dt = dbglob.GetPrototypeProgressChart(DateFrom, DateTo);
+            DataTable dt = dbglob.GetPrototypeProgressChart(DateFrom, DateTo,selectedEMR, selectedItemID, selectedItemName, SelectedTestType);
+
             foreach (DataRow r in dt.Rows)
             {
-                _ReqDates.Add(DateTime.Parse(r["REQ_DATE"].ToString()).ToString("dd.MM.yyyy"));
-                _EMR.Add(r["EMR_ID"].ToString());
-                _yREQ.Add(r["REQ_QTY"].ToString());
-                _yTBM.Add(r["TBM"].ToString());
-                _yCUR.Add(r["CURE"].ToString());
+                // Filter OE / RE here
+                bool dbOE = r["OE"].ToString() == "OE";
+                bool dbRE = r["OE"].ToString() == "RE";
+
+                if((IsOE && dbOE) || (IsRe && dbRE) || (!IsOE && !IsRe))
+                {
+                    _ReqDates.Add(DateTime.Parse(r["REQ_DATE"].ToString()).ToString("dd.MM.yyyy"));
+                    _EMR.Add(r["EMR_ID"].ToString());
+                    _yREQ.Add(r["REQ_QTY"].ToString());
+                    _yTBM.Add(r["TBM"].ToString());
+                    _yCUR.Add(r["CURE"].ToString());
+                }
             }
 
+            // Show dates only on first different EMR
             List<string> NewReqs = new List<string>();
 
             foreach(string reqdate in _ReqDates)

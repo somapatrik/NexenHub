@@ -14,25 +14,29 @@
         <form method="post">
 
             <div class="row justify-content-center mb-2">
-                <div class="col-xl-6">
+                <div class="col-xl-8 text-center">
+                    <a class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" href="#collapseFilters" role="button">
+                        Filters
+                    </a>
+                </div>
+            </div>
+
+            <div class="collapse" id="collapseFilters" >
+            <div class="row justify-content-center mb-2">
+                <div class="col-xl-8">
 
                     <div class="input-group mb-2">
 
                         <span class="input-group-text">EMR</span>
-                        <input type="text" class="form-control text-center" asp-for="@Model.selectedEMR">
+                        <input type="text" class="form-control text-center text-uppercase" asp-for="@Model.selectedEMR">
 
                         <span class="input-group-text">Test type</span>
                         <select class="form-control" asp-items="@Model.TestTypes" asp-for="@Model.SelectedTestType">
                             <option value=""></option>
                         </select>
 
-                        <input asp-for="@Model.IsOE" type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btncheck1">OE</label>
-
-                        <input asp-for="@Model.IsRe" type="checkbox" class="btn-check text-center" id="btncheck2" autocomplete="off">
-                        <label class="btn btn-outline-danger" for="btncheck2">RE</label>
-
                     </div>
+
 
                     <div class="input-group">
 
@@ -42,14 +46,22 @@
                         <span class="input-group-text">Item name</span>
                         <input type="text" class="form-control text-center" asp-for="@Model.selectedItemName">
 
+                        <span class="input-group-text">Item type</span>
+                        <input asp-for="@Model.IsOE" type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btncheck1">OE</label>
+
+                        <input asp-for="@Model.IsRe" type="checkbox" class="btn-check text-center" id="btncheck2" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="btncheck2">RE</label>
+
                     </div>
 
                 </div>
             </div>
+            </div>
 
         <div class="row justify-content-center">
 
-            <div class="col-xl-6">
+            <div class="col-xl-8">
                 <div class="input-daterange">
                 <div class="input-group">
                         

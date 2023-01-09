@@ -13,40 +13,27 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
-        public DataTable GetPrototypeProgressChart(DateTime From , DateTime To)
+        public DataTable GetPrototypeProgressChart(DateTime From , DateTime To, string EMR, string ITEM_ID, string ITEM_NAME, string TEST_TYPE)
         {
             try
             {
                 string FromFormat = From.ToString("yyyyMMdd");
                 string ToFormat = To.ToString("yyyyMMdd");
 
-                StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT ");
-                query.AppendLine("    PROD.PROTOTYPE_ID EMR_ID,");
-                query.AppendLine("    TO_DATE(EMR.REQ_YMD, 'YYYYMMDD') REQ_DATE,");
-                query.AppendLine("    EMR.REQ_QTY,");
-                query.AppendLine("    PROD.ITEM_ID, ");
-                query.AppendLine("    ITEM.ITEM_NAME, ");
-                query.AppendLine("    CASE");
-                query.AppendLine("    WHEN ITEM.XCHPF = 'X' THEN 'OE'");
-                query.AppendLine("    ELSE 'RE'");
-                query.AppendLine("    END OE,");
-                query.AppendLine("    COUNT(PROD.LOT_ID) TBM, ");
-                query.AppendLine("    COUNT(BAR.CURE_LOT_ID) CURE");
-                query.AppendLine("FROM TB_PR_M_PROD PROD");
-                query.AppendLine("JOIN TB_PL_M_TEST_REQ EMR ON EMR.PRD_REQ_NO=PROD.PROTOTYPE_ID");
-                query.AppendLine("JOIN TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID=PROD.ITEM_ID");
-                query.AppendLine("LEFT JOIN TB_IN_M_BARCODE_TRACE BAR on BAR.VMI_LOT_ID=PROD.LOT_ID AND BAR.CURE_LOT_ID IS NOT NULL");
-                query.AppendLine("WHERE EMR.REQ_YMD BETWEEN :fromDate AND :toDate");
-                query.AppendLine("AND PROD.USE_YN = 'Y'");
-                query.AppendLine("AND PROD.WC_ID = 'T'");
-                query.AppendLine("GROUP BY PROD.PROTOTYPE_ID,EMR.REQ_YMD,EMR.REQ_QTY, PROD.ITEM_ID,ITEM.ITEM_NAME, ITEM.XCHPF");
-                query.AppendLine("ORDER BY REQ_DATE");
+                DBOra db = new DBOra("SP_PL_REQ_PROTOTYPE_PROG");
 
-                DBOra db = new DBOra(query.ToString());
-                db.AddParameter("fromDate", FromFormat, OracleDbType.Varchar2);
-                db.AddParameter("toDate", ToFormat, OracleDbType.Varchar2);
-                return db.ExecTable();
+                db.AddParameter("AS_EMR", EMR, OracleDbType.Varchar2);
+                db.AddParameter("AS_ITEM_ID", ITEM_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_ITEM_NAME", ITEM_NAME, OracleDbType.Varchar2);
+                db.AddParameter("AS_FROM", FromFormat, OracleDbType.Varchar2);
+                db.AddParameter("AS_TO", ToFormat, OracleDbType.Varchar2);
+                db.AddParameter("AS_TEST_TYPE", TEST_TYPE, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                return db.ExecProcedure();
             }
             catch
             {
