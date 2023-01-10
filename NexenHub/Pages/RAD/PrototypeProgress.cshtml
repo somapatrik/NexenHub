@@ -2,6 +2,7 @@
 @model NexenHub.Pages.RAD.PrototypeProgressModel
 @{
 }
+
 <div class="container-fluid">
 
     <div class="row border-bottom border-2 p-3" style="background-color: #f7f7f7;">
@@ -84,12 +85,12 @@
 <div class="container-fluid bg-white">
     <div class="row">
 
-        <div class="col-9">
-            <canvas id="PrototypeChart" style="display: block; box-sizing: border-box; " />
+        <div class="col-8">
+            <canvas id="PrototypeChart"  />
         </div>
 
-        <div class="col-3">
-            @*<img src="https://media.tenor.com/QgzNRcWIqMIAAAAC/ryan-kakao.gif" class="img-fluid"/>*@
+        <div class="col-4">
+            <canvas id="EmrDetail"/>
         </div>
     </div>
 </div>
@@ -215,9 +216,65 @@
         }
     };
 
+    // Locations
 
-    function displayEMR(emr){
-        alert(emr);
+    var detailctx = document.getElementById("EmrDetail").getContext('2d');
+
+    var detailChart = new Chart(detailctx, {
+        type: 'doughnut',
+        data: {
+            labels: [],
+            datasets: [
+                {
+                    label: 'Warehouse',
+                    data: [],
+                    backgroundColor: [
+                        'rgb(255, 159, 64)',
+                        'rgb(75, 192, 192)',
+                            'rgb(255, 99, 132)',
+                            
+                            'rgb(255, 205, 86)',
+                            
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)',
+                            'rgb(201, 203, 207)'
+                        ],
+                        borderWidth:1
+                }
+            ]
+        },
+        options: {
+            maintainAspectRatio: true,
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true
+                    , position: 'left'
+                },
+                title: {
+                    display: true,
+                    text: 'Select EMR for details'
+                    }
+            }
+
+        }
+    });
+
+    var emrLocations = @Html.Raw(Model.formatLocations);
+    function displayEMR(emr) 
+    {
+        emrLocations.forEach(emrData => {
+            
+            if (emrData['EMR'] == emr)
+            {
+                detailChart.options.plugins.title.text = emrData['EMR'];
+                detailChart.data.labels = emrData["Labels"];
+                detailChart.data.datasets[0].data = emrData["Values"];
+                detailChart.update();
+                return;
+            }
+
+        });
     }
 
 </script>

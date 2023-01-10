@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using NexenHub.Class;
 using NexenHub.Models;
@@ -13,6 +14,38 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public DataTable GetEMRLocations(string EMR)
+        {
+            try 
+            { 
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT");
+                query.AppendLine("COUNT(LOC.WH_ID) CNT_LOC,");
+                query.AppendLine("LOC.WH_ID WH_ID");
+                //query.AppendLine(",LOC.LOC_DESC_1033 LOC_NAME");
+                query.AppendLine("FROM TB_IN_M_LOT LOT");
+                query.AppendLine("JOIN TB_PR_M_PROD PROD ON PROD.LOT_ID = LOT.LOT_ID");
+                query.AppendLine("JOIN TB_IN_M_LOC LOC ON LOC.LOC_ID = LOT.LOC_NO");
+                query.AppendLine("WHERE PROD.PROTOTYPE_ID = :emr");
+                query.AppendLine("AND PROD.USE_YN = 'Y'");
+                query.AppendLine("AND LOT.USE_YN = 'Y'");
+                query.AppendLine("AND PROD.WC_ID = 'T'");
+                query.AppendLine("GROUP BY LOC.WH_ID");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("emr", EMR, OracleDbType.Varchar2);
+
+                return db.ExecTable();
+
+            }
+            catch
+            {
+                return new DataTable();
+
+            }
+
+        }
         public DataTable GetPrototypeProgressChart(DateTime From , DateTime To, string EMR, string ITEM_ID, string ITEM_NAME, string TEST_TYPE)
         {
             try

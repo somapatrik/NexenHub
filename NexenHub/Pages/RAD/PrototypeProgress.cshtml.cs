@@ -58,6 +58,8 @@ namespace NexenHub.Pages.RAD
         [BindProperty]
         public string selectedItemName { get; set; }
 
+        public string formatLocations => JsonConvert.SerializeObject(Locations);
+        public List<LocationObject> Locations { get; set; }
 
         public void OnGet()
         {
@@ -71,6 +73,7 @@ namespace NexenHub.Pages.RAD
             GenerateChart();
         }
 
+        
         public List<SelectListItem> LoadTestTypes()
         {
             List<SelectListItem> Result = new List<SelectListItem>();
@@ -158,13 +161,41 @@ namespace NexenHub.Pages.RAD
                 }
             }
 
+            Locations = new List<LocationObject>();
+
             int j = 0;
             _EMR.ForEach(x =>
             {
                 _xLegend.Add(x + ";" + NewReqs[j]);
                 j++;
+
+                LocationObject locs = new LocationObject();
+                locs.EMR = x;
+                foreach(DataRow r in dbglob.GetEMRLocations(x).Rows) 
+                {
+                    locs.Values.Add(r["CNT_LOC"].ToString());
+                    locs.Labels.Add(r["WH_ID"].ToString());
+                }
+
+                Locations.Add(locs);
             });
             
         }
+
+        public class LocationObject
+        {
+            public string EMR { get; set; }
+            public List<string> Labels { get; set; }
+            public List<string> Values { get; set; }
+
+            public LocationObject()
+            {
+                EMR = "";
+                Labels = new List<string>();
+                Values = new List<string>();
+            }
+
+        }
+
     }
 }
