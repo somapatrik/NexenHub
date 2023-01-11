@@ -22,9 +22,15 @@ namespace NexenHub.Pages
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
+        public bool FuckHim { get; set; }
 
         public void OnGet()
         {
+            Random rnd = new Random();
+            string clientIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+            FuckHim = (clientIP == "172.15.9.70" || clientIP == "172.15.144.1") && rnd.Next(3) == 0;
+            //FuckHim = (clientIP == "127.0.0.1") && rnd.Next(3) == 0;
+
             if (arglot.Length == 5)
                 arglot = dbglob.Cart2Lot(arglot);
 

@@ -6,7 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NexenHub.Models
+namespace NexenHub.ViewModels
 {
     public class LotParentsViewModel
     {
@@ -14,6 +14,8 @@ namespace NexenHub.Models
 
         public List<NetworkNodeLink> Links { get; set; }
         public List<NetworkNode> Nodes { get; set; }
+
+        public List<NodeData> dbData { get; set; }
 
         public string FormatNodes => JsonConvert.SerializeObject(Nodes, Formatting.Indented);
 
@@ -32,17 +34,39 @@ namespace NexenHub.Models
         {
             Links = new List<NetworkNodeLink>();
             Nodes = new List<NetworkNode>();
+            dbData = new List<NodeData>();
 
-            // Get links
-            DataTable dt = database.GetAllParents(LOT);
+            // Get links do a list, datatable lacks options
+            DataTable dt = database.GetAllParentsExperiment(LOT);
             foreach (DataRow row in dt.Rows)
-                Links.Add(new NetworkNodeLink() { from = row["INPUT_LOT_ID"].ToString(), to = row["PROD_LOT_ID"].ToString() });
+                dbData.Add(new NodeData() 
+                { 
+                    INPUT_LOT = row["INPUT_LOT_ID"].ToString(), 
+                    INPUT_NAME = row["INPUT_NAME"].ToString(),
+                    PROD_LOT = row["PROD_LOT_ID"].ToString(),
+                    PROD_NAME = row["PROD_NAME"].ToString()
+                });
+            // Links.Add(new NetworkNodeLink() { from = row["INPUT_LOT_ID"].ToString(), to = row["PROD_LOT_ID"].ToString() });
 
-            // Get nodes
+
+            dbData.ForEach(d => Links.Add(new NetworkNodeLink() { from = d.INPUT_LOT, to = d.PROD_LOT }));
+                
+
+            // Join all distinct lots 
             var distinctFrom = Links.Select(x => x.from).Distinct().ToList();
             var distinctTo = Links.Select(x => x.to).Distinct().ToList();
             var distinct = distinctFrom.Union(distinctTo).ToList();
-            distinct.ForEach(n => Nodes.Add(new NetworkNode() { id = n, label = n, color = n == LOT ? "#ffc107" : "lightblue" }));
+
+            // Create all nodes
+            distinct.ForEach(n =>
+            { 
+
+                string itemName = dbData.Find(d=> d.INPUT_LOT == n)?.INPUT_NAME;
+                if (itemName == null)
+                    itemName = dbData.Find(d => d.PROD_LOT == n).PROD_NAME;
+
+                Nodes.Add(new NetworkNode() { id = n, label = itemName, color = n == LOT ? "#ffc107" : "lightblue" });
+            });
                 
         }
 
@@ -59,6 +83,14 @@ namespace NexenHub.Models
             public string from;
             public string to;
             public string arrows = "to";
+        }
+
+        public class NodeData
+        {
+            public string INPUT_LOT;
+            public string PROD_LOT;
+            public string INPUT_NAME;
+            public string PROD_NAME;
         }
 
     }

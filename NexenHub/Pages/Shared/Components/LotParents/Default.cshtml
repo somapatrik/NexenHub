@@ -1,4 +1,4 @@
-﻿@model NexenHub.Models.LotParentsViewModel
+﻿@model NexenHub.ViewModels.LotParentsViewModel
 @{
 
 }
@@ -7,7 +7,7 @@
 
 <script src="~/lib/vis/dist/vis-network.min.js"></script>
 
-<div id="mynetwork" style="width:100%;height:50vh;"></div>
+<div id="mynetwork" style="width:100%;height:70vh;"></div>
 
 <script type="text/javascript">
 
@@ -27,26 +27,15 @@
             hierarchical: {
                 direction: "UD",
                 sortMethod: "directed",
-                nodeSpacing: 175,
-                levelSeparation: 250,
-                parentCentralization: true
+                nodeSpacing: 270,
+                /*levelSeparation: 250,*/
+                parentCentralization: false
             },
         },
         interaction: { dragNodes: true },
         physics: {
-            enabled: false,
+            enabled: false
         }
-        /*,
-        configure: {
-            filter: function (option, path) {
-                if (path.indexOf("hierarchical") !== -1) {
-                    return true;
-                }
-                return false;
-            },
-            showButton: false,
-        }       
-        */
     };
 
     var network = new vis.Network(container, data, options);

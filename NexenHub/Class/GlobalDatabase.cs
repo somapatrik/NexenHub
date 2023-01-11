@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -255,6 +256,31 @@ namespace NexenHub.Class
 
 }
 
+        public DataTable GetDepartmentRelations()
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+
+                query.AppendLine("select DEPT.DEPT_ID,DEPT.DEPT_NAME, DEPT.UP_DEPT_ID, UPDEPT.DEPT_NAME UP_DEPT_NAME");
+                query.AppendLine("from TB_CM_M_MEMBER MBR");
+                query.AppendLine("join TB_CM_M_DEPT DEPT ON DEPT.DEPT_ID = MBR.DEPT_ID");
+                query.AppendLine("join TB_CM_M_DEPT UPDEPT ON UPDEPT.DEPT_ID = DEPT.UP_DEPT_ID");
+                query.AppendLine("GROUP BY DEPT.DEPT_ID,DEPT.DEPT_NAME, DEPT.UP_DEPT_ID, UPDEPT.DEPT_NAME,DEPT.SORT");
+                query.AppendLine("ORDER BY DEPT.SORT");
+
+
+                DBOra db = new DBOra(query.ToString());
+
+                DataTable dt = db.ExecTable();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetAllParents(string LOT)
         {
             try
@@ -266,6 +292,44 @@ namespace NexenHub.Class
                 query.AppendLine("START WITH PROD_LOT_ID = :lot");
                 query.AppendLine("GROUP BY PROD_LOT_ID,INPUT_LOT_ID,EVENT_TIME");
                 query.AppendLine("ORDER BY EVENT_TIME, PROD_LOT_ID");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("lot", LOT, OracleDbType.Varchar2);
+
+                DataTable dt = db.ExecTable();
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetAllParentsExperiment(string LOT)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT");
+                query.AppendLine("TRC.PROD_LOT_ID, ");
+                query.AppendLine("TRC.INPUT_LOT_ID, ");
+                query.AppendLine("TRC.EVENT_TIME,");
+                query.AppendLine("TRC.PROD_ITEM_ID, ");
+                query.AppendLine("TRC.INPUT_ITEM_ID, ");
+                query.AppendLine("TRIM(REPLACE(ITEMPROD.ITEM_NAME,'Compound','')) PROD_NAME,");
+                query.AppendLine("TRIM(REPLACE(ITEMINPUT.ITEM_NAME,'Compound','')) INPUT_NAME");
+
+
+                query.AppendLine("FROM(");
+                query.AppendLine("SELECT PROD_LOT_ID, INPUT_LOT_ID, to_date(EVENT_TIME, 'YYMMDDHH24MISS') EVENT_TIME, ITEM_ID PROD_ITEM_ID, CHILD_ITEM_ID INPUT_ITEM_ID");
+                query.AppendLine("FROM TB_IN_M_ITEM_TRACE TRC");
+                query.AppendLine("CONNECT BY PRIOR INPUT_LOT_ID = PROD_LOT_ID");
+                query.AppendLine("START WITH PROD_LOT_ID = :lot");
+                query.AppendLine("GROUP BY PROD_LOT_ID, INPUT_LOT_ID, EVENT_TIME, ITEM_ID, CHILD_ITEM_ID");
+                query.AppendLine("ORDER BY EVENT_TIME, PROD_LOT_ID");
+                query.AppendLine(") TRC");
+                query.AppendLine("LEFT JOIN TB_CM_M_ITEM ITEMINPUT ON ITEMINPUT.ITEM_ID = TRC.INPUT_ITEM_ID");
+                query.AppendLine("LEFT JOIN TB_CM_M_ITEM ITEMPROD ON ITEMPROD.ITEM_ID = TRC.PROD_ITEM_ID");
 
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("lot", LOT, OracleDbType.Varchar2);
