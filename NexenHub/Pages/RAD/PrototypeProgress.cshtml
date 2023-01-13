@@ -82,15 +82,54 @@
 </div>
 
 
-<div class="container-fluid bg-white">
-    <div class="row">
+<div class="container-fluid">
+    <div class="row g-3">
 
-        <div class="col-8">
+        <div class="col-9">
             <canvas id="PrototypeChart"  />
         </div>
 
-        <div class="col-4">
-            <canvas id="EmrDetail"/>
+        <div class="col-3">
+
+            <div class="row">
+                <div class="col">
+                    <table class="table table-hover">
+                        <tr>
+                            <th scope="row" colspan="2" class="text-center"><label id="emrDetailName" /></th>
+                        </tr>
+                        <tr>
+                            <th scope="row">Tire code</th>
+                            <td><label id="emrDetailTireCode" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Request text</th>
+                            <td><label id="emrDetailReqText" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Requested by</th>
+                            <td><label id="emrDetailReqMember" /></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Test chanel</th>
+                            <td><label id="emrDetailTestType" /></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col">
+                    <canvas id="EmrDetail"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <canvas id="EmrDefects"/>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -196,6 +235,7 @@
         }
     });
 
+    // OnClick
     document.getElementById("PrototypeChart").onclick = function(e) {
 
         // Anywhere click, only return index. Can´t make it work
@@ -212,12 +252,13 @@
             var label = prodmyChart.data.labels[firstPoint.index].split(';')[0];
             //var value = prodmyChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
             //let label = prodmyChart.scales['y'].getLabelForValue(firstPoint.index, firstPoint.datasetIndex);
+            displayEMRData(label);
             displayEMR(label);
+            displayEMRdefectChart(label);
         }
     };
 
     // Locations
-
     var detailctx = document.getElementById("EmrDetail").getContext('2d');
 
     var detailChart = new Chart(detailctx, {
@@ -228,17 +269,7 @@
                 {
                     label: 'Warehouse',
                     data: [],
-                    backgroundColor: [
-                        'rgb(255, 159, 64)',
-                        'rgb(75, 192, 192)',
-                            'rgb(255, 99, 132)',
-                            
-                            'rgb(255, 205, 86)',
-                            
-                            'rgb(54, 162, 235)',
-                            'rgb(153, 102, 255)',
-                            'rgb(201, 203, 207)'
-                        ],
+                    backgroundColor: charcolors,
                         borderWidth:1
                 }
             ]
@@ -260,17 +291,110 @@
         }
     });
 
+    // Defects
+    var defectsctx = document.getElementById("EmrDefects").getContext('2d');
+    var defectsChart = new Chart(defectsctx,{
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: []
+        },
+        options: {
+            maintainAspectRatio: true,
+            responsive: true,
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true,
+                    }
+             },
+            plugins: {
+                legend: {
+                    display: true
+                    , position: 'left'
+                },
+                title: {
+                    display: true,
+                    text: 'Defects'
+                    }
+            }
+
+        }});
+
     var emrLocations = @Html.Raw(Model.formatLocations);
+    var emrBasicData = @Html.Raw(Model.formatEMRdata);
+    var emrDefectCharts = @Html.Raw(Model.formatDefectCharts);
+
+    
+
+    function displayEMRData(emr)
+    {
+        
+        emrBasicData.forEach(emrData=>{
+            if (emrData["PRD_REQ_NO"] == emr){
+                document.getElementById('emrDetailName').innerText = emrData['PRD_REQ_NO'];
+                document.getElementById('emrDetailReqText').innerText = emrData['REQ_TEXT'];
+                document.getElementById('emrDetailReqMember').innerText = emrData['REQ_MEMBER'];
+                document.getElementById('emrDetailTireCode').innerText = emrData['TIRE_CODE'];
+                document.getElementById('emrDetailTestType').innerText = emrData['TEST_TYPE'];
+            }
+
+            return;
+        });
+    }
+
     function displayEMR(emr) 
     {
         emrLocations.forEach(emrData => {
             
             if (emrData['EMR'] == emr)
             {
-                detailChart.options.plugins.title.text = emrData['EMR'];
+                detailChart.options.plugins.title.text = 'Locations'; //emrData['EMR'] + ;
                 detailChart.data.labels = emrData["Labels"];
                 detailChart.data.datasets[0].data = emrData["Values"];
                 detailChart.update();
+
+                return;
+            }
+
+        });
+    }
+
+    function displayEMRdefectChart(emr)
+    {
+        // Remove old data
+        var del = defectsChart.data.datasets.length;
+        for (var i = 0; i <= del; i++) {
+            defectsChart.data.datasets.pop();
+        }
+
+        defectsChart.update();
+
+        emrDefectCharts.forEach(emrData =>{
+
+            if (emrData["EMR"] == emr){
+
+                // Labels
+                defectsChart.data.labels = emrData["Labels"];
+
+                var j = 0;
+                // Add new datasets
+                emrData.DataSets.forEach(ds => {
+                    const newDataset = {
+                        label: ds['Label'],
+                        data: ds['Data'],
+                        backgroundColor: charcolors[j]
+                    };
+
+                    j++;
+
+                    defectsChart.data.datasets.push(newDataset);
+                    defectsChart.update();
+                });
+
                 return;
             }
 

@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using NexenHub.Class;
+using NexenHub.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using static NexenHub.Pages.RAD.PrototypeProgressModel;
 
 namespace NexenHub.Pages.RAD
 {
@@ -59,7 +61,11 @@ namespace NexenHub.Pages.RAD
         public string selectedItemName { get; set; }
 
         public string formatLocations => JsonConvert.SerializeObject(Locations);
+        public string formatEMRdata => JsonConvert.SerializeObject(EMRS);
+        public string formatDefectCharts => JsonConvert.SerializeObject(defectCharts);
         public List<LocationObject> Locations { get; set; }
+        public List<EMR> EMRS { get; set; }
+        public List<DefectChart> defectCharts { get; set; }
 
         public void OnGet()
         {
@@ -73,7 +79,6 @@ namespace NexenHub.Pages.RAD
             GenerateChart();
         }
 
-        
         public List<SelectListItem> LoadTestTypes()
         {
             List<SelectListItem> Result = new List<SelectListItem>();
@@ -81,7 +86,7 @@ namespace NexenHub.Pages.RAD
             DBOra db = new DBOra("select distinct(TEST_TYPE) from TB_PL_M_TEST_REQ where TEST_TYPE is not null order by TEST_TYPE");
             foreach (DataRow r in db.ExecTable().Rows)
             {
-                Result.Add( new SelectListItem() {Value = r[0].ToString(), Text = r[0].ToString() });
+                Result.Add(new SelectListItem() { Value = r[0].ToString(), Text = r[0].ToString() });
             }
 
             return Result;
@@ -100,8 +105,8 @@ namespace NexenHub.Pages.RAD
             DateTime Now = DateTime.Now;
 
             // No dates
-            if (DateFrom == DateTime.MinValue && DateTo == DateTime.MinValue) 
-            { 
+            if (DateFrom == DateTime.MinValue && DateTo == DateTime.MinValue)
+            {
                 DateFrom = Now.AddDays(-7);
                 DateTo = Now;
             }
@@ -122,13 +127,13 @@ namespace NexenHub.Pages.RAD
 
             // Limit searcch
             if (DateTo > DateFrom.AddMonths(1))
-               DateFrom = DateTo.AddMonths(-1);
+                DateFrom = DateTo.AddMonths(-1);
 
         }
 
         private void GenerateChart()
         {
-            DataTable dt = dbglob.GetPrototypeProgressChart(DateFrom, DateTo,selectedEMR, selectedItemID, selectedItemName, SelectedTestType);
+            DataTable dt = dbglob.GetPrototypeProgressChart(DateFrom, DateTo, selectedEMR, selectedItemID, selectedItemName, SelectedTestType);
 
             foreach (DataRow r in dt.Rows)
             {
@@ -136,7 +141,7 @@ namespace NexenHub.Pages.RAD
                 bool dbOE = r["OE"].ToString() == "OE";
                 bool dbRE = r["OE"].ToString() == "RE";
 
-                if((IsOE && dbOE) || (IsRe && dbRE) || (!IsOE && !IsRe))
+                if ((IsOE && dbOE) || (IsRe && dbRE) || (!IsOE && !IsRe))
                 {
                     _ReqDates.Add(DateTime.Parse(r["REQ_DATE"].ToString()).ToString("dd.MM.yyyy"));
                     _EMR.Add(r["EMR_ID"].ToString());
@@ -149,9 +154,9 @@ namespace NexenHub.Pages.RAD
             // Show dates only on first different EMR
             List<string> NewReqs = new List<string>();
 
-            foreach(string reqdate in _ReqDates)
+            foreach (string reqdate in _ReqDates)
             {
-                if (!NewReqs.Contains(reqdate)) 
+                if (!NewReqs.Contains(reqdate))
                 {
                     //First position
                     List<string> found = _ReqDates.FindAll(x => x == reqdate).ToList();
@@ -162,24 +167,103 @@ namespace NexenHub.Pages.RAD
             }
 
             Locations = new List<LocationObject>();
+            EMRS = new List<EMR>();
+            defectCharts = new List<DefectChart>();
 
             int j = 0;
             _EMR.ForEach(x =>
             {
+                // Generate data for main chart
                 _xLegend.Add(x + ";" + NewReqs[j]);
                 j++;
 
+                // Generate location data
                 LocationObject locs = new LocationObject();
                 locs.EMR = x;
-                foreach(DataRow r in dbglob.GetEMRLocations(x).Rows) 
+                foreach (DataRow r in dbglob.GetEMRLocations(x).Rows)
                 {
                     locs.Values.Add(r["CNT_LOC"].ToString());
                     locs.Labels.Add(r["WH_ID"].ToString());
                 }
 
                 Locations.Add(locs);
+
+                // Generate EMR basic info
+                EMRS.Add(new EMR(x));
+
+                // Generate defect locations
+                DefectChart defectChart = new DefectChart(x);
+                DataTable dt = dbglob.GetEMRDefects(x);
+                foreach (DataRow r in dt.Rows)
+                {
+                    defectChart.AddLabel(r["BAD_ID"].ToString());
+                    //defectChart.AddDataSet(r["PROTOTYPE_BOM_VER"].ToString());
+                    //defectChart.AddValue(r["PROTOTYPE_BOM_VER"].ToString(), r["BAD_ID"].ToString(), r["CNT"].ToString());
+                }
+
+                foreach (DataRow r in dt.Rows)
+                {
+                    //defectChart.AddLabel(r["BAD_ID"].ToString());
+                    defectChart.AddDataSet(r["PROTOTYPE_BOM_VER"].ToString());
+                    defectChart.AddValue(r["PROTOTYPE_BOM_VER"].ToString(), r["BAD_ID"].ToString(), r["CNT"].ToString());
+                }
+
+                defectCharts.Add(defectChart);
             });
-            
+
+        }
+
+        public class DefectChart
+        {
+            public string EMR { get; set; }
+            public List<string> Labels { get; set; }
+            public List<ChartDataSet> DataSets { get; set; }
+
+            public DefectChart(string emr)
+            {
+                EMR = emr;
+                DataSets = new List<ChartDataSet>();
+                Labels = new List<string>();
+            }
+
+            public void AddLabel(string label)
+            {
+                if (!Labels.Contains(label))
+                    Labels.Add(label);
+            }
+
+            public void AddDataSet(string dsName)
+            {
+                if (DataSets.Find(x => x.Label == dsName) == null) 
+                {
+                    ChartDataSet dSet = new ChartDataSet() { Label = dsName };
+                    Labels.ForEach(x => dSet.Data.Add("NaN"));
+                    DataSets.Add(dSet);
+                }
+            }
+
+            public void AddValue(string dSet,string label, string value)
+            {
+                int i = Labels.FindIndex(l => l == label);
+                try
+                {
+                    DataSets.Find(d => d.Label == dSet).Data[i] = value;
+                }
+                catch { }
+            }
+
+        }
+
+        public class ChartDataSet
+        {
+            public string Label { get; set; }
+            public List<string> Data { get; set; }
+
+            public ChartDataSet()
+            {
+                Data = new List<string>();
+            }
+
         }
 
         public class LocationObject

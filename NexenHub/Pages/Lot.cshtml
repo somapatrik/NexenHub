@@ -33,6 +33,8 @@
 
 </script>
 
+@if (!Model.FuckHim)
+{
 
 <!-- Top bar -->
 <div class="container-fluid">
@@ -163,8 +165,7 @@
     @await Component.InvokeAsync("LotParents", Model.lotitem.LOT_ID)
 </div>
 
-@if (!Model.FuckHim)
-{
+
 
 <!-- Main content -->
 <div class="container-fluid">

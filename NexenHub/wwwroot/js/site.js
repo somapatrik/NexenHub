@@ -1,6 +1,6 @@
 ﻿
 
-const CHART_COLORS = {
+/*const CHART_COLORS = {
     red: 'rgb(255, 99, 132)',
     orange: 'rgb(255, 159, 64)',
     yellow: 'rgb(255, 205, 86)',
@@ -10,8 +10,19 @@ const CHART_COLORS = {
     grey: 'rgb(201, 203, 207)',
     primary: 'rgb(11,94,215)',
     warning: 'rgb(255,193,7)'
-};
+};*/
 
+const charcolors = [
+    'rgb(75, 192, 192)',
+    'rgb(54, 162, 235)',
+    'rgb(153, 102, 255)',
+    'rgb(201, 203, 207)',
+    'rgb(11,94,215)',
+    'rgb(255,193,7)',
+    'rgb(255, 99, 132)',
+    'rgb(255, 159, 64)',
+    'rgb(255, 205, 86)',
+];
 
 function searchMat(x, e)
 {

@@ -8,6 +8,7 @@ using NexenHub.Models;
 using NexenHub.Class;
 using NetBarcode;
 using System.Data;
+using System.Net;
 
 namespace NexenHub.Pages
 {
@@ -17,7 +18,7 @@ namespace NexenHub.Pages
         public string arglot { get; set; }
         public LotItem lotitem { get; set; }
         public Barcode lotBarcode { get; set; }
-
+        public string ip { get; set; }
         public List<LotItem> Parents { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
@@ -27,9 +28,15 @@ namespace NexenHub.Pages
         public void OnGet()
         {
             Random rnd = new Random();
-            string clientIP = HttpContext.Connection.RemoteIpAddress?.ToString();
-            FuckHim = (clientIP == "172.15.9.70" || clientIP == "172.15.144.1") && rnd.Next(3) == 0;
-            //FuckHim = (clientIP == "127.0.0.1") && rnd.Next(3) == 0;
+            //string clientIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+
+            string clientIP = "";
+            string header = (HttpContext.Request.Headers["CF-Connecting-IP"].FirstOrDefault() ?? HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault());
+            if (IPAddress.TryParse(header, out IPAddress ip)) {
+                clientIP = ip.ToString();
+                FuckHim = (clientIP == "172.15.9.70" || clientIP == "172.15.9.73") && rnd.Next(3) <= 1;
+            }
+
 
             if (arglot.Length == 5)
                 arglot = dbglob.Cart2Lot(arglot);

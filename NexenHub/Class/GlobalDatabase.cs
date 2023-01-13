@@ -16,6 +16,34 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public DataTable GetEMRDefects(string EMR)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT PROD.PROTOTYPE_ID,PROD.PROTOTYPE_BOM_VER, INSP.BAD_ID, COUNT(*) CNT");
+                query.AppendLine("FROM TB_QA_H_PROC_BAD_DETAIL INSP");
+                query.AppendLine("JOIN TB_PR_M_PROD PROD ON PROD.BARCODE_NO = INSP.BARCODE_NO");
+                query.AppendLine("WHERE PROD.PROTOTYPE_ID LIKE :emr");
+                query.AppendLine("AND PROD.WC_ID IN('T', 'U')");
+                query.AppendLine("AND PROD.USE_YN = 'Y'");
+                query.AppendLine("AND INSP.BAD_ID is not null");
+                query.AppendLine("GROUP BY PROD.PROTOTYPE_ID, PROD.PROTOTYPE_BOM_VER, INSP.BAD_ID");
+                query.AppendLine("ORDER BY PROD.PROTOTYPE_BOM_VER");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("emr", EMR, OracleDbType.Varchar2);
+
+                return db.ExecTable();
+
+            }
+            catch
+            {
+                return new DataTable();
+
+            }
+        }
+
         public DataTable GetEMRLocations(string EMR)
         {
             try 
@@ -47,6 +75,7 @@ namespace NexenHub.Class
             }
 
         }
+  
         public DataTable GetPrototypeProgressChart(DateTime From , DateTime To, string EMR, string ITEM_ID, string ITEM_NAME, string TEST_TYPE)
         {
             try
