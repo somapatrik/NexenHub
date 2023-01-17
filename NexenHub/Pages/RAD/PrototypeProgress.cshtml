@@ -5,8 +5,8 @@
 
 <div class="container-fluid">
 
-    <div class="row border-2 p-3 pb-0" >
-        <div class="row mb-3">
+    <div class="row border-2 p-2 pb-0" >
+        <div class="row mb-2">
             <div class="col">
                 <h4>Prototype progress</h4>
             </div>
@@ -20,9 +20,9 @@
 
 
 <div class="container-fluid">
-    <div class="row g-3">
+    <div class="row g-1">
 
-        <div class="col-2">
+        <div class="col-md-3 col-xl-2">
             <div class="card">
                 <div class="card-body">
             <div class="row my-1">
@@ -88,7 +88,7 @@
             </div>
         </div>
 
-        <div class="col-7">
+        <div class="col-md-9 col-xl-7">
             <div class="card">
                 <div class="card-body">
                 <canvas id="PrototypeChart"  />
@@ -96,31 +96,35 @@
             </div>
         </div>
 
-        <div class="col-3">
+        <div class="col-xl-3">
 
-            <div class="row mb-3">
+            <div class="row mb-1">
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
                     
                     <table class="table table-hover">
                         <tr>
-                            <th scope="row" colspan="2" class="text-center"><label id="emrDetailName" /></th>
+                            <th scope="row" colspan="2" class="text-center">
+                                <label id="emrDetailName">
+                                    Select EMR
+                                </label>
+                            </th>
                         </tr>
                         <tr>
                             <th scope="row">Tire code</th>
                             <td><label id="emrDetailTireCode" /></td>
                         </tr>
                         <tr>
-                            <th scope="row">Request text</th>
+                            <th scope="row">Text</th>
                             <td><label id="emrDetailReqText" /></td>
                         </tr>
                         <tr>
-                            <th scope="row">Requested by</th>
+                            <th scope="row">Requested</th>
                             <td><label id="emrDetailReqMember" /></td>
                         </tr>
                         <tr>
-                            <th scope="row">Test chanel</th>
+                            <th scope="row">Test channel</th>
                             <td><label id="emrDetailTestType" /></td>
                         </tr>
                     </table>
@@ -129,14 +133,13 @@
                 </div>
             </div>
 
-
-            <div class="row mb-3">
+            <div class="row mb-1">
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                    <canvas id="EmrDetail"/>
+                            <canvas id="EmrDetail"/>
                         </div>
-                        </div>
+                     </div>
                 </div>
             </div>
 
@@ -144,8 +147,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-body">
-                    <canvas id="EmrDefects"/>
-
+                            <canvas id="EmrDefects"/>
                         </div>
                     </div>
                 </div>
@@ -281,14 +283,13 @@
 
     // Locations
     var detailctx = document.getElementById("EmrDetail").getContext('2d');
-
     var detailChart = new Chart(detailctx, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
             labels: [],
             datasets: [
                 {
-                    label: 'Warehouse',
+                    label: [],
                     data: [],
                     backgroundColor: charcolors,
                         borderWidth:1
@@ -296,16 +297,17 @@
             ]
         },
         options: {
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             responsive: true,
+            indexAxis: 'y',
             plugins: {
                 legend: {
-                    display: true
-                    , position: 'left'
+                    display: false,
+                    position: 'left'
                 },
                 title: {
-                    display: true,
-                    text: 'Select EMR for details'
+                    display: false,
+                    text: ''
                     }
             }
 
@@ -335,11 +337,11 @@
             plugins: {
                 legend: {
                     display: true
-                    , position: 'left'
+                    , position: 'top'
                 },
                 title: {
-                    display: true,
-                    text: 'Defects'
+                    display: false,
+                    text: ''
                     }
             }
 
@@ -349,7 +351,6 @@
     var emrBasicData = @Html.Raw(Model.formatEMRdata);
     var emrDefectCharts = @Html.Raw(Model.formatDefectCharts);
 
-    
 
     function displayEMRData(emr)
     {
@@ -373,7 +374,7 @@
             
             if (emrData['EMR'] == emr)
             {
-                detailChart.options.plugins.title.text = 'Locations'; //emrData['EMR'] + ;
+                detailChart.options.plugins.title.text = emrData['EMR'] + ' locations';
                 detailChart.data.labels = emrData["Labels"];
                 detailChart.data.datasets[0].data = emrData["Values"];
                 detailChart.update();
@@ -397,6 +398,9 @@
         emrDefectCharts.forEach(emrData =>{
 
             if (emrData["EMR"] == emr){
+
+                // Title
+                defectsChart.options.plugins.title.text = emrData['EMR'] + ' defects';
 
                 // Labels
                 defectsChart.data.labels = emrData["Labels"];

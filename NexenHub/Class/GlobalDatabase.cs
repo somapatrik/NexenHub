@@ -49,18 +49,20 @@ namespace NexenHub.Class
             try 
             { 
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT");
-                query.AppendLine("COUNT(LOC.WH_ID) CNT_LOC,");
-                query.AppendLine("LOC.WH_ID WH_ID");
-                //query.AppendLine(",LOC.LOC_DESC_1033 LOC_NAME");
+                query.AppendLine("SELECT WHLOC WH_ID, COUNT(WHLOC) CNT_LOC");
+                query.AppendLine("FROM(");
+                query.AppendLine("SELECT FN_IN_GET_LAST_LOCATION('P500', PROD.BARCODE_NO) AS WHLOC");
                 query.AppendLine("FROM TB_IN_M_LOT LOT");
                 query.AppendLine("JOIN TB_PR_M_PROD PROD ON PROD.LOT_ID = LOT.LOT_ID");
                 query.AppendLine("JOIN TB_IN_M_LOC LOC ON LOC.LOC_ID = LOT.LOC_NO");
-                query.AppendLine("WHERE PROD.PROTOTYPE_ID = :emr");
+                query.AppendLine("WHERE PROD.PROTOTYPE_ID = :EMR");
                 query.AppendLine("AND PROD.USE_YN = 'Y'");
                 query.AppendLine("AND LOT.USE_YN = 'Y'");
-                query.AppendLine("AND PROD.WC_ID = 'T'");
-                query.AppendLine("GROUP BY LOC.WH_ID");
+                query.AppendLine("AND PROD.WC_ID in ('T', 'U')");
+                query.AppendLine(")");
+                query.AppendLine("WHERE WHLOC IS NOT NULL");
+                query.AppendLine("GROUP BY WHLOC");
+                query.AppendLine("ORDER BY WHLOC");
 
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("emr", EMR, OracleDbType.Varchar2);
