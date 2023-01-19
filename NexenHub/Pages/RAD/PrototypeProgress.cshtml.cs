@@ -105,7 +105,7 @@ namespace NexenHub.Pages.RAD
             if (DateFrom == DateTime.MinValue && DateTo == DateTime.MinValue)
             {
                 DateFrom = Now.AddDays(-7);
-                DateTo = Now;
+                DateTo = Now.AddDays(7);
             }
 
             // Only From
@@ -122,9 +122,9 @@ namespace NexenHub.Pages.RAD
                 DateFrom = temp;
             }
 
-            // Limit searcch
+            // Limit search
             if (DateTo > DateFrom.AddMonths(1))
-                DateFrom = DateTo.AddMonths(-1);
+                DateTo = DateFrom.AddMonths(1);
 
         }
 
@@ -156,10 +156,8 @@ namespace NexenHub.Pages.RAD
                 if (!NewReqs.Contains(reqdate))
                 {
                     //First position
-                    //List<string> found = _ReqDates.FindAll(x => x == reqdate).ToList();
                     int found = _ReqDates.Count(x => x == reqdate);
                     NewReqs.Add(reqdate);
-                    //for (int i = 1; i <= found.Count - 1; i++)
                     for (int i = 1; i <= found; i++)
                         NewReqs.Add("");
                 }
