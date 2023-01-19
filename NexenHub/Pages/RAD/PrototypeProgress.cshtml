@@ -5,154 +5,143 @@
 
 <div class="container-fluid">
 
-    <div class="row border-2 p-2 pb-0" >
-        <div class="row mb-2">
-            <div class="col">
+    <form method="post">
+
+        <div class="row my-2">
+            <div class="col-auto">
                 <h4>Prototype progress</h4>
             </div>
-            <div class="col text-end">
-                
-            </div>
-        </div>
 
-    </div>
+            <div class="col">
+                <div class="collapse" id="collapseFilters">
+                <div class="input-group">
+                    <div class="input-group-text">EMR</div>
+                    <input type="text" class="form-control text-center text-uppercase" asp-for="@Model.selectedEMR">
+
+                    <div class="input-group-text">Test type</div>
+                    <select class="form-control" asp-items="@Model.TestTypes" asp-for="@Model.SelectedTestType">
+                        <option value=""></option>
+                    </select>
+
+                    <div class="input-group-text">Item ID</div>
+                    <input type="text" class="form-control text-center" asp-for="@Model.selectedItemID">
+
+                    <div class="input-group-text">Item name</div>
+                    <input type="text" class="form-control text-center" asp-for="@Model.selectedItemName">
+
+                    <input asp-for="@Model.IsOE" type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btncheck1">OE</label>
+
+                    <input asp-for="@Model.IsRe" type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+                    <label class="btn btn-outline-danger " for="btncheck2">RE</label>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-lg-1">
+                <a class="btn btn-outline-primary form-control flex-shrink-1" data-bs-toggle="collapse" href="#collapseFilters" role="button">
+                    More filters
+                </a>
+            </div>
+
+        </div>
+        
+            <div class="row mb-1 justify-content-center">
+
+                <div class="col-xl-6">
+
+                <div class="input-daterange">
+
+                    <div class="input-group">
+                        <div class="input-group-text">From</div>
+                        <input id="inputFrom" type="text" class="form-control" asp-for="DateFrom">
+                        <div class="input-group-text">To</div>
+                        <input id="inputTo" type="text" class="form-control" asp-for="DateTo">
+                        <button class="btn btn-primary form-control" asp-page-handler="Generate">Search</button>
+                        
+                    </div>
+
+                </div>
+
+            </div>
+
+            </div>
+    </form>
+
 </div>
 
 
 <div class="container-fluid">
     <div class="row g-1">
 
-        <div class="col-md-3 col-xl-2">
-            <div class="card">
-                <div class="card-body">
-            <div class="row my-1">
-                <div class="col text-end">
-                    <a class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" href="#collapseFilters" role="button">
-                        More filters
-                    </a>
-                </div>
-            </div>
-
-            <form method="post">
-            <div class="collapse" id="collapseFilters">
+        <div class="col-xl-9">
             <div class="row">
                 <div class="col">
-
-                        <div class="form-label">EMR</div>
-                        <input type="text" class="form-control text-center text-uppercase" asp-for="@Model.selectedEMR">
-
-                        <div class="form-label">Test type</div>
-                        <select class="form-control" asp-items="@Model.TestTypes" asp-for="@Model.SelectedTestType">
-                            <option value=""></option>
-                        </select>
-
-                        <div class="form-label">Item ID</div>
-                        <input type="text" class="form-control text-center" asp-for="@Model.selectedItemID">
-
-                        <div class="form-label">Item name</div>
-                        <input type="text" class="form-control text-center" asp-for="@Model.selectedItemName">
-                        
-                        <div class="mt-3 d-flex">
-
-                            <input asp-for="@Model.IsOE" type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-                            <label class="btn btn-outline-primary flex-grow-1 m-1" for="btncheck1">OE</label>
-
-                            <input asp-for="@Model.IsRe" type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-                                <label class="btn btn-outline-danger flex-grow-1 m-1" for="btncheck2">RE</label>
-
-                        </div>
-
+                    <div class="card">
+                        <div class="card-body">
+                            <canvas id="PrototypeChart"  />
+                       </div>
+                    </div>
                 </div>
             </div>
-            </div>
 
-            <div class="row">
-                <div class="col">
 
-                <div class="input-daterange">
-                
-                        <div class="form-label">From</div>
-                        <input id="inputFrom" type="text" class="form-control" asp-for="DateFrom">
-
-                        <div class="form-label">To</div>
-                        <input id="inputTo" type="text" class="form-control" asp-for="DateTo">
-
-                        <button class="w-100 btn btn-primary mt-3" asp-page-handler="Generate">Search</button>
-
-                </div>
-
-                </div>
-            </div>
-            </form>
-            </div>
-            </div>
-        </div>
-
-        <div class="col-md-9 col-xl-7">
-            <div class="card">
-                <div class="card-body">
-                <canvas id="PrototypeChart"  />
-                </div>
-            </div>
         </div>
 
         <div class="col-xl-3">
 
-            <div class="row mb-1">
+            <div class="row">
+
                 <div class="col">
-                    <div class="card">
+
+                    <div class="card mb-1">
                         <div class="card-body">
                     
-                    <table class="table table-hover">
-                        <tr>
-                            <th scope="row" colspan="2" class="text-center">
-                                <label id="emrDetailName">
-                                    Select EMR
-                                </label>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th scope="row">Tire code</th>
-                            <td><label id="emrDetailTireCode" /></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Text</th>
-                            <td><label id="emrDetailReqText" /></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Requested</th>
-                            <td><label id="emrDetailReqMember" /></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Test channel</th>
-                            <td><label id="emrDetailTestType" /></td>
-                        </tr>
-                    </table>
+                            <table class="table table-hover">
+                                <tr>
+                                    <th scope="row" colspan="2" class="text-center">
+                                        <label id="emrDetailName">
+                                            Select EMR
+                                        </label>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Tire code</th>
+                                    <td><label id="emrDetailTireCode" /></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Text</th>
+                                    <td><label id="emrDetailReqText" /></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Requested</th>
+                                    <td><label id="emrDetailReqMember" /></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Test channel</th>
+                                    <td><label id="emrDetailTestType" /></td>
+                                </tr>
+                            </table>
+
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="row mb-1">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <canvas id="EmrDetail"/>
-                        </div>
-                     </div>
-                </div>
-            </div>
+                    <div class="card mb-1">
 
-            <div class="row">
-                <div class="col">
-                    <div class="card">
                         <div class="card-body">
-                            <canvas id="EmrDefects"/>
+                            <canvas id="EmrDetail" />
                         </div>
                     </div>
-                </div>
-            </div>
 
+                    <div class="card mb-1">
+                        <div class="card-body">
+                            <canvas id="EmrDefects" />
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
     </div>
 </div>
@@ -166,9 +155,7 @@
         maxViewMode: 1,
         calendarWeeks: true,
         todayHighlight: true,
-        format: 'yyyy-mm-dd',
-        endDate: '+0d'
-
+        format: 'yyyy-mm-dd'
     });
     
     var prodctx = document.getElementById("PrototypeChart").getContext('2d');
@@ -217,6 +204,7 @@
                     stacked: true,
                     grid: {},
                     ticks: {
+                        autoSkip: false,
                         callback: function(label) {
                             let realLabel = this.getLabelForValue(label);
                             return realLabel.split(";")[0];
@@ -258,26 +246,22 @@
         }
     });
 
-    // OnClick
-    document.getElementById("PrototypeChart").onclick = function(e) {
+    // BarClick
+    document.getElementById("PrototypeChart").onclick = async function(e) {
 
-        // Anywhere click, only return index. Can´t make it work
-        //const canvasPosition = Chart.helpers.getRelativePosition(e, prodmyChart);
-        //const datay = prodmyChart.scales.y.getValueForPixel(canvasPosition.y);
-        //console.log("dataY: " + datay);
-
-        // Bar click - returns EMR
         let points = prodmyChart.getElementsAtEventForMode(e, 'nearest', { intersect: true, axis: 'y' });
 
         if (points.length) 
         {
             const firstPoint = points[0];
             var label = prodmyChart.data.labels[firstPoint.index].split(';')[0];
-            //var value = prodmyChart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
-            //let label = prodmyChart.scales['y'].getLabelForValue(firstPoint.index, firstPoint.datasetIndex);
+
+           // await (()=> ResetCharts());
+
             displayEMRData(label);
-            displayEMR(label);
-            displayEMRdefectChart(label);
+            
+            await GetEmrLocation(label);
+            await GetEmrVerDefects(label);
         }
     };
 
@@ -347,9 +331,7 @@
 
         }});
 
-    var emrLocations = @Html.Raw(Model.formatLocations);
     var emrBasicData = @Html.Raw(Model.formatEMRdata);
-    var emrDefectCharts = @Html.Raw(Model.formatDefectCharts);
 
 
     function displayEMRData(emr)
@@ -368,23 +350,6 @@
         });
     }
 
-    function displayEMR(emr) 
-    {
-        emrLocations.forEach(emrData => {
-            
-            if (emrData['EMR'] == emr)
-            {
-                detailChart.options.plugins.title.text = emrData['EMR'] + ' locations';
-                detailChart.data.labels = emrData["Labels"];
-                detailChart.data.datasets[0].data = emrData["Values"];
-                detailChart.update();
-
-                return;
-            }
-
-        });
-    }
-
     function displayEMRdefectChart(emr)
     {
         // Remove old data
@@ -393,37 +358,67 @@
             defectsChart.data.datasets.pop();
         }
 
+        // Remove old labels
+        defectsChart.data.labels = [];
         defectsChart.update();
 
-        emrDefectCharts.forEach(emrData =>{
 
-            if (emrData["EMR"] == emr){
+        // Labels
+        defectsChart.data.labels = emr["Labels"];
 
-                // Title
-                defectsChart.options.plugins.title.text = emrData['EMR'] + ' defects';
+        var j = 0;
+        // Add new datasets
+        emr.DataSets.forEach(ds => {
+            const newDataset = {
+                label: ds['Label'],
+                data: ds['Data'],
+                backgroundColor: charcolors[j]
+            };
 
-                // Labels
-                defectsChart.data.labels = emrData["Labels"];
+            j++;
 
-                var j = 0;
-                // Add new datasets
-                emrData.DataSets.forEach(ds => {
-                    const newDataset = {
-                        label: ds['Label'],
-                        data: ds['Data'],
-                        backgroundColor: charcolors[j]
-                    };
-
-                    j++;
-
-                    defectsChart.data.datasets.push(newDataset);
-                    defectsChart.update();
-                });
-
-                return;
-            }
-
+            defectsChart.data.datasets.push(newDataset);
+            defectsChart.update();
         });
+
+
     }
+
+    async function GetEmrVerDefects(emr){
+        
+        await fetch(window.location.origin + '/API/rad/EmrVerDefects/' + emr)
+            .then(response => response.json())
+            .then(data => displayEMRdefectChart(data));
+    }
+
+    // Emr locations
+    async function GetEmrLocation(emr) 
+    {
+        await fetch( window.location.origin +'/API/rad/EmrLocation/' + emr)
+                .then(response => response.json())
+            .then(data => displayEMRLocation(data));
+    }
+
+    function displayEMRLocation(emrLocation) 
+    {
+        detailChart.data.labels = emrLocation["Labels"];
+        detailChart.data.datasets[0].data = emrLocation["Values"];
+        detailChart.update();
+    }
+
+    function ResetCharts()
+    {
+        // Remove old data
+        //var del = detailChart.data.datasets.length;
+        //for (var i = 0; i <= del; i++) {
+            detailChart.data.datasets.pop();
+        //}
+
+        // Remove old labels
+        detailChart.data.labels = [];
+        detailChart.update();
+    }
+
+
 
 </script>

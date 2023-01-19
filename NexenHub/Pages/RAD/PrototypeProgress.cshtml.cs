@@ -60,12 +60,9 @@ namespace NexenHub.Pages.RAD
         [BindProperty]
         public string selectedItemName { get; set; }
 
-        public string formatLocations => JsonConvert.SerializeObject(Locations);
+
         public string formatEMRdata => JsonConvert.SerializeObject(EMRS);
-        public string formatDefectCharts => JsonConvert.SerializeObject(defectCharts);
-        public List<LocationObject> Locations { get; set; }
         public List<EMR> EMRS { get; set; }
-        public List<DefectChart> defectCharts { get; set; }
 
         public void OnGet()
         {
@@ -159,127 +156,31 @@ namespace NexenHub.Pages.RAD
                 if (!NewReqs.Contains(reqdate))
                 {
                     //First position
-                    List<string> found = _ReqDates.FindAll(x => x == reqdate).ToList();
+                    //List<string> found = _ReqDates.FindAll(x => x == reqdate).ToList();
+                    int found = _ReqDates.Count(x => x == reqdate);
                     NewReqs.Add(reqdate);
-                    for (int i = 1; i <= found.Count - 1; i++)
+                    //for (int i = 1; i <= found.Count - 1; i++)
+                    for (int i = 1; i <= found; i++)
                         NewReqs.Add("");
                 }
             }
 
-            Locations = new List<LocationObject>();
             EMRS = new List<EMR>();
-            defectCharts = new List<DefectChart>();
 
             int j = 0;
+
             _EMR.ForEach(x =>
             {
                 // Generate data for main chart
                 _xLegend.Add(x + ";" + NewReqs[j]);
                 j++;
 
-                // Generate location data
-                LocationObject locs = new LocationObject();
-                locs.EMR = x;
-                foreach (DataRow r in dbglob.GetEMRLocations(x).Rows)
-                {
-                    locs.Values.Add(r["CNT_LOC"].ToString());
-                    locs.Labels.Add(r["WH_ID"].ToString());
-                }
-
-                Locations.Add(locs);
-
                 // Generate EMR basic info
                 EMRS.Add(new EMR(x));
-
-                // Generate defect locations
-                DefectChart defectChart = new DefectChart(x);
-                DataTable dt = dbglob.GetEMRDefects(x);
-                foreach (DataRow r in dt.Rows)
-                {
-                    defectChart.AddLabel(r["BAD_ID"].ToString());
-                    //defectChart.AddDataSet(r["PROTOTYPE_BOM_VER"].ToString());
-                    //defectChart.AddValue(r["PROTOTYPE_BOM_VER"].ToString(), r["BAD_ID"].ToString(), r["CNT"].ToString());
-                }
-
-                foreach (DataRow r in dt.Rows)
-                {
-                    //defectChart.AddLabel(r["BAD_ID"].ToString());
-                    defectChart.AddDataSet(r["PROTOTYPE_BOM_VER"].ToString());
-                    defectChart.AddValue(r["PROTOTYPE_BOM_VER"].ToString(), r["BAD_ID"].ToString(), r["CNT"].ToString());
-                }
-
-                defectCharts.Add(defectChart);
             });
 
         }
 
-        public class DefectChart
-        {
-            public string EMR { get; set; }
-            public List<string> Labels { get; set; }
-            public List<ChartDataSet> DataSets { get; set; }
-
-            public DefectChart(string emr)
-            {
-                EMR = emr;
-                DataSets = new List<ChartDataSet>();
-                Labels = new List<string>();
-            }
-
-            public void AddLabel(string label)
-            {
-                if (!Labels.Contains(label))
-                    Labels.Add(label);
-            }
-
-            public void AddDataSet(string dsName)
-            {
-                if (DataSets.Find(x => x.Label == dsName) == null) 
-                {
-                    ChartDataSet dSet = new ChartDataSet() { Label = dsName };
-                    Labels.ForEach(x => dSet.Data.Add("NaN"));
-                    DataSets.Add(dSet);
-                }
-            }
-
-            public void AddValue(string dSet,string label, string value)
-            {
-                int i = Labels.FindIndex(l => l == label);
-                try
-                {
-                    DataSets.Find(d => d.Label == dSet).Data[i] = value;
-                }
-                catch { }
-            }
-
-        }
-
-        public class ChartDataSet
-        {
-            public string Label { get; set; }
-            public List<string> Data { get; set; }
-
-            public ChartDataSet()
-            {
-                Data = new List<string>();
-            }
-
-        }
-
-        public class LocationObject
-        {
-            public string EMR { get; set; }
-            public List<string> Labels { get; set; }
-            public List<string> Values { get; set; }
-
-            public LocationObject()
-            {
-                EMR = "";
-                Labels = new List<string>();
-                Values = new List<string>();
-            }
-
-        }
-
+        
     }
 }

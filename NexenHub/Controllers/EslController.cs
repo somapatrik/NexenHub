@@ -11,28 +11,28 @@ namespace NexenHub.Controllers
     [ApiController]
     public class EslController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Esl>> Get(string id)
-        {
-            Esl epaper = new Esl();
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Esl>> Get(string id)
+        //{
+        //    Esl epaper = new Esl();
 
-            if (id.Length == 5 || id.Length ==15)
-            {
-                await Task.Run(() =>
-                {
-                    if (id.Length == 5)
-                        epaper.CART_ID = id;
-                    else if (id.Length == 15)
-                        epaper.LOT_ID = id;
-                });
+        //    if (id.Length == 5 || id.Length ==15)
+        //    {
+        //        await Task.Run(() =>
+        //        {
+        //            if (id.Length == 5)
+        //                epaper.CART_ID = id;
+        //            else if (id.Length == 15)
+        //                epaper.LOT_ID = id;
+        //        });
 
-                return epaper;
-            }
-            else
-            {
-                return BadRequest();
-            }
+        //        return epaper;
+        //    }
+        //    else
+        //    {
+        //        return BadRequest();
+        //    }
 
-        }
+        //}
     }
 }

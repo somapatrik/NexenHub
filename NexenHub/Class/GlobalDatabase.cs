@@ -24,7 +24,7 @@ namespace NexenHub.Class
                 query.AppendLine("SELECT PROD.PROTOTYPE_ID,PROD.PROTOTYPE_BOM_VER, INSP.BAD_ID, COUNT(*) CNT");
                 query.AppendLine("FROM TB_QA_H_PROC_BAD_DETAIL INSP");
                 query.AppendLine("JOIN TB_PR_M_PROD PROD ON PROD.BARCODE_NO = INSP.BARCODE_NO");
-                query.AppendLine("WHERE PROD.PROTOTYPE_ID LIKE :emr");
+                query.AppendLine("WHERE PROD.PROTOTYPE_ID = :emr");
                 query.AppendLine("AND PROD.WC_ID IN('T', 'U')");
                 query.AppendLine("AND PROD.USE_YN = 'Y'");
                 query.AppendLine("AND INSP.BAD_ID is not null");
@@ -49,23 +49,39 @@ namespace NexenHub.Class
             try 
             { 
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT WHLOC WH_ID, COUNT(WHLOC) CNT_LOC");
+                query.AppendLine("SELECT ");
+                query.AppendLine("    WHLOC WH_ID, ");
+                query.AppendLine("    COUNT(WHLOC) CNT_LOC");
                 query.AppendLine("FROM(");
-                query.AppendLine("SELECT FN_IN_GET_LAST_LOCATION('P500', PROD.BARCODE_NO) AS WHLOC");
-                query.AppendLine("FROM TB_IN_M_LOT LOT");
-                query.AppendLine("JOIN TB_PR_M_PROD PROD ON PROD.LOT_ID = LOT.LOT_ID");
-                query.AppendLine("JOIN TB_IN_M_LOC LOC ON LOC.LOC_ID = LOT.LOC_NO");
-                query.AppendLine("WHERE PROD.PROTOTYPE_ID = :EMR");
-                query.AppendLine("AND PROD.USE_YN = 'Y'");
-                query.AppendLine("AND LOT.USE_YN = 'Y'");
-                query.AppendLine("AND PROD.WC_ID in ('T', 'U')");
+                query.AppendLine("    SELECT ");
+                query.AppendLine("        FN_IN_GET_LAST_LOCATION('P500', PROD.BARCODE_NO) AS WHLOC");
+                query.AppendLine("    FROM TB_PR_M_PROD PROD");
+                query.AppendLine("    WHERE PROD.PROTOTYPE_ID = :EMR");
+                query.AppendLine("    AND PROD.USE_YN = 'Y'");
+                query.AppendLine("    AND PROD.WC_ID in ('T','U')");
                 query.AppendLine(")");
                 query.AppendLine("WHERE WHLOC IS NOT NULL");
                 query.AppendLine("GROUP BY WHLOC");
                 query.AppendLine("ORDER BY WHLOC");
 
+
+                //query.AppendLine("SELECT WHLOC WH_ID, COUNT(WHLOC) CNT_LOC");
+                //query.AppendLine("FROM(");
+                //query.AppendLine("SELECT FN_IN_GET_LAST_LOCATION('P500', PROD.BARCODE_NO) AS WHLOC");
+                //query.AppendLine("FROM TB_IN_M_LOT LOT");
+                //query.AppendLine("JOIN TB_PR_M_PROD PROD ON PROD.LOT_ID = LOT.LOT_ID");
+                //query.AppendLine("JOIN TB_IN_M_LOC LOC ON LOC.LOC_ID = LOT.LOC_NO");
+                //query.AppendLine("WHERE PROD.PROTOTYPE_ID = :EMR");
+                //query.AppendLine("AND PROD.USE_YN = 'Y'");
+                //query.AppendLine("AND LOT.USE_YN = 'Y'");
+                //query.AppendLine("AND PROD.WC_ID in ('T', 'U')");
+                //query.AppendLine(")");
+                //query.AppendLine("WHERE WHLOC IS NOT NULL");
+                //query.AppendLine("GROUP BY WHLOC");
+                //query.AppendLine("ORDER BY WHLOC");
+
                 DBOra db = new DBOra(query.ToString());
-                db.AddParameter("emr", EMR, OracleDbType.Varchar2);
+                db.AddParameter("EMR", EMR, OracleDbType.Varchar2);
 
                 return db.ExecTable();
 
@@ -85,6 +101,7 @@ namespace NexenHub.Class
                 string FromFormat = From.ToString("yyyyMMdd");
                 string ToFormat = To.ToString("yyyyMMdd");
 
+               // DBOra db = new DBOra(query.ToString());
                 DBOra db = new DBOra("SP_PL_REQ_PROTOTYPE_PROG");
 
                 db.AddParameter("AS_EMR", EMR, OracleDbType.Varchar2);
