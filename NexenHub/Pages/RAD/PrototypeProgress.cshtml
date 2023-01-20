@@ -107,19 +107,26 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">Tire code</th>
-                                    <td><label id="emrDetailTireCode" /></td>
+                                    <td class="text-end"><label id="emrDetailTireCode" /></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Text</th>
-                                    <td><label id="emrDetailReqText" /></td>
+                                    <td class="text-end"><label id="emrDetailReqText" /></td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Requested</th>
-                                    <td><label id="emrDetailReqMember" /></td>
+                                    <th scope="row">Pattern</th>
+                                    <td class="text-end">
+                                        <span><label id="emrDetailReqPattern"></label></span>
+                                        <span><label id="emrDetailReqSize"></label></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Requested by</th>
+                                    <td class="text-end"><label id="emrDetailReqMember" /></td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Test channel</th>
-                                    <td><label id="emrDetailTestType" /></td>
+                                    <td class="text-end"><label id="emrDetailTestType" /></td>
                                 </tr>
                             </table>
 
@@ -200,9 +207,24 @@
                     grid: {},
                     ticks: {}
                 },
-                y:{
+                yAxis3:
+                {
+                    type: "category",
                     stacked: true,
-                    grid: {},
+                    grid: {
+                        drawOnChartArea: false,
+                    },
+                    ticks: {
+                        autoSkip: false,
+                        callback: function (label) {
+                            let realLabel = this.getLabelForValue(label);
+                            return realLabel.split(";")[2];
+                        }
+                    }
+                },
+                y:{
+                    stacked: false,
+                    grid: {drawOnChartArea: false,},
                     ticks: {
                         autoSkip: false,
                         callback: function(label) {
@@ -218,9 +240,10 @@
                         drawOnChartArea: false,
                     },
                     ticks:{
+                        autoSkip: false,
                         callback: function(label) {
                             let realLabel = this.getLabelForValue(label);
-                            return realLabel.split(";")[1];;
+                            return realLabel.split(";")[1];
                         }
                     }
                 }
@@ -256,9 +279,6 @@
             const firstPoint = points[0];
             var label = prodmyChart.data.labels[firstPoint.index].split(';')[0];
 
-           // await (()=> ResetCharts());
-
-            //displayEMRData(label);
             await GetEmrDetail(label);
             await GetEmrLocation(label);
             await GetEmrVerDefects(label);
@@ -331,24 +351,16 @@
 
         }});
 
-    //var emrBasicData = @Html.Raw(Model.formatEMRdata);
-
 
     function displayEMRData(emr)
     {
-        
-        //emrBasicData.forEach(emrData=>{
-           //if (emrData["PRD_REQ_NO"] == emr){
-
         document.getElementById('emrDetailName').innerText = emr['PRD_REQ_NO'];
         document.getElementById('emrDetailReqText').innerText = emr['REQ_TEXT'];
         document.getElementById('emrDetailReqMember').innerText = emr['REQ_MEMBER'];
         document.getElementById('emrDetailTireCode').innerText = emr['TIRE_CODE'];
         document.getElementById('emrDetailTestType').innerText = emr['TEST_TYPE'];
-           // }
-
-            //return;
-       //});
+        document.getElementById('emrDetailReqPattern').innerText = emr['PATTERN'];
+        document.getElementById('emrDetailReqSize').innerText = emr['TIRE_SIZE'];
     }
 
     function displayEMRdefectChart(emr)

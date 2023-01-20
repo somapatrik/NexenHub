@@ -20,10 +20,11 @@ namespace NexenHub.Pages.RAD
 
         #region Chart data
         public string ChartTitle { get; set; }
-        public string xValues => JsonConvert.SerializeObject(_xLegend.Select(x => x), Formatting.None);
+        public string xValues => JsonConvert.SerializeObject(_xLegend, Formatting.None);
         public string yReqValues => JsonConvert.SerializeObject(_yREQ, Formatting.None);
         public string yTBMValues => JsonConvert.SerializeObject(_yTBM, Formatting.None);
         public string yCUREValues => JsonConvert.SerializeObject(_yCUR, Formatting.None);
+        public string yItemIdValues => JsonConvert.SerializeObject(_ItemId, Formatting.None);
 
         private List<string> _xLegend = new List<string>();
         private List<string> _ReqDates = new List<string>();
@@ -31,6 +32,7 @@ namespace NexenHub.Pages.RAD
         private List<string> _yREQ = new List<string>();
         private List<string> _yTBM = new List<string>();
         private List<string> _yCUR = new List<string>();
+        private List<string> _ItemId = new List<string>();
         #endregion
 
         [BindProperty]
@@ -59,10 +61,6 @@ namespace NexenHub.Pages.RAD
 
         [BindProperty]
         public string selectedItemName { get; set; }
-
-
-        public string formatEMRdata => JsonConvert.SerializeObject(EMRS);
-        public List<EMR> EMRS { get; set; }
 
         public void OnGet()
         {
@@ -145,6 +143,7 @@ namespace NexenHub.Pages.RAD
                     _yREQ.Add(r["REQ_QTY"].ToString());
                     _yTBM.Add(r["TBM"].ToString());
                     _yCUR.Add(r["CURE"].ToString());
+                    _ItemId.Add(r["ITEM_ID"].ToString());
                 }
             }
 
@@ -158,23 +157,17 @@ namespace NexenHub.Pages.RAD
                     //First position
                     int found = _ReqDates.Count(x => x == reqdate);
                     NewReqs.Add(reqdate);
-                    for (int i = 1; i <= found; i++)
+                    for (int i = 0; i < found - 1; i++)
                         NewReqs.Add("");
                 }
             }
 
-            EMRS = new List<EMR>();
-
             int j = 0;
-
             _EMR.ForEach(x =>
             {
-                // Generate data for main chart
-                _xLegend.Add(x + ";" + NewReqs[j]);
+                //_xLegend.Add(x + ";" + NewReqs[j]);
+                _xLegend.Add($"{x};{NewReqs[j]};{_ItemId[j]}");
                 j++;
-
-                // Generate EMR basic info
-                EMRS.Add(new EMR(x));
             });
 
         }
