@@ -258,8 +258,8 @@
 
            // await (()=> ResetCharts());
 
-            displayEMRData(label);
-            
+            //displayEMRData(label);
+            await GetEmrDetail(label);
             await GetEmrLocation(label);
             await GetEmrVerDefects(label);
         }
@@ -331,23 +331,24 @@
 
         }});
 
-    var emrBasicData = @Html.Raw(Model.formatEMRdata);
+    //var emrBasicData = @Html.Raw(Model.formatEMRdata);
 
 
     function displayEMRData(emr)
     {
         
-        emrBasicData.forEach(emrData=>{
-            if (emrData["PRD_REQ_NO"] == emr){
-                document.getElementById('emrDetailName').innerText = emrData['PRD_REQ_NO'];
-                document.getElementById('emrDetailReqText').innerText = emrData['REQ_TEXT'];
-                document.getElementById('emrDetailReqMember').innerText = emrData['REQ_MEMBER'];
-                document.getElementById('emrDetailTireCode').innerText = emrData['TIRE_CODE'];
-                document.getElementById('emrDetailTestType').innerText = emrData['TEST_TYPE'];
-            }
+        //emrBasicData.forEach(emrData=>{
+           //if (emrData["PRD_REQ_NO"] == emr){
 
-            return;
-        });
+        document.getElementById('emrDetailName').innerText = emr['PRD_REQ_NO'];
+        document.getElementById('emrDetailReqText').innerText = emr['REQ_TEXT'];
+        document.getElementById('emrDetailReqMember').innerText = emr['REQ_MEMBER'];
+        document.getElementById('emrDetailTireCode').innerText = emr['TIRE_CODE'];
+        document.getElementById('emrDetailTestType').innerText = emr['TEST_TYPE'];
+           // }
+
+            //return;
+       //});
     }
 
     function displayEMRdefectChart(emr)
@@ -384,6 +385,15 @@
 
     }
 
+
+
+    async function GetEmrDetail(emr)
+    {
+        await fetch(window.location.origin + '/API/rad/EmrDetail/' + emr)
+            .then(response => response.json())
+            .then(data => displayEMRData(data));
+    }
+
     async function GetEmrVerDefects(emr){
         
         await fetch(window.location.origin + '/API/rad/EmrVerDefects/' + emr)
@@ -391,7 +401,6 @@
             .then(data => displayEMRdefectChart(data));
     }
 
-    // Emr locations
     async function GetEmrLocation(emr) 
     {
         await fetch( window.location.origin +'/API/rad/EmrLocation/' + emr)

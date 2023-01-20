@@ -53,5 +53,11 @@ namespace NexenHub.Controllers
 
             return defectChart;
         }
+
+        [HttpGet("EmrDetail/{emr}")]
+        public ActionResult<EMR> GetEmrDetail(string emr)
+        {
+            return new EMR(emr.ToUpper());
+        }
     }
 }
