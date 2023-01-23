@@ -150,6 +150,7 @@
 
             </div>
         </div>
+    
     </div>
 </div>
 
@@ -351,7 +352,6 @@
 
         }});
 
-
     function displayEMRData(emr)
     {
         document.getElementById('emrDetailName').innerText = emr['PRD_REQ_NO'];
@@ -399,6 +399,12 @@
 
 
 
+    function displayEMRLocation(emrLocation) {
+        detailChart.data.labels = emrLocation["Labels"];
+        detailChart.data.datasets[0].data = emrLocation["Values"];
+        detailChart.update();
+    }
+
     async function GetEmrDetail(emr)
     {
         await fetch(window.location.origin + '/API/rad/EmrDetail/' + emr)
@@ -420,12 +426,7 @@
             .then(data => displayEMRLocation(data));
     }
 
-    function displayEMRLocation(emrLocation) 
-    {
-        detailChart.data.labels = emrLocation["Labels"];
-        detailChart.data.datasets[0].data = emrLocation["Values"];
-        detailChart.update();
-    }
+
 
     function ResetCharts()
     {

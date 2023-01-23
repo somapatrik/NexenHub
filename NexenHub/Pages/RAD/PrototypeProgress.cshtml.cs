@@ -143,7 +143,7 @@ namespace NexenHub.Pages.RAD
                     _yREQ.Add(r["REQ_QTY"].ToString());
                     _yTBM.Add(r["TBM"].ToString());
                     _yCUR.Add(r["CURE"].ToString());
-                    _ItemId.Add(r["ITEM_ID"].ToString());
+                    _ItemId.Add($"{r["ITEM_ID"].ToString()} [ {r["OE"].ToString()} ]");
                 }
             }
 

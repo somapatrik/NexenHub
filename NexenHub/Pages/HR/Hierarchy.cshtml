@@ -23,31 +23,31 @@
     };
 
     var options = {
-        //layout: {
-        //    hierarchical: {
-        //        direction: "DU",
-        //        sortMethod: "directed",
-        //        nodeSpacing: 300,
-        //        /*levelSeparation: 250,*/
-        //        parentCentralization: true
-        //    },
-        //},
-        //interaction: { dragNodes: true },
-        //physics: {
-        //    enabled: false
-        //},
+        layout: {
+            hierarchical: {
+                direction: "DU",
+                sortMethod: "directed",
+                nodeSpacing: 270,
+                /*levelSeparation: 250,*/
+                parentCentralization: true
+            },
+        },
+        interaction: { dragNodes: true },
+        physics: {
+            enabled: false
+        },
         //layout: {
         //    hierarchical: {
         //        direction: "DU",
         //      sortMethod: "directed",
-        //        nodeSpacing: 200,
+        //      nodeSpacing: 200,
         //      shakeTowards: "roots",
         //    },
         //  },
-        //  edges: {
-        //    smooth: true,
-        //    arrows: { to: true },
-        //  },
+          edges: {
+            smooth: true,
+            arrows: { to: true },
+          },
     };
 
     var network = new vis.Network(container, data, options);
