@@ -92,10 +92,16 @@
 
             <div class="row">
 
-                <div class="col">
+                <div class="col" >
 
                     <div class="card mb-1">
-                        <div class="card-body">
+                        <div class="card-body" style="position:relative;">
+
+                            <!-- Loading -->
+                            <div id="loadingDetail" class="bg-white align-items-center justify-content-center"
+                                 style="position:absolute;width:100%;height:100%;left:0;top:0;display:none;">
+                                <div class="spinner-border text-primary"></div>
+                            </div>
                     
                             <table class="table table-hover">
                                 <tr>
@@ -135,13 +141,27 @@
 
                     <div class="card mb-1">
 
-                        <div class="card-body">
+                        <div class="card-body" style="position:relative;">
+
+                            <!-- Loading -->
+                            <div id="loadingLoc" class="bg-white align-items-center justify-content-center"
+                                 style="position:absolute;width:100%;height:100%;left:0;top:0;display:none;">
+                                <div class="spinner-border text-primary"></div>
+                            </div>
+
                             <canvas id="EmrDetail" />
                         </div>
                     </div>
 
                     <div class="card mb-1">
-                        <div class="card-body">
+                        <div class="card-body" style="position:relative;">
+
+                            <!-- Loading -->
+                            <div id="loadingDef" class="bg-white align-items-center justify-content-center"
+                                 style="position:absolute;width:100%;height:100%;left:0;top:0;display:none;">
+                                <div class="spinner-border text-primary"></div>
+                            </div>
+
                             <canvas id="EmrDefects" />
                         </div>
                     </div>
@@ -280,8 +300,8 @@
             const firstPoint = points[0];
             var label = prodmyChart.data.labels[firstPoint.index].split(';')[0];
 
-            await GetEmrDetail(label);
-            await GetEmrLocation(label);
+            GetEmrDetail(label);
+            GetEmrLocation(label);
             await GetEmrVerDefects(label);
         }
     };
@@ -354,6 +374,7 @@
 
     function displayEMRData(emr)
     {
+
         document.getElementById('emrDetailName').innerText = emr['PRD_REQ_NO'];
         document.getElementById('emrDetailReqText').innerText = emr['REQ_TEXT'];
         document.getElementById('emrDetailReqMember').innerText = emr['REQ_MEMBER'];
@@ -361,6 +382,7 @@
         document.getElementById('emrDetailTestType').innerText = emr['TEST_TYPE'];
         document.getElementById('emrDetailReqPattern').innerText = emr['PATTERN'];
         document.getElementById('emrDetailReqSize').innerText = emr['TIRE_SIZE'];
+
     }
 
     function displayEMRdefectChart(emr)
@@ -400,46 +422,48 @@
 
 
     function displayEMRLocation(emrLocation) {
+
         detailChart.data.labels = emrLocation["Labels"];
         detailChart.data.datasets[0].data = emrLocation["Values"];
-        detailChart.update();
+        detailChart.update();  
     }
 
     async function GetEmrDetail(emr)
     {
+        var loadingDetail = document.getElementById('loadingDetail');
+        loadingDetail.style.display = 'flex';
+
         await fetch(window.location.origin + '/API/rad/EmrDetail/' + emr)
             .then(response => response.json())
             .then(data => displayEMRData(data));
+
+        loadingDetail.style.display = 'none';
     }
 
     async function GetEmrVerDefects(emr){
+
+        var loadingDef = document.getElementById('loadingDef');
+        loadingDef.style.display = 'flex';
         
         await fetch(window.location.origin + '/API/rad/EmrVerDefects/' + emr)
             .then(response => response.json())
             .then(data => displayEMRdefectChart(data));
+
+        loadingDef.style.display = 'none';
     }
 
     async function GetEmrLocation(emr) 
     {
+        var loadingLoc = document.getElementById('loadingLoc');
+        loadingLoc.style.display = 'flex';
+
         await fetch( window.location.origin +'/API/rad/EmrLocation/' + emr)
                 .then(response => response.json())
             .then(data => displayEMRLocation(data));
+
+        loadingLoc.style.display = 'none';
     }
 
-
-
-    function ResetCharts()
-    {
-        // Remove old data
-        //var del = detailChart.data.datasets.length;
-        //for (var i = 0; i <= del; i++) {
-            detailChart.data.datasets.pop();
-        //}
-
-        // Remove old labels
-        detailChart.data.labels = [];
-        detailChart.update();
-    }
 
 
 
