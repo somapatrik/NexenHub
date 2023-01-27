@@ -1,28 +1,18 @@
 ﻿@model NexenHub.Models.MachineDownTime
 
-        @*<div class="row row-cols-1 row-cols-lg-2 g-3">*@
-            @*<div class="col">
-                <div class="card h-100 bg-soma-darklight text-light">
-                    <div class="card-header">
-                        Uptime
-                    </div>
-                    <div class="card-body">
-                        <canvas id="sumDTchart" style="display: block; box-sizing: border-box;" />
-                    </div>
-                    <div class="card-footer text-center">
-                        <small>@Model.filterStartDate.ToString("yyyy-MM-dd HH:mm") - @Model.filterEndDate.ToString("yyyy-MM-dd HH:mm")</small>
-                    </div>
-                </div>
-            </div>*@
+<div class="row">
+    <div class="col">
+            <H5>Downtimes (to be deleted)</H5>
+    </div>
+</div>
+
+<div class="row">
             <div class="col">
-                <div class="card h-100 bg-soma-darklight text-light">
-                    <div class="card-header">
-                        Downtimes
-                    </div>
+                <div class="card h-100">
                     <div class="card-body">
 
                         <div class="progress bg-transparent" style="height:30px;">
-                            <div class="progress-bar" role="progressbar" style="width: @Html.Raw(Model.perUp + "%");background-color: rgba(50,205,50,0.7);" 
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: @Html.Raw(Model.perUp + "%");" 
                                  aria-valuenow="@Model.perUp" aria-valuemin="0" aria-valuemax="100">@Html.Raw(Model.perUp + "%")</div>
 
                             <div class="progress-bar bg-danger" role="progressbar" style="width: @Html.Raw(Model.perDown + "%")" 
@@ -36,7 +26,7 @@
                     </div>
                 </div>
             </div>
-        @*</div>*@
+</div>
 
             <script type="text/javascript">
 
@@ -75,51 +65,7 @@
                     plugins: {
                         legend: {
                             position: 'right',
-                            labels: {
-                                color: 'white'
-                            } },
-                        title: {
-                            display: false,
-                            text: ''
-                        }
-                    }
-                }
-            });
-
-            @*const sumctx = document.getElementById('sumDTchart').getContext('2d');
-            const sumDT = new Chart(sumctx, {
-                type: 'pie',
-                data: {
-                    labels: @Html.Raw(Model.formatSumLabels),
-                    datasets: [{
-                        label: 'Sum data',
-                        data: @Html.Raw(Model.formatSumDatas),
-                        borderWidth: 1,
-                        backgroundColor: [
-                            "rgba(50,205,50,0.7)",
-                            "rgba(220, 53, 69,0.7)",
-                            "rgba(139,0,139,0.7)",
-                            "rgba(85,107,47,0.7)",
-                            "rgba(255,140,0,0.7)"
-                        ],
-                        borderColor: [
-                            "rgba(50,205,50,1)",
-                            "rgba(220, 53, 69,1)",
-                            "rgba(139,0,139,1)",
-                            "rgba(85,107,47,1)",
-                            "rgba(255,140,0,1)"
-                        ]
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: true,
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                color: 'white'
-                            }
+                            labels: {} 
                         },
                         title: {
                             display: false,
@@ -127,6 +73,6 @@
                         }
                     }
                 }
-            });*@
+            });
 
             </script>

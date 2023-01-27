@@ -1,0 +1,25 @@
+﻿@page
+@model NexenHub.Pages.OEE.DashboardModel
+@{
+}
+
+<div class="container-fluid pt-3">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-5 g-2">
+        <div class="col">
+            @await Component.InvokeAsync("WorkSection", "M")
+        </div>
+        <div class="col">
+            @await Component.InvokeAsync("WorkSection", "E")
+        </div>
+        <div class="col">
+            @await Component.InvokeAsync("WorkSection", "C")
+        </div>
+        <div class="col">
+            @await Component.InvokeAsync("WorkSection", "P")
+        </div>
+        <div class="col">
+            @await Component.InvokeAsync("WorkSection", "T")
+        </div>
+    </div>
+</div>
+

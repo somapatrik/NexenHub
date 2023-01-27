@@ -16,27 +16,52 @@
         }
 
         .vis-time-axis .vis-text {
-            color: white;
+            color: black;
         }
 
         .vis-panel .vis-inner{
-            color:white;
+            color:black;
         }
 
     </style>
 
-<div class="card bg-soma-darklight text-light">
-    <div class="card-body flex-fill">
-        <div class="card-title">
-            <h6>Used material</h6>
+    <div id="usedMaterialWrap" class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <div class="d-flex">
+                        <h5 class="flex-grow-1">Used material</h5>
+                        <span id="maxBtn" class="link-info" style="cursor:pointer;" onclick="Maxim();">Maximize</span>
+                        <span id="minBtn" class="link-info" style="cursor:pointer;display:none;" onclick="Minim();">Minimize</span>
+                    </div>
+                </div>
+                <div class="card-body flex-fill">
+                    <div id="@Html.Raw(Model.UniqeName)_Vis" style="color:white;"/>
+                </div>
+            </div>
         </div>
-        <div id="@Html.Raw(Model.UniqeName)_Vis" style="color:white;"/>
     </div>
-</div>
-
 
 
 <script type="text/javascript">
+
+    var maxBtn = document.getElementById('maxBtn');
+    var minBtn = document.getElementById('minBtn');
+    var usedMatWrap = document.getElementById('usedMaterialWrap');
+
+    function Maxim()
+    {
+        maxBtn.style.display = 'none';
+        minBtn.style.display = 'block';
+        toogleFullscreen(usedMatWrap);
+    }
+
+    function Minim()
+    {
+        maxBtn.style.display = 'block';
+        minBtn.style.display = 'none';
+        toogleFullscreen(usedMatWrap);
+    }
 
     var @Html.Raw(Model.UniqeName + "items") = new vis.DataSet([
         @{

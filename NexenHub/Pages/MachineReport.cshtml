@@ -4,14 +4,22 @@
     ViewData["mainSelected"] = "machines";
 }
 
-<div class="container">
+<div class="container-fluid mb-3">
 
-    <div class="row mb-3 flex-row-reverse">
+    <div class="row border-bottom border-2 pt-3 bg-filter">
         <div class="col">
 
-            <div class="card bg-soma-darklight text-light">
-                <div class="card-header"><h5>Select machine to report</h5></div>
-                <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <h4>Report generator</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                
+                <div class="col"></div>
+
+                <div class="col-lg-6">
                     <form method="post">
                         <div class="input-group mb-3">
 
@@ -19,58 +27,51 @@
 
                             <select class="form-control" asp-for="SelectedMachine">
                                 <option value="" />
-                                @{
-                                    foreach (var Machine in Model.Machines)
-                                    {
-                                        <option value="@Machine.EQ_ID">@Machine.EQ_ID - @Machine.Name</option>
-                                    }
+                        
+                                @foreach (var Machine in Model.Machines)
+                                {
+                                    <option value="@Machine.EQ_ID">@Machine.EQ_ID - @Machine.Name</option>
                                 }
+                        
                             </select>
 
                             <span class="input-group-text">From</span>
                             <input type="text" id="myfrom" class="form-control" asp-for="DateFrom" data-provide="datepicker" data-date-end-date="0d">
                             <span class="input-group-text">To</span>
                             <input type="text" id="myTo" class="form-control" asp-for="DateTo" data-provide="datepicker" data-date-end-date="0d">
-
-                        </div>
-
-                        <div class="row flex-row-reverse">
-                            <div id="btnGenerate" class="col-sm-auto">
-                                <button type="submit" class="btn btn-success" onclick="ShowSpinner();" asp-page-handler="generate">Generate report</button>
-                            </div>
-                            <div id="spinner" class="col-sm-auto" style="visibility:collapse">
-                                <button class="btn btn-success" type="button" disabled>
-                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    Loading...
-                                </button>
-                            </div>
+                            <button id="btnGenerate" type="submit" class="btn btn-primary" onclick="ShowSpinner();" asp-page-handler="generate">Generate report</button>
+                            <button id="spinner" class="btn btn-primary" type="button" disabled style="visibility:collapse">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                            </button>
                         </div>
 
                     </form>
+
                 </div>
+
+                <div class="col"></div>
 
             </div>
 
         </div>
     </div>
 
+</div>
 
-    @{
-        if (Model.IsValid)
+<div class="container">
+
+     @if (Model.IsValid)
         {
 
             <div class="row mb-3">
 
                 <div class="col-lg-7">
                     @await Component.InvokeAsync("MachineReportProd", Model.reportData)
-
-
                 </div>
+
                 <div class="col-lg-5">
-
                     @await Component.InvokeAsync("MachineReportDownTime", Model.reportDowntTimes)
-
-
                 </div>
             </div>
 
@@ -81,7 +82,6 @@
             </div>
 
         }
-    }
 
 </div>
 

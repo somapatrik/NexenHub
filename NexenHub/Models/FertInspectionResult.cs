@@ -2,6 +2,9 @@
 
 namespace NexenHub.Models
 {
+    /// <summary>
+    /// Tire defect record
+    /// </summary>
     public class FertInspectionResult
     {
         public int SEQ { get; set; }

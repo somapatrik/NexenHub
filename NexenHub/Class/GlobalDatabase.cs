@@ -1302,32 +1302,6 @@ namespace NexenHub.Class
             }
         }
 
-        // To be deleted
-        public DataTable GetJandiMsg()
-        {
-            try
-            {
-                StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT");
-                query.AppendLine("SND_TITLE TITLE,");
-                query.AppendLine("SND_MSG MSG");
-                query.AppendLine("FROM TB_DC_H_MESSAGE_JANDI");
-                query.AppendLine("WHERE SND_FLAG = 'Y'");
-                query.AppendLine("AND MSG_TYPE = 'PRD'");
-                query.AppendLine("AND ENT_DT = (select MAX(ENT_DT) from TB_DC_H_MESSAGE_JANDI)");
-                query.AppendLine("AND ROWNUM = 1");
-                query.AppendLine("ORDER BY ENT_DT desc");
-
-                DBOra db = new DBOra(query.ToString());
-
-                return db.ExecTable();
-            }
-            catch
-            {
-                return new DataTable();
-            }
-        }
-
         public DataTable MachineReportWorkOrders(string EQ_ID, DateTime start, DateTime end)
         {
             try
@@ -1772,13 +1746,13 @@ namespace NexenHub.Class
                 db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch
             {
                 return new DataTable();
             }
         }
 
-        public DataTable GetMachineList(string EQ_ID = "")
+        public DataTable GetMachineList(string EQ_ID = "", string WC_ID = "")
         {
             try
             {
@@ -1790,6 +1764,9 @@ namespace NexenHub.Class
                 query.AppendLine("AND PLANT_ID='P500' ");
                 query.AppendLine("AND FACT_ID IN ('NEX1','NEX2') ");
 
+                if (!string.IsNullOrEmpty(WC_ID))
+                    query.AppendLine("AND WC_ID=:wcid ");
+
                 if (!string.IsNullOrEmpty(EQ_ID))
                     query.AppendLine("AND EQ_ID=:eqid ");
                 else
@@ -1800,48 +1777,12 @@ namespace NexenHub.Class
                 if (!string.IsNullOrEmpty(EQ_ID))
                     db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
 
+                if (!string.IsNullOrEmpty(WC_ID))
+                    db.AddParameter("wcid", WC_ID, OracleDbType.Varchar2);
+
                 return db.ExecTable();
             }
-            catch (Exception ex)
-            {
-                return new DataTable();
-            }
-        }
-
-        // ESL: Delete
-        public DataTable SP_IN_H_PROD_LAYOUT(string CART_ID)
-        {
-            try
-            {
-                DBOra db = new DBOra("SP_IN_H_PROD_LAYOUT");
-                db.AddParameter("AS_CART_ID", CART_ID, OracleDbType.Varchar2);
-
-                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
-                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
-                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
-                return db.ExecProcedure();
-            } 
-            catch(Exception ex)
-            {
-                return new DataTable();
-            }
-        }
-
-        // ESL: Delete
-        public DataTable SP_DC_H_PROD_API_ESL(string CART_ID, string LOT_ID)
-        {
-            try
-            {
-                DBOra db = new DBOra("SP_DC_H_PROD_API_ESL");
-                db.AddParameter("AS_CART_ID", CART_ID, OracleDbType.Varchar2);
-                db.AddParameter("AS_LOT_ID", LOT_ID, OracleDbType.Varchar2);
-
-                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
-                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
-                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
-                return db.ExecProcedure();
-            } 
-            catch (Exception ex)
+            catch
             {
                 return new DataTable();
             }

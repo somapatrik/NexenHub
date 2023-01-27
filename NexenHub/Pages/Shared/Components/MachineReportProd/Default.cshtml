@@ -1,9 +1,15 @@
 ﻿@model NexenHub.Models.MachineProdReport
 
+<div class="row">
+    <div class="col">
+    <h5>Production</h5>
+    </div>
+</div>
+
 <div class="row row-cols-1 row-cols-md-4 g-2 mb-2">
    
     <div class="col">
-        <div class="card text-center bg-soma-darklight text-light">
+        <div class="card text-center">
             <div class="card-body">
                 <span class="display-6">@Model.minValue</span>
                 <div style="color: #4bc0c0;">
@@ -14,7 +20,7 @@
     </div>
 
     <div class="col">
-        <div class="card text-center bg-soma-darklight text-light">
+        <div class="card text-center">
             <div class="card-body">
                 <span class="display-6">@Model.avgValue</span>
                 <div style="color: #36a3eb;">
@@ -25,7 +31,7 @@
     </div>
 
     <div class="col">
-        <div class="card text-center bg-soma-darklight text-light">
+        <div class="card text-center">
             <div class="card-body">
                 <span class="display-6">@Model.maxValue</span>
                 <div style="color: #4bc0c0;">
@@ -36,7 +42,7 @@
     </div>
 
     <div class="col">
-        <div class="card text-center bg-soma-darklight text-light">
+        <div class="card text-center">
             <div class="card-body">
                 <span class="display-6">@Model.sumValue</span>
                 <div style="color: #36a3eb;">
@@ -51,10 +57,7 @@
 
 <div class="row">
     <div class="col">
-        <div class="card bg-soma-darklight text-light">
-            <h6 class="card-header">
-                Production
-            </h6>
+        <div class="card">
             <div class="card-body">
                 <canvas id="@Html.Raw(Model.UniqeName+"ProdChart")" style="display: block; box-sizing: border-box; " />
             </div>
@@ -84,20 +87,12 @@
             scales: {
                 y: {
                     beginAtZero: true,
-                    grid: {
-                        color: 'rgba(255,255, 255,0.2)'
-                    },
-                    ticks: {
-                        color: 'white'
-                    }
+                    grid: {  },
+                    ticks: {   }
                 },
                 x: {
-                    grid: {
-                        color: 'rgba(255,255, 255,0.2)'
-                    },
-                    ticks: {
-                        color: 'white'
-                    }
+                    grid: { },
+                    ticks: {  }
                 }
             },
             plugins: {

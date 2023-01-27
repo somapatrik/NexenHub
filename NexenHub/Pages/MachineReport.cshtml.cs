@@ -108,7 +108,7 @@ namespace NexenHub.Pages
             Machines = new List<MachineListObject>();
             foreach (DataRow r in dt.Rows)
             {
-                if (!GlobalSettings.IgnoredMachines.Contains(r["EQ_ID"].ToString()))
+                if (!GlobalSettings.IgnoredMachines.Contains(r["EQ_ID"].ToString()) && r["WC_ID"].ToString() != "U")
                     Machines.Add(new MachineListObject
                     {
                         EQ_ID = r["EQ_ID"].ToString(),

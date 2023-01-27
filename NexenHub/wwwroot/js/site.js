@@ -1,18 +1,4 @@
-﻿
-
-/*const CHART_COLORS = {
-    red: 'rgb(255, 99, 132)',
-    orange: 'rgb(255, 159, 64)',
-    yellow: 'rgb(255, 205, 86)',
-    green: 'rgb(75, 192, 192)',
-    blue: 'rgb(54, 162, 235)',
-    purple: 'rgb(153, 102, 255)',
-    grey: 'rgb(201, 203, 207)',
-    primary: 'rgb(11,94,215)',
-    warning: 'rgb(255,193,7)'
-};*/
-
-const charcolors = [
+﻿const charcolors = [
     'rgb(75, 192, 192)',
     'rgb(54, 162, 235)',
     'rgb(153, 102, 255)',
@@ -45,8 +31,10 @@ function searchMat(x, e)
         else if (tireResult)
             window.location.href = "/tire/" + searchVal;
 
-        /*if (searchVal.length == 15 || searchVal.length == 5) {
-            window.location.href = "/lot/" + searchVal;
-        }*/
     }
+}
+
+function toogleFullscreen(e)
+{
+    e.classList.toggle('fullscreen');
 }

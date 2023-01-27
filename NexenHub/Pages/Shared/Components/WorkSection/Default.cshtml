@@ -1,0 +1,50 @@
+﻿@using NexenHub.Class;
+@model NexenHub.ViewModels.WorkSectionViewModel
+@{
+}
+
+<div class="card">
+    <div class="card-body">
+
+         <div class="row">
+            <div class="col">
+
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="d-flex">
+                            <h4 class="flex-grow-1">@Model.WC_NAME</h4>
+                            <h4>75%</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+
+                        @foreach (MachineBasicInfo machine in Model.Machines)
+                        {
+                          <div class="row">
+                            <div class="col">
+                                    <h6>@machine.Name</h6>
+                            </div>
+                            </div>
+                            <div class="row mb-2">
+                            <div class="col">
+                                <div class="progress" >
+                                <div id="@Html.Raw($"{machine.EQ_ID}_bar_ok")" class="progress-bar" role="progressbar" style="width: 60%;background-color:#2EB086;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div id="@Html.Raw($"{machine.EQ_ID}_bar_nok")" class="progress-bar" role="progressbar" style="width: 40%;background-color:#B8405E;" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                          </div>
+                        }
+
+                
+                    </div>
+
+                </div>
+            
+            </div>
+       </div>
+
+    </div>
+</div>
