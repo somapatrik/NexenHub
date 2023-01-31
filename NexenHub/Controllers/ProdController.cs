@@ -81,7 +81,11 @@ namespace NexenHub.Controllers
             return MachinesPM;
         }
 
-
+        [HttpGet("WorkSectionOEE/{wcid}")]
+        public ActionResult<WorkSectionOee> GetWorkSectionOee(string wcid)
+        {
+            return new WorkSectionOee(wcid);
+        }
 
     }
 }

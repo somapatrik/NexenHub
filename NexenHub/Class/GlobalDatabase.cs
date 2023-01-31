@@ -15,6 +15,27 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetDownTimesSimple(string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select SUM(NVL(NONWRK_ETIME, to_char(sysdate,'YYYYMMDDHH24MISS')) - NONWRK_STIME) NONWRK_SECONDS, NONWRK_CODE");
+                query.AppendLine("from TB_CM_M_NONWRK");
+                query.AppendLine("where EQ_ID = :eqid");
+                query.AppendLine("and NONWRK_DATE = (select to_char(sysdate - interval '6' hour, 'YYYYMMDD') from dual)");
+                query.AppendLine("GROUP BY NONWRK_CODE");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+
+                return db.ExecTable();
+            }
+            catch
+            {
+                return new DataTable();
+            }
+        }
 
         public DataTable GetEMRDefects(string EMR)
         {

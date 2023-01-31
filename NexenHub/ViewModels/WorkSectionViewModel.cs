@@ -31,7 +31,7 @@ namespace NexenHub.ViewModels
             else if (WC_ID == "P")
                 WC_NAME = "Cutting";
             else if (WC_ID == "C")
-                WC_NAME = "Callendering";
+                WC_NAME = "Calendering";
             else if (WC_ID == "T")
                 WC_NAME = "TBM";
         }
