@@ -34,6 +34,17 @@ namespace NexenHub.Class
                 "10032"
             };
 
+        public static string[] OEEIgnoredMachines = {
+                "10004",
+                "10005",
+                "10006",
+                "10007",
+                "10017",
+                "10024",
+                "10032",
+                "10013"
+            };
+
         public static string ImageTireLogo(string pattern)
         {
             switch (pattern.ToLower())

@@ -40,7 +40,7 @@ namespace NexenHub.ViewModels
         {
             Machines = new List<MachineBasicInfo>();
             foreach (DataRow row in dbglob.GetMachineList(WC_ID: WC_ID).Rows)
-                if (!GlobalSettings.IgnoredMachines.Contains(row["EQ_ID"].ToString()))
+                if (!GlobalSettings.OEEIgnoredMachines.Contains(row["EQ_ID"].ToString()) && row["FACT_ID"].ToString()!="NEX2" )
                     Machines.Add(new MachineBasicInfo(row["EQ_ID"].ToString()));
         }
     }

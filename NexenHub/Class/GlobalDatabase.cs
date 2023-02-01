@@ -20,10 +20,27 @@ namespace NexenHub.Class
             try
             {
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("select SUM(NVL(NONWRK_ETIME, to_char(sysdate,'YYYYMMDDHH24MISS')) - NONWRK_STIME) NONWRK_SECONDS, NONWRK_CODE");
+
+                query.AppendLine("select ");
+                query.AppendLine("ROUND(SUM(");
+                query.AppendLine("    NVL(TO_DATE(NONWRK_ETIME, 'YYYYMMDDHH24MISS'), SYSDATE)");
+                query.AppendLine("    - (SELECT TO_DATE(TO_CHAR(SYSDATE - interval '6' HOUR, 'YYYYMMDD') || '060000', 'YYYYMMDDHH24MISS') FROM dual)");
+                query.AppendLine("    ) * 24 * 60 * 60, 0) NONWRK_SECONDS");
+                query.AppendLine(", NONWRK_CODE");
                 query.AppendLine("from TB_CM_M_NONWRK");
-                query.AppendLine("where EQ_ID = :eqid");
-                query.AppendLine("and NONWRK_DATE = (select to_char(sysdate - interval '6' hour, 'YYYYMMDD') from dual)");
+                query.AppendLine("WHERE EQ_ID = :eqid");
+                query.AppendLine("AND NONWRK_DATE<TO_CHAR(SYSDATE,'YYYYMMDD')");
+                query.AppendLine("AND(NONWRK_ETIME IS NULL OR NONWRK_ETIME > (select to_char(sysdate - interval '6' hour, 'YYYYMMDD') || '060000' from dual))");
+                query.AppendLine("GROUP BY NONWRK_CODE");
+
+                query.AppendLine("UNION");
+
+                query.AppendLine("SELECT ");
+                query.AppendLine("ROUND(SUM(NVL(TO_DATE(NONWRK_ETIME,'YYYYMMDDHH24MISS'),SYSDATE) - TO_DATE(NONWRK_STIME,'YYYYMMDDHH24MISS'))*24*60*60,0) NONWRK_SECONDS ");
+                query.AppendLine(",NONWRK_CODE ");
+                query.AppendLine("FROM TB_CM_M_NONWRK ");
+                query.AppendLine("WHERE EQ_ID = :eqid ");
+                query.AppendLine("AND NONWRK_DATE = (select to_char(sysdate - interval '6' hour, 'YYYYMMDD') from dual) ");
                 query.AppendLine("GROUP BY NONWRK_CODE");
 
                 DBOra db = new DBOra(query.ToString());

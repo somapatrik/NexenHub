@@ -23,3 +23,48 @@
     </div>
 </div>
 
+<script type="text/javascript">
+
+
+    document.addEventListener('readystatechange', event => {
+          switch (document.readyState) {
+            case "loading":
+              break;
+            case "interactive":
+                refreshGui();
+              break;
+            case "complete":
+                setInterval(refreshGui, 10000);
+              break;
+          }
+    });
+
+    async function refreshGui()
+    {
+         loadFromApi("M");
+         loadFromApi("E");
+         loadFromApi("C");
+         loadFromApi("P");
+         loadFromApi("T");
+    }
+
+    async function loadFromApi(WCID)
+    {
+
+        await fetch(window.location.origin + '/API/prod/worksectionoee/' + WCID)
+            .then(response => response.json())
+            .then(data => displayPercent(data));
+    }
+
+    function displayPercent(data)
+    {
+        var percentLabel = document.getElementById(data['WC_ID'] + '_percent');
+        percentLabel.innerHTML = data['PercentAllMachines'] + '%';
+
+        data['MachineTimes'].forEach(machineTime => {
+            var okBar = document.getElementById(machineTime['Machine'] + '_bar_ok');
+            okBar.style.width = (100 - Number(machineTime['Percent'])) + '%';
+        });
+    }
+
+</script>
