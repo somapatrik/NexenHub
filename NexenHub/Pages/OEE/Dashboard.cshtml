@@ -4,7 +4,10 @@
 }
 
 <div class="container-fluid pt-3">
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-5 g-2">
+    <div class="row row-cols-1">
+        <h4>Real-time usage</h4>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-5 g-2">
         <div class="col">
             @await Component.InvokeAsync("WorkSection", "M")
         </div>
@@ -23,8 +26,8 @@
     </div>
 </div>
 
-<script type="text/javascript">
 
+<script type="text/javascript">
 
     document.addEventListener('readystatechange', event => {
           switch (document.readyState) {
@@ -34,7 +37,7 @@
                 refreshGui();
               break;
             case "complete":
-                setInterval(refreshGui, 10000);
+                setInterval(refreshGui, 20000);
               break;
           }
     });
@@ -45,7 +48,7 @@
          loadFromApi("E");
          loadFromApi("C");
          loadFromApi("P");
-         loadFromApi("T");
+         await loadFromApi("T");
     }
 
     async function loadFromApi(WCID)
@@ -61,10 +64,78 @@
         var percentLabel = document.getElementById(data['WC_ID'] + '_percent');
         percentLabel.innerHTML = data['PercentAllMachines'] + '%';
 
+        
+
         data['MachineTimes'].forEach(machineTime => {
-            var okBar = document.getElementById(machineTime['Machine'] + '_bar_ok');
-            okBar.style.width = (100 - Number(machineTime['Percent'])) + '%';
+            var barName = machineTime['Machine'] + '_bar_ok';
+            var okBar = document.getElementById(barName);
+            var finalPercent = 100 - Number(machineTime['Percent']);
+            okBar.style.width = finalPercent + '%';
+
+            setBarColor(barName, finalPercent);
+
+            // Modal machine info
+            var downtimeMachineTime = document.getElementById(machineTime['Machine'] + '_downtimeDuration');
+            downtimeMachineTime.innerHTML = secondsToReadableHours(machineTime['Seconds']);
+
+            var machinePercent = document.getElementById(machineTime['Machine'] + '_downtimePercent');
+            machinePercent.innerHTML = machineTime['Percent'] + '%';
+
+            var machinePossibleTime = document.getElementById(machineTime['Machine'] + '_possibleProdTime');
+            machinePossibleTime.innerHTML = secondsToReadableHours(data['TimeSinceStart']);
+
+            setTableRow(machineTime['Machine'], machineTime['Percent']);
         });
+
+        // Modal dialog
+        var possibleProdTime = document.getElementById(data['WC_ID'] + '_possibleProdTime');
+        possibleProdTime.innerHTML = secondsToReadableHours(data['TimeSinceStartAllMachines']);
+
+        var downtimeDuration = document.getElementById(data['WC_ID'] + '_downtimeDuration');
+        downtimeDuration.innerHTML = secondsToReadableHours(data['SumSeconds']);
+
+        var downtimePercent = document.getElementById(data['WC_ID'] + '_downtimePercent');
+        var allDurationPercent = 100 - Number(data['PercentAllMachines']);
+        downtimePercent.innerHTML = allDurationPercent + '%';
+
+    }
+
+    function setBarColor(barname, prc)
+    {
+        var eqBar = document.getElementById(barname);
+
+        // Ok time
+        prc = Number(prc);
+
+        if (prc < 50)
+            eqBar.style.backgroundColor = '#D35D6E';//'#B8405E';//'#FF6E31'; //B8405E
+        /*else if (prc < 70)
+            eqBar.style.backgroundColor = '#EFB08C';*/
+        else
+            eqBar.style.backgroundColor = '#2EB086';
+    }
+
+    function setTableRow(eqid, prc)
+    {
+        var eqRow = document.getElementById(eqid+'_tableRow');
+
+        eqRow.classList.remove('table-warning', 'table-danger', 'table-success');
+
+        // Dowtimes %
+        prc = Number(prc);
+
+        if (prc < 30)
+            eqRow.classList.add('table-success');
+        else if (prc < 50)
+            eqRow.classList.add('table-warning');
+        else  
+            eqRow.classList.add('table-danger');
+    }
+
+    function secondsToReadableHours(seconds)
+    {
+        var hours = (Number(seconds) / 3600).toFixed(1);
+        return hours + "h";
     }
 
 </script>
