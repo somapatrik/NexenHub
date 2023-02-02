@@ -5,7 +5,7 @@
 
 <div class="container-fluid pt-3">
     <div class="row row-cols-1">
-        <h4>Real-time usage</h4>
+        <h4>Real-time availability</h4>
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-5 g-2">
         <div class="col">
@@ -72,7 +72,7 @@
             var finalPercent = 100 - Number(machineTime['Percent']);
             okBar.style.width = finalPercent + '%';
 
-            setBarColor(barName, finalPercent);
+            //setBarColor(barName, finalPercent);
 
             // Modal machine info
             var downtimeMachineTime = document.getElementById(machineTime['Machine'] + '_downtimeDuration');
@@ -115,21 +115,22 @@
             eqBar.style.backgroundColor = '#2EB086';
     }
 
-    function setTableRow(eqid, prc)
+    function setTableRow(eqid, badTimes)
     {
         var eqRow = document.getElementById(eqid+'_tableRow');
 
         eqRow.classList.remove('table-warning', 'table-danger', 'table-success');
 
         // Dowtimes %
-        prc = Number(prc);
+        badTimes = Number(badTimes);
 
-        if (prc < 30)
-            eqRow.classList.add('table-success');
-        else if (prc < 50)
-            eqRow.classList.add('table-warning');
-        else  
+        /*if (prc < 30)
+            eqRow.classList.add('table-success');*/
+        if (badTimes >= 70)
             eqRow.classList.add('table-danger');
+        else if (badTimes >= 30)
+            eqRow.classList.add('table-warning');
+
     }
 
     function secondsToReadableHours(seconds)
