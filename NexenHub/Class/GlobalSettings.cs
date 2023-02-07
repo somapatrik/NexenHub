@@ -42,7 +42,11 @@ namespace NexenHub.Class
                 "10017",
                 "10024",
                 "10032",
-                "10013"
+                "10013",
+                "10136",
+                "10137",
+                "10138",
+                "10139",
             };
 
         public static string ImageTireLogo(string pattern)

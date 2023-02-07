@@ -6,8 +6,6 @@
 <div class="card">
     <div class="card-body">
 
-@*         <div class="row">
-            <div class="col">*@
 
                 <div class="row mb-2" data-bs-toggle="modal" data-bs-target="#@Html.Raw(Model.WC_ID + "_Modal")" style="cursor:pointer;">
                     <div class="col">
@@ -18,10 +16,13 @@
                     </div>
                 </div>
 
+
+                @if (Model.WC_ID != "U")
+                {
                 <div class="row">
                     <div class="col">
 
-                        @foreach (MachineBasicInfo machine in Model.Machines)
+                @foreach (MachineBasicInfo machine in Model.Machines)
                         {
                           <div class="row">
                             <div class="col">
@@ -35,14 +36,36 @@
                                 </div>
                             </div>
                           </div>
-                        }
+                    }
 
-                
                     </div>
 
-                </div>            
-@*            </div>
-       </div>*@
+                </div>
+                }
+                else
+                {
+                    <div class="row row-cols-2 row-cols-lg-4">
+                    @foreach (MachineBasicInfo machine in Model.Machines)
+                        {
+                         <div class="col">
+                          <div class="row">
+                            <div class="col">
+                              <h6>@machine.Name</h6>
+                            </div>
+                            </div>
+                            <div class="row mb-1">
+                            <div class="col-lg">
+                                <div class="progress">
+                                   <div id="@Html.Raw($"{machine.EQ_ID}_bar_ok")" class="progress-bar" role="progressbar" style="width: 0%;background-color:#2EB086;" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                          </div>
+                          </div>
+                    }
+                    </div>
+                }
+          
+
 
     </div>
 </div>

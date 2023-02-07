@@ -4,24 +4,33 @@
 }
 
 <div class="container-fluid pt-3">
-    <div class="row row-cols-1">
+    <div class="row row-cols-1 ">
         <h4>Real-time availability</h4>
     </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xxl-5 g-2">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-xxl-6 g-2 mb-3">
         <div class="col">
             @await Component.InvokeAsync("WorkSection", "M")
+        </div>
+        <div class="col">
+            @await Component.InvokeAsync("WorkSection", "C")
         </div>
         <div class="col">
             @await Component.InvokeAsync("WorkSection", "E")
         </div>
         <div class="col">
-            @await Component.InvokeAsync("WorkSection", "C")
+            @await Component.InvokeAsync("WorkSection", "B")
         </div>
         <div class="col">
             @await Component.InvokeAsync("WorkSection", "P")
         </div>
         <div class="col">
             @await Component.InvokeAsync("WorkSection", "T")
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            @await Component.InvokeAsync("WorkSection", "U")
         </div>
     </div>
 </div>
@@ -45,16 +54,18 @@
     async function refreshGui()
     {
          loadFromApi("M");
-         loadFromApi("E");
          loadFromApi("C");
+         loadFromApi("E");
+         loadFromApi("B");
          loadFromApi("P");
-         await loadFromApi("T");
+         loadFromApi("T");
+         await loadFromApi("U");
     }
 
     async function loadFromApi(WCID)
     {
 
-        await fetch(window.location.origin + '/API/prod/worksectionoee/' + WCID)
+        await fetch(window.location.origin + '/api/prod/worksectionoee/' + WCID)
             .then(response => response.json())
             .then(data => displayPercent(data));
     }

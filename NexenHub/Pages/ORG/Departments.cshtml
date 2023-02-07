@@ -1,0 +1,37 @@
+﻿@page
+@using NexenHub.Models;
+@model NexenHub.Pages.ORG.DepartmentsModel
+@{
+}
+
+<div class="container">
+
+    <div class="row h-100">
+        <div class="col-9">
+
+        </div>
+        <div class="col">
+
+            <div class="row">
+                <nav class="bd-toc">
+                <ul class="list-unstyled fw-normal pb-1 small">
+
+                    @foreach (Department department in Model.Departments){
+
+
+                        <li>
+                            @for(int i = 0; i < department.Level - 1; i++)
+                            {
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            }
+                            <a class="text-muted text-decoration-none" href="#">@department.Name</a>
+
+                        </li>
+
+                    }
+                </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>

@@ -30,10 +30,14 @@ namespace NexenHub.ViewModels
                 WC_NAME = "Extrusion";
             else if (WC_ID == "P")
                 WC_NAME = "Cutting";
+            else if (WC_ID == "B")
+                WC_NAME = "Bead";
             else if (WC_ID == "C")
                 WC_NAME = "Calendering";
             else if (WC_ID == "T")
                 WC_NAME = "TBM";
+            else if (WC_ID == "U")
+                WC_NAME = "Curing";
         }
 
         private void LoadMachines()

@@ -46,7 +46,7 @@ namespace NexenHub.Controllers
         }
 
         [HttpGet("{lot}/{eq}/{pos}")]
-        public async Task<ActionResult<InputCheck>> GetValidResult(string lot, string eq, string pos)
+        public ActionResult<InputCheck> GetValidResult(string lot, string eq, string pos)
         {
             StringBuilder query = new StringBuilder();
             query.AppendLine("SELECT MINIPC_ID, FACT_ID");

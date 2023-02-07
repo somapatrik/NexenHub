@@ -15,6 +15,74 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetBadTypes(string InsProc = "", string CodeID = "", string CodeName = "", string Language_CD = "1033")
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_CM_MR_POP_009");
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_PROC_ID", InsProc, OracleDbType.Varchar2);
+                db.AddParameter("AS_CODE_ID", CodeID, OracleDbType.Varchar2);
+                db.AddParameter("AS_CODE_NAME", CodeName, OracleDbType.Varchar2);
+                db.AddParameter("AS_LANGUAGE_CD", Language_CD, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                return db.ExecProcedure();
+            }
+            catch
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable CM_CODE_LIST(string SYS_CODE, string KIND_CODE, string REL_NO, string REL_VAL, string Language_CD = "1033")
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_CM_MR_CODELIST");
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_SYS_CODE_ID", SYS_CODE, OracleDbType.Varchar2);
+                db.AddParameter("AS_KIND_CODE_ID", KIND_CODE, OracleDbType.Varchar2);
+                db.AddParameter("AS_REL_NO", REL_NO, OracleDbType.Varchar2);
+                db.AddParameter("AS_REL_VAL", REL_VAL, OracleDbType.Varchar2);
+                db.AddParameter("AS_LANGUAGE_CD", Language_CD, OracleDbType.Varchar2);
+
+                db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                return db.ExecProcedure();
+            }
+            catch 
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetDepartments(string rootDepartment)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select DEPT_ID, DEPT_NAME, UP_DEPT_ID, LEVEL");
+                query.AppendLine("from TB_CM_M_DEPT");
+                query.AppendLine("CONNECT BY PRIOR DEPT_ID = UP_DEPT_ID");
+                query.AppendLine("START WITH DEPT_ID = :startdp");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("startdp", rootDepartment, OracleDbType.Varchar2);
+                return db.ExecTable();
+
+            }
+            catch
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetDownTimesSimple(string EQ_ID)
         {
             try
@@ -341,31 +409,6 @@ namespace NexenHub.Class
             }
 
 }
-
-        public DataTable GetDepartmentRelations()
-        {
-            try
-            {
-                StringBuilder query = new StringBuilder();
-
-                query.AppendLine("select DEPT.DEPT_ID,DEPT.DEPT_NAME, DEPT.UP_DEPT_ID, UPDEPT.DEPT_NAME UP_DEPT_NAME");
-                query.AppendLine("from TB_CM_M_MEMBER MBR");
-                query.AppendLine("join TB_CM_M_DEPT DEPT ON DEPT.DEPT_ID = MBR.DEPT_ID");
-                query.AppendLine("join TB_CM_M_DEPT UPDEPT ON UPDEPT.DEPT_ID = DEPT.UP_DEPT_ID");
-                query.AppendLine("GROUP BY DEPT.DEPT_ID,DEPT.DEPT_NAME, DEPT.UP_DEPT_ID, UPDEPT.DEPT_NAME,DEPT.SORT");
-                query.AppendLine("ORDER BY DEPT.SORT");
-
-
-                DBOra db = new DBOra(query.ToString());
-
-                DataTable dt = db.ExecTable();
-                return dt;
-            }
-            catch (Exception ex)
-            {
-                return new DataTable();
-            }
-        }
 
         public DataTable GetAllParents(string LOT)
         {

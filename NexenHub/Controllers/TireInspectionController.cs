@@ -31,7 +31,7 @@ namespace NexenHub.Controllers
         }
 
         [HttpGet("{code}")]
-        public async Task<ActionResult<TireInspection>> Get(string code)
+        public ActionResult<TireInspection> Get(string code)
         {
             TireInspection tireInspection;
             tireInspection = new TireInspection(code);
@@ -131,5 +131,30 @@ namespace NexenHub.Controllers
                 return new StatusCodeResult(500);
             }
         }
+
+
+        [HttpGet("insProc")]
+        public ActionResult<List<ComboItem>> GetInsProc()
+        {
+            List<ComboItem> items = new List<ComboItem>();
+            DataTable dt = dbglob.CM_CODE_LIST("QA", "01", "02", "P", "1029");
+            foreach (DataRow row in dt.Rows)
+                items.Add(new ComboItem(row["CODE_ID"].ToString(), row["CODE_NAME"].ToString()));
+
+            return items;
+        }
+
+        [HttpGet("defectCode/{Insp}")]
+        public ActionResult<List<ComboItem>> GetDefectCode(string Insp)
+        {
+            List<ComboItem> items = new List<ComboItem>(); ; 
+
+            DataTable dt = dbglob.GetBadTypes(Insp, Language_CD:"1029");
+            foreach (DataRow row in dt.Rows)
+                items.Add(new ComboItem(row["CODE_ID"].ToString(), row["CODE_NAME"].ToString()));
+
+            return items;
+        }
+
     }
 }
