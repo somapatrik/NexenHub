@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using NetBarcode;
 using NexenHub.Class;
 using NexenHub.Models;
 using Oracle.ManagedDataAccess.Client;
@@ -15,6 +16,71 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public DataTable GetCodeDetail(string SYSCODE, string KINDCODE)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select CODE_ID, CODE_NAME_1033,CODE_NAME_1029");
+                query.AppendLine("from TB_CM_D_CODE");
+                query.AppendLine("where SYS_CODE_ID = :syscode");
+                query.AppendLine("and KIND_CODE_ID = :kindcode");
+                query.AppendLine("and USE_YN = 'Y'");
+                query.AppendLine("ORDER BY SORT01 ");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("syscode", SYSCODE, OracleDbType.Varchar2);
+                db.AddParameter("kindcode", KINDCODE, OracleDbType.Varchar2);
+
+                return db.ExecTable();
+            }
+            catch
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable GetBadGrade(string InsProc, string BadCode)
+        {
+            try
+            {
+                //DBOra db = new DBOra("SP_QA_MR_PROC_GRADE");
+                //db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                //db.AddParameter("AS_PROC_ID", InsProc, OracleDbType.Varchar2);
+                //db.AddParameter("AS_BAD_ID", BadCode, OracleDbType.Varchar2);
+
+                //db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
+                //db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                //db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT");
+                query.AppendLine("DECODE(GRADE_E, 'Y', 'E', null) GRADE_E, ");
+                query.AppendLine("DECODE(GRADE_R1, 'Y', 'R1', null) GRADE_R1, ");
+                query.AppendLine("DECODE(GRADE_R3, 'Y', 'R3', null) GRADE_R3,");
+                query.AppendLine("DECODE(GRADE_K, 'Y', 'K', null) GRADE_K,");
+                query.AppendLine("DECODE(GRADE_H, 'Y', 'H', null) GRADE_H,");
+                query.AppendLine("DECODE(GRADE_M, 'Y', 'M', null) GRADE_M");
+                query.AppendLine("FROM   TB_QA_M_BAD_TYPE");
+                query.AppendLine("WHERE  PLANT_ID = :plantid");
+                query.AppendLine("AND PROC_ID = :procid");
+                query.AppendLine("AND BAD_ID = :badid");
+                query.AppendLine("AND USE_YN = 'Y'");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("plantid", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("procid", InsProc, OracleDbType.Varchar2);
+                db.AddParameter("badid",BadCode, OracleDbType.Varchar2);
+
+                return db.ExecTable();
+            }
+            catch
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetBadTypes(string InsProc = "", string CodeID = "", string CodeName = "", string Language_CD = "1033")
         {
             try
@@ -428,7 +494,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecTable();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -466,7 +532,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecTable();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -482,7 +548,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecTable();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -504,7 +570,7 @@ namespace NexenHub.Class
                 db.ExecProcedure();
 
             }
-            catch (Exception ex)
+            catch 
             {
 
             }
@@ -528,7 +594,7 @@ namespace NexenHub.Class
                 foreach (DataRow row in dt.Rows)
                     results.Add(row["GT_ITEM_ID"].ToString());
             } 
-            catch (Exception ex)
+            catch 
             {
                
             }
@@ -547,7 +613,7 @@ namespace NexenHub.Class
                 if (dt.Rows.Count > 0)
                     return dt.Rows[0][0].ToString();
             }
-            catch (Exception ex)
+            catch 
             {
 
             }
@@ -566,7 +632,7 @@ namespace NexenHub.Class
                 if (dt.Rows.Count > 0)
                     return dt.Rows[0][0].ToString();
             } 
-            catch (Exception ex)
+            catch 
             {
                 
             }
@@ -597,7 +663,7 @@ namespace NexenHub.Class
                 return db.ExecTable();
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -623,7 +689,7 @@ namespace NexenHub.Class
                 return db.ExecTable();
 
             }
-            catch(Exception ex)
+            catch
             {
                 return new DataTable();
             }
@@ -647,7 +713,7 @@ namespace NexenHub.Class
                 if (dt.Rows.Count > 0)
                     return dt.Rows[0];
             }
-            catch (Exception ex)
+            catch 
             {
                
             }
@@ -670,7 +736,7 @@ namespace NexenHub.Class
                 return dt;
             
             } 
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -690,7 +756,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecProcedure();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -728,7 +794,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecTable();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -857,7 +923,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecTable();
                 return dt;
             } 
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -879,7 +945,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -902,7 +968,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -924,7 +990,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -949,7 +1015,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -986,7 +1052,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1028,7 +1094,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1064,7 +1130,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1086,7 +1152,7 @@ namespace NexenHub.Class
                 return dt;
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1108,7 +1174,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecProcedure();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1130,7 +1196,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecProcedure();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1158,7 +1224,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecProcedure();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1180,7 +1246,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecProcedure();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1202,7 +1268,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecProcedure();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1226,7 +1292,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecProcedure();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1273,7 +1339,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecTable();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1303,7 +1369,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecTable();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1325,7 +1391,7 @@ namespace NexenHub.Class
                 DataTable dt = db.ExecProcedure();
                 return dt;
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1344,7 +1410,7 @@ namespace NexenHub.Class
 
                 return db.ExecTable();
             }
-            catch(Exception ex)
+            catch
             {
                 return new DataTable();
             }
@@ -1452,7 +1518,7 @@ namespace NexenHub.Class
 
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1483,7 +1549,7 @@ namespace NexenHub.Class
 
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1511,7 +1577,7 @@ namespace NexenHub.Class
 
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1549,7 +1615,7 @@ namespace NexenHub.Class
                 db.AddParameter("wc", WC_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1572,7 +1638,7 @@ namespace NexenHub.Class
                 db.AddParameter("EQID", EQ_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1593,7 +1659,7 @@ namespace NexenHub.Class
                 db.AddParameter("EQID", EQ_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1618,7 +1684,7 @@ namespace NexenHub.Class
                 db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1646,7 +1712,7 @@ namespace NexenHub.Class
                 db.AddParameter("protover", PROTOTYPE_VER, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1668,7 +1734,7 @@ namespace NexenHub.Class
                 db.AddParameter("itemid", ITEM_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
-            catch(Exception ex)
+            catch
             {
                 return new DataTable();
             }
@@ -1691,7 +1757,7 @@ namespace NexenHub.Class
                 db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1716,7 +1782,7 @@ namespace NexenHub.Class
                 
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1750,7 +1816,7 @@ namespace NexenHub.Class
                 DBOra db = new DBOra(query.ToString());
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1774,7 +1840,7 @@ namespace NexenHub.Class
                 DBOra db = new DBOra(query.ToString());
                 return db.ExecTable();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }
@@ -1798,7 +1864,7 @@ namespace NexenHub.Class
                 //return db.ExecTable();
                 return db.ExecProcedure();
             }
-            catch (Exception ex)
+            catch 
             {
                 return new DataTable();
             }

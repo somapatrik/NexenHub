@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using System.Data;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Http;
+using System.Windows.Markup;
 
 namespace NexenHub.Controllers
 {
@@ -135,7 +136,7 @@ namespace NexenHub.Controllers
 
         [HttpGet("insProc")]
         public ActionResult<List<ComboItem>> GetInsProc()
-        {
+        {            
             List<ComboItem> items = new List<ComboItem>();
             DataTable dt = dbglob.CM_CODE_LIST("QA", "01", "02", "P", "1029");
             foreach (DataRow row in dt.Rows)
@@ -150,11 +151,61 @@ namespace NexenHub.Controllers
             List<ComboItem> items = new List<ComboItem>(); ; 
 
             DataTable dt = dbglob.GetBadTypes(Insp, Language_CD:"1029");
+
             foreach (DataRow row in dt.Rows)
-                items.Add(new ComboItem(row["CODE_ID"].ToString(), row["CODE_NAME"].ToString()));
+                items.Add(
+                    new ComboItem() { 
+                        ID = row["CODE_ID"].ToString(), 
+                        Value = row["CODE_NAME"].ToString(), 
+                        Value2 = $"[{row["CODE_ID"].ToString()}] {row["CODE_NAME"].ToString()}",
+                        }
+                    );
 
             return items;
         }
+
+        [HttpGet("defectGrade/{Insp}/{BadCode}")]
+        public ActionResult<List<ComboItem>> GetDefectGrade(string Insp, string BadCode)
+        {
+            List<ComboItem> items = new List<ComboItem>(); ;
+
+            DataTable dt = dbglob.GetBadGrade(Insp,BadCode);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataColumn col in dt.Columns)
+                    if (!string.IsNullOrEmpty(dt.Rows[0][col.ColumnName].ToString()))
+                        items.Add(new ComboItem()
+                        {
+                            ID = dt.Rows[0][col.ColumnName].ToString(),
+                            Value = dt.Rows[0][col.ColumnName].ToString()
+                        });
+            }
+
+            return items;
+        }
+
+        [HttpGet("originProc")]
+        public ActionResult<List<ComboItem>> GetOriginProc()
+        {
+            List<ComboItem> items = new List<ComboItem>(); ;
+
+            DataTable dt = dbglob.GetCodeDetail("QA","31");
+
+            foreach (DataRow row in dt.Rows)
+                items.Add(
+                    new ComboItem()
+                    {
+                        ID = row["CODE_ID"].ToString(),
+                        Value = row["CODE_NAME_1033"].ToString(),
+                        Value2 = $"[{row["CODE_ID"].ToString()}] {row["CODE_NAME_1033"].ToString()}",
+                    }
+                    );
+
+            return items;
+        }
+
+
 
     }
 }
