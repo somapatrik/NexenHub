@@ -6,7 +6,7 @@
 <div class="card">
     <div class="card-body">
 
-
+        
                 <div class="row mb-2" data-bs-toggle="modal" data-bs-target="#@Html.Raw(Model.WC_ID + "_Modal")" style="cursor:pointer;">
                     <div class="col">
                         <div class="d-flex">
@@ -17,9 +17,11 @@
                 </div>
 
 
+        <div class="collapse show" id="@Html.Raw($"{Model.WC_ID}_collapse")">
+
                 @if (Model.WC_ID != "U")
                 {
-                <div class="row">
+                <div class="row mb-1">
                     <div class="col">
 
                 @foreach (MachineBasicInfo machine in Model.Machines)
@@ -44,7 +46,7 @@
                 }
                 else
                 {
-                    <div class="row row-cols-2 row-cols-lg-4">
+                   <div class="row row-cols-2 row-cols-lg-4">
                     @foreach (MachineBasicInfo machine in Model.Machines)
                         {
                          <div class="col">
@@ -65,7 +67,13 @@
                     </div>
                 }
           
+        </div>
 
+        <div class="row">
+        <div class="col">
+                <a class="btn btn-light w-100" data-bs-toggle="collapse" href="@Html.Raw($"#{Model.WC_ID}_collapse")" role="button" aria-expanded="true" aria-controls="@Html.Raw($"{Model.WC_ID}_collapse")">...</a>
+        </div>
+        </div>
 
     </div>
 </div>
