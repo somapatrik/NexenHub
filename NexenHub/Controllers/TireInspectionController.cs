@@ -205,6 +205,64 @@ namespace NexenHub.Controllers
             return items;
         }
 
+        [HttpGet("tireSide")]
+        public ActionResult<List<ComboItem>> GetTireSide()
+        {
+            List<ComboItem> items = new List<ComboItem>(); ;
+
+            DataTable dt = dbglob.GetCodeDetail("QA", "07");
+
+            foreach (DataRow row in dt.Rows)
+                items.Add(
+                    new ComboItem()
+                    {
+                        ID = row["CODE_ID"].ToString(),
+                        Value = row["CODE_NAME_1033"].ToString(),
+                        Value2 = $"[{row["CODE_ID"].ToString()}] {row["CODE_NAME_1033"].ToString()}",
+                    }
+                    );
+
+            return items;
+        }
+
+        [HttpGet("tireZone")]
+        public ActionResult<List<ComboItem>> GetTireZone()
+        {
+            List<ComboItem> items = new List<ComboItem>(); ;
+
+            DataTable dt = dbglob.GetCodeDetail("QA", "08");
+
+            foreach (DataRow row in dt.Rows)
+                items.Add(
+                    new ComboItem()
+                    {
+                        ID = row["CODE_ID"].ToString(),
+                        Value = row["CODE_NAME_1033"].ToString()
+                    }
+                    );
+
+            return items;
+        }
+
+        [HttpGet("tirePosition")]
+        public ActionResult<List<ComboItem>> GetTirePosition()
+        {
+            List<ComboItem> items = new List<ComboItem>(); ;
+
+            DataTable dt = dbglob.GetCodeDetail("QA", "09");
+
+            foreach (DataRow row in dt.Rows)
+                items.Add(
+                    new ComboItem()
+                    {
+                        ID = row["CODE_ID"].ToString(),
+                        Value = row["CODE_NAME_1033"].ToString()
+                    }
+                    );
+
+            return items;
+        }
+
 
 
     }

@@ -48,7 +48,7 @@ namespace NexenHub.Class
                 //DBOra db = new DBOra("SP_QA_MR_PROC_GRADE");
                 //db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
                 //db.AddParameter("AS_PROC_ID", InsProc, OracleDbType.Varchar2);
-                //db.AddParameter("AS_BAD_ID", BadCode, OracleDbType.Varchar2);
+                //db.AddParameter("AS_BAD_ID", BadCode, OracleDbType.Varchar2);\
 
                 //db.AddOutput("RC_TABLE", OracleDbType.RefCursor);
                 //db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
