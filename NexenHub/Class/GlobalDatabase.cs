@@ -1305,6 +1305,7 @@ namespace NexenHub.Class
                 // Jo, je to natvrdo
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT ");
+                query.AppendLine("HIS.LOC_NO LOC_NO,");
                 query.AppendLine("to_date(HIS.TRAN_TIME, 'YYYYMMDDHH24MISS') TRANDATE,");
                 query.AppendLine("LOC.LOC_DESC_1033 LOCATION,");
                 query.AppendLine("CASE");

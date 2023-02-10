@@ -196,6 +196,7 @@ namespace NexenHub.Models
                 {
                     History.Add(new LotHisItem()
                     {
+                        LOC_NO = row["LOC_NO"].ToString(),
                         transDate = DateTime.Parse(row["TRANDATE"].ToString()),
                         locationName = row["LOCATION"].ToString(),
                         itemState = row["ITEMSTATE"].ToString(),
