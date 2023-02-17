@@ -44,7 +44,7 @@ namespace NexenHub.Controllers
                 dbglob.UpdateVersion(appId, ip, versionName);
 
             }
-            catch (Exception ex)
+            catch
             {
                 return BadRequest();
             }

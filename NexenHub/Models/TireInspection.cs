@@ -131,12 +131,12 @@ namespace NexenHub.Models
         {
             ProductionInfo productionInfo = new ProductionInfo()
             {
+                FACT_ID = lotItem.FACT_ID,
                 ITEM_ID = lotItem.ID,
                 ITEM_NAME = lotItem.Name,
                 PRODUCTION_DATE = lotItem.dateLotTime,
                 LOT_HISTORY = lotItem.History,
                 TEST = lotItem.Test,
-                // ITEM_DETAIL = lotItem.WC_ID == "U" ? FillItemInfo(new Item(lotItem.ID)) : null,
                 ITEM_DETAIL = FillItemInfo(new Item(lotItem.ID)),
                 EQ_ID = lotItem.EQ_ID,
                 PROD_TYPE = lotItem.ProdType,
@@ -202,6 +202,7 @@ namespace NexenHub.Models
 
         public class ProductionInfo
         {
+            public string FACT_ID { get; set; }
             public string LOT_ID { get; set; }
             public string EQ_ID { get; set; }
             public string EQ_NAME { get; set; }

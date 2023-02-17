@@ -32,7 +32,7 @@ namespace NexenHub.Controllers
         }
 
         [HttpGet("{code}")]
-        public ActionResult<TireInspection> Get(string code)
+        public ActionResult<TireInspection> GetTire(string code)
         {
             TireInspection tireInspection;
             tireInspection = new TireInspection(code);
@@ -40,14 +40,34 @@ namespace NexenHub.Controllers
         }
 
         [HttpGet("version")]
-        public ActionResult<DateTime> Get()
+        public ActionResult<DateTime> GetVersion()
         {
             var version = new AppVersionTireInspection();
             return version.VersionDate;
         }
 
+        [HttpPost("createDefect")]
+        public ActionResult PostCreateDefect()
+        {
+            try
+            {
+                var httpRequest = HttpContext.Request;
+
+                TireDefect defect = JsonConvert.DeserializeObject<TireDefect>(httpRequest.Form["defectObject"]);
+                string user_id = httpRequest.Form["userId"].ToString();
+                TireInspection inspection = new TireInspection(defect.Barcode);
+
+            }
+            catch 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
         [HttpPost("defectUpload")]
-        public async Task<ActionResult> Post()
+        public async Task<ActionResult> PostPhotoUpload()
         {
             try
             {

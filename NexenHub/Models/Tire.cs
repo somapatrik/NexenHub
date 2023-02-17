@@ -9,10 +9,8 @@ namespace NexenHub.Models
         public string Barcode { get; set; }
         public LotItem GtLot { get; set; }
         public LotItem TireLot { get; set; }
-
         public Item GtItem { get; set; }
         public Item TireItem { get; set; }
-
         public bool IsGt { get; set; }
         public bool IsTire { get; set; }
 

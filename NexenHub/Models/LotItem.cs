@@ -64,6 +64,7 @@ namespace NexenHub.Models
         public string LotState { get; set; }
         public string Grp { get; set; }
         public string Kind { get; set; }
+        public string FACT_ID { get; set; }
         public string WC_ID { get; set; }
         public string ProcId { get; set; }
         public string ProdType { get; set; }
@@ -103,37 +104,6 @@ namespace NexenHub.Models
                 LoadTreadWidth();
                 LoadExtCompound();
             }
-        }
-
-        private void InitValues()
-        {
-            LotID = "";
-            ID = "";
-            Name = "";
-            State = "";
-            CART_ID = "";
-            CartState = "";
-            StockQty = 0;
-            LotState = "";
-            Grp = "";
-            Kind = "";
-            ProcId = "";
-            ExpiryDate = "";
-            EventTime = "";
-            ExpiryDateResult = false;
-            Division = "";
-            ProdTime = "";
-            AgingTime = "";
-            Test = false;
-            WC_ID = "";
-            EQ_ID = "";
-            EQ_NAME = "";
-            ProdType = "";
-            ProdTypeDesc = "";
-
-            Valid = false;
-
-            History = new List<LotHisItem>();
         }
 
         private void LoadFromDb()
@@ -179,7 +149,7 @@ namespace NexenHub.Models
                     USER_ID = dt.Rows[0]["USER_ID"].ToString();
                     USER_NAME = dt.Rows[0]["USER_NAME"].ToString();
 
-
+                    FACT_ID = dt.Rows[0]["FACT_ID"].ToString();
                     Valid = true;
                 }
 

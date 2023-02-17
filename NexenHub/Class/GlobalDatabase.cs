@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,6 +17,47 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public bool CreateDefect(TireInspection tireInfo, TireDefect defect)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_QA_MP_FM015_INSERT");
+
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_FACT_ID", tireInfo.TireProduction.FACT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_INSP_PROC_ID", defect.INSP, OracleDbType.Varchar2);
+                db.AddParameter("AS_BARCODE_NO", tireInfo.Barcode, OracleDbType.Varchar2);
+                db.AddParameter("AS_LOT_ID", tireInfo.TireProduction.LOT_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_ITEM_ID", tireInfo.TireProduction.ITEM_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_BAD_ID", defect.BAD_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_BAD_GRADE", defect.BAD_GRADE, OracleDbType.Varchar2);
+                db.AddParameter("AS_LOC_MOLD", defect.MOLD, OracleDbType.Varchar2);
+                db.AddParameter("AS_LOC_SIDE", defect.SIDE, OracleDbType.Varchar2);
+                db.AddParameter("AS_LOC_ZONE", defect.ZONE, OracleDbType.Varchar2);
+                db.AddParameter("AS_LOC_POSITION", defect.POS, OracleDbType.Varchar2);
+                db.AddParameter("AS_CQ2", defect.CQ2, OracleDbType.Varchar2);
+                db.AddParameter("AS_SUNG_EQ_ID", tireInfo.GtProduction.EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_GARYU_EQ_ID", tireInfo.TireProduction.EQ_ID, OracleDbType.Varchar2);
+                db.AddParameter("AS_REMARKS", defect.Remark, OracleDbType.Varchar2);
+
+                //nemám
+                db.AddParameter("AS_USER_ID", LoginInfo.UserID, OracleDbType.Varchar2);
+
+                db.AddParameter("AS_CAUSEPROC", defect.CAUSE_PROC, OracleDbType.Varchar2);
+                db.AddParameter("AS_LANGUAGE_CD", "1029", OracleDbType.Varchar2);
+
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+            }
+            catch 
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         public DataTable GetCodeDetail(string SYSCODE, string KINDCODE)
         {
@@ -127,6 +169,99 @@ namespace NexenHub.Class
                 return new DataTable();
             }
         }
+
+        #region User
+
+        public string GetNameUser(string id)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT USER_NAME");
+                query.AppendLine("FROM TB_CM_M_USER");
+                query.AppendLine("WHERE USER_ID = :id");
+                query.AppendLine("AND USE_YN = 'Y'");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("id", id, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+                if (dt.Rows.Count > 0)
+                    return dt.Rows[0][0].ToString();
+            }
+            catch
+            {
+
+            }
+
+            return "";
+        }
+
+        #endregion
+
+        #region Login
+
+        public User Login(string ID, string password)
+        {
+            User user = new User();
+
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT USER_ID, USER_NAME");
+                query.AppendLine("FROM TB_CM_M_USER");
+                query.AppendLine("WHERE USER_ID = :id");
+                query.AppendLine("AND SUBSTR(CAL_SHA256(:password),1,64) = SUBSTR(PWD, 1, 64)");
+                query.AppendLine("AND USE_YN = 'Y'");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("id", ID, OracleDbType.Varchar2);
+                db.AddParameter("password", password, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+
+                if (dt.Rows.Count > 0)
+                {
+                    user.UserId = dt.Rows[0]["USER_ID"].ToString();
+                    user.Name = dt.Rows[0]["USER_NAME"].ToString();
+                }
+            }
+            catch
+            { }
+
+            return user;
+        }
+
+        public User CardLogin(string hexCardId)
+        {
+            User user = new User();
+
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT US.USER_ID, US.USER_NAME, CARD.CARD_ID_HEX, US.USE_YN");
+                query.AppendLine("FROM TB_CM_M_USER US");
+                query.AppendLine("JOIN TB_CM_M_MEMBERS_CARD CARD ON CARD.MEMBER_ID=US.USER_ID");
+                query.AppendLine("WHERE US.USE_YN='Y'");
+                query.AppendLine("AND CARD.USE_YN='Y'");
+                query.AppendLine("AND CARD.CARD_ID_HEX = :hex");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("hex", hexCardId, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+                if (dt.Rows.Count > 0)
+                    user = new User()
+                    {
+                        UserId = dt.Rows[0]["USER_ID"].ToString(),
+                        Name = dt.Rows[0]["USER_NAME"].ToString(),
+                        CardHex = hexCardId
+                    };
+
+            }
+            catch { }
+
+            return user;
+        }
+
+        #endregion
 
         public DataTable GetDepartments(string rootDepartment)
         {
@@ -325,96 +460,6 @@ namespace NexenHub.Class
             return numbers;
         }
 
-        public string GetNameUser(string id)
-        {
-            try
-            {
-                StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT USER_NAME");
-                query.AppendLine("FROM TB_CM_M_USER");
-                query.AppendLine("WHERE USER_ID = :id");
-                query.AppendLine("AND USE_YN = 'Y'");
-
-                DBOra db = new DBOra(query.ToString());
-                db.AddParameter("id", id, OracleDbType.Varchar2);
-                DataTable dt = db.ExecTable();
-                if (dt.Rows.Count>0)
-                    return dt.Rows[0][0].ToString();
-            }
-            catch
-            {
-
-            }
-
-            return "";
-        }
-     
-        public User Login(string ID, string password)
-        {
-            User user = new User();
-
-            try
-            {
-                StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT USER_ID, USER_NAME");
-                query.AppendLine("FROM TB_CM_M_USER");
-                query.AppendLine("WHERE USER_ID = :id");
-                query.AppendLine("AND SUBSTR(CAL_SHA256(:password),1,64) = SUBSTR(PWD, 1, 64)");
-                query.AppendLine("AND USE_YN = 'Y'");
-
-                DBOra db = new DBOra(query.ToString());
-                db.AddParameter("id", ID, OracleDbType.Varchar2);
-                db.AddParameter("password", password, OracleDbType.Varchar2);
-                DataTable dt = db.ExecTable();
-
-                if (dt.Rows.Count > 0)
-                {
-                    user.UserId = dt.Rows[0]["USER_ID"].ToString();
-                    user.Name = dt.Rows[0]["USER_NAME"].ToString();
-                }
-            }
-            catch
-            {
-                
-            }
-
-            return user;
-        }
-
-        public User CardLogin(string hexCardId)
-        {
-            User user = new User();
-
-            try
-            {
-                StringBuilder query = new StringBuilder();
-                query.AppendLine("SELECT US.USER_ID, US.USER_NAME, CARD.CARD_ID_HEX, US.USE_YN");
-                query.AppendLine("FROM TB_CM_M_USER US");
-                query.AppendLine("JOIN TB_CM_M_MEMBERS_CARD CARD ON CARD.MEMBER_ID=US.USER_ID");
-                query.AppendLine("WHERE US.USE_YN='Y'");
-                query.AppendLine("AND CARD.USE_YN='Y'");
-                query.AppendLine("AND CARD.CARD_ID_HEX = :hex");
-
-                DBOra db = new DBOra(query.ToString());
-                db.AddParameter("hex", hexCardId, OracleDbType.Varchar2);
-                DataTable dt = db.ExecTable();
-                if (dt.Rows.Count > 0)
-                    user =  new User()
-                    {
-                        UserId = dt.Rows[0]["USER_ID"].ToString(),
-                        Name = dt.Rows[0]["USER_NAME"].ToString(),
-                        CardHex = hexCardId
-                    };
-
-            }
-            catch
-            {
-
-            }
-
-            return user;
-        }
-
         public DataTable GetDefectGalleryPaths(string AS_BARCODE_NO, int AS_INSP_SEQ, string AS_PROC_ID, DateTime AS_INSP_DT, string AS_BAD_ID)
         {
             try 
@@ -475,30 +520,6 @@ namespace NexenHub.Class
             }
 
 }
-
-        public DataTable GetAllParents(string LOT)
-        {
-            try
-            {
-                StringBuilder query = new StringBuilder();
-                query.AppendLine("select PROD_LOT_ID, INPUT_LOT_ID, to_date(EVENT_TIME, 'YYMMDDHH24MISS') EVENT_TIME");
-                query.AppendLine("from TB_IN_M_ITEM_TRACE");
-                query.AppendLine("CONNECT BY PRIOR INPUT_LOT_ID = PROD_LOT_ID");
-                query.AppendLine("START WITH PROD_LOT_ID = :lot");
-                query.AppendLine("GROUP BY PROD_LOT_ID,INPUT_LOT_ID,EVENT_TIME");
-                query.AppendLine("ORDER BY EVENT_TIME, PROD_LOT_ID");
-
-                DBOra db = new DBOra(query.ToString());
-                db.AddParameter("lot", LOT, OracleDbType.Varchar2);
-
-                DataTable dt = db.ExecTable();
-                return dt;
-            }
-            catch 
-            {
-                return new DataTable();
-            }
-        }
 
         public DataTable GetAllParentsExperiment(string LOT)
         {
