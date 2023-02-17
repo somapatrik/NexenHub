@@ -18,7 +18,7 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
-        public bool CreateDefect(TireInspection tireInfo, TireDefect defect)
+        public bool CreateDefect(TireInspection tireInfo, TireDefect defect, string userID)
         {
             try
             {
@@ -40,9 +40,7 @@ namespace NexenHub.Class
                 db.AddParameter("AS_SUNG_EQ_ID", tireInfo.GtProduction.EQ_ID, OracleDbType.Varchar2);
                 db.AddParameter("AS_GARYU_EQ_ID", tireInfo.TireProduction.EQ_ID, OracleDbType.Varchar2);
                 db.AddParameter("AS_REMARKS", defect.Remark, OracleDbType.Varchar2);
-
-                //nemám
-                db.AddParameter("AS_USER_ID", LoginInfo.UserID, OracleDbType.Varchar2);
+                db.AddParameter("AS_USER_ID", userID, OracleDbType.Varchar2);
 
                 db.AddParameter("AS_CAUSEPROC", defect.CAUSE_PROC, OracleDbType.Varchar2);
                 db.AddParameter("AS_LANGUAGE_CD", "1029", OracleDbType.Varchar2);
