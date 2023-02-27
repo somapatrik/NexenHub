@@ -18,11 +18,14 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
-        public bool CreateDefect(TireInspection tireInfo, TireDefect defect, string userID)
+        public bool CreateDefect(TireDefect defect, string userID)
         {
             try
             {
+                TireInspection tireInfo = new TireInspection(defect.Barcode);
+
                 DBOra db = new DBOra("SP_QA_MP_FM015_INSERT");
+                //db.ForceTestDb();
 
                 db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID, OracleDbType.Varchar2);
                 db.AddParameter("AS_FACT_ID", tireInfo.TireProduction.FACT_ID, OracleDbType.Varchar2);
@@ -46,6 +49,8 @@ namespace NexenHub.Class
 
                 db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
                 db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                db.ExecProcedure();
 
             }
             catch 
@@ -987,6 +992,31 @@ namespace NexenHub.Class
 
             }
             catch 
+            {
+                return new DataTable();
+            }
+        }
+
+        public DataTable MembersByDepartment(string deptID)
+        {
+            try
+            {
+
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT MEM.MEMBER_ID, MEM.DEPT_ID, MEM.MEMBER_NAME, LOWER(MEM.EMAIL_ADDR) EMAIL, MEM.TTOUT1 POSITION");
+                query.AppendLine("FROM TB_CM_M_MEMBER MEM");
+                query.AppendLine("where MEM.USE_YN = 'Y'");
+                query.AppendLine("and MEM.EMP_STATS = 1");
+                query.AppendLine("and MEM.DEPT_ID=:deptid");
+                query.AppendLine("order by ZTITEL");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("deptid", deptID, OracleDbType.Varchar2);
+                DataTable dt = db.ExecTable();
+                return dt;
+
+            }
+            catch
             {
                 return new DataTable();
             }

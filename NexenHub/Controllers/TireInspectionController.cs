@@ -55,15 +55,17 @@ namespace NexenHub.Controllers
 
                 TireDefect defect = JsonConvert.DeserializeObject<TireDefect>(httpRequest.Form["defectObject"]);
                 string user_id = httpRequest.Form["userId"].ToString();
-                TireInspection inspection = new TireInspection(defect.Barcode);
+
+                if (dbglob.CreateDefect(defect, user_id))
+                    return StatusCode(StatusCodes.Status201Created);
 
             }
-            catch 
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError(ex.Message, "error");
             }
 
-            return StatusCode(StatusCodes.Status201Created);
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [HttpPost("defectUpload")]

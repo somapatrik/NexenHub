@@ -91,6 +91,22 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+
+a.upDepartment{
+    font-weight:bold;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+    a.upDepartment:hover {
+        text-decoration: underline;
+    }
+
+a.endDepartment {
+    text-decoration: none;
+    cursor:pointer;
+}
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;

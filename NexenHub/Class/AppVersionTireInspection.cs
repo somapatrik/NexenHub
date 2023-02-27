@@ -11,7 +11,7 @@ namespace NexenHub.Class
         {
             fileName = "TireInspection.apk";
             filePath = "download/com.nexentire.tire_inspection.apk";
-            VersionDate = new DateTime(2022,12,6,0,0,0);
+            VersionDate = new DateTime(2023,2,23,0,0,0);
         }
     }
 }

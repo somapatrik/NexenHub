@@ -4,34 +4,70 @@
 @{
 }
 
-<div class="container">
+<div class="container-fluid">
 
-    <div class="row h-100">
-        <div class="col-9">
+    <div class="row">
 
-        </div>
-        <div class="col">
-
+        <div class="col-4">
             <div class="row">
-                <nav class="bd-toc">
-                <ul class="list-unstyled fw-normal pb-1 small">
-
-                    @foreach (Department department in Model.Departments){
-
-
-                        <li>
-                            @for(int i = 0; i < department.Level - 1; i++)
-                            {
-                                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            }
-                            <a class="text-muted text-decoration-none" href="#">@department.Name</a>
-
-                        </li>
-
-                    }
-                </ul>
+                <nav>
+                   @Html.Raw(Model.generatedCode)
                 </nav>
             </div>
         </div>
+
+        <div class="col">
+            <div id="memberList" class="row row-cols-1 row-cols-lg-2 row-cols-xl-4 g-2">
+
+              
+
+            </div>
+        </div>
+       
     </div>
 </div>
+
+<div id="cardCode" style="visibility:collapse;">
+    <div class="col">
+                <div class="card h-100">
+            <img src="{{imgSrc}}" class="card-img img-fluid w-100" alt="" style="object-position:top;object-fit:cover;">
+                  <div class="card-body">
+                    <h5 class="card-title">{{FullName}}</h5>
+                    <p class="card-text">
+                        <div>{{memberPos}}</div>
+                        <div>{{memberEmail}}</div>
+                     </p>
+                  </div>
+                </div>
+              </div>
+</div>
+
+
+
+<script type="text/javascript">
+    
+    async function selectByDepartment(deptID){
+        await fetch(window.location.origin + '/api/utility/MemberByDept/' + deptID)
+                .then(response => response.json())
+                .then(data => displayUserList(data));
+    }
+
+    function displayUserList(members)
+    {
+        var memberList = document.getElementById("memberList");
+        var cardCode = document.getElementById("cardCode").innerHTML;
+
+        memberList.innerHTML = "";
+
+        members.forEach(member => {
+            var memCode = cardCode;
+            memCode = memCode.replace('{{FullName}}', member['NAME']);
+            memCode = memCode.replace('{{imgSrc}}', 'http://portal.nexentire.com/icons/egate/images/' + member['ID'] + '.jpg');            
+            memCode = memCode.replace('{{memberPos}}', member['POSITION']);
+            memCode = memCode.replace('{{memberEmail}}', member['EMAIL']);
+            memberList.innerHTML += memCode;
+        });
+    }
+
+</script>
+

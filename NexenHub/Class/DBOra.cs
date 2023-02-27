@@ -23,6 +23,12 @@ namespace NexenHub.Class
             this.Command = new OracleCommand(this.query, this.Connection);
         }
 
+        public void ForceTestDb()
+        {
+            Connection = new OracleConnection(GlobalSettings.DatabaseConnectionDevelopment);
+            Command = new OracleCommand(this.query, this.Connection);
+        }
+
         public void AddParameter(string name, object value, OracleDbType type)
         {
             OracleParameter parameter = new OracleParameter(name, type);

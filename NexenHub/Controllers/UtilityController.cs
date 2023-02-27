@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NexenHub.Class;
+using NexenHub.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace NexenHub.Controllers
@@ -11,6 +13,36 @@ namespace NexenHub.Controllers
     [ApiController]
     public class UtilityController : Controller
     {
+        GlobalDatabase dbglob = new GlobalDatabase();
+
+
+        [HttpGet("MemberByDept/{deptID:minlength(8):maxlength(8)}")]
+        public ActionResult<List<SimpleMember>> GetMemberByDept(string deptID)
+        {
+            List<SimpleMember> members = new List<SimpleMember>();
+            DataTable dt = dbglob.MembersByDepartment(deptID);
+            foreach (DataRow row in dt.Rows)
+            {
+                members.Add(new SimpleMember()
+                {
+                     ID = row["MEMBER_ID"].ToString(),
+                     DEPT_ID = row["DEPT_ID"].ToString(),
+                     NAME = row["MEMBER_NAME"].ToString(),
+                     EMAIL = row["EMAIL"].ToString(),
+                     POSITION = row["POSITION"].ToString()
+                });
+            }
+            return members;
+        }
+
+        public class SimpleMember
+        {
+            public string ID { get; set; }
+            public string DEPT_ID { get; set; }
+            public string NAME { get; set; }
+            public string EMAIL { get; set; }
+            public string POSITION { get; set; }
+        }
 
         [HttpGet("APIStatus")]
         public ActionResult<APIStatus> GetApiStatus()
