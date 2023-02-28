@@ -54,7 +54,7 @@ namespace NexenHub.Class
                         {
                             new Claim(ClaimTypes.Name, user.Name),
                             new Claim("USER_ID", user.UserId),
-                            new Claim(ClaimTypes.Role, "Administrator")
+                            new Claim(ClaimTypes.Role, "User")
                         };
 
                 var claimsIdentity = new ClaimsIdentity(

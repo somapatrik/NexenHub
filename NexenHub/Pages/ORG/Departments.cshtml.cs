@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NexenHub.Class;
@@ -9,6 +10,7 @@ using System.Text;
 
 namespace NexenHub.Pages.ORG
 {
+    [Authorize(Roles = "User")]
     public class DepartmentsModel : PageModel
     {
         GlobalDatabase dbglob = new GlobalDatabase();
