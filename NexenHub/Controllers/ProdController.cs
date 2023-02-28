@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using NexenHub.Class;
 using NexenHub.Models;
 using System;
@@ -59,6 +60,66 @@ namespace NexenHub.Controllers
         public ActionResult<List<int>> GetProdPlan()
         {
             return dbglob.GetTBMMonthPlan();
+        }
+
+        [HttpGet("SWVersions")]
+        public ActionResult<string[]> GetSWVersions()
+        {
+            int ICSCount;
+            int LatestICSCount = 0;
+            DateTime LatestICSVersion = DateTime.MinValue;
+
+            int RexCount;
+            int LatestCountRex = 0;
+            DateTime LatestRexVersion = DateTime.MinValue; ;
+
+            int IOCount;
+            int LatestCountIO = 0;
+            DateTime LatestIOVersion = DateTime.MinValue; ;
+
+            DataTable dt = dbglob.GetLatestSoftwareCount("ics");
+            if (dt.Rows.Count > 0)
+            {
+                LatestICSCount = int.Parse(dt.Rows[0][0].ToString());
+                LatestICSVersion = DateTime.Parse(dt.Rows[0][1].ToString());
+                
+            }
+
+            dt = dbglob.GetLatestSoftwareCount("rex");
+            if (dt.Rows.Count > 0)
+            {
+                LatestCountRex = int.Parse(dt.Rows[0][0].ToString());
+                LatestRexVersion = DateTime.Parse(dt.Rows[0][1].ToString());
+                
+            }
+
+            dt = dbglob.GetLatestSoftwareCount("ioserver");
+            if (dt.Rows.Count > 0)
+            {
+                LatestCountIO = int.Parse(dt.Rows[0][0].ToString());
+                LatestIOVersion = DateTime.Parse(dt.Rows[0][1].ToString());
+            }
+
+            RexCount = dbglob.GetRexCount();
+            ICSCount = dbglob.GetICSCount();
+            IOCount = dbglob.GetIOServerCount();
+
+            string[] versionArray = { 
+                LatestICSVersion.ToString("yy-MM-dd"), LatestICSCount.ToString(), ICSCount.ToString(),
+                LatestIOVersion.ToString("yy-MM-dd"), LatestCountIO.ToString(), IOCount.ToString(),
+                LatestRexVersion.ToString("yy-MM-dd"), LatestCountRex.ToString(), RexCount.ToString(),
+            };
+            return versionArray;
+        }
+
+        [HttpGet("Unreachable")]
+        public ActionResult<List<PingDevice>> GetUnReachAble()
+        {
+            List<PingDevice> pingDevices = new List<PingDevice>();
+            foreach (DataRow row in dbglob.GetPingDevices().Rows)
+                pingDevices.Add(new PingDevice() { Name = row["DISPLAYNAME"].ToString(), IP = row["IP"].ToString() });
+
+            return pingDevices.FindAll(d => !d.PingResult);
         }
 
 

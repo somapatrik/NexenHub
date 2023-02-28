@@ -1,0 +1,226 @@
+﻿@page
+@model NexenHub.Pages.Dashboard.ITModel
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICT Monitoring</title>
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+
+<body style="background-color:#000000;">
+
+    <div class="container-fluid">
+
+        <!-- Version -->
+
+        <div class="row row-cols-1 row-cols-md-3 g-2">
+
+            <div class="col">
+                <div id="IOCard" class="card h-100 text-center">
+                    <div class="card-header display-5">IO Server</div>
+                    <div class="card-body display-5">
+                        <div><span id="IOServerVersion"></span></div>
+                        <div><span id="IOCount"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div id="ICSCard" class="card h-100 text-center">
+                    <div class="card-header display-5">ICS</div>
+                    <div class="card-body display-5">
+                        <div><span id="ICSServerVersion"></span></div>
+                        <div><span id="ICSCount"></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div id="RexCard" class="card h-100 text-center">
+                    <div class="card-header display-5">Rex</div>
+                    <div class="card-body display-5">
+                        <div><span id="RexServerVersion"></span></div>
+                        <div><span id="RexCount"></span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PM -->
+        <div id="pmRow" class="row row-cols-1 row-cols-md-3 g-2 mt-1">
+
+
+
+        </div>
+
+        <!-- Unreachable -->
+        <div id="pmNoreach" class="row row-cols-1 row-cols-md-3 g-1">
+
+
+
+        </div>
+
+    </div>
+
+    <!-- PM Card -->
+    <div id="pmCardCode" style="visibility:collapse;">
+    <div class="col" >
+        <div class="card h-100 bg-warning text-dark">
+            <div class="card-header text-center">
+                <h2>PM - {{MachineName}}</h2>
+            </div>
+            <div class="card-body text-center">
+                <h3>{{StartTime}}</h3>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Unreach card -->
+    <div id="noReachCard" style="visibility:collapse;">
+        <div class="col">
+            <div class="card h-100 bg-danger text-light">
+                <div class="card-header text-center">
+                    <h2>{{Name}}</h2>
+                </div>
+                <div class="card-body text-center">
+                    <div><h3>{{IP}}</h3></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+    document.addEventListener('readystatechange', event => {
+          switch (document.readyState) {
+            case "loading":
+              break;
+            case "interactive":
+                refreshGui();
+              break;
+            case "complete":
+                setInterval(refreshGui, 15000);
+              break;
+          }
+    });
+
+     async function refreshGui()
+    {
+        LoadVersions();
+        LoadPM();
+        await LoadUnreachable();
+    }
+
+    async function LoadVersions(){
+    await fetch(window.location.origin + '/api/prod/swversions')
+            .then(response => response.json())
+            .then(data => displayVersions(data));
+    }
+    
+    async function LoadUnreachable(){
+        await fetch(window.location.origin + '/api/prod/unreachable')
+              .then(response => response.json())
+              .then(data => displayUnreach(data));
+    }
+
+     async function LoadPM(){
+        await fetch(window.location.origin + '/api/prod/PM')
+              .then(response => response.json())
+              .then(data => displayPM(data));
+    }
+
+    function displayVersions(data){
+        document.getElementById('IOServerVersion').innerHTML = data[3];
+        document.getElementById('ICSServerVersion').innerHTML = data[0];
+        document.getElementById('RexServerVersion').innerHTML = data[6];
+
+        document.getElementById('IOCount').innerHTML = data[4] + ' / ' + data[5];
+        document.getElementById('ICSCount').innerHTML = data[1] + ' / ' + data[2];
+        document.getElementById('RexCount').innerHTML = data[7] + ' / ' + data[8];
+
+        var ioCard = document.getElementById('IOCard');
+        var icsCard = document.getElementById('ICSCard');
+        var rexCard = document.getElementById('RexCard');
+
+
+        if (data[4] == data[5])
+        {
+            ioCard.classList.remove('alert-warning');
+            ioCard.classList.add('alert-primary');
+        }
+        else
+        {
+            ioCard.classList.add('alert-warning');
+            ioCard.classList.remove('alert-primary');
+        }
+
+        if (data[1] == data[2])
+        {
+            icsCard.classList.remove('alert-warning');
+            icsCard.classList.add('alert-primary');
+        }
+        else
+        {
+            icsCard.classList.add('alert-warning');
+            icsCard.classList.remove('alert-primary');
+        }
+
+        if (data[7] == data[8])
+        {
+            rexCard.classList.remove('alert-warning');
+            rexCard.classList.add('alert-primary');
+        }
+        else
+        {
+            rexCard.classList.add('alert-warning');
+            rexCard.classList.remove('alert-primary');
+        }
+
+    }
+
+    function displayPM(pms)
+    {
+        var pmCode = document.getElementById('pmCardCode').innerHTML
+        var pmRow = document.getElementById("pmRow");
+
+        pmRow.innerHTML = "";
+
+        pms.forEach(data => {
+            var thisCode = pmCode;
+            thisCode = thisCode.replace('{{MachineName}}', data['Name']);
+            pmRow.innerHTML += thisCode;
+        });
+
+    }
+
+    function displayUnreach(unreachables)
+    {
+        var cardCode = document.getElementById('noReachCard').innerHTML
+        var unreachRow = document.getElementById("pmNoreach");
+
+        unreachRow.innerHTML = "";
+
+        unreachables.forEach(data => {
+            var thisCode = cardCode;
+            thisCode = thisCode.replace('{{Name}}', data['Name']);
+            thisCode = thisCode.replace('{{IP}}', data['IP']);
+            unreachRow.innerHTML += thisCode;
+        });
+
+    }
+
+
+</script>

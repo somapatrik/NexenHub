@@ -39,7 +39,7 @@ namespace NexenHub
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 options.SlidingExpiration = true;
                 options.AccessDeniedPath = "/Forbidden";
-                options.LoginPath = "/Login";
+                options.LoginPath = "/Forbidden";
             });
 
             //services.AddAuthorization(options =>
