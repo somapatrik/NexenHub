@@ -325,6 +325,7 @@ namespace NexenHub.Class
             }
         }
 
+        #region Prototype progress
         public DataTable GetEMRDefects(string EMR)
         {
             try
@@ -433,6 +434,7 @@ namespace NexenHub.Class
 
             
         }
+        #endregion
 
         public List<int> GetTBMMonthPlan()
         {

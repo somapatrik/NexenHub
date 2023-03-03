@@ -38,7 +38,7 @@ namespace NexenHub.Controllers
                     return "HOVNO";
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return "error";
             }

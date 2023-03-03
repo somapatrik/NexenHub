@@ -16,7 +16,7 @@ namespace NexenHub.Controllers
         GlobalDatabase dbglob = new GlobalDatabase();
 
         [HttpGet("version")]
-        public ActionResult<RexVersion> Get()
+        public ActionResult<RexVersion> GetVersion()
         {
             RexVersion rexver = new RexVersion();
             return rexver;

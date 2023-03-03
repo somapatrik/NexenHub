@@ -18,7 +18,7 @@ namespace NexenHub.Controllers
 
         GlobalDatabase dbglob = new GlobalDatabase();
 
-        [HttpGet("{proc}")]
+        [HttpGet("CurrentProd/{proc}")]
         public ActionResult<string> GetProd(string proc)
         {
             try
@@ -60,6 +60,15 @@ namespace NexenHub.Controllers
         public ActionResult<List<int>> GetProdPlan()
         {
             return dbglob.GetTBMMonthPlan();
+        }
+
+        [HttpGet("TBMPlanCurrent")]
+        public ActionResult<int> GetTBMPlanNow()
+        {
+            int prodDay = DateTime.Now.AddHours(-6).Day;
+            List<int> planDays = dbglob.GetTBMMonthPlan();
+            return planDays[prodDay];
+
         }
 
         [HttpGet("SWVersions")]

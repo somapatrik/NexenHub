@@ -145,7 +145,9 @@ namespace NexenHub.Models
                 USER_NAME = lotItem.USER_NAME,
                 USER_ID = lotItem.USER_ID,
                 LOT_ID = lotItem.LOT_ID,
-                MOLD_NO = lotItem.MOLD_NO
+                MOLD_NO = lotItem.MOLD_NO,
+                LOT_STATE = lotItem.LotState,
+                ITEM_STATE = lotItem.State
 
             };
             return productionInfo;
@@ -211,6 +213,8 @@ namespace NexenHub.Models
             public DateTime PRODUCTION_DATE { get; set; }
             public string ITEM_ID { get; set; }
             public string ITEM_NAME { get; set; }
+            public string ITEM_STATE { get; set; }
+            public string LOT_STATE { get; set; }
             public bool TEST { get; set; }
             public string MOLD_NO { get; set; }
             public string USER_ID { get; set; }

@@ -5,13 +5,45 @@
 }
 
 
-<div class="container">
+<script src="~/js/index.js"></script>
 
-        <div class="row my-2 g-2">
-            <div class="col">
-                @await Component.InvokeAsync("YearProduction", @Model.yearProd)
+<div class="container py-2">
+
+    <div class="row mb-2">
+        <div class="col">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <h4>GreenTire</h4>
+                        </div>
+                        <div class="col-2 text-end">
+                            <span id="currentTBMProd"></span>
+                            <span> / </span>
+                            <span id="currentTBMPlan"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                        <div class="progress ">
+                            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div> 
+                        </div>
+                    </div>
+                </div>
             </div>
+
+    </div>
+</div>
+
+    <div class="row ">
+        <div class="col">
+            @await Component.InvokeAsync("YearProduction", @Model.yearProd)
         </div>
+    </div>
     </div>
 
 

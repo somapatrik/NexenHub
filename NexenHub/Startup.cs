@@ -11,6 +11,7 @@ using NexenHub.Class;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Azure.Core;
 
 namespace NexenHub
 {
@@ -39,7 +40,7 @@ namespace NexenHub
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
                 options.SlidingExpiration = true;
                 options.AccessDeniedPath = "/Forbidden";
-                options.LoginPath = "/Forbidden";
+                options.LoginPath = "/Login";
             });
 
             //services.AddAuthorization(options =>

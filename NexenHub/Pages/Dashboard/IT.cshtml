@@ -21,7 +21,7 @@
 
         <!-- Version -->
 
-        <div class="row row-cols-1 row-cols-md-3 g-2">
+        <div class="row row-cols-1 row-cols-md-3 g-1">
 
             <div class="col">
                 <div id="IOCard" class="card h-100 text-center">
@@ -56,14 +56,14 @@
         </div>
 
         <!-- PM -->
-        <div id="pmRow" class="row row-cols-1 row-cols-md-3 g-2 mt-1">
+        <div id="pmRow" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
 
 
 
         </div>
 
         <!-- Unreachable -->
-        <div id="pmNoreach" class="row row-cols-1 row-cols-md-3 g-1">
+        <div id="pmNoreach" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
 
 
 
@@ -72,7 +72,7 @@
     </div>
 
     <!-- PM Card -->
-    <div id="pmCardCode" style="visibility:collapse;">
+    <div id="pmCardCode" style="visibility:collapse;position:absolute;top:0;">
     <div class="col" >
         <div class="card h-100 bg-warning text-dark">
             <div class="card-header text-center">
@@ -86,7 +86,7 @@
     </div>
 
     <!-- Unreach card -->
-    <div id="noReachCard" style="visibility:collapse;">
+    <div id="noReachCard" style="visibility:collapse;position:absolute;top:0;">
         <div class="col">
             <div class="card h-100 bg-danger text-light">
                 <div class="card-header text-center">
@@ -121,7 +121,7 @@
     {
         LoadVersions();
         LoadPM();
-        await LoadUnreachable();
+        LoadUnreachable();
     }
 
     async function LoadVersions(){
@@ -201,6 +201,7 @@
         pms.forEach(data => {
             var thisCode = pmCode;
             thisCode = thisCode.replace('{{MachineName}}', data['Name']);
+            thisCode = thisCode.replace('{{StartTime}}', data['formatTime']);
             pmRow.innerHTML += thisCode;
         });
 
@@ -210,6 +211,7 @@
     {
         var cardCode = document.getElementById('noReachCard').innerHTML
         var unreachRow = document.getElementById("pmNoreach");
+        
 
         unreachRow.innerHTML = "";
 
@@ -217,7 +219,7 @@
             var thisCode = cardCode;
             thisCode = thisCode.replace('{{Name}}', data['Name']);
             thisCode = thisCode.replace('{{IP}}', data['IP']);
-            unreachRow.innerHTML += thisCode;
+            unreachRow.innerHTML += thisCode;   
         });
 
     }

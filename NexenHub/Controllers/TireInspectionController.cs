@@ -167,6 +167,28 @@ namespace NexenHub.Controllers
             return items;
         }
 
+        [HttpGet("toWarehouse")]
+        public ActionResult<List<ComboItem>> GetToWarehouse()
+        {
+            List<ComboItem> items = new List<ComboItem>();
+            DataTable dt = dbglob.CM_CODE_LIST("IN", "01", "04", "Y", "1029");
+            foreach (DataRow row in dt.Rows)
+                items.Add(new ComboItem(row["CODE_ID"].ToString(), row["CODE_NAME"].ToString()));
+
+            return items;
+        }
+
+        [HttpGet("InspType")]
+        public ActionResult<List<ComboItem>> GetInspType()
+        {
+            List<ComboItem> items = new List<ComboItem>();
+            DataTable dt = dbglob.CM_CODE_LIST("IN", "36", "05", "", "1029");
+            foreach (DataRow row in dt.Rows)
+                items.Add(new ComboItem(row["CODE_ID"].ToString(), row["CODE_NAME"].ToString()));
+
+            return items;
+        }
+
         [HttpGet("defectCode/{Insp}")]
         public ActionResult<List<ComboItem>> GetDefectCode(string Insp)
         {

@@ -1,5 +1,4 @@
 ﻿@page
-@using NexenHub.Models;
 @model NexenHub.Pages.ORG.DepartmentsModel
 @{
 }
@@ -27,7 +26,7 @@
     </div>
 </div>
 
-<div id="cardCode" style="visibility:collapse;">
+<div id="cardCode" style="visibility:collapse;position:absolute;top:0;">
     <div class="col">
                 <div class="card h-100">
             <img src="{{imgSrc}}" class="card-img" alt="" style="object-position:top;object-fit:contain;height:30vh;">
@@ -52,7 +51,7 @@
                 .then(data => displayUserList(data));
     }
 
-    function displayUserList(members)
+    async function displayUserList(members)
     {
         var memberList = document.getElementById("memberList");
         var cardCode = document.getElementById("cardCode").innerHTML;
@@ -60,9 +59,14 @@
         memberList.innerHTML = "";
 
         members.forEach(member => {
+            
             var memCode = cardCode;
+
+            var imgUrl = 'http://portal.nexentire.com/icons/egate/images/' + member['ID'] + '.jpg';
+            
+
+            memCode = memCode.replace('{{imgSrc}}', imgUrl);
             memCode = memCode.replace('{{FullName}}', member['NAME']);
-            memCode = memCode.replace('{{imgSrc}}', 'http://portal.nexentire.com/icons/egate/images/' + member['ID'] + '.jpg');            
             memCode = memCode.replace('{{memberPos}}', member['POSITION']);
             memCode = memCode.replace('{{memberEmail}}', member['EMAIL']);
             memberList.innerHTML += memCode;

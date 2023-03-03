@@ -17,6 +17,7 @@ namespace NexenHub.Pages.ORG
 
 
         private string TopDepartmentID = "50007344";
+        private string TopFauknerID = "50001014";
         public List<Department> allDepts { get; set; }
         public StringBuilder generatedCode { set; get; }
 
@@ -24,7 +25,10 @@ namespace NexenHub.Pages.ORG
 
         public void OnGet()
         {
-            LoadDepartments();
+            allDepts = new List<Department>();
+            LoadDepartments(TopDepartmentID);
+            LoadDepartments(TopFauknerID);
+
             CreateSubDepartments();
 
             generatedCode = new StringBuilder();
@@ -82,11 +86,10 @@ namespace NexenHub.Pages.ORG
             allDepts.RemoveAll(x => toRemove.Contains(x.ID));
         }
 
-        private void LoadDepartments()
+        private void LoadDepartments(string deptID)
         {
             // Complete list
-            allDepts = new List<Department>();
-            DataTable dt = dbglob.GetDepartments(TopDepartmentID);
+            DataTable dt = dbglob.GetDepartments(deptID);
             foreach (DataRow row in dt.Rows)
             {
                 allDepts.Add(new Department()
