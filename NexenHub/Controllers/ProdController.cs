@@ -140,7 +140,6 @@ namespace NexenHub.Controllers
             return pingDevices.FindAll(d => !d.PingResult);
         }
 
-
         [HttpGet("PM")]
         public ActionResult<List<StatusEq>> GetPM()
         {

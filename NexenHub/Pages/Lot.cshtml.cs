@@ -34,7 +34,7 @@ namespace NexenHub.Pages
             string header = (HttpContext.Request.Headers["CF-Connecting-IP"].FirstOrDefault() ?? HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault());
             if (IPAddress.TryParse(header, out IPAddress ip)) {
                 clientIP = ip.ToString();
-                FuckHim = (clientIP == "172.15.9.70" || clientIP == "172.15.9.73") && rnd.Next(3) <= 1;
+                FuckHim = (clientIP == "172.15.9.70" || clientIP == "172.15.9.73"); // && rnd.Next(3) <= 1;
             }
 
 
