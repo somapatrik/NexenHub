@@ -18,6 +18,27 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
+        public void TireToRAD(string barcode, string Whcode, string user_id,string InspType)
+        {
+            try
+            {
+                DBOra db = new DBOra("SP_IN_MP_FM054");
+                db.AddParameter("AS_PLANT_ID", GlobalSettings.PLANT_ID,OracleDbType.Varchar2);
+                db.AddParameter("AS_BARCODE_NO", barcode, OracleDbType.Varchar2);
+                db.AddParameter("AS_TO_WHCODE", Whcode, OracleDbType.Varchar2);
+                db.AddParameter("AS_USER_ID", user_id, OracleDbType.Varchar2);
+                db.AddParameter("AS_INSP_TYPE", InspType, OracleDbType.Varchar2);
+                db.AddParameter("AS_LANGUAGE_CD", "1029", OracleDbType.Varchar2);
+
+                db.AddOutput("RS_CODE", OracleDbType.Varchar2, 100);
+                db.AddOutput("RS_MSG", OracleDbType.Varchar2, 100);
+
+                db.ExecProcedure();
+            }
+            catch { }
+            
+        }
+
         public bool CreateDefect(TireDefect defect, string userID)
         {
             try

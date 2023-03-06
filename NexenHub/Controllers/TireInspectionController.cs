@@ -155,6 +155,28 @@ namespace NexenHub.Controllers
             }
         }
 
+        [HttpPost("tireToWh")]
+        public ActionResult PostTireToWh()
+        {
+            try
+            {
+                var httpRequest = HttpContext.Request;
+                string barcode = httpRequest.Form["barcode"].ToString();
+                string Whcode = httpRequest.Form["whcode"].ToString();
+                string user_id = httpRequest.Form["userid"].ToString();
+                string insptype = httpRequest.Form["insptype"].ToString();
+
+                dbglob.TireToRAD(barcode, Whcode, user_id, insptype);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "error");
+                return new StatusCodeResult(500);
+            }
+
+            return Ok();
+        }
+
 
         [HttpGet("insProc")]
         public ActionResult<List<ComboItem>> GetInsProc()
@@ -182,7 +204,8 @@ namespace NexenHub.Controllers
         public ActionResult<List<ComboItem>> GetInspType()
         {
             List<ComboItem> items = new List<ComboItem>();
-            DataTable dt = dbglob.CM_CODE_LIST("IN", "36", "05", "", "1029");
+            DBOra db = new DBOra("select CODE_ID, '[' || CODE_ID || '] ' || CODE_NAME_1029 CODE_NAME from TB_CM_D_CODE where SYS_CODE_ID='IN' and KIND_CODE_ID='36' and USE_YN='Y' ORDER BY SORT01");
+            DataTable dt = db.ExecTable();
             foreach (DataRow row in dt.Rows)
                 items.Add(new ComboItem(row["CODE_ID"].ToString(), row["CODE_NAME"].ToString()));
 
