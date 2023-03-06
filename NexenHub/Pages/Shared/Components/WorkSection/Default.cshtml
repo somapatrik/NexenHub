@@ -7,14 +7,14 @@
     <div class="card-body">
 
         
-                <div class="row mb-2" data-bs-toggle="modal" data-bs-target="#@Html.Raw(Model.WC_ID + "_Modal")" style="cursor:pointer;">
-                    <div class="col">
-                        <div class="d-flex">
-                            <h4 class="flex-grow-1">@Model.WC_NAME ></h4>
-                            <h4 id="@Html.Raw($"{Model.WC_ID}_percent")"></h4>
-                        </div>
-                    </div>
+        <div class="row mb-2" data-bs-toggle="modal" data-bs-target="#@Html.Raw(Model.WC_ID + "_Modal")" style="cursor:pointer;">
+            <div class="col">
+                <div class="d-flex">
+                    <h4 class="flex-grow-1">@Model.WC_NAME ></h4>
+                    <h4 id="@Html.Raw($"{Model.WC_ID}_percent")"></h4>
                 </div>
+            </div>
+        </div>
 
 
         <div class="collapse show" id="@Html.Raw($"{Model.WC_ID}_collapse")">

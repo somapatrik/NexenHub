@@ -10,6 +10,7 @@
 <div class="container py-2">
 
     <div class="row mb-2">
+       
         <div class="col">
 
             <div class="card">
@@ -20,16 +21,14 @@
                             <h4>GreenTire</h4>
                         </div>
                         <div class="col-2 text-end">
-                            <span id="currentTBMProd"></span>
-                            <span> / </span>
-                            <span id="currentTBMPlan"></span>
+                            <h4 id="tbmPlanProd"></h4>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col">
                         <div class="progress ">
-                            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div id="progressTbm" class="progress-bar " role="progressbar" style="width: 0%;background-color:rgb(75, 192, 192)"></div>
                         </div> 
                         </div>
                     </div>
@@ -37,7 +36,38 @@
             </div>
 
     </div>
-</div>
+
+    </div>
+
+    <div class="row mb-2">
+
+        <div class="col">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <h4>Tire</h4>
+                        </div>
+                        <div class="col-2 text-end">
+                            <h4 id="tirePlanProd"></h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="progress ">
+                                <div id="progressTire" class="progress-bar bg-soma-nexen" role="progressbar" style="width: 0%;background-color:rgb(54, 162, 235);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
     <div class="row ">
         <div class="col">

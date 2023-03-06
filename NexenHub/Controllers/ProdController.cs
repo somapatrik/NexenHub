@@ -71,6 +71,15 @@ namespace NexenHub.Controllers
 
         }
 
+        [HttpGet("CurePlanCurrent")]
+        public ActionResult<int> GetCurePlanNow()
+        {
+            int prodDay = DateTime.Now.AddHours(-6).Day;
+            List<int> planDays = dbglob.GetCUREMonthPlan();
+            return planDays[prodDay];
+
+        }
+
         [HttpGet("SWVersions")]
         public ActionResult<string[]> GetSWVersions()
         {
