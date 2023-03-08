@@ -3,36 +3,168 @@
 @{
 }
 
+
+<div class="container-fluid container-xl pt-3">
+
+    <div class="row row-cols-1 row-cols-md-2 mb-2 g-2">
+
+        <div class="col">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <h4>GreenTire</h4>
+                        </div>
+                        <div class="col text-end">
+                            <h4 id="tbmPlanProd"></h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="progress ">
+                                <div id="progressTbm" class="progress-bar " role="progressbar" style="width: 0%;background-color:rgb(75, 192, 192)"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col">
+                            <h4>Tire</h4>
+                        </div>
+                        <div class="col text-end">
+                            <h4 id="tirePlanProd"></h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="progress ">
+                                <div id="progressTire" class="progress-bar bg-soma-nexen" role="progressbar" style="width: 0%;background-color:rgb(54, 162, 235);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-2">
+
+        <div class="col">
+
+            <div class="card h-100">
+                <div class="card-body">
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="text-start">
+                                <h2>Nexen 1</h2>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="text-end">
+                                <h2 id="NEX1_Percent" class=""></h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col">
+                            <canvas id="NEX1_Chart" />
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col">
+
+            <div class="card h-100">
+                <div class="card-body">
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="text-start">
+                                <h2>Nexen 2</h2>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="text-end">
+                                <h2 id="NEX2_Percent" class=""></h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col">
+                            <canvas id="NEX2_Chart" />
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+@*
 <div class="container-fluid pt-3">
     <div class="row row-cols-1 ">
         <h4>Real-time availability</h4>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 row-cols-xxl-6 g-2 mb-3">
+
+         <div class="row row-cols-1 row-cols-md-3 row-cols-xxl-6 g-2 mb-3">
         <div class="col">
-            @await Component.InvokeAsync("WorkSection", "M")
+            @await Component.InvokeAsync("WorkSection",new {WC_ID = "M", FACT_ID = "NEX1"})
+        </div>
+
+       <div class="col">
+            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","C"},{"FACT_ID","NEX1"}})
         </div>
         <div class="col">
-            @await Component.InvokeAsync("WorkSection", "C")
+            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","E"},{"FACT_ID","NEX1"}})
         </div>
         <div class="col">
-            @await Component.InvokeAsync("WorkSection", "E")
+            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","B"},{"FACT_ID","NEX1"}})
         </div>
         <div class="col">
-            @await Component.InvokeAsync("WorkSection", "B")
+            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","P"},{"FACT_ID","NEX1"}})
         </div>
         <div class="col">
-            @await Component.InvokeAsync("WorkSection", "P")
-        </div>
-        <div class="col">
-            @await Component.InvokeAsync("WorkSection", "T")
+            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","T"},{"FACT_ID","NEX1"}})
         </div>
     </div>
 
     <div class="row">
         <div class="col">
-            @await Component.InvokeAsync("WorkSection", "U")
+            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","U"},{"FACT_ID","NEX1"}})
         </div>
-    </div>
+    </div>*@
 </div>
 
 
@@ -42,36 +174,189 @@
           switch (document.readyState) {
             case "loading":
               break;
-            case "interactive":
+            case "interactive":   
                 refreshGui();
               break;
             case "complete":
-                setInterval(refreshGui, 20000);
+                setInterval(refreshGui, 7000);
+                setInterval(refreshProd,3000);
               break;
           }
     });
 
-    async function refreshGui()
-    {
-         loadFromApi("M");
-         loadFromApi("C");
-         loadFromApi("E");
-         loadFromApi("B");
-         loadFromApi("P");
-         loadFromApi("T");
-         await loadFromApi("U");
+    var nex1Ch = document.getElementById("NEX1_Chart").getContext('2d');
+    var nex1Chart = new Chart(nex1Ch, {
+        type: 'bar',
+        data: {
+            labels: ['Mixing', 'Calender', 'Extrusion', 'Bead', 'Cutting', 'TBM', 'Curing'],
+            datasets: [
+                {
+                    label: 'Availability',
+                    data: [],
+                    backgroundColor: ['rgba(46, 176, 134,.5)'],
+                    borderColor: ['rgba(46,176,134,1)'],
+                    borderWidth:1
+                }
+
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales:{
+                x:{
+                    grid: {display:false}
+                }, 
+                y:{
+                    display:false,
+                    beginAtZero: true,
+                    min: 0,
+                    max: 100
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                    , position: 'right'
+                },
+                title: {
+                    display: false
+                }
+            }
+
+        }
+    });
+
+    var nex2Ch = document.getElementById("NEX2_Chart").getContext('2d');
+    var nex2Chart = new Chart(nex2Ch, {
+        type: 'bar',
+        data: {
+            labels: ['Mixing', 'Extrusion', 'Bead', 'Cutting', 'TBM', 'Curing'],
+            datasets: [
+                {
+                    label: 'Availability',
+                    data: [],
+                    backgroundColor: ['rgba(46, 176, 134,.5)'],
+                    borderColor: ['rgba(46,176,134,1)'],
+                    borderWidth: 1
+                }
+
+            ]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                x: {
+                    grid: { display: false }
+                },
+                y: {
+                    display: false,
+                    beginAtZero: true,
+                    min: 0,
+                    max: 100
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                    , position: 'right'
+                },
+                title: {
+                    display: false
+                }
+            }
+
+        }
+    });
+
+    async function refreshGui(){
+        loadFactory('NEX1');
+        loadFactory('NEX2');
     }
 
-    async function loadFromApi(WCID)
-    {
+    async function loadFactory(FACTID)
+    { 
+        const mixPromise = loadFromApi("M", FACTID);
+        const extPromise = loadFromApi("E", FACTID);
+        const beadPromise = loadFromApi("B", FACTID);
+        const cutPromise = loadFromApi("P", FACTID);
+        const tbmPromise = loadFromApi("T", FACTID);
+        const curePromise = loadFromApi("U", FACTID);
+        var calPromise;
+        
+        if (FACTID == 'NEX1')
+            calPromise = loadFromApi("C", FACTID);
+        else if (FACTID == 'NEX2')
+            calPromise = 0;
+            
 
-        await fetch(window.location.origin + '/api/prod/worksectionoee/' + WCID)
-            .then(response => response.json())
-            .then(data => displayPercent(data));
+        const [mix, cal, ext, bead, cut, tbm, cure] = await Promise.all([mixPromise, calPromise, extPromise, beadPromise, cutPromise, tbmPromise, curePromise]);
+        var machineArray; 
+        
+        if (FACTID == 'NEX1')
+            machineArray = [
+                mix['PercentAllMachines'], 
+                cal['PercentAllMachines'],
+                ext['PercentAllMachines'],
+                bead['PercentAllMachines'],
+                cut['PercentAllMachines'],
+                tbm['PercentAllMachines'],
+                cure['PercentAllMachines']
+                ];
+
+
+        if (FACTID == 'NEX2')
+            machineArray = [
+                mix['PercentAllMachines'],
+                ext['PercentAllMachines'],
+                bead['PercentAllMachines'],
+                cut['PercentAllMachines'],
+                tbm['PercentAllMachines'],
+                cure['PercentAllMachines']
+            ];
+
+        if (FACTID == 'NEX1')
+        {
+            nex1Chart.data.datasets[0].data = machineArray;
+            nex1Chart.update();
+        }
+        else if (FACTID == 'NEX2')
+        {
+            nex2Chart.data.datasets[0].data = machineArray;
+            nex2Chart.update();
+        }
+
+
+        var factorySum = 0;
+        var factoryPercent = 0;
+        machineArray.forEach(percent => factorySum += percent);
+
+        factoryPercent = Math.round(factorySum / machineArray.length);
+        document.getElementById(FACTID + '_Percent').innerHTML = factoryPercent + '%';
+
+    }
+
+
+    function displayFactory(data)
+    {
+        var factory = data['FACT_ID'];
+        document.getElementById(factory + '_Percent').innerHTML = data['FactoryPercent'] + '%';
+    }
+
+    async function loadFromApi(WCID,FACT)
+    {
+       return await fetch(window.location.origin + '/api/prod/worksectionoee/' + WCID + '/'+FACT)
+            .then(response => response.json());
+            //.then(data => displayPercent(data));
     }
 
     function displayPercent(data)
     {
+        var wcPercent = document.getElementById(data['FACT_ID'] + '_' + data['WC_ID'] + '_Percent');
+        wcPercent.innerHTML = data['PercentAllMachines'] + '%';
+
+        /*
         var percentLabel = document.getElementById(data['WC_ID'] + '_percent');
         percentLabel.innerHTML = data['PercentAllMachines'] + '%';
 
@@ -108,7 +393,7 @@
         var downtimePercent = document.getElementById(data['WC_ID'] + '_downtimePercent');
         var allDurationPercent = 100 - Number(data['PercentAllMachines']);
         downtimePercent.innerHTML = allDurationPercent + '%';
-
+        */
     }
 
     function setBarColor(barname, prc)
@@ -148,6 +433,54 @@
     {
         var hours = (Number(seconds) / 3600).toFixed(1);
         return hours + "h";
+    }
+
+
+
+    async function refreshProd() {
+        var tbmProd = await CurrentTBMProduction();
+        var tbmPlan = await CurrentTBMPlan();
+        var tbmProc = Math.round((tbmProd / tbmPlan) * 100);
+
+        document.getElementById('tbmPlanProd').innerHTML = tbmProd + ' / ' + tbmPlan;
+        document.getElementById('progressTbm').style.width = tbmProc + '%';
+
+        var tirePlan = await CurrenTirePlan();
+        var tireProd = await CurrentTireProduction();
+        var tireProc = Math.round((tireProd / tirePlan) * 100);
+
+        document.getElementById('tirePlanProd').innerHTML = tireProd + ' / ' + tirePlan;
+        document.getElementById('progressTire').style.width = tireProc + '%';
+
+    }
+
+    async function CurrenTirePlan() {
+        return await fetch(window.location.origin + '/api/prod/CUREPlanCurrent/')
+            .then(response => response.json());
+    }
+    
+    async function CurrentTBMPlan() {
+        // var planLabel = document.getElementById('currentTBMPlan');
+
+        return await fetch(window.location.origin + '/api/prod/TBMPlanCurrent/')
+            .then(response => response.json());
+        // .then(data => planLabel.innerHTML = data + ' / ');
+    }
+
+    async function CurrentTBMProduction() {
+        //var planLabel = document.getElementById('currentTBMProd');
+
+        return await fetch(window.location.origin + '/api/prod/CurrentProd/T')
+            .then(response => response.json());
+
+    }
+
+    async function CurrentTireProduction() {
+        //var planLabel = document.getElementById('currentTBMProd');
+
+        return await fetch(window.location.origin + '/api/prod/CurrentProd/U')
+            .then(response => response.json());
+
     }
 
 </script>

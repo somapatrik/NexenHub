@@ -6,9 +6,9 @@ namespace NexenHub.Pages.Shared.Components.WorkSection
 {
     public class WorkSectionViewComponent : ViewComponent
     {
-        public IViewComponentResult Invoke(string WC_ID)
+        public IViewComponentResult Invoke(string WC_ID, string FACT_ID)
         {
-            return View("Default", new WorkSectionViewModel(WC_ID));
+            return View("Default", new WorkSectionViewModel(WC_ID, FACT_ID));
         }
     }
 }

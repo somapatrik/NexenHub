@@ -1,17 +1,17 @@
 ﻿
 
-document.addEventListener('readystatechange', event => {
-    switch (document.readyState) {
-        case "loading":
-            break;
-        case "interactive":
-            refreshGui();
-            break;
-        case "complete":
-            setInterval(refreshGui, 5000);
-            break;
-    }
-});
+//document.addEventListener('readystatechange', event => {
+//    switch (document.readyState) {
+//        case "loading":
+//            break;
+//        case "interactive":
+//            refreshGui();
+//            break;
+//        case "complete":
+//            setInterval(refreshGui, 5000);
+//            break;
+//    }
+//});
 
 async function refreshGui() {
     var tbmProd = await CurrentTBMProduction();
@@ -35,6 +35,7 @@ async function CurrenTirePlan()
     return await fetch(window.location.origin + '/api/prod/CUREPlanCurrent/')
         .then(response => response.json());
 }
+
 async function CurrentTBMPlan()
 {
    // var planLabel = document.getElementById('currentTBMPlan');

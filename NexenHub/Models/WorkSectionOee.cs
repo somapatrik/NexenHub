@@ -12,6 +12,8 @@ namespace NexenHub.Models
     {
         public string WC_ID { get; set; }
 
+        public string FACT_ID { get; set; }
+
         // 1 working day
         public int DaySeconds => 86400;
 
@@ -32,13 +34,15 @@ namespace NexenHub.Models
         // Each machine detail
         public List<DownTimeDetail> MachineTimes { get; set; }
 
-        private List<MachineBasicInfo> Machines { get; set; }
+        private List<MachineBasicInfo> _Machines { get; set; }
+        public List<MachineBasicInfo> Machines { get => _Machines; set => _Machines = value; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
-        public WorkSectionOee(string WC)
+        public WorkSectionOee(string WC, string FACTORY_ID = "")
         {
             WC_ID = WC.ToUpper();
+            FACT_ID = FACTORY_ID.ToUpper();
 
             GetCurrentMaxTime();
             LoadMachines();
@@ -74,8 +78,10 @@ namespace NexenHub.Models
         private void LoadMachines()
         {
             Machines = new List<MachineBasicInfo>();
-            foreach (DataRow row in dbglob.GetMachineList(WC_ID: WC_ID).Rows)
-                if (!GlobalSettings.OEEIgnoredMachines.Contains(row["EQ_ID"].ToString()) && row["FACT_ID"].ToString() != "NEX2")
+            DataTable dt = dbglob.GetMachineList(WC_ID: WC_ID, FACT_ID:FACT_ID);
+
+            foreach (DataRow row in dt.Rows)
+                if (!GlobalSettings.OEEIgnoredMachines.Contains(row["EQ_ID"].ToString())) // && row["FACT_ID"].ToString() != "NEX2"
                     Machines.Add(new MachineBasicInfo(row["EQ_ID"].ToString()));
         }
 

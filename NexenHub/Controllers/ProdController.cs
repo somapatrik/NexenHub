@@ -67,7 +67,7 @@ namespace NexenHub.Controllers
         {
             int prodDay = DateTime.Now.AddHours(-6).Day;
             List<int> planDays = dbglob.GetTBMMonthPlan();
-            return planDays[prodDay];
+            return planDays[prodDay - 1];
 
         }
 
@@ -76,7 +76,7 @@ namespace NexenHub.Controllers
         {
             int prodDay = DateTime.Now.AddHours(-6).Day;
             List<int> planDays = dbglob.GetCUREMonthPlan();
-            return planDays[prodDay];
+            return planDays[prodDay - 1];
 
         }
 
@@ -159,10 +159,10 @@ namespace NexenHub.Controllers
             return MachinesPM;
         }
 
-        [HttpGet("WorkSectionOEE/{wcid}")]
-        public ActionResult<WorkSectionOee> GetWorkSectionOee(string wcid)
+        [HttpGet("WorkSectionOEE/{wcid}/{fact?}")]
+        public ActionResult<WorkSectionOee> GetWorkSectionOee(string wcid, string fact="")
         {
-            return new WorkSectionOee(wcid);
+            return new WorkSectionOee(wcid,fact);
         }
 
     }

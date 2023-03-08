@@ -24,7 +24,7 @@
                 <div class="row mb-1">
                     <div class="col">
 
-                @foreach (MachineBasicInfo machine in Model.Machines)
+                @foreach (MachineBasicInfo machine in Model.WC_OEE.Machines)
                         {
                           <div class="row">
                             <div class="col">
@@ -47,7 +47,7 @@
                 else
                 {
                    <div class="row row-cols-2 row-cols-lg-4">
-                    @foreach (MachineBasicInfo machine in Model.Machines)
+                    @foreach (MachineBasicInfo machine in Model.WC_OEE.Machines)
                         {
                          <div class="col">
                           <div class="row">
@@ -117,7 +117,7 @@
                                             <span id="@Html.Raw(Model.WC_ID + "_possibleProdTime")"></span>
                                             </th>
                                     </tr>
-                                    @foreach (MachineBasicInfo machine in Model.Machines)
+                                    @foreach (MachineBasicInfo machine in Model.WC_OEE.Machines)
                                     {
                                         <tr id="@Html.Raw(machine.EQ_ID + "_tableRow")">
                                             <td>

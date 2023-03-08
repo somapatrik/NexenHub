@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using NexenHub.Class;
+using NexenHub.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -10,16 +11,19 @@ namespace NexenHub.ViewModels
     {
         public string WC_ID { get; set; }
         public string WC_NAME { get; set; }
-
-        public List<MachineBasicInfo> Machines { get; set; }
+        public string FACT_ID { get; set; }
+        public WorkSectionOee WC_OEE { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
-        public WorkSectionViewModel(string wc_id)
+        public WorkSectionViewModel(string wc_id, string factory_id = "")
         {
             WC_ID = wc_id.ToUpper();
+            FACT_ID = factory_id.ToUpper();
+
             SetName();
-            LoadMachines();
+
+            WC_OEE = new WorkSectionOee(WC_ID,FACT_ID);
         }
 
         private void SetName()
@@ -40,12 +44,5 @@ namespace NexenHub.ViewModels
                 WC_NAME = "Curing";
         }
 
-        private void LoadMachines()
-        {
-            Machines = new List<MachineBasicInfo>();
-            foreach (DataRow row in dbglob.GetMachineList(WC_ID: WC_ID).Rows)
-                if (!GlobalSettings.OEEIgnoredMachines.Contains(row["EQ_ID"].ToString()) && row["FACT_ID"].ToString()!="NEX2" )
-                    Machines.Add(new MachineBasicInfo(row["EQ_ID"].ToString()));
-        }
     }
 }

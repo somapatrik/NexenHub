@@ -1999,7 +1999,7 @@ namespace NexenHub.Class
             }
         }
 
-        public DataTable GetMachineList(string EQ_ID = "", string WC_ID = "")
+        public DataTable GetMachineList(string EQ_ID = "", string WC_ID = "", string FACT_ID = "")
         {
             try
             {
@@ -2009,23 +2009,30 @@ namespace NexenHub.Class
                 query.AppendLine("WHERE EQ_TYPE = 'P' ");
                 query.AppendLine("AND USE_YN='Y' ");
                 query.AppendLine("AND PLANT_ID='P500' ");
-                query.AppendLine("AND FACT_ID IN ('NEX1','NEX2') ");
+
+                if (string.IsNullOrEmpty(FACT_ID))
+                    query.AppendLine("AND FACT_ID IN ('NEX1','NEX2') ");
+                else
+                    query.AppendLine("AND FACT_ID = :factid ");
 
                 if (!string.IsNullOrEmpty(WC_ID))
-                    query.AppendLine("AND WC_ID=:wcid ");
+                    query.AppendLine("AND WC_ID = :wcid ");
 
                 if (!string.IsNullOrEmpty(EQ_ID))
-                    query.AppendLine("AND EQ_ID=:eqid ");
+                    query.AppendLine("AND EQ_ID = :eqid ");
                 else
                     query.AppendLine("ORDER BY EQ_ID");
                 
                 DBOra db = new DBOra(query.ToString());
 
-                if (!string.IsNullOrEmpty(EQ_ID))
-                    db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
+                if (!string.IsNullOrEmpty(FACT_ID))
+                    db.AddParameter("factid", FACT_ID, OracleDbType.Varchar2);
 
                 if (!string.IsNullOrEmpty(WC_ID))
                     db.AddParameter("wcid", WC_ID, OracleDbType.Varchar2);
+
+                if (!string.IsNullOrEmpty(EQ_ID))
+                    db.AddParameter("eqid", EQ_ID, OracleDbType.Varchar2);
 
                 return db.ExecTable();
             }

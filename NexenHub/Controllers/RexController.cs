@@ -53,7 +53,7 @@ namespace NexenHub.Controllers
         }
 
         [HttpGet("lotitem/{code}")]
-        public ActionResult<LotItem> Get(string code)
+        public ActionResult<LotItem> GetLotItem(string code)
         {
             string lotid = "";
 

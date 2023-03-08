@@ -14,7 +14,7 @@ namespace NexenHub.Controllers
     public class ForecastController : ControllerBase
     {
         [HttpGet("{proc}")]
-        public async Task<ActionResult<string>> Get(string proc)
+        public ActionResult<string> GetForecast(string proc)
         {
             try
             {
