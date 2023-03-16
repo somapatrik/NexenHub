@@ -130,6 +130,19 @@ namespace NexenHub.Controllers
             return versionArray;
         }
 
+        [HttpGet("OldVersions")]
+        public ActionResult<object> GetOldVersion()
+        {
+            DataTable dt = dbglob.GetOldVersions();
+            List<object> Old = new List<object>();
+            foreach(DataRow row in dt.Rows)
+            {
+                Old.Add(new { Software=row["SOFTWARE"].ToString(),Name = row["DEVICE"].ToString(), IP = row["IP"].ToString() });
+            }
+
+            return Old;
+        }
+
         [HttpGet("Unreachable")]
         public ActionResult<List<PingDevice>> GetUnReachAble()
         {

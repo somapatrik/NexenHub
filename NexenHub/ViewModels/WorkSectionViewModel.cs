@@ -14,7 +14,7 @@ namespace NexenHub.ViewModels
         public string FACT_ID { get; set; }
         public WorkSectionOee WC_OEE { get; set; }
 
-        private GlobalDatabase dbglob = new GlobalDatabase();
+       // private GlobalDatabase dbglob = new GlobalDatabase();
 
         public WorkSectionViewModel(string wc_id, string factory_id = "")
         {

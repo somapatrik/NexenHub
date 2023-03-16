@@ -9,9 +9,9 @@ namespace NexenHub.Class
     {
         public AppVersionRex()
         {
-            fileName = "rex.apk";
+            VersionDate = new DateTime(2023, 3, 14, 0, 0, 0);
             filePath = "download/com.nexentire.rex.apk";
-            VersionDate = new DateTime(2022, 11, 30, 0, 0, 0);
+            fileName = "rex_" + VersionDate.ToString("yyMMdd") + ".apk";
         }
     }
 }

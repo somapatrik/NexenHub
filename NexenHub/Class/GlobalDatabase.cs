@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -17,6 +18,43 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable GetOldVersions()
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+
+                query.AppendLine("SELECT");
+                query.AppendLine("'IO Server' SOFTWARE, ");
+                query.AppendLine("NMP.DESCRIPTION DEVICE, ");
+                query.AppendLine("NVL(VER.IP,NMP.IP_ADDRESS) IP");
+                query.AppendLine("FROM  TB_CM_M_NMP_SETTINGS NMP");
+                query.AppendLine("LEFT JOIN TB_CM_M_VERSION VER on VER.IP=NMP.IP_ADDRESS");
+                query.AppendLine("WHERE NMP.USE_YN = 'Y'");
+                query.AppendLine("AND (SOFTWARE_ID='ioserver' OR (VER.VERSION_NAME is null AND SOFTWARE_ID is null))");
+                query.AppendLine("AND (VER.VERSION_NAME <> (SELECT MAX(VERSION_NAME) FROM TB_CM_M_VERSION WHERE SOFTWARE_ID='ioserver') OR VER.VERSION_NAME is null)");
+
+                query.AppendLine("UNION ALL");
+
+                query.AppendLine("SELECT ");
+                query.AppendLine("'ICS' SOFTWARE, ");
+                query.AppendLine("ICS.DISPLAYNAME DEVICE,");
+                query.AppendLine("NVL(VER.IP,ICS.IP) IP");
+                query.AppendLine("FROM TB_CM_M_MONITORING_CONFIG ICS ");
+                query.AppendLine("LEFT JOIN TB_CM_M_VERSION VER on VER.IP=ICS.IP");
+                query.AppendLine("WHERE ICS.USE_YN = 'Y'");
+                query.AppendLine("AND (SOFTWARE_ID='ics' OR (SOFTWARE_ID is null and VERSION_NAME is null))");
+                query.AppendLine("AND (VER.VERSION_NAME <> (SELECT MAX(VERSION_NAME) FROM TB_CM_M_VERSION WHERE SOFTWARE_ID='ics') OR VERSION_NAME is null)");
+
+                DBOra db = new DBOra(query.ToString());
+                return db.ExecTable();
+
+            }
+            catch
+            {
+                return new DataTable();
+            }
+        }
 
         public void TireToRAD(string barcode, string Whcode, string user_id,string InspType)
         {
@@ -457,6 +495,7 @@ namespace NexenHub.Class
         }
         #endregion
 
+        #region Production plan
         public List<int> GetTBMMonthPlan()
         {
 
@@ -512,6 +551,8 @@ namespace NexenHub.Class
 
             return numbers;
         }
+
+        #endregion
 
         public DataTable GetDefectGalleryPaths(string AS_BARCODE_NO, int AS_INSP_SEQ, string AS_PROC_ID, DateTime AS_INSP_DT, string AS_BAD_ID)
         {

@@ -55,20 +55,31 @@
 
         </div>
 
+        <!-- Old versions -->
+        <div id="oldRow" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
+        </div>
+
         <!-- PM -->
         <div id="pmRow" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
-
-
-
         </div>
 
         <!-- Unreachable -->
         <div id="pmNoreach" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
-
-
-
         </div>
 
+    </div>
+
+        <div id="oldCard" style="visibility:collapse;position:absolute;top:0;">
+        <div class="col">
+            <div class="card h-100 bg-info text-dark">
+                <div class="card-header text-center">
+                    <h2>Old {{Software}} | {{Device}}</h2>
+                </div>
+                <div class="card-body text-center">
+                    <div><h3>{{IP}}</h3></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- PM Card -->
@@ -119,9 +130,16 @@
 
      async function refreshGui()
     {
-        LoadVersions();
-        LoadPM();
-        LoadUnreachable();
+        await LoadVersions();
+        await LoadOlds();
+        await LoadPM();
+        await LoadUnreachable();
+    }
+
+    async function LoadOlds() {
+        await fetch(window.location.origin + '/api/prod/oldversions')
+            .then(response => response.json())
+            .then(data => displayOlds(data));
     }
 
     async function LoadVersions(){
@@ -189,6 +207,22 @@
             rexCard.classList.remove('alert-primary');
         }
 
+    }
+
+    function displayOlds(olds) {
+        var cardCode = document.getElementById('oldCard').innerHTML
+        var oldRow = document.getElementById("oldRow");
+
+        oldRow.innerHTML = "";
+
+        olds.forEach(data => {
+            var thisCode = cardCode;
+            thisCode = thisCode.replace('{{Software}}', data['Software']);
+
+            thisCode = thisCode.replace('{{Device}}', data['Name']);
+            thisCode = thisCode.replace('{{IP}}', data['IP']);
+            oldRow.innerHTML += thisCode;
+        });
     }
 
     function displayPM(pms)

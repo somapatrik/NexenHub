@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NexenHub.Class;
 using NexenHub.Models;
 using System;
@@ -29,7 +30,7 @@ namespace NexenHub.Controllers
             return version.VersionDate;
         }
 
-        // REDO: Do not use headers
+        // TODO: Can be deleted if every rex is > 22-11-30
         [HttpPost("reportversion")]
         public ActionResult PostReportVersion()
         {
@@ -47,6 +48,29 @@ namespace NexenHub.Controllers
             catch
             {
                 return BadRequest();
+            }
+
+            return Ok();
+        }
+
+
+        [HttpPost("reportSoftware")]
+        public ActionResult PostReportSoftware()
+        {
+            try
+            {
+                var httpRequest = HttpContext.Request;
+
+                string ip = httpRequest.Form["ip"].ToString();
+                string versionName = httpRequest.Form["versionName"].ToString();
+                string appId = httpRequest.Form["appId"].ToString();
+
+                dbglob.UpdateVersion(appId, ip, versionName);
+
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
             return Ok();
