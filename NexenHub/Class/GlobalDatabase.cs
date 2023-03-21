@@ -26,7 +26,7 @@ namespace NexenHub.Class
 
                 query.AppendLine("SELECT");
                 query.AppendLine("'IO Server' SOFTWARE, ");
-                query.AppendLine("NMP.DESCRIPTION DEVICE, ");
+                query.AppendLine("NMP.NETBIOS_NAME DEVICE, ");
                 query.AppendLine("NVL(VER.IP,NMP.IP_ADDRESS) IP");
                 query.AppendLine("FROM  TB_CM_M_NMP_SETTINGS NMP");
                 query.AppendLine("LEFT JOIN TB_CM_M_VERSION VER on VER.IP=NMP.IP_ADDRESS");

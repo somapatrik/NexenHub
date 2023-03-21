@@ -55,12 +55,12 @@
 
         </div>
 
-        <!-- Old versions -->
-        <div id="oldRow" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
-        </div>
-
         <!-- PM -->
         <div id="pmRow" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
+        </div>
+
+        <!-- Old versions -->
+        <div id="oldRow" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
         </div>
 
         <!-- Unreachable -->
@@ -73,7 +73,8 @@
         <div class="col">
             <div class="card h-100 bg-info text-dark">
                 <div class="card-header text-center">
-                    <h2>Old {{Software}} | {{Device}}</h2>
+                    <div><h2>Old {{Software}}</h2></div>
+                    <div><h2>{{Device}}</h2></div>
                 </div>
                 <div class="card-body text-center">
                     <div><h3>{{IP}}</h3></div>
@@ -130,10 +131,10 @@
 
      async function refreshGui()
     {
-        await LoadVersions();
-        await LoadOlds();
-        await LoadPM();
-        await LoadUnreachable();
+        LoadUnreachable();
+        LoadVersions();
+        LoadOlds();
+        LoadPM(); 
     }
 
     async function LoadOlds() {
