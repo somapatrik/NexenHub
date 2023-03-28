@@ -29,7 +29,7 @@ namespace NexenHub.Class
             Command = new OracleCommand(this.query, this.Connection);
         }
 
-        public void AddParameter(string name, object value, OracleDbType type)
+        public void AddParameter(string name, object value, OracleDbType type = OracleDbType.Varchar2)
         {
             OracleParameter parameter = new OracleParameter(name, type);
             parameter.Value = value;

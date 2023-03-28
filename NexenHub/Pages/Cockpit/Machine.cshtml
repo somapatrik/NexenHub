@@ -1,0 +1,50 @@
+﻿@page "{EQ_ID:length(5)}"
+@model NexenHub.Pages.Cockpit.MachineModel
+@{
+}
+
+<script src="~/js/inputPositions.js"></script>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            @await Component.InvokeAsync("InputPositions", @Model.EQ_ID)
+        </div>
+    </div>
+</div>
+
+<script defer type="text/javascript">
+
+    var EQ_ID = @Model.EQ_ID;
+
+    document.addEventListener('readystatechange', event => {
+        switch (document.readyState) {
+            case "loading":
+                break;
+            case "interactive":
+                refreshInputPositions();
+                break;
+            case "complete":
+                setInterval(refreshInputPositions, 5000);
+                break;
+        }
+    });
+
+
+
+    async function refreshInputPositions() 
+    {
+        var data = await readInputRfid(EQ_ID);
+        await displayRfid(data);
+    }
+
+    async function displayRfid(data){
+
+        var arrData = Object.entries(data);
+
+        arrData.forEach(rfid => {
+            document.getElementById("syncId_" + rfid[0]).innerHTML = rfid[1];
+        });
+    }
+
+    </script>

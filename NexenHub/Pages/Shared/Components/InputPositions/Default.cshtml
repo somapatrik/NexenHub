@@ -1,0 +1,28 @@
+﻿@model NexenHub.ViewModels.InputPositionsViewModel
+@{
+
+}
+
+
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle bg-white">
+                <tbody>
+
+                   @foreach (var inputPosition in Model.InputPositions)
+                        {
+                            <tr>
+                                <td>@inputPosition.IO_POSID</td>
+                                <td>
+                                    <a class="link-primary" href="" target="_blank"></a>
+                                </td>
+                                <td>@inputPosition.SYNC_ID</td>
+                                <td><span id="@Html.Raw("syncId_" + inputPosition.SYNC_ID)"></span></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        }
+                    
+                </tbody>
+            </table>
+            </div>

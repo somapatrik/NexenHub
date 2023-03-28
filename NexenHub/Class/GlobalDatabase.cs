@@ -1881,6 +1881,47 @@ namespace NexenHub.Class
             }
         }
 
+        public List<EQPOS> GetInputPositions(string EQ_ID)
+        {
+            List<EQPOS> positions = new List<EQPOS>();
+
+            try
+            {
+                StringBuilder query = new StringBuilder();
+
+                query.AppendLine("SELECT ");
+                query.AppendLine("POS.EQ_ID EQ_ID,");
+                query.AppendLine("POS.IO_POSID IO_POSID,"); 
+                query.AppendLine("POS.LOT_ID LOT_ID,");
+                query.AppendLine("POS.CART_ID CART_ID,");
+                query.AppendLine("POS.IO_POSGB IO_POSGB,");
+                query.AppendLine("POS.USE_YN USE_YN,");
+                query.AppendLine("READER.SYNC_ID SYNC_ID");
+                query.AppendLine("FROM TB_EQ_M_EQPOS POS");
+                query.AppendLine("LEFT JOIN TB_CM_M_MONITORING_READER READER ON READER.EQ_ID=POS.EQ_ID AND READER.POSID=POS.IO_POSID");
+                query.AppendLine("WHERE POS.EQ_ID=:eqid");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID);
+                foreach(DataRow row in db.ExecTable().Rows)
+                {
+                    positions.Add(new EQPOS() 
+                    {
+                        EQ_ID = row["EQ_ID"].ToString(),
+                        IO_POSID = row["IO_POSID"].ToString(),
+                        SYNC_ID = row["SYNC_ID"].ToString(),
+                        LOT_ID = row["LOT_ID"].ToString(),
+                        IO_POSGB = row["IO_POSGB"].ToString(),
+                        CART_ID = row["CART_ID"].ToString(),
+                        USE = row["USE_YN"].ToString() == "Y"
+                    });
+                }
+            }
+            catch{ }
+
+            return positions;
+        }
+
         public DataTable GetInputedMaterial(string EQ_ID)
         {
             try

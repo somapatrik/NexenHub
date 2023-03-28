@@ -10,7 +10,7 @@ using System.Text;
 
 namespace NexenHub.Pages.ORG
 {
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     public class DepartmentsModel : PageModel
     {
         GlobalDatabase dbglob = new GlobalDatabase();

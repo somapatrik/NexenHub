@@ -102,14 +102,14 @@ namespace NexenHub.Pages.RAD
             // No dates
             if (DateFrom == DateTime.MinValue && DateTo == DateTime.MinValue)
             {
-                DateFrom = Now.AddDays(-7);
-                DateTo = Now.AddDays(7);
+                DateFrom = Now.AddDays(-5);
+                DateTo = Now;//Now.AddDays(5);
             }
 
             // Only From
             if (DateFrom != DateTime.MinValue && DateTo == DateTime.MinValue)
             {
-                DateTime DateTo = DateFrom.AddDays(7) > Now ? Now : DateFrom.AddDays(7);
+                DateTime DateTo = Now;//DateFrom.AddDays(5) > Now ? Now : DateFrom.AddDays(5);
             }
 
             // Both but opposite
@@ -121,8 +121,8 @@ namespace NexenHub.Pages.RAD
             }
 
             // Limit search
-            if (DateTo > DateFrom.AddMonths(1))
-                DateTo = DateFrom.AddMonths(1);
+            if (DateTo > DateFrom.AddMonths(2))
+                DateTo = DateFrom.AddMonths(2);
 
         }
 
