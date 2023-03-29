@@ -8,6 +8,7 @@
         public string SYNC_ID { get; set; }
         public string LOT_ID { get; set; }
         public string CART_ID { get; set; }
+        public string ITEM_ID { get; set; }
         public bool USE { get; set; }
 
     }

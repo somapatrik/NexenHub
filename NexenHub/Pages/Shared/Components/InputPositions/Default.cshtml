@@ -1,28 +1,119 @@
 ﻿@model NexenHub.ViewModels.InputPositionsViewModel
 @{
-
 }
 
+<script src="~/js/inputPositions.js"></script>
 
+<div class="table-responsive">
+    <table class="table table-hover text-center align-middle bg-white">
+        <tbody>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle bg-white">
-                <tbody>
+            @foreach (var inputPosition in Model.InputPositions)
+            {
 
-                   @foreach (var inputPosition in Model.InputPositions)
-                        {
-                            <tr>
-                                <td>@inputPosition.IO_POSID</td>
-                                <td>
-                                    <a class="link-primary" href="" target="_blank"></a>
-                                </td>
-                                <td>@inputPosition.SYNC_ID</td>
-                                <td><span id="@Html.Raw("syncId_" + inputPosition.SYNC_ID)"></span></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        }
+            <tr class="text-center">
+                <td class="text-start">@inputPosition.IO_POSID</td>
+                <td>
+                    <a id="@Html.Raw("href_" + inputPosition.IO_POSID)" class="link-primary" href="#" target="_blank">
+                        <span id="@Html.Raw("lotId_" + inputPosition.IO_POSID)"></span>
+                    </a>
+                </td>
+
+                <td>
+                    <span id="@Html.Raw("cartId_" + inputPosition.IO_POSID)"></span>
+                </td>
+
+                    <td>
+                        <span id="@Html.Raw("itemId_" + inputPosition.IO_POSID)"></span>
+                    </td>
+                
+                <td class="text-center">
+                    <span class="text-muted" id="@Html.Raw("cartSyncId_" + inputPosition.SYNC_ID)"></span>
+                </td>
+                
+                <td class="text-center">
+                   <span class="text-muted" id="@Html.Raw("lotSyncId_" + inputPosition.SYNC_ID)"></span>
+                </td>
+                
+                <td class="text-end text-muted">@inputPosition.SYNC_ID</td>
+
+            </tr>
+            }
                     
-                </tbody>
-            </table>
-            </div>
+        </tbody>
+    </table>
+    </div>
+
+<script defer type="text/javascript">
+
+    var EQ_ID = @Model.EQ_ID;
+
+    document.addEventListener('readystatechange', event => {
+        switch (document.readyState) {
+            case "loading":
+                break;
+            case "interactive":
+                refreshInputPositions();
+                break;
+            case "complete":
+                setInterval(refreshInputPositions, 5000);
+                break;
+        }
+    });
+
+
+
+    async function refreshInputPositions() {
+        await readInputRfid(EQ_ID).then(async data => await displayRfid(data));
+        await getInputPositions(EQ_ID).then(async data => await displayUsedMaterial(data));
+    }
+
+    async function displayRfid(data) {
+
+        var arrData = Object.entries(data);
+
+        arrData.forEach(rfid => {
+            var cart = rfid[1].substring(0, 5);
+            var lot = rfid[1].substring(5);
+
+            try {
+                document.getElementById('cartSyncId_' + rfid[0]).innerHTML = cart;
+                document.getElementById('lotSyncId_' + rfid[0]).innerHTML = lot;
+            }
+            catch { }
+
+        });
+    }
+
+    async function displayUsedMaterial(data) 
+    {
+
+        data.forEach(material => {
+            try {
+                var cartElement = document.getElementById('cartId_' + material.IO_POSID);
+                var lotElement = document.getElementById('lotId_' + material.IO_POSID);
+                var itemElement = document.getElementById('itemId_' + material.IO_POSID);
+                var lotHref = document.getElementById('href_' + material.IO_POSID)
+
+                if (material['IO_POSGB'] == 'I') 
+                {
+                    cartElement.innerHTML = material['CART_ID'];
+                    lotElement.innerHTML = material['LOT_ID'];
+                    itemElement.innerHTML = material['ITEM_ID'];
+                    lotHref.setAttribute('href','../lot/' + material['LOT_ID']);
+                }
+                else {
+                    cartElement.innerHTML = '';
+                    lotElement.innerHTML = '';
+                    itemElement.innerHTML = '';
+                    lotHref.setAttribute('href', '');
+
+                }
+            }
+            catch { }
+
+        });
+
+    }
+
+</script>

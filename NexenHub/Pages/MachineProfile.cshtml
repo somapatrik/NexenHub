@@ -180,8 +180,16 @@
     <div class="row my-2 g-4">
 
         <div class="col-lg-8">
-            @await Component.InvokeAsync("MachineMaterialInUse", @Model.machineBasic.EQ_ID)
-        </div>
+            <div class="card">
+                <div class="card-header">
+                    Input positions
+                </div>
+                <div class="card-body p-0">
+                    @await Component.InvokeAsync("InputPositions", @Model.machineBasic.EQ_ID)
+                </div>
+            </div>
+            </div>
+        
 
         <div class="col">
 
@@ -218,11 +226,8 @@
         </div>
     </div>
 
-    <div class="row">
-    <div class="col">
-        @await Component.InvokeAsync("InputPositions", @Model.machineBasic.EQ_ID)
-        </div>
-    </div>
+    
+
 
 </div>
 

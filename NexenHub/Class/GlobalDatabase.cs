@@ -1895,6 +1895,7 @@ namespace NexenHub.Class
                 query.AppendLine("POS.LOT_ID LOT_ID,");
                 query.AppendLine("POS.CART_ID CART_ID,");
                 query.AppendLine("POS.IO_POSGB IO_POSGB,");
+                query.AppendLine("POS.ITEM_ID ITEM_ID,");
                 query.AppendLine("POS.USE_YN USE_YN,");
                 query.AppendLine("READER.SYNC_ID SYNC_ID");
                 query.AppendLine("FROM TB_EQ_M_EQPOS POS");
@@ -1913,6 +1914,7 @@ namespace NexenHub.Class
                         LOT_ID = row["LOT_ID"].ToString(),
                         IO_POSGB = row["IO_POSGB"].ToString(),
                         CART_ID = row["CART_ID"].ToString(),
+                        ITEM_ID = row["ITEM_ID"].ToString(),
                         USE = row["USE_YN"].ToString() == "Y"
                     });
                 }

@@ -3,17 +3,21 @@
 @{
 }
 
-<script src="~/js/inputPositions.js"></script>
+@*<script src="~/js/inputPositions.js"></script>*@
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col">
-            @await Component.InvokeAsync("InputPositions", @Model.EQ_ID)
+            <div class="card">
+                <div class="card-body">
+                    @await Component.InvokeAsync("InputPositions", @Model.EQ_ID)
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<script defer type="text/javascript">
+@*<script defer type="text/javascript">
 
     var EQ_ID = @Model.EQ_ID;
 
@@ -33,18 +37,53 @@
 
 
     async function refreshInputPositions() 
-    {
-        var data = await readInputRfid(EQ_ID);
-        await displayRfid(data);
+    {   
+        await readInputRfid(EQ_ID).then(async data => await displayRfid(data));
+        await getInputPositions(EQ_ID).then(async data => await displayUsedMaterial(data));
     }
 
     async function displayRfid(data){
 
         var arrData = Object.entries(data);
 
-        arrData.forEach(rfid => {
-            document.getElementById("syncId_" + rfid[0]).innerHTML = rfid[1];
-        });
+        arrData.forEach(rfid => 
+        {
+            var cart = rfid[1].substring(0,5);
+            var lot = rfid[1].substring(5);
+            
+            try
+            {
+                document.getElementById('cartSyncId_' + rfid[0]).innerHTML = cart;
+                document.getElementById('lotSyncId_' + rfid[0]).innerHTML = lot;
+            }
+            catch{}
+
+            });
     }
 
-    </script>
+    async function displayUsedMaterial(data)
+    {
+        data.forEach(material =>
+        {
+            try
+            {
+                var cartElement = document.getElementById('cartId_' + material.IO_POSID);
+                var lotElement = document.getElementById('lotId_' + material.IO_POSID);
+
+                if (material['IO_POSGB'] == 'I')
+                {
+                    cartElement.innerHTML = material['CART_ID'];
+                    lotElement.innerHTML = material['LOT_ID'];
+                }
+                else
+                {
+                    cartElement.innerHTML = '';
+                    lotElement.innerHTML = '';
+                }
+            }
+            catch{}
+
+            });
+    }
+
+    </script>*@
