@@ -21,12 +21,6 @@
             
             </div>
 
-            <div class="col-auto p-3 text-center border-start">
-                <div class="d-flex h-100 align-items-center">
-                    <h5>0%</h5>
-                    </div>
-            </div>
-
             <div id="@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeFrame")" 
             class="col-auto p-3 border-start rounded-end">
                 <div class="d-flex h-100 align-items-center">
@@ -70,7 +64,7 @@ document.addEventListener('readystatechange', event => {
                 var msgElement = document.getElementById('@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeMsg")');
                 var frameElement = document.getElementById('@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeFrame")');
 
-                frameElement.classList.remove('bg-github-green', 'bg-warning', 'bg-github-green');
+                frameElement.classList.remove('bg-github-green', 'bg-warning', 'bg-github-red');
                 msgElement.classList.remove('text-white','text-black');
 
                 if (data['Code'] != '')

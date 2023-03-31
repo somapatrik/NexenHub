@@ -25,5 +25,19 @@ namespace NexenHub.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError); 
             }
         }
+
+        [HttpGet("woList/{EQ_ID:length(5)}")]
+        public ActionResult<WoList> getWoList(string EQ_ID)
+        {
+            try
+            {
+
+                return new WoList(EQ_ID);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }
