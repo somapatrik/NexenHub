@@ -27,3 +27,15 @@ async function getInputPositions(EQID)
         return '';
     }
 }
+
+async function getInputItem(LOTID)
+{
+    try {
+        return await fetch(window.location.origin + '/api/rex/lotitem/' + LOTID)
+            .then(response => response.json());
+    }
+    catch
+    {
+        return '';
+    } 
+}

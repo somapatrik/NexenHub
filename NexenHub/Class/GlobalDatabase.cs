@@ -1812,7 +1812,8 @@ namespace NexenHub.Class
             {
                 StringBuilder query = new StringBuilder();
                 query.AppendLine("SELECT /*+INDEX (WRK IX_CM_M_NONWRK_4)*/");
-                query.AppendLine("CODE.NONWRK_NAME_1033 AS NON_NAME ");
+                query.AppendLine("CODE.NONWRK_NAME_1033 AS NON_NAME, ");
+                query.AppendLine("CODE.NONWRK_CODE AS NON_CODE ");
                 query.AppendLine("FROM TB_CM_M_NONWRK WRK ");
                 query.AppendLine("LEFT JOIN TB_CM_M_NONWRKCODE CODE ON CODE.NONWRK_CODE = WRK.NONWRK_CODE ");
                 query.AppendLine("WHERE WRK.NONWRK_STIME IS NOT NULL ");
@@ -1901,6 +1902,7 @@ namespace NexenHub.Class
                 query.AppendLine("FROM TB_EQ_M_EQPOS POS");
                 query.AppendLine("LEFT JOIN TB_CM_M_MONITORING_READER READER ON READER.EQ_ID=POS.EQ_ID AND READER.POSID=POS.IO_POSID");
                 query.AppendLine("WHERE POS.EQ_ID=:eqid");
+                query.AppendLine("AND POS.IO_POSID like 'H%'");
 
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("eqid", EQ_ID);

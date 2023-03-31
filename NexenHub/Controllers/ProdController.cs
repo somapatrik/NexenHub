@@ -172,6 +172,23 @@ namespace NexenHub.Controllers
             return MachinesPM;
         }
 
+        [HttpGet("actDowntime/{eqid}")]
+        public ActionResult<object> GetActDownTime(string eqid)
+        {
+            
+            DataTable dt = dbglob.GetActNonWrk(eqid);
+            var ret = new {Code = "", Description = "" };
+            string Code = "";
+            string Description = "";
+
+            if (dt.Rows.Count > 0)
+            {
+                Code = dt.Rows[0]["NON_CODE"].ToString();
+                Description = dt.Rows[0]["NON_NAME"].ToString();
+            }
+            return new {Code = Code, Description = Description};
+        }
+
         [HttpGet("WorkSectionOEE/{wcid}/{fact?}")]
         public ActionResult<WorkSectionOee> GetWorkSectionOee(string wcid, string fact="")
         {

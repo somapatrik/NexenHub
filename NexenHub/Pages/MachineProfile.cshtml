@@ -180,14 +180,7 @@
     <div class="row my-2 g-4">
 
         <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    Input positions
-                </div>
-                <div class="card-body p-0">
-                    @await Component.InvokeAsync("InputPositions", @Model.machineBasic.EQ_ID)
-                </div>
-            </div>
+            @await Component.InvokeAsync("MachineMaterialInUse", @Model.machineBasic.EQ_ID)
             </div>
         
 

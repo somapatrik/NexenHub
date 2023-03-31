@@ -3,87 +3,28 @@
 @{
 }
 
-@*<script src="~/js/inputPositions.js"></script>*@
-
-<div class="container">
+<div class="container-fluid my-2">
     <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    @await Component.InvokeAsync("InputPositions", @Model.EQ_ID)
-                </div>
-            </div>
+        <div class="col-auto">
+            @await Component.InvokeAsync("MachineTagname", Model.machineInfo)
         </div>
     </div>
 </div>
 
-@*<script defer type="text/javascript">
+<div class="container-fluid my-2">
 
-    var EQ_ID = @Model.EQ_ID;
-
-    document.addEventListener('readystatechange', event => {
-        switch (document.readyState) {
-            case "loading":
-                break;
-            case "interactive":
-                refreshInputPositions();
-                break;
-            case "complete":
-                setInterval(refreshInputPositions, 5000);
-                break;
-        }
-    });
+    <div class="row">
+        <div class="col-6">
+           @* <div class="card">
+                <div class="card-header">
+                    Input positions
+                </div>
+                <div class="card-body p-0">*@
+                    @await Component.InvokeAsync("InputPositions", Model.EQ_ID)
+               @* </div>
+            </div>*@
+        </div>
+    </div>
 
 
-
-    async function refreshInputPositions() 
-    {   
-        await readInputRfid(EQ_ID).then(async data => await displayRfid(data));
-        await getInputPositions(EQ_ID).then(async data => await displayUsedMaterial(data));
-    }
-
-    async function displayRfid(data){
-
-        var arrData = Object.entries(data);
-
-        arrData.forEach(rfid => 
-        {
-            var cart = rfid[1].substring(0,5);
-            var lot = rfid[1].substring(5);
-            
-            try
-            {
-                document.getElementById('cartSyncId_' + rfid[0]).innerHTML = cart;
-                document.getElementById('lotSyncId_' + rfid[0]).innerHTML = lot;
-            }
-            catch{}
-
-            });
-    }
-
-    async function displayUsedMaterial(data)
-    {
-        data.forEach(material =>
-        {
-            try
-            {
-                var cartElement = document.getElementById('cartId_' + material.IO_POSID);
-                var lotElement = document.getElementById('lotId_' + material.IO_POSID);
-
-                if (material['IO_POSGB'] == 'I')
-                {
-                    cartElement.innerHTML = material['CART_ID'];
-                    lotElement.innerHTML = material['LOT_ID'];
-                }
-                else
-                {
-                    cartElement.innerHTML = '';
-                    lotElement.innerHTML = '';
-                }
-            }
-            catch{}
-
-            });
-    }
-
-    </script>*@
+</div>
