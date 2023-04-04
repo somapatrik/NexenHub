@@ -1,0 +1,69 @@
+﻿@model NexenHub.ViewModels.WoLineViewModel
+@{
+}
+
+<div id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="row row-cols-auto">
+
+</div>
+
+<div id="woListCode" style="position:absolute;display:none;margin:0;padding:0;top:0;left:0">
+   <div class="col">
+       <div class="card {{wocardstyle}}">
+           <div class="card-body">
+               {{workorder}}
+           </div>
+       </div>
+   </div>
+</div>
+
+<script type="text/javascript">
+
+document.addEventListener('readystatechange', event => {
+        switch (document.readyState) {
+            case "loading":
+                break;
+            case "interactive":
+                getWoList();
+                break;
+            case "complete":
+                setInterval(getWoList, 10000);
+                break;
+        }
+    });
+
+async function getWoList()
+{
+        return await fetch(window.location.origin + '/api/cockpit/wolist/' + @Model.EQ_ID)
+            .then(response => response.json())
+            .then(data => displayWoList(data));
+}
+
+async function displayWoList(data)
+{
+    var code = document.getElementById('woListCode').innerHTML;
+    var row = document.getElementById(@Html.Raw("'" + Model.EQ_ID + "_woLineRow'"));
+
+    row.innerHTML= '';
+
+    data.Finished.forEach(finished => {
+        var fCode = code.replace('{{workorder}}', finished['WO_NO']);
+        row.innerHTML += fCode;
+    });
+
+    data.Started.forEach(started => {
+            var fCode = code.replace('{{wocardstyle}}', 'bg-primary text-white');
+            var fCode = fCode.replace('{{workorder}}', started['WO_NO']);
+            
+        row.innerHTML += fCode;
+    });
+
+    data.Waiting.forEach(waiting => {
+            var fCode = code.replace('{{wocardstyle}}', 'bg-warning');
+            var fCode = fCode.replace('{{workorder}}', waiting['WO_NO']);
+            
+        row.innerHTML += fCode;
+    });
+
+}
+
+</script>

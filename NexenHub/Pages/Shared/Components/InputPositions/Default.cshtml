@@ -5,8 +5,8 @@
 <script src="~/js/inputPositions.js"></script>
 
 
-@*<div class="table-responsive">
-    <table class="table table-sm table-hover text-center align-middle">
+<div class="table-responsive">
+    <table class="table table-sm table-hover text-center align-middle small">
         <tbody>
 
             @foreach (var inputPosition in Model.InputPositions)
@@ -16,7 +16,7 @@
 
                 <td class="text-start">
                     <div>@inputPosition.IO_POSID</div>
-                    <div class="text-muted small">@inputPosition.SYNC_ID</div>
+                    <div class="text-muted">@inputPosition.SYNC_ID</div>
                 </td>
 
                 <td>
@@ -26,13 +26,13 @@
                         </a>
                     </div>
                     <div>
-                        <span class="text-muted small" id="@Html.Raw("lotSyncId_" + inputPosition.SYNC_ID)"></span>
+                        <span class="text-muted" id="@Html.Raw("lotSyncId_" + inputPosition.SYNC_ID)"></span>
                     </div>
                 </td>
 
                 <td>
                     <div><span id="@Html.Raw("cartId_" + inputPosition.IO_POSID)"></span></div>
-                    <div><span class="text-muted small" id="@Html.Raw("cartSyncId_" + inputPosition.SYNC_ID)"></span></div>
+                    <div><span class="text-muted" id="@Html.Raw("cartSyncId_" + inputPosition.SYNC_ID)"></span></div>
                 </td>
 
                 <td>
@@ -48,9 +48,9 @@
                     
         </tbody>
     </table>
-    </div>*@
-
-<div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-4 row-cols-xxl-4 p-0">
+    </div>
+@*
+<div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-4 p-0">
     @foreach (var inputPosition in Model.InputPositions)
     {
         <div class="col g-1">
@@ -105,7 +105,7 @@
         </div>
     }
     </div>
-
+*@
 
 <script defer type="text/javascript">
 

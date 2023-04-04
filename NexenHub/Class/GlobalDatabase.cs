@@ -1227,6 +1227,7 @@ namespace NexenHub.Class
                 query.AppendLine("AND wo.USE_YN = 'Y'");
                 query.AppendLine("AND (WO_PROC_STATE IN('W', 'S')");
                 query.AppendLine("OR WO_PROC_STATE = 'F' AND (TRUNC(SYSDATE - (6/24)) - (to_date(WO_ETIME,'YYYYMMDDHH24MISS')-(6/24)) BETWEEN -1 AND 1))");
+                query.AppendLine("ORDER BY WO_STIME DESC");
 
                 DBOra db = new DBOra(query.ToString());
                 db.AddParameter("eq", EQ_ID, OracleDbType.NVarchar2);
