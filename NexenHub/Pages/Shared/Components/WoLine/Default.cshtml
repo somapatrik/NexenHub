@@ -2,18 +2,21 @@
 @{
 }
 
-<div id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="row row-cols-auto">
+<div id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="row row-cols-1 justify-content-start">
 
 </div>
 
 <div id="woListCode" style="position:absolute;display:none;margin:0;padding:0;top:0;left:0">
-   <div class="col">
+
+   <div class="col p-1">
        <div class="card {{wocardstyle}}">
            <div class="card-body">
-               {{workorder}}
+                <div>{{itemname}}</div>
+                <div>{{workorder}}</div>
            </div>
        </div>
    </div>
+
 </div>
 
 <script type="text/javascript">
@@ -45,21 +48,50 @@ async function displayWoList(data)
 
     row.innerHTML= '';
 
-    data.Finished.forEach(finished => {
-        var fCode = code.replace('{{workorder}}', finished['WO_NO']);
-        row.innerHTML += fCode;
-    });
+        data.Waiting.forEach(waiting => {
+            var fCode = '';
 
-    data.Started.forEach(started => {
-            var fCode = code.replace('{{wocardstyle}}', 'bg-primary text-white');
-            var fCode = fCode.replace('{{workorder}}', started['WO_NO']);
+            if (waiting['TEST_YN'] == 'Y')
+                fCode = code.replace('{{wocardstyle}}', 'border-warning text-muted');
+            else
+                fCode = code.replace('{{wocardstyle}}', 'text-muted');
+
+             fCode = fCode.replace('{{workorder}}', waiting['WO_NO']);
+             fCode = fCode.replace('{{itemname}}', waiting['ITEM_NAME']);
+             fCode = fCode.replace('{{prodtype}}', waiting['PROD_TYPE']);
             
         row.innerHTML += fCode;
     });
 
-    data.Waiting.forEach(waiting => {
-            var fCode = code.replace('{{wocardstyle}}', 'bg-warning');
-            var fCode = fCode.replace('{{workorder}}', waiting['WO_NO']);
+
+    data.Started.forEach(started => {
+
+            var fCode = '';
+
+            if (started['TEST_YN'] == 'Y')
+                fCode = code.replace('{{wocardstyle}}', 'bg-warning text-black');
+            else
+                fCode = code.replace('{{wocardstyle}}', 'bg-github-green text-white');
+
+            fCode = fCode.replace('{{workorder}}', started['WO_NO']);
+            fCode = fCode.replace('{{itemname}}', started['ITEM_NAME']);
+            fCode = fCode.replace('{{prodtype}}', started['PROD_TYPE']);
+
+            row.innerHTML += fCode;
+    });
+
+        data.Finished.forEach(finished => {
+            var fCode = '';
+
+            if (finished['TEST_YN'] == 'Y')
+                fCode = code.replace('{{wocardstyle}}', 'border-warning bg-light text-muted');
+            else
+                fCode = code.replace('{{wocardstyle}}', 'bg-light text-muted');
+
+
+        fCode = fCode.replace('{{workorder}}', finished['WO_NO']);
+        fCode = fCode.replace('{{itemname}}', finished['ITEM_NAME']);
+        fCode = fCode.replace('{{prodtype}}', finished['PROD_TYPE']);
             
         row.innerHTML += fCode;
     });

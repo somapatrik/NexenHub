@@ -59,20 +59,16 @@ namespace NexenHub.Controllers
                     wo.DEL_FLAG = row["DEL_FLAG"].ToString();
                     wo.WO_PROC_STATE = row["WO_PROC_STATE"].ToString();
 
-                    if (wo.WO_PROC_STATE == "W")
-                    {
-                        Waiting.Add(wo); 
-                    }
-                    else if (wo.WO_PROC_STATE == "S")
-                    {
+                    if (wo.WO_PROC_STATE == "S")
                         Started.Add(wo);
-                    }
-                    else if (wo.WO_PROC_STATE == "F")
+
+                    if ((Waiting.Count + Started.Count + Finished.Count) < 7)
                     {
-                        if ((Waiting.Count + Started.Count + Finished.Count) < 10)
+                        if (wo.WO_PROC_STATE == "W")
+                            Waiting.Add(wo);
+                        else if (wo.WO_PROC_STATE == "F")
                             Finished.Add(wo);
                     }
-                        
 
                 }
 
