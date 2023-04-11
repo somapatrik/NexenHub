@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NexenHub.Class;
 using NexenHub.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection.Metadata;
@@ -14,6 +15,35 @@ namespace NexenHub.Controllers
     {
 
         GlobalDatabase database = new GlobalDatabase();
+
+        [HttpGet("latestProd/{EQ_ID:length(5)}")]
+        public ActionResult<List<object>> getLatestProd(string EQ_ID)
+        {
+            try
+            {
+                List<object> latest = new List<object>();
+                DataTable dt = database.LatestProduction(EQ_ID);
+                foreach(DataRow row in dt.Rows)
+                {
+                    latest.Add(new
+                    {
+                        LOT_ID = row["LOT_ID"].ToString(),
+                        PROD_DATE = row["PROD_DATE"].ToString(),
+                        ITEM_ID = row["ITEM_ID"].ToString(),
+                        ITEM_NAME = row["ITEM_NAME"].ToString(),
+                        QTY = row["QTY"].ToString(),
+                        SAVE_TYPE = row["SAVE_TYPE"].ToString(),
+                        USE_YN = row["USE_YN"].ToString()
+                    });
+                }
+
+                return latest;
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
         [HttpGet("inputPositions/{EQ_ID:length(5)}")]
         public ActionResult<List<EQPOS>> getInputPositions(string EQ_ID)

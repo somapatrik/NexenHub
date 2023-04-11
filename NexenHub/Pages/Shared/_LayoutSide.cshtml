@@ -1,0 +1,35 @@
+﻿@{
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The HUB</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/vis/dist/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/vis/dist/vis.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body class="bg-github-light m-0 p-0">
+    <script src="~/lib/chart/dist/chart.min.js"></script>
+    <script src="~/lib/chart/dist/helpers.esm.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/vis/dist/vis.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

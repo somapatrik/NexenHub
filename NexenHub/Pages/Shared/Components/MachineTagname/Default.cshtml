@@ -2,32 +2,19 @@
 @{
 }
 
-<div class="card">
-    <div class="card-body p-0">
-        <div class="row">
-            <div class="col-auto p-3">
-
-                <div class="row">
-                    <div class="col">
-                        <h5>@Model.MachineInfo.Name</h5>
-                    </div>
-                </div>
+<div class="row p-3 text-light">
+    <div class="row">
+            <h5>@Model.MachineInfo.Name</h5>
+    </div>
             
-                <div class="row">
-                    <div class="col">
-                        <span class="text-muted">@Model.MachineInfo.WC_ID / @Model.MachineInfo.PROC_ID / @Model.MachineInfo.EQ_ID</span>
-                    </div>
-                </div>
-            
-            </div>
+    <div class="row">
+            <span class="text-muted">@Model.MachineInfo.WC_ID / @Model.MachineInfo.PROC_ID / @Model.MachineInfo.EQ_ID</span>
+    </div>
+</div>
 
-            <div id="@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeFrame")" 
-            class="col-auto p-3 border-start rounded-end">
-                <div class="d-flex h-100 align-items-center">
-                    <h5 id="@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeMsg")" class="text-uppercase"></h5>
-                    </div>
-            </div>
-        </div>
+<div class="row mb-2">
+    <div id="@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeFrame")" class="p-3 text-center">
+        <h5 id="@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeMsg")" class="text-uppercase"></h5>
     </div>
 </div>
 
@@ -57,7 +44,7 @@ document.addEventListener('readystatechange', event => {
             .then(response => response.json())
             .then(data => 
             {
-                var msg = 'Running';
+                var msg = 'Fine';
                 var msgStyle = 'bg-github-green';
                 var msgcolor = 'text-white';
 

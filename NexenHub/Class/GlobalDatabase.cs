@@ -18,6 +18,35 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+        public DataTable LatestProduction(string EQ_ID)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("select");
+                query.AppendLine("PROD.LOT_ID,");
+                query.AppendLine("to_date(PROD.PROD_TIME,'yyyymmddhh24miss') PROD_DATE,");
+                query.AppendLine("PROD.ITEM_ID,");
+                query.AppendLine("ITEM.ITEM_NAME,");
+                query.AppendLine("(PROD.PROD_QTY ||  PROD.UNIT) QTY,");
+                query.AppendLine("PROD.SAVE_TYPE,");
+                query.AppendLine("PROD.USE_YN");
+                query.AppendLine("from TB_PR_M_PROD PROD");
+                query.AppendLine("left join TB_CM_M_ITEM ITEM ON ITEM.ITEM_ID=PROD.ITEM_ID");
+                query.AppendLine("where PROD.EQ_ID=:eqid ");
+                query.AppendLine("AND PROD.PROD_DATE = to_CHAR(SYSDATE - interval '6' HOUR, 'YYYYMMDD')");
+                query.AppendLine("order by PROD.PROD_TIME desc");
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID);
+                return db.ExecTable();
+            }
+            catch
+            {
+                return new DataTable();
+            }
+        }
+
         public DataTable GetOldVersions()
         {
             try

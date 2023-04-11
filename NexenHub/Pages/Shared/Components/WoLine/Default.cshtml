@@ -2,13 +2,13 @@
 @{
 }
 
-<div id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="row row-cols-1 justify-content-start">
+<div id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="row row-cols-1 g-1">
 
 </div>
 
 <div id="woListCode" style="position:absolute;display:none;margin:0;padding:0;top:0;left:0">
 
-   <div class="col p-1">
+   <div class="col">
        <div class="card {{wocardstyle}}">
            <div class="card-body">
                 <div>{{itemname}}</div>
@@ -52,9 +52,9 @@ async function displayWoList(data)
             var fCode = '';
 
             if (waiting['TEST_YN'] == 'Y')
-                fCode = code.replace('{{wocardstyle}}', 'border-warning text-muted');
+                fCode = code.replace('{{wocardstyle}}', 'border-warning bg-transparent text-light');
             else
-                fCode = code.replace('{{wocardstyle}}', 'text-muted');
+                fCode = code.replace('{{wocardstyle}}', 'border-secondary bg-transparent text-light');
 
              fCode = fCode.replace('{{workorder}}', waiting['WO_NO']);
              fCode = fCode.replace('{{itemname}}', waiting['ITEM_NAME']);
@@ -84,9 +84,9 @@ async function displayWoList(data)
             var fCode = '';
 
             if (finished['TEST_YN'] == 'Y')
-                fCode = code.replace('{{wocardstyle}}', 'border-warning bg-light text-muted');
+                fCode = code.replace('{{wocardstyle}}', 'border-warning bg-transparent text-light text-muted');
             else
-                fCode = code.replace('{{wocardstyle}}', 'bg-light text-muted');
+                fCode = code.replace('{{wocardstyle}}', 'border-secondary bg-transparent text-muted');
 
 
         fCode = fCode.replace('{{workorder}}', finished['WO_NO']);
