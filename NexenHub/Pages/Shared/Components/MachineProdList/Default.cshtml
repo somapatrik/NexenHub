@@ -1,0 +1,87 @@
+﻿@model NexenHub.ViewModels.MachineProdListViewModel
+@{
+
+}
+
+<div id="@Html.Raw(Model.EQ_ID + "_prodLineRow")" class="list-group-flush p-0 h-100">
+
+</div>
+
+<div id="prodListCode" style="position:absolute;display:none;margin:0;padding:0;top:0;left:0">
+
+    <div class="list-group-item border-secondary {{prodcardstyle}}">
+        <div class="d-flex">
+            <div class="flex-grow-1">{{savetype}}</div>
+            <div>{{proddate}}</div>
+        </div>
+
+           <div class="d-flex">
+            <div class="text-truncate">{{itemname}}</div>
+            <div></div>
+           </div>
+
+            <div class="d-flex">
+            <div class="flex-grow-1">{{lotno}}</div>
+                <div>{{QTY}}</div>
+            </div>
+
+       </div>
+
+</div>
+
+<script type="text/javascript">
+
+    document.addEventListener('readystatechange', event => {
+        switch (document.readyState) {
+            case "loading":
+                break;
+            case "interactive":
+                getProdList();
+                break;
+            case "complete":
+                setInterval(getProdList, 15000);
+                break;
+        }
+    });
+
+    async function getProdList() {
+        return await fetch(window.location.origin + '/api/cockpit/latestprod/' + @Model.EQ_ID)
+            .then(response => response.json())
+            .then(data => displayprodList(data));
+    }
+
+    async function displayprodList(data) {
+        var code = document.getElementById('prodListCode').innerHTML;
+        var row = document.getElementById(@Html.Raw("'" + Model.EQ_ID + "_prodLineRow'"));
+
+        row.innerHTML = '';
+
+        data.slice(0, 7).forEach(production => {
+            var fCode = '';
+            
+            if (production['USE_YN'] == 'Y')
+            {
+                    fCode = code.replace('{{prodcardstyle}}', 'bg-transparent text-white-50');
+            }
+            else
+            {
+                fCode = code.replace('{{prodcardstyle}}', 'bg-github-red text-light');
+            }
+
+            if (production['SAVE_TYPE'] == 'M')
+                fCode = fCode.replace('{{savetype}}', '<span class="badge bg-info text-dark">Manual</span>');
+            else
+                fCode = fCode.replace('{{savetype}}', '');
+
+            fCode = fCode.replace('{{lotno}}', production['LOT_ID']);
+            fCode = fCode.replace('{{itemname}}', production['ITEM_NAME']);
+            fCode = fCode.replace('{{QTY}}', production['QTY']);
+            fCode = fCode.replace('{{proddate}}', production['PROD_DATE']);
+
+            row.innerHTML += fCode;
+
+        });
+
+    }
+
+</script>

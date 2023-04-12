@@ -2,20 +2,22 @@
 @{
 }
 
-<div id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="row row-cols-1 g-1">
+<div id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="list-group-flush p-0 h-100">
 
 </div>
 
 <div id="woListCode" style="position:absolute;display:none;margin:0;padding:0;top:0;left:0">
 
-   <div class="col">
-       <div class="card {{wocardstyle}}">
-           <div class="card-body">
-                <div>{{itemname}}</div>
-                <div>{{workorder}}</div>
+    <div class="list-group-item border-secondary {{wocardstyle}}">
+           <div class="d-flex">
+                <div class="text-truncate">{{itemname}}</div>
+                <div></div>
            </div>
+            <div class="d-flex">
+                <div class="flex-grow-1">{{workorder}}</div>
+                <div>{{status}}</div>
+            </div>
        </div>
-   </div>
 
 </div>
 
@@ -52,13 +54,14 @@ async function displayWoList(data)
             var fCode = '';
 
             if (waiting['TEST_YN'] == 'Y')
-                fCode = code.replace('{{wocardstyle}}', 'border-warning bg-transparent text-light');
+                fCode = code.replace('{{wocardstyle}}', 'bg-transparent text-light');
             else
-                fCode = code.replace('{{wocardstyle}}', 'border-secondary bg-transparent text-light');
+                fCode = code.replace('{{wocardstyle}}', 'bg-transparent text-light');
 
              fCode = fCode.replace('{{workorder}}', waiting['WO_NO']);
              fCode = fCode.replace('{{itemname}}', waiting['ITEM_NAME']);
              fCode = fCode.replace('{{prodtype}}', waiting['PROD_TYPE']);
+            fCode = fCode.replace('{{status}}', 'Waiting');
             
         row.innerHTML += fCode;
     });
@@ -76,6 +79,7 @@ async function displayWoList(data)
             fCode = fCode.replace('{{workorder}}', started['WO_NO']);
             fCode = fCode.replace('{{itemname}}', started['ITEM_NAME']);
             fCode = fCode.replace('{{prodtype}}', started['PROD_TYPE']);
+            fCode = fCode.replace('{{status}}', 'Active');
 
             row.innerHTML += fCode;
     });
@@ -84,14 +88,15 @@ async function displayWoList(data)
             var fCode = '';
 
             if (finished['TEST_YN'] == 'Y')
-                fCode = code.replace('{{wocardstyle}}', 'border-warning bg-transparent text-light text-muted');
+                fCode = code.replace('{{wocardstyle}}', 'bg-transparent text-light text-muted');
             else
-                fCode = code.replace('{{wocardstyle}}', 'border-secondary bg-transparent text-muted');
+                fCode = code.replace('{{wocardstyle}}', 'bg-transparent text-muted');
 
 
-        fCode = fCode.replace('{{workorder}}', finished['WO_NO']);
-        fCode = fCode.replace('{{itemname}}', finished['ITEM_NAME']);
-        fCode = fCode.replace('{{prodtype}}', finished['PROD_TYPE']);
+            fCode = fCode.replace('{{workorder}}', finished['WO_NO']);
+            fCode = fCode.replace('{{itemname}}', finished['ITEM_NAME']);
+            fCode = fCode.replace('{{prodtype}}', finished['PROD_TYPE']);
+            fCode = fCode.replace('{{status}}', 'Finished');
             
         row.innerHTML += fCode;
     });

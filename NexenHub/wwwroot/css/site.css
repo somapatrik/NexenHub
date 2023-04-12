@@ -9,6 +9,11 @@ for details on configuring this project to bundle and minify static web assets. 
     --soma-darklight: #434c57;
     --soma-dark: #22272e;
     --filter-background: #f7f7f7;
+    --twitter-dark-blue: #243447;
+}
+
+.bg-dark-blue {
+    background-color: var(--twitter-dark-blue);
 }
 
 .bg-filter {

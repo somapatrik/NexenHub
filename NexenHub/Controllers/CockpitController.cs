@@ -5,6 +5,7 @@ using NexenHub.Models;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Reflection.Metadata;
 
 namespace NexenHub.Controllers
@@ -35,6 +36,8 @@ namespace NexenHub.Controllers
                         SAVE_TYPE = row["SAVE_TYPE"].ToString(),
                         USE_YN = row["USE_YN"].ToString()
                     });
+
+                   
                 }
 
                 return latest;
@@ -91,16 +94,17 @@ namespace NexenHub.Controllers
 
                     if (wo.WO_PROC_STATE == "S")
                         Started.Add(wo);
-
-                    if ((Waiting.Count + Started.Count + Finished.Count) < 7)
-                    {
-                        if (wo.WO_PROC_STATE == "W")
-                            Waiting.Add(wo);
-                        else if (wo.WO_PROC_STATE == "F")
-                            Finished.Add(wo);
-                    }
+                    else if (wo.WO_PROC_STATE == "W")
+                        Waiting.Add(wo);
+                    else if (wo.WO_PROC_STATE == "F")
+                        Finished.Add(wo);
 
                 }
+
+                // Sort waiting for two upcoming
+                int CountLast = 2;
+                if (Waiting.Count >= CountLast)
+                    Waiting = Waiting.Skip(Waiting.Count - CountLast).Take(CountLast).ToList();
 
                 return new {Waiting, Started,Finished};
             }
