@@ -8,7 +8,7 @@
         Latest production
     </div>
     <div class="table-responsive">
-        <table id="@Html.Raw(Model.EQ_ID + "_prodLineTable")" class="table table-hover small">
+        <table id="@Html.Raw(Model.EQ_ID + "_prodLineTable")" class="table table-hover table-borderless table-sm text-center small">
 
         </table>
     </div>
@@ -24,7 +24,7 @@
                 getProdList();
                 break;
             case "complete":
-                setInterval(getProdList, 15000);
+                setInterval(getProdList, 10000);
                 break;
         }
     });
@@ -59,17 +59,14 @@
                 fCode = fCode.replace('{{savetype}}', '');
 */
 
-            row += '<td>' + production['LOT_ID'] + '</td>';
+            row += '<td><a class=\"link-primary\" href=\"/lot/' + production['LOT_ID'] + '\" target=\"_blank\">' + production['LOT_ID'] + '</a></td>';
             row += '<td>' + production['PROD_DATE'] + '</td>';            
-            row += '<td>' + production['ITEM_NAME'] + '</td>';
-            row += '<td>' + production['QTY'] + '</td>';
+            //row += '<td>' + production['ITEM_NAME'] + '</td>';
+            //row += '<td>' + production['QTY'] + '</td>';
 
             tableCode.innerHTML += row + '</tr>';
 
         });
-
-
-        //tableCode.innerHTML += '</tbody>';
     }
 
 </script>

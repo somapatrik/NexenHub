@@ -40,11 +40,7 @@
 
             <div class="row g-1">
 
-                <div class="col">
-                    <div class="col">
-                        @await Component.InvokeAsync("MachineWo", Model.EQ_ID)
-                    </div>
-                </div>
+              
 
                 <div class="col-6">
                     <div class="card rounded-0">
@@ -57,6 +53,9 @@
                     </div>
                 </div>
 
+                <div class="col">
+                </div>
+
             </div>
 
         </div>
@@ -64,6 +63,9 @@
         <div class="col-xl-3 p-1">
             
             <div class="row row-cols-1 g-1">
+                <div class="col">
+                    @await Component.InvokeAsync("MachineWo", Model.EQ_ID)
+                </div> 
 
                 <div class="col">
                     @await Component.InvokeAsync("MachineProdList", Model.EQ_ID)

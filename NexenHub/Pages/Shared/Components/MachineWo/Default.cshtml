@@ -7,6 +7,10 @@
     <div class="col">
         <div id="@Html.Raw(Model.EQ_ID + "_cardWo")" class="card text-center rounded-0 {{woCardStyle}}">
 
+            <div class="card-header rounded-0 bg-dark-blue text-light">
+                <h6 class="text-start">Current production</h6>
+            </div>
+
             <div class="card-body">
                @* <div id="@Html.Raw(Model.EQ_ID + "_woBadges")" class="text-end"></div>*@
                 <h4 class="font-weight-300" id="@Html.Raw(Model.EQ_ID + "_woItemId")"></h4>
