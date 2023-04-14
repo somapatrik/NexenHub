@@ -1,0 +1,133 @@
+﻿@model NexenHub.ViewModels.MachineWoViewModel
+@{
+
+}
+
+<div class="row row-cols-1 g-1">
+    <div class="col">
+        <div id="@Html.Raw(Model.EQ_ID + "_cardWo")" class="card text-center rounded-0 {{woCardStyle}}">
+
+            <div class="card-body">
+               @* <div id="@Html.Raw(Model.EQ_ID + "_woBadges")" class="text-end"></div>*@
+                <h4 class="font-weight-300" id="@Html.Raw(Model.EQ_ID + "_woItemId")"></h4>
+                <h4 class="text-truncate" id="@Html.Raw(Model.EQ_ID + "_woItemName")"></h4>
+                <h6 class="font-weight-300" id="@Html.Raw(Model.EQ_ID + "_woProtId")"></h6>
+                <h6 class="text-truncate" id="@Html.Raw(Model.EQ_ID + "_woProtVer")"></h6>
+            </div>           
+
+           @* <table id="@Html.Raw(Model.EQ_ID + "_woBomTable")" class="table table-borderless table-hover">
+
+            </table>*@
+
+        </div>
+        
+    </div>
+
+    <div class="col">
+        <div class="card text-center rounded-0 {{woCardStyle}}">         
+            @*<div class="bg-dark-blue p-1">
+                <h6 class="text-light text-start">BOM</h6>
+            </div>*@
+            <table id="@Html.Raw(Model.EQ_ID + "_woBomTable")" class="table table-borderless table-hover">
+
+            </table>
+
+        </div>
+        
+    </div>
+
+</div>
+<script defer type="text/javascript">
+
+    document.addEventListener('readystatechange', event => {
+        switch (document.readyState) {
+            case "loading":
+                break;
+            case "interactive":
+                getWoInfo();
+                break;
+            case "complete":
+                setInterval(getWoInfo, 10000);
+                break;
+        }
+    });
+
+    async function getWoInfo(){
+        await fetch(window.location.origin + '/api/cockpit/actWo/' + @Model.EQ_ID)
+            .then(response => response.json())
+            .then(data => displayWoInfo(data));
+    }
+
+    async function getBom(item){
+        return await fetch(window.location.origin + '/api/cockpit/bom/' + item)
+            .then(response => response.json());
+    }
+
+        async function getProtBom(item,prot,ver){
+        return await fetch(window.location.origin + '/api/cockpit/protbom/' + item + '/' + prot + '/' + ver)
+            .then(response => response.json());
+    }
+
+    async function displayWoInfo(data)
+    {
+        var cardWo = document.getElementById('@Html.Raw(Model.EQ_ID + "_cardWo")');
+        var wono = document.getElementById('@Html.Raw(Model.EQ_ID + "_woNo")');
+        var itemid = document.getElementById('@Html.Raw(Model.EQ_ID + "_woItemId")');
+        var itemName = document.getElementById('@Html.Raw(Model.EQ_ID + "_woItemName")');
+        var bomTable = document.getElementById('@Html.Raw(Model.EQ_ID + "_woBomTable")');
+        var protId = document.getElementById('@Html.Raw(Model.EQ_ID + "_woProtId")');
+        var protVer = document.getElementById('@Html.Raw(Model.EQ_ID + "_woProtVer")');
+
+        cardWo.classList.remove('bg-warning', 'text-dark');
+        cardWo.classList.remove('bg-primary', 'text-light');
+
+        itemid.innerHTML = 'No active workorder';
+        itemName.innerHTML = '';
+        protId.innerHTML = '';
+        protVer.innerHTML = '';
+
+        if (data['WO_EXISTS'] == true)
+        {
+
+            itemid.innerHTML = data['ITEM_ID'];
+            itemName.innerHTML = data['ITEM_NAME'];
+        
+            var isTest = data['TEST_YN'] == 'Y';
+            var isOE = data['OE'] == true;
+
+            if (isTest)
+            {
+                cardWo.classList.add('bg-warning', 'text-dark');
+                
+                protId.innerHTML = data['PROTOTYPE_ID'];
+                protVer.innerHTML = data['PROTOTYPE_VER'];
+
+            }
+            else if (isOE)
+            {
+                cardWo.classList.add('bg-primary', 'text-light');
+            }
+
+            // BOM
+            var bom;
+
+            if (isTest)
+                bom = await getProtBom(data['ITEM_ID'], data['PROTOTYPE_ID'], data['PROTOTYPE_VER']);
+            else
+                bom = await getBom(data['ITEM_ID']);
+
+            bomTable.innerHTML = '';
+            bom.forEach(bomItem=>{
+                bomTable.innerHTML += '<tr><td>' + bomItem['ITEM_ID'] + '</td><td>' + bomItem['ITEM_NAME'] + '</td></tr>';
+            });
+             
+
+
+        }
+        else
+        {
+            bomTable.innerHTML = '';
+        }
+    }
+
+</script>

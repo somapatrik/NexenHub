@@ -84,7 +84,7 @@ async function displayWoList(data)
             row.innerHTML += fCode;
     });
 
-        data.Finished.forEach(finished => {
+        data.Finished.slice(0,8).forEach(finished => {
             var fCode = '';
 
             if (finished['TEST_YN'] == 'Y')

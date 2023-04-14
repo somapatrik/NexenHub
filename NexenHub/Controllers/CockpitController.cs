@@ -17,6 +17,57 @@ namespace NexenHub.Controllers
 
         GlobalDatabase database = new GlobalDatabase();
 
+        [HttpGet("protbom/{ITEM_ID:maxlength(22)}/{PROTOTYPE_ID}/{PROTOTYPE_VER}")]
+        public ActionResult<List<object>> getProBom(string ITEM_ID, string PROTOTYPE_ID, string PROTOTYPE_VER)
+        {
+            try
+            {
+                List<object> items = new List<object>();
+                foreach (DataRow row in database.GetPrototypeBOM(ITEM_ID, PROTOTYPE_ID, PROTOTYPE_VER).Rows)
+                {
+                    items.Add(new { ITEM_ID = row["ITEM_ID"].ToString(), ITEM_NAME = row["ITEM_NAME"].ToString() });
+                }
+                return items;
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet("bom/{ITEM_ID:maxlength(22)}")]
+        public ActionResult<List<object>> getBom(string ITEM_ID)
+        {
+            try
+            {
+                List<object> items = new List<object>();
+                foreach(DataRow row in database.GetBOM(ITEM_ID).Rows)
+                {
+                    items.Add(new { ITEM_ID = row["ITEM_ID"].ToString(), ITEM_NAME = row["ITEM_NAME"].ToString() });
+                }
+                return items;
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet("actWo/{EQ_ID:length(5)}")]
+        public ActionResult<WorkOrder> getActWo(string EQ_ID)
+        {
+            try
+            {
+                WorkOrder wo = new WorkOrder();
+                wo.LoadFromMachine(EQ_ID);
+                return wo;
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
         [HttpGet("latestProd/{EQ_ID:length(5)}")]
         public ActionResult<List<object>> getLatestProd(string EQ_ID)
         {

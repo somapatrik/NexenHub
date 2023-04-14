@@ -10,49 +10,67 @@
 
         <div class="col-xl-2 bg-dark-blue">
 
+            <div class="row text-center">
+                <div class="col">
+                    <a class="navbar-brand" asp-page="/Index"> <img class="respo" style="max-height:5vh;max-width:100%;" src="~/images/logo/logo_light.png" /></a>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col">
                     @await Component.InvokeAsync("MachineTagname", Model.machineInfo)
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="max-height:70vh;overflow-y:auto;">
                 <div class="col p-0" >
                 @await Component.InvokeAsync("WoLine", Model.EQ_ID)
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col">
+
+                </div>
+            </div>
+
         </div>
 
-        <div class="col">
+        <div class="col p-1">
 
-            <div class="row">
+            <div class="row g-1">
+
+                <div class="col">
+                    <div class="col">
+                        @await Component.InvokeAsync("MachineWo", Model.EQ_ID)
+                    </div>
+                </div>
+
                 <div class="col-6">
-                    <div class="card">
+                    <div class="card rounded-0">
+                        <div class="bg-dark-blue text-white card-header rounded-0">
+                            Input positions
+                        </div>
                         <div class="card-body p-0">
                             @await Component.InvokeAsync("InputPositions", Model.EQ_ID)
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
 
-        <div class="col-xl-2 bg-dark-blue">
+        <div class="col-xl-3 p-1">
+            
+            <div class="row row-cols-1 g-1">
 
-            <div class="row p-3">
                 <div class="col">
-                    <h5 class="text-white">Latest production</h5>
-                </div>
-            </div>
-
-             <div class="row" style="overflow-y:auto;">
-                <div class="col p-0">
                     @await Component.InvokeAsync("MachineProdList", Model.EQ_ID)
                 </div>
-            </div>
 
-        </div>
+            </div>
+            </div>
     </div>
 
 

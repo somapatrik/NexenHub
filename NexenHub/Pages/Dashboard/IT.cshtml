@@ -20,7 +20,6 @@
     <div class="container-fluid">
 
         <!-- Version -->
-
         <div class="row row-cols-1 row-cols-md-3 g-1">
 
             <div class="col">
@@ -28,7 +27,7 @@
                     <div class="card-header display-5">IO Server</div>
                     <div class="card-body display-5">
                         <div><span id="IOServerVersion"></span></div>
-                        <div><span id="IOCount"></span></div>
+                        @*<div><span id="IOCount"></span></div>*@
                     </div>
                 </div>
             </div>
@@ -38,7 +37,7 @@
                     <div class="card-header display-5">ICS</div>
                     <div class="card-body display-5">
                         <div><span id="ICSServerVersion"></span></div>
-                        <div><span id="ICSCount"></span></div>
+                        @*<div><span id="ICSCount"></span></div>*@
                     </div>
                 </div>
             </div>
@@ -56,7 +55,7 @@
         </div>
 
         <!-- PM -->
-        <div id="pmRow" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
+        <div id="pmRow" class="row row-cols-1 row-cols-md-3 g-1">
         </div>
 
         <!-- Old versions -->
@@ -166,47 +165,47 @@
         document.getElementById('ICSServerVersion').innerHTML = data[0];
         document.getElementById('RexServerVersion').innerHTML = data[6];
 
-        document.getElementById('IOCount').innerHTML = data[4] + ' / ' + data[5];
-        document.getElementById('ICSCount').innerHTML = data[1] + ' / ' + data[2];
-        document.getElementById('RexCount').innerHTML = data[7] + ' / ' + data[8];
+        //document.getElementById('IOCount').innerHTML = data[4] + ' / ' + data[5];
+        //document.getElementById('ICSCount').innerHTML = data[1] + ' / ' + data[2];
+        //document.getElementById('RexCount').innerHTML = data[7] + ' / ' + data[8];
 
         var ioCard = document.getElementById('IOCard');
         var icsCard = document.getElementById('ICSCard');
         var rexCard = document.getElementById('RexCard');
 
 
-        if (data[4] == data[5])
-        {
-            ioCard.classList.remove('alert-warning');
+        //if (data[4] == data[5])
+        //{
+        //    ioCard.classList.remove('alert-warning');
             ioCard.classList.add('alert-primary');
-        }
-        else
-        {
-            ioCard.classList.add('alert-warning');
-            ioCard.classList.remove('alert-primary');
-        }
+        //}
+        //else
+        //{
+        //    ioCard.classList.add('alert-warning');
+        //    ioCard.classList.remove('alert-primary');
+        //}
 
-        if (data[1] == data[2])
-        {
-            icsCard.classList.remove('alert-warning');
+        //if (data[1] == data[2])
+        //{
+        //    icsCard.classList.remove('alert-warning');
             icsCard.classList.add('alert-primary');
-        }
-        else
-        {
-            icsCard.classList.add('alert-warning');
-            icsCard.classList.remove('alert-primary');
-        }
+        //}
+        //else
+        //{
+        //    icsCard.classList.add('alert-warning');
+        //    icsCard.classList.remove('alert-primary');
+        //}
 
-        if (data[7] == data[8])
-        {
-            rexCard.classList.remove('alert-warning');
+        //if (data[7] == data[8])
+        //{
+        //    rexCard.classList.remove('alert-warning');
             rexCard.classList.add('alert-primary');
-        }
-        else
-        {
-            rexCard.classList.add('alert-warning');
-            rexCard.classList.remove('alert-primary');
-        }
+        //}
+        //else
+        //{
+        //    rexCard.classList.add('alert-warning');
+        //    rexCard.classList.remove('alert-primary');
+        //}
 
     }
 

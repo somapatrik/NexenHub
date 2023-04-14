@@ -3,30 +3,15 @@
 
 }
 
-<div id="@Html.Raw(Model.EQ_ID + "_prodLineRow")" class="list-group-flush p-0 h-100">
+<div class="card rounded-0">
+    <div class="card-header rounded-0 bg-dark-blue text-light">
+        Latest production
+    </div>
+    <div class="table-responsive">
+        <table id="@Html.Raw(Model.EQ_ID + "_prodLineTable")" class="table table-hover small">
 
-</div>
-
-<div id="prodListCode" style="position:absolute;display:none;margin:0;padding:0;top:0;left:0">
-
-    <div class="list-group-item border-secondary {{prodcardstyle}}">
-        <div class="d-flex">
-            <div class="flex-grow-1">{{savetype}}</div>
-            <div>{{proddate}}</div>
-        </div>
-
-           <div class="d-flex">
-            <div class="text-truncate">{{itemname}}</div>
-            <div></div>
-           </div>
-
-            <div class="d-flex">
-            <div class="flex-grow-1">{{lotno}}</div>
-                <div>{{QTY}}</div>
-            </div>
-
-       </div>
-
+        </table>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -51,37 +36,40 @@
     }
 
     async function displayprodList(data) {
-        var code = document.getElementById('prodListCode').innerHTML;
-        var row = document.getElementById(@Html.Raw("'" + Model.EQ_ID + "_prodLineRow'"));
+        var tableCode = document.getElementById(@Html.Raw("'" + Model.EQ_ID + "_prodLineTable'"));
 
-        row.innerHTML = '';
+        tableCode.innerHTML = '';
+        var row = '';
 
-        data.slice(0, 7).forEach(production => {
-            var fCode = '';
+        data.slice(0, 8).forEach(production => 
+        {
             
             if (production['USE_YN'] == 'Y')
             {
-                    fCode = code.replace('{{prodcardstyle}}', 'bg-transparent text-white-50');
+                  row = '<tr>';
             }
             else
             {
-                fCode = code.replace('{{prodcardstyle}}', 'bg-github-red text-light');
+                  row = '<tr class=\"bg-github-red text-white\">';
             }
 
-            if (production['SAVE_TYPE'] == 'M')
+           /* if (production['SAVE_TYPE'] == 'M')
                 fCode = fCode.replace('{{savetype}}', '<span class="badge bg-info text-dark">Manual</span>');
             else
                 fCode = fCode.replace('{{savetype}}', '');
+*/
 
-            fCode = fCode.replace('{{lotno}}', production['LOT_ID']);
-            fCode = fCode.replace('{{itemname}}', production['ITEM_NAME']);
-            fCode = fCode.replace('{{QTY}}', production['QTY']);
-            fCode = fCode.replace('{{proddate}}', production['PROD_DATE']);
+            row += '<td>' + production['LOT_ID'] + '</td>';
+            row += '<td>' + production['PROD_DATE'] + '</td>';            
+            row += '<td>' + production['ITEM_NAME'] + '</td>';
+            row += '<td>' + production['QTY'] + '</td>';
 
-            row.innerHTML += fCode;
+            tableCode.innerHTML += row + '</tr>';
 
         });
 
+
+        //tableCode.innerHTML += '</tbody>';
     }
 
 </script>
