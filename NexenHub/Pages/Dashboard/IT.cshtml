@@ -55,25 +55,25 @@
         </div>
 
         <!-- PM -->
-        <div id="pmRow" class="row row-cols-1 row-cols-md-3 g-1">
+        <div id="pmRow" class="row row-cols-1 row-cols-md-3 g-1 mt-1 justify-content-evenly">
         </div>
 
         <!-- Old versions -->
-        <div id="oldRow" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
+        <div id="oldRow" class="row row-cols-1 row-cols-md-6 g-1 mt-1 justify-content-between">
         </div>
 
         <!-- Unreachable -->
-        <div id="pmNoreach" class="row row-cols-1 row-cols-md-3 g-1 mt-1">
+        <div id="pmNoreach" class="row row-cols-1 row-cols-md-6 g-1 mt-1 justify-content-between">
         </div>
 
     </div>
 
-        <div id="oldCard" style="visibility:collapse;position:absolute;top:0;">
+    <div id="oldCard" style="visibility:collapse;position:absolute;top:0;">
         <div class="col">
             <div class="card h-100 bg-info text-dark">
                 <div class="card-header text-center">
-                    <div><h2>Old {{Software}}</h2></div>
-                    <div><h2>{{Device}}</h2></div>
+                    <div><h3>{{Software}}</h3></div>
+                    <div><h3>{{Device}}</h3></div>
                 </div>
                 <div class="card-body text-center">
                     <div><h3>{{IP}}</h3></div>
@@ -87,7 +87,7 @@
     <div class="col" >
         <div class="card h-100 bg-warning text-dark">
             <div class="card-header text-center">
-                <h2>PM - {{MachineName}}</h2>
+                <h3>PM - {{MachineName}}</h3>
             </div>
             <div class="card-body text-center">
                 <h3>{{StartTime}}</h3>
@@ -101,7 +101,7 @@
         <div class="col">
             <div class="card h-100 bg-danger text-light">
                 <div class="card-header text-center">
-                    <h2>{{Name}}</h2>
+                    <h3>{{Name}}</h3>
                 </div>
                 <div class="card-body text-center">
                     <div><h3>{{IP}}</h3></div>
@@ -130,10 +130,10 @@
 
      async function refreshGui()
     {
-        LoadUnreachable();
-        LoadVersions();
-        LoadOlds();
-        LoadPM(); 
+         LoadVersions();
+         await LoadPM();
+         LoadOlds();
+         LoadUnreachable();  
     }
 
     async function LoadOlds() {
@@ -212,6 +212,7 @@
     function displayOlds(olds) {
         var cardCode = document.getElementById('oldCard').innerHTML
         var oldRow = document.getElementById("oldRow");
+       // var pmRow = document.getElementById("pmRow");
 
         oldRow.innerHTML = "";
 
