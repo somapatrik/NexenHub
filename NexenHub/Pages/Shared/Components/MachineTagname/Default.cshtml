@@ -1,5 +1,6 @@
 ﻿@model NexenHub.ViewModels.MachineTagnameViewModel
 @{
+    
 }
 
 <div class="row p-3 text-light">
@@ -23,6 +24,7 @@
 document.addEventListener('readystatechange', event => {
         switch (document.readyState) {
             case "loading":
+                SetPageTitle('@Html.Raw(Model.MachineInfo.Name)');
                 break;
             case "interactive":
                 refreshMachineInfo();
@@ -51,13 +53,15 @@ document.addEventListener('readystatechange', event => {
                 var msgElement = document.getElementById('@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeMsg")');
                 var frameElement = document.getElementById('@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeFrame")');
 
+                var title = '';
+
                 frameElement.classList.remove('bg-github-green', 'bg-warning', 'bg-github-red');
                 msgElement.classList.remove('text-white','text-black');
 
                 if (data['Code'] != '')
                 {
                     msg = data['Description'];
-
+                    title = ' | ' + msg;
                     if (data['Code'] == 'N016')
                     {
                         msgStyle = 'bg-warning';
@@ -68,6 +72,8 @@ document.addEventListener('readystatechange', event => {
                         msgStyle = 'bg-github-red';
                     }
                 }
+                
+                SetPageTitle('@Html.Raw(Model.MachineInfo.Name)' + title);
 
                 msgElement.innerHTML = msg;
                 frameElement.classList.add(msgStyle);

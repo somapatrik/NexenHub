@@ -2,7 +2,7 @@
 @{
 }
 
-<script src="~/js/inputPositions.js"></script>
+
 
 
 <div class="table-responsive">
@@ -49,63 +49,8 @@
         </tbody>
     </table>
     </div>
-@*
-<div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-4 p-0">
-    @foreach (var inputPosition in Model.InputPositions)
-    {
-        <div class="col g-1">
-            <div class="card h-100">
-                <div class="card-body ">
 
-                   <div class="row">
-                        <div class="col text-center">
-                            <div><span class="small text-muted" id="@Html.Raw("itemId_" + inputPosition.IO_POSID)"></span></div>
-                                <div><span class="small" id="@Html.Raw("itemName_" + inputPosition.IO_POSID)"></span></div>
-                        </div>
-                    </div>
-
-                <div class="row">
-                <div class="col">
-                    <div class="d-flex">
-
-                        <div class="flex-grow-1">
-                            <a id="@Html.Raw("href_" + inputPosition.IO_POSID)" class="link-primary" href="#" target="_blank">
-                                <span class="small" id="@Html.Raw("lotId_" + inputPosition.IO_POSID)"></span>
-                            </a>
-                        </div>
-
-                        <div>
-                          <span class="small" id="@Html.Raw("cartId_" + inputPosition.IO_POSID)"></span>
-                        </div>
-                    
-                    </div>
-                    </div>
-                </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <div class="d-flex">
-                            <span class="flex-grow-1 small text-muted" id="@Html.Raw("lotSyncId_" + inputPosition.SYNC_ID)"></span>
-                            <span class="small text-muted" id="@Html.Raw("cartSyncId_" + inputPosition.SYNC_ID)"></span>
-                        </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="card-footer bg-transparent">
-                    <div class="d-flex">
-                        <div class="flex-grow-1"><span class="small">@inputPosition.IO_POSID</span></div>
-                        <div><span class="text-muted small">@inputPosition.SYNC_ID</span></div>
-                        </div>
-                    </div>
-                
-            </div>
-        </div>
-    }
-    </div>
-*@
+<script src="~/js/inputPositions.js"></script>
 
 <script defer type="text/javascript">
 

@@ -1,0 +1,89 @@
+﻿@model NexenHub.ViewModels.MachineOeePieViewModel
+@{
+
+}
+<div class="col-8">
+<canvas id="@Html.Raw(Model.EQ_ID + "_machineOeePie")"></canvas>
+</div>
+<div class="col">
+</div>
+<script type="text/javascript">
+
+    document.addEventListener('readystatechange', event => {
+        switch (document.readyState) {
+            case "loading":
+                break;
+            case "interactive":
+                UpdateMachineOeePie();
+                break;
+            case "complete":
+                setInterval(UpdateMachineOeePie, 5000);
+                break;
+        }
+    });
+
+    
+    const machineOeePie = new Chart(document.getElementById('@Html.Raw(Model.EQ_ID + "_machineOeePie")').getContext('2d'),
+        {
+        type: 'doughnut',
+        options: 
+        {
+            responsive:true,
+            plugins: 
+            {
+                  legend: {
+                    position: 'bottom',
+                  },
+                  title: {
+                    display: false,
+                    text: 'OEE'
+                  }
+            }
+        },
+        data: 
+        {
+            labels:[],
+            datasets: 
+            [{
+                label: null,
+                data: null
+             }]
+        }
+    });
+
+    async function UpdateMachineOeePie()
+    {
+        await fetch(window.location.origin + '/api/prod/machineoee/@Model.EQ_ID')
+            .then(response => response.json())
+            .then(data => setMachineOeePie(data));
+    }
+
+    function setMachineOeePie(data)
+    {
+        var labels = ['Fine'];
+        var chartData = [100 - data.DownTimePercent];
+        var chartBackgrounds = [chartOkColor[1]];
+
+        data.DownTimeGroups.forEach(group=>
+        {
+            labels.push(group.DownTimeName);
+            chartData.push(group.Percent);
+
+            if (group.DownTimeName == 'Other')
+                chartBackgrounds.push(chartGrayColor[1]);
+            else if (group.DownTimeName == 'PM')
+                chartBackgrounds.push(chartOrangeColor[1]);
+            else
+                chartBackgrounds.push(chartBadColor[1]);
+
+        });
+
+        machineOeePie.data.labels = labels;
+        machineOeePie.data.datasets[0].data = chartData;
+        machineOeePie.data.datasets[0].backgroundColor = chartBackgrounds;
+
+
+        machineOeePie.update();
+    }
+
+</script>

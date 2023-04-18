@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using NexenHub.Models;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Data;
 
 namespace NexenHub.Class
 {
@@ -92,8 +93,8 @@ namespace NexenHub.Class
             GlobalDatabase db = new GlobalDatabase();
             User user = db.Login(username, password);
 
-            if (!string.IsNullOrEmpty(user.UserId)) 
-            { 
+            if (!string.IsNullOrEmpty(user.UserId))
+            {
 
                 var claims = new List<Claim>
                         {
@@ -136,6 +137,25 @@ namespace NexenHub.Class
             return logged;
         }
 
-        
+        public static string CodeToGroup(string NONWRK_CODE)
+        {
+            string group = "Other";
+
+            switch (NONWRK_CODE)
+            {
+                case "N016":
+                    group = "PM";
+                    break;
+                case "N058":
+                case "N131":
+                    group = "Test";
+                    break;
+                case "N065":
+                    group = "No action";
+                    break;
+            }
+
+            return group;
+        }
     }
 }

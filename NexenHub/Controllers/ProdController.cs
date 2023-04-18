@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using NexenHub.Class;
 using NexenHub.Models;
@@ -193,6 +194,19 @@ namespace NexenHub.Controllers
         public ActionResult<WorkSectionOee> GetWorkSectionOee(string wcid, string fact="")
         {
             return new WorkSectionOee(wcid,fact);
+        }
+
+        [HttpGet("MachineOEE/{eqid:maxlength(5)}")]
+        public ActionResult<MachineOEE> GetMachineOee(string eqid)
+        {
+            try
+            {
+                return new MachineOEE(eqid);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
     }

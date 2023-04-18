@@ -10,6 +10,15 @@
     'rgb(255, 205, 86)',
 ];
 
+const chartOkColor = ['rgb(75, 192, 192,.7)', 'rgb(75, 192, 192,1)'];
+const chartBadColor = ['rgb(255, 99, 132,.7)', 'rgb(255, 99, 132,1)'];
+const chartGrayColor = ['rgb(201, 203, 207,.7)', 'rgb(201, 203, 207,1)'];
+const chartOrangeColor = ['rgb(255, 159, 64,.7)', 'rgb(255, 159, 64,1)'];
+
+function SetPageTitle(title) {
+    document.title = title;
+}
+
 function searchMat(x, e)
 {
 
