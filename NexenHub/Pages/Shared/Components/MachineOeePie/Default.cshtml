@@ -2,11 +2,18 @@
 @{
 
 }
-<div class="col-8">
-<canvas id="@Html.Raw(Model.EQ_ID + "_machineOeePie")"></canvas>
+
+<div class="row">
+<div class="col-6">
+    <canvas id="@Html.Raw(Model.EQ_ID + "_machineOeePie")"></canvas>
 </div>
 <div class="col">
+    <div class="table-responsive">
+            <table id="@Html.Raw(Model.EQ_ID + "_machineOeeTable")" class="table table-sm table-borderless table-hover"></table>
+    </div>
 </div>
+</div>
+
 <script type="text/javascript">
 
     document.addEventListener('readystatechange', event => {
@@ -17,12 +24,12 @@
                 UpdateMachineOeePie();
                 break;
             case "complete":
-                setInterval(UpdateMachineOeePie, 5000);
+                setInterval(UpdateMachineOeePie, 10000);
                 break;
         }
     });
 
-    
+    const oeTable = document.getElementById('@Html.Raw(Model.EQ_ID + "_machineOeeTable")');
     const machineOeePie = new Chart(document.getElementById('@Html.Raw(Model.EQ_ID + "_machineOeePie")').getContext('2d'),
         {
         type: 'doughnut',
@@ -32,7 +39,8 @@
             plugins: 
             {
                   legend: {
-                    position: 'bottom',
+                      display:false,
+                    position: 'right',
                   },
                   title: {
                     display: false,
@@ -60,8 +68,9 @@
 
     function setMachineOeePie(data)
     {
-        var labels = ['Fine'];
-        var chartData = [100 - data.DownTimePercent];
+        
+        var labels = ['Available'];
+        var chartData = [Math.round((100 - data.DownTimePercent)*10)/10];
         var chartBackgrounds = [chartOkColor[1]];
 
         data.DownTimeGroups.forEach(group=>
@@ -72,7 +81,7 @@
             if (group.DownTimeName == 'Other')
                 chartBackgrounds.push(chartGrayColor[1]);
             else if (group.DownTimeName == 'PM')
-                chartBackgrounds.push(chartOrangeColor[1]);
+                chartBackgrounds.push(chartPmColor[1]);
             else
                 chartBackgrounds.push(chartBadColor[1]);
 
@@ -82,8 +91,19 @@
         machineOeePie.data.datasets[0].data = chartData;
         machineOeePie.data.datasets[0].backgroundColor = chartBackgrounds;
 
+        oeTable.innerHTML = '';
+        var i = 0;
+        labels.forEach(label => {
+            addOeRow(chartBackgrounds[i],label,chartData[i]);
+            i++;
+        });
 
         machineOeePie.update();
+    }
+
+    function addOeRow(color, header, val)
+    {
+        oeTable.innerHTML += '<tr><td><div style="color:'+color+'">&#9632;</div></td><td>' + header + '</td > <td class=\"text-end\">' + val + ' % </td></tr>';
     }
 
 </script>

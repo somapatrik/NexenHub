@@ -23,6 +23,12 @@ namespace NexenHub.Models
             GetCurrentMaxTime();
             LoadDownTimes();
             CountEachPercent();
+            SortGroups();
+        }
+
+        private void SortGroups()
+        {
+            DownTimeGroups = DownTimeGroups.OrderByDescending(x => x.Percent).ToList();
         }
 
         private void CountEachPercent()
