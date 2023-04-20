@@ -147,7 +147,7 @@ namespace NexenHub.Controllers
                         Started.Add(wo);
                     else if (wo.WO_PROC_STATE == "W")
                         Waiting.Add(wo);
-                    else if (wo.WO_PROC_STATE == "F")
+                    else if (wo.WO_PROC_STATE == "F" && Finished.Count < 7)
                         Finished.Add(wo);
 
                 }

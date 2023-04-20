@@ -1,47 +1,23 @@
 ﻿@model NexenHub.ViewModels.MachineWoViewModel
-@{
+@{}
 
-}
+<div id="@Html.Raw(Model.EQ_ID + "_cardWo")" class="card text-center">
+    <div class="card-body">
+        <h5 class="text-start mb-3">Current production</h5>
 
-<div class="row row-cols-1 g-1">
-    <div class="col">
-        <div id="@Html.Raw(Model.EQ_ID + "_cardWo")" class="card text-center rounded-0 {{woCardStyle}}">
+        <h5 class="font-weight-300" id="@Html.Raw(Model.EQ_ID + "_woItemId")"></h5>
+        <h5 class="text-truncate" id="@Html.Raw(Model.EQ_ID + "_woItemName")"></h5>
+        <h6 class="font-weight-300" id="@Html.Raw(Model.EQ_ID + "_woProtId")"></h6>
+        <h6 class="text-truncate" id="@Html.Raw(Model.EQ_ID + "_woProtVer")"></h6>
 
-            <div class="card-header rounded-0 bg-dark-blue text-light">
-                <h6 class="text-start">Current production</h6>
-            </div>
-
-            <div class="card-body">
-               @* <div id="@Html.Raw(Model.EQ_ID + "_woBadges")" class="text-end"></div>*@
-                <h4 class="font-weight-300" id="@Html.Raw(Model.EQ_ID + "_woItemId")"></h4>
-                <h4 class="text-truncate" id="@Html.Raw(Model.EQ_ID + "_woItemName")"></h4>
-                <h6 class="font-weight-300" id="@Html.Raw(Model.EQ_ID + "_woProtId")"></h6>
-                <h6 class="text-truncate" id="@Html.Raw(Model.EQ_ID + "_woProtVer")"></h6>
-            </div>           
-
-           @* <table id="@Html.Raw(Model.EQ_ID + "_woBomTable")" class="table table-borderless table-hover">
-
-            </table>*@
-
+        <div class="table-responsive border-top">
+        <table id="@Html.Raw(Model.EQ_ID + "_woBomTable")" class="table table-sm table-hover table-borderless"></table>
         </div>
-        
-    </div>
 
-    <div class="col">
-        <div class="card text-center rounded-0 {{woCardStyle}}">         
-            @*<div class="bg-dark-blue p-1">
-                <h6 class="text-light text-start">BOM</h6>
-            </div>*@
-            <table id="@Html.Raw(Model.EQ_ID + "_woBomTable")" class="table table-borderless table-hover">
-
-            </table>
-
-        </div>
-        
-    </div>
-
+    </div>           
 </div>
-<script defer type="text/javascript">
+
+<script type="text/javascript">
 
     document.addEventListener('readystatechange', event => {
         switch (document.readyState) {
@@ -75,7 +51,6 @@
     async function displayWoInfo(data)
     {
         var cardWo = document.getElementById('@Html.Raw(Model.EQ_ID + "_cardWo")');
-        var wono = document.getElementById('@Html.Raw(Model.EQ_ID + "_woNo")');
         var itemid = document.getElementById('@Html.Raw(Model.EQ_ID + "_woItemId")');
         var itemName = document.getElementById('@Html.Raw(Model.EQ_ID + "_woItemName")');
         var bomTable = document.getElementById('@Html.Raw(Model.EQ_ID + "_woBomTable")');
@@ -90,6 +65,8 @@
         protId.innerHTML = '';
         protVer.innerHTML = '';
 
+        var innerCode = '';
+
         if (data['WO_EXISTS'] == true)
         {
 
@@ -101,7 +78,7 @@
 
             if (isTest)
             {
-                cardWo.classList.add('bg-warning', 'text-dark');
+                //cardWo.classList.add('bg-warning', 'text-dark');
                 
                 protId.innerHTML = data['PROTOTYPE_ID'];
                 protVer.innerHTML = data['PROTOTYPE_VER'];
@@ -109,7 +86,7 @@
             }
             else if (isOE)
             {
-                cardWo.classList.add('bg-primary', 'text-light');
+               // cardWo.classList.add('bg-primary', 'text-light');
             }
 
             // BOM
@@ -120,18 +97,15 @@
             else
                 bom = await getBom(data['ITEM_ID']);
 
-            bomTable.innerHTML = '';
             bom.forEach(bomItem=>{
-                bomTable.innerHTML += '<tr><td>' + bomItem['ITEM_ID'] + '</td><td>' + bomItem['ITEM_NAME'] + '</td></tr>';
+                innerCode += '<tr><td><b>' + bomItem['ITEM_ID'] + '</b></td><td>' + bomItem['ITEM_NAME'] + '</td></tr>';
             });
              
 
 
         }
-        else
-        {
-            bomTable.innerHTML = '';
-        }
+
+        bomTable.innerHTML = innerCode;
     }
 
 </script>

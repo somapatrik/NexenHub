@@ -1,23 +1,14 @@
 ﻿@model NexenHub.ViewModels.MachineTagnameViewModel
-@{
-    
-}
+@{}
 
-<div class="row p-3 text-light">
-    <div class="row">
-            <h5>@Model.MachineInfo.Name</h5>
-    </div>
-            
-    <div class="row">
-            <span class="text-muted">@Model.MachineInfo.WC_ID / @Model.MachineInfo.PROC_ID / @Model.MachineInfo.EQ_ID</span>
-    </div>
+<div id="@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeFrame")" class="row p-3 text-center">
+    <h5 id="@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeMsg")" class="text-uppercase"></h5>
 </div>
 
-<div class="row mb-2">
-    <div id="@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeFrame")" class="p-3 text-center">
-        <h5 id="@Html.Raw(Model.MachineInfo.EQ_ID + "_downTimeMsg")" class="text-uppercase"></h5>
+    <div class="row bg-white text-dark p-2">
+        <h5>@Model.MachineInfo.Name</h5>
+        <div class="text-muted">@Model.MachineInfo.WC_ID / @Model.MachineInfo.PROC_ID / @Model.MachineInfo.EQ_ID</div>
     </div>
-</div>
 
 <script type="text/javascript">
 

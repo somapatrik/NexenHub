@@ -2,83 +2,39 @@
 @model NexenHub.Pages.Cockpit.MachineModel
 @{
     Layout = "_LayoutSide";
+    ViewData["pageTitle"] = Model.machineInfo.Name;
 }
 
 <div class="container-fluid">
 
-    <div class="row" style="height:100vh;">
-
-        <div class="col-xl-2 bg-dark-blue">
-
-            <div class="row text-center">
-                <div class="col">
-                    <a class="navbar-brand" asp-page="/Index"> <img class="respo" style="max-height:5vh;max-width:100%;" src="~/images/logo/logo_light.png" /></a>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-                    @await Component.InvokeAsync("MachineTagname", Model.machineInfo)
-                </div>
-            </div>
-
-            <div class="row" style="max-height:70vh;overflow-y:auto;">
-                <div class="col p-0" >
-                @await Component.InvokeAsync("WoLine", Model.EQ_ID)
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col">
-
-                </div>
-            </div>
-
+    <div class="row mb-2">
+        <div class="col">
+            @await Component.InvokeAsync("MachineTagname", Model.machineInfo)
         </div>
-
-        <div class="col p-1">
-
-            <div class="row g-1">
-
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-body">
-                        <h5>OEE</h5>
-                        
-                            @await Component.InvokeAsync("MachineOeePie", Model.EQ_ID)
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>Input positions</h5>
-                            @await Component.InvokeAsync("InputPositions", Model.EQ_ID)
-                        </div>
-                    </div>
-                </div>
-
-                
-
-            </div>
-
-        </div>
-
-        <div class="col-xl-3 p-1">
-            
-            <div class="row row-cols-1 g-1">
-                <div class="col">
-                    @await Component.InvokeAsync("MachineWo", Model.EQ_ID)
-                </div> 
-
-                <div class="col">
-                    @await Component.InvokeAsync("MachineProdList", Model.EQ_ID)
-                </div>
-
-            </div>
-            </div>
     </div>
 
+    <div class="row mb-1 g-1">
+        
+        <div class="col-lg-5 col-xl-4">
+            @await Component.InvokeAsync("MachineWo", Model.EQ_ID)
+        </div>
+
+        <div class="col-lg-7 col-xl-5">
+            @await Component.InvokeAsync("InputPositions", Model.EQ_ID)
+        </div>
+
+        <div class="col-xl-3">
+            @await Component.InvokeAsync("MachineOeePie", Model.EQ_ID)
+        </div>
+    </div>
+
+    <div class="row g-1">
+        <div class="col-xl-6">
+            @await Component.InvokeAsync("WoLine", Model.EQ_ID)
+        </div>
+        <div class="col-xl-6">
+            @await Component.InvokeAsync("MachineProdList", Model.EQ_ID)
+        </div>
+    </div>
 
 </div>

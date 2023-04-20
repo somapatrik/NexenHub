@@ -132,39 +132,6 @@
 
     </div>
 
-@*
-<div class="container-fluid pt-3">
-    <div class="row row-cols-1 ">
-        <h4>Real-time availability</h4>
-    </div>
-
-         <div class="row row-cols-1 row-cols-md-3 row-cols-xxl-6 g-2 mb-3">
-        <div class="col">
-            @await Component.InvokeAsync("WorkSection",new {WC_ID = "M", FACT_ID = "NEX1"})
-        </div>
-
-       <div class="col">
-            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","C"},{"FACT_ID","NEX1"}})
-        </div>
-        <div class="col">
-            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","E"},{"FACT_ID","NEX1"}})
-        </div>
-        <div class="col">
-            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","B"},{"FACT_ID","NEX1"}})
-        </div>
-        <div class="col">
-            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","P"},{"FACT_ID","NEX1"}})
-        </div>
-        <div class="col">
-            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","T"},{"FACT_ID","NEX1"}})
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col">
-            @await Component.InvokeAsync("WorkSection", new Dictionary<string,string>(){{"WC_ID","U"},{"FACT_ID","NEX1"}})
-        </div>
-    </div>*@
 </div>
 
 
@@ -434,8 +401,6 @@
         var hours = (Number(seconds) / 3600).toFixed(1);
         return hours + "h";
     }
-
-
 
     async function refreshProd() {
         var tbmProd = await CurrentTBMProduction();

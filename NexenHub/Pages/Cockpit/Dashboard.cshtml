@@ -1,0 +1,290 @@
+﻿@page
+@model NexenHub.Pages.Cockpit.DashboardModel
+@{
+    Layout = "_LayoutSide";
+    ViewData["pageTitle"] = "Cockpit dashboard";
+}
+
+<div class="container">
+    <div class="row mb-1">
+        
+        <div class="col">
+
+        </div>
+        <!-- Today´s prodaction pie-->
+        <div class="col-5">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Today´s production</h4>
+                    <div class="row">
+                        <div class="col">
+                            <div class="d-flex align-items-center h-100">
+                            <table class="table table-hover table-borderless">
+                                <tr>
+                                        <td><div style="color:rgb(75, 192, 192)">&#9632;</div></td>
+                                    <td><h5>GT</h5></td>
+                                    <td class="text-end">
+                                        <h5><span id="gtGoalLabel"/></h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                        <td><div style="color:rgb(54, 162, 235)">&#9632;</div></td>
+                                    <td><h5>Tire</h5></td>
+                                    <td class="text-end">
+                                            <h5><span id="tireGoalLabel" /></h5>
+                                        </td>
+                                </tr>
+                            </table>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <canvas id="pieGTchart"></canvas>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h4>Nexen 1</h4>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-lg">
+                            <div class="row">
+                                <div class="col">
+                                    <canvas id="nexOneAvailability"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="d-flex align-items-center h-100">
+                                <table class="table table-hover table-borderless">
+                                    <tr>
+                                        <td><div style="color:rgb(75, 192, 192)">&#9632;</div></td>
+                                        <td><h5>Mixing</h5></td>
+                                        <td class="text-end">
+                                            <h5><span id="gtGoalLabel" /></h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div style="color:rgb(54, 162, 235)">&#9632;</div></td>
+                                        <td><h5>Calender</h5></td>
+                                        <td class="text-end">
+                                            <h5><span id="tireGoalLabel" /></h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div style="color:rgb(54, 162, 235)">&#9632;</div></td>
+                                        <td><h5>Extruding</h5></td>
+                                        <td class="text-end">
+                                            <h5><span id="tireGoalLabel" /></h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div style="color:rgb(54, 162, 235)">&#9632;</div></td>
+                                        <td><h5>Bead</h5></td>
+                                        <td class="text-end">
+                                            <h5><span id="tireGoalLabel" /></h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div style="color:rgb(54, 162, 235)">&#9632;</div></td>
+                                        <td><h5>Cutting</h5></td>
+                                        <td class="text-end">
+                                            <h5><span id="tireGoalLabel" /></h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div style="color:rgb(54, 162, 235)">&#9632;</div></td>
+                                        <td><h5>TBM</h5></td>
+                                        <td class="text-end">
+                                            <h5><span id="tireGoalLabel" /></h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><div style="color:rgb(54, 162, 235)">&#9632;</div></td>
+                                        <td><h5>Curing</h5></td>
+                                        <td class="text-end">
+                                            <h5><span id="tireGoalLabel" /></h5>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h4>Nexen 2</h4>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-lg">
+                            <div class="row">
+                                <div class="col">
+                                    <canvas id="nexTwoAvailability"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+     document.addEventListener('readystatechange', event => {
+        switch (document.readyState) {
+            case "loading":
+                break;
+            case "interactive":
+                refreshProd();
+                break;
+            case "complete":
+                setInterval(refreshProd,5000);
+                break;
+        }
+    });
+
+    const todayProdchartElement = document.getElementById('pieGTchart').getContext('2d');
+    const todayProdchart = new Chart(todayProdchartElement,
+        {
+            type: 'doughnut',
+        options: 
+        {
+            responsive:true,
+            plugins: 
+            {
+                  legend: {
+                      display:false,
+                    position: 'top',
+                  },
+                  title: {
+                    display: false,
+                    text: ''
+                  }
+            }
+        },
+        data: 
+        {
+            labels:['Produced','Remaining'],
+            datasets: 
+            [{
+                label: 'GT',
+                data: [0,0],
+                        backgroundColor: ['rgb(75, 192, 192)', chartGrayColor[1]]
+             },
+            {
+                label: 'Tire',
+                data: [0,0],
+                        backgroundColor: ['rgb(54, 162, 235)', chartGrayColor[1]]
+             }]
+        }
+    });
+
+    async function refreshProd() {
+
+        var [tbmProd, tbmPlan, tireProd,tirePlan] = await Promise.all([
+                                                            GetFromAPI('/api/prod/CurrentProd/T'),
+                                                            GetFromAPI('/api/prod/TBMPlanCurrent/'),
+                                                            GetFromAPI('/api/prod/CurrentProd/U'),
+                                                            GetFromAPI('/api/prod/CUREPlanCurrent/')
+                                                        ]);
+        
+        document.getElementById('gtGoalLabel').innerHTML = tbmProd + ' / ' + tbmPlan;
+        document.getElementById('tireGoalLabel').innerHTML = tireProd + ' / ' + tirePlan;
+
+        var tbmProc = Math.round((tbmProd / tbmPlan) * 100);
+        var tireProc = Math.round((tireProd / tirePlan) * 100);
+
+        todayProdchart.data.datasets[0].data = [tbmProc,100 - tbmProc];
+        todayProdchart.data.datasets[1].data = [tireProc,100 - tireProc];
+
+        todayProdchart.update();
+    }
+
+    const nexOneElement = document.getElementById('nexOneAvailability').getContext('2d');
+    const nexOneChart = new Chart(nexOneElement,
+        {
+            type: 'polarArea',
+            options:
+            {
+                responsive: true,
+                plugins:
+                {
+                    legend: {
+                        display: false,
+                        position: 'top',
+                    },
+                    title: {
+                        display: false,
+                        text: ''
+                    }
+                }
+            },
+            data:
+            {
+                labels: ['Curing', 'TBM','Cutting','Bead','Extruding','Calender','Mixing'],
+                datasets:
+                    [{
+                        label: 'Nexen 1',
+                        data: [100, 25],
+                        backgroundColor: ['rgb(75, 192, 192,.3)', chartGrayColor[0]]
+                    }]
+            }
+        });
+
+    const nexTwoElement = document.getElementById('nexTwoAvailability').getContext('2d');
+    const nexTwoChart = new Chart(nexTwoElement,
+        {
+            type: 'polarArea',
+            options:
+            {
+                responsive: true,
+                plugins:
+                {
+                    legend: {
+                        display: false,
+                        position: 'top',
+                    },
+                    title: {
+                        display: false,
+                        text: ''
+                    }
+                }
+            },
+            data:
+            {
+                labels: ['Curing', 'TBM', 'Cutting', 'Bead', 'Extruding', 'Mixing'],
+                datasets:
+                    [{
+                        label: 'Nexen 1',
+                        data: [100, 100, 100, 100, 50, 50],
+                        backgroundColor: ['rgb(75, 192, 192,.3)', chartGrayColor[0]]
+                    }]
+            }
+        });
+
+</script>

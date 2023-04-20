@@ -53,7 +53,7 @@
                     </h2>
 
                     <div id="collapse_@proc" class="accordion-collapse collapse " aria-labelledby="heading_@proc">
-                        <!-- data-bs-parent="#accordionControl"-->
+
                         <div class="accordion-body p-0">
                         <div class="row">
                             <div class="col-md">
@@ -64,10 +64,15 @@
                                         {
                                             <tr>
                                                 <td class="text-start">@man.EQ_ID</td>
-                                                    <td>@man.Name</td>
-                                                    <td>@man.FACT_ID</td>
-                                                    <td>@man.WC_ID</td>
-                                                    <td>@man.PROC_ID</td>
+                                                <td>@man.Name</td>
+                                                <td>@man.FACT_ID</td>
+                                                <td>@man.WC_ID</td>
+                                                <td>@man.PROC_ID</td>
+
+                                                <td class="text-end">
+                                                        <a class="flex-grow-1 btn btn-danger btn-sm m-1" href="/Cockpit/machine/@man.EQ_ID" target="_blank">Cockpit</a>
+                                                </td>
+
                                                 <td class="text-end">
                                                     <a class="flex-grow-1 btn btn-primary btn-sm m-1" href="/MachineProfile/@man.EQ_ID">Detail</a>
                                                 </td>
@@ -90,6 +95,11 @@
                                                     <td>@man.FACT_ID</td>
                                                     <td>@man.WC_ID</td>
                                                     <td>@man.PROC_ID</td>
+
+                                                     <td class="text-end">
+                                                    <a class="flex-grow-1 btn btn-danger btn-sm m-1" href="/Cockpit/machine/@man.EQ_ID" target="_blank">Cockpit</a>
+                                                </td>
+
                                                 <td class="text-end">
                                                     <a class="flex-grow-1 btn btn-primary btn-sm m-1" href="/MachineProfile/@man.EQ_ID">Detail</a>
                                                 </td>

@@ -2,11 +2,11 @@
 @{
 }
 
-
-
-
-<div class="table-responsive">
-    <table class="table  table-hover table-sm text-center align-middle small">
+<div class="card">
+    <div class="card-body">
+        <h5>Input positions</h5>
+        <div class="table-responsive">
+    <table class="table table-hover table-borderless table-sm text-center small">
         <tbody>
 
             @foreach (var inputPosition in Model.InputPositions)
@@ -49,7 +49,8 @@
         </tbody>
     </table>
     </div>
-
+    </div>
+</div>
 <script src="~/js/inputPositions.js"></script>
 
 <script defer type="text/javascript">

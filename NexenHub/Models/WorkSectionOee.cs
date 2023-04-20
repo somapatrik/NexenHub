@@ -21,21 +21,18 @@ namespace NexenHub.Models
         public int TimeSinceStart { get; set; }
 
         // Sum of all machines downtimes
-        public int SumSeconds { get; set; }
+        public int SumDowntimeSeconds { get; set; }
 
         // Collective maximum available time for all machines
-        public int AvailableTimeAllMachines => DaySeconds * Machines.Count();
+        public int AvailableTimeAllMachines => DaySeconds * MachineOee.Count();
 
         // Collective used time for all machines since start of the day
-        public int TimeSinceStartAllMachines => TimeSinceStart * Machines.Count();
+        public int TimeSinceStartAllMachines => TimeSinceStart * MachineOee.Count();
 
-        public double PercentAllMachines { get; set; }
+        // Downtime percent for all machines
+        public double DowntimePercentAll { get; set; }
 
-        // Each machine detail
-        public List<DownTimeDetail> MachineTimes { get; set; }
-
-        private List<MachineBasicInfo> _Machines { get; set; }
-        public List<MachineBasicInfo> Machines { get => _Machines; set => _Machines = value; }
+        public List<MachineOEE> MachineOee { get; set; }
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
@@ -46,21 +43,13 @@ namespace NexenHub.Models
 
             GetCurrentMaxTime();
             LoadMachines();
-            
-            LoadDownTimes();
             SumTime();
             GetSumPercentForAllMachines();
         }
 
         private void GetSumPercentForAllMachines()
         {
-            double p = Math.Round((SumSeconds / (double)TimeSinceStartAllMachines) * 100, 0);
-            if (p > 100)
-                p = 100;
-            else if (p < 0)
-                p = 0;
-
-            PercentAllMachines = 100 - p;
+            DowntimePercentAll = Math.Round((SumDowntimeSeconds / (double)TimeSinceStartAllMachines) * 100, 0);
         }
 
         private void GetCurrentMaxTime()
@@ -72,54 +61,22 @@ namespace NexenHub.Models
 
         private void SumTime()
         {
-            SumSeconds = MachineTimes.Sum(x => int.Parse(x.Seconds));
+            SumDowntimeSeconds = MachineOee.Sum(x=>x.DownTimeSumSeconds);
         }
 
         private void LoadMachines()
         {
-            Machines = new List<MachineBasicInfo>();
+            MachineOee = new List<MachineOEE>();
+
             DataTable dt = dbglob.GetMachineList(WC_ID: WC_ID, FACT_ID:FACT_ID);
 
             foreach (DataRow row in dt.Rows)
-                if (!GlobalSettings.OEEIgnoredMachines.Contains(row["EQ_ID"].ToString())) // && row["FACT_ID"].ToString() != "NEX2"
-                    Machines.Add(new MachineBasicInfo(row["EQ_ID"].ToString()));
-        }
-
-        private void LoadDownTimes()
-        {
-            MachineTimes = new List<DownTimeDetail>();
-
-            foreach (var machine in Machines) 
-            {
-                int sumMachineDownTime = 0;
-
-                foreach (DataRow row in dbglob.GetDownTimesSimple(machine.EQ_ID).Rows) 
+                if (!GlobalSettings.OEEIgnoredMachines.Contains(row["EQ_ID"].ToString()))
                 {
-                    sumMachineDownTime += string.IsNullOrEmpty(row["NONWRK_SECONDS"].ToString()) ? 0 : int.Parse(row["NONWRK_SECONDS"].ToString());
-                };
-
-                double MachinePercent = Math.Round((sumMachineDownTime / (double)TimeSinceStart) * 100,0);
-
-                MachineTimes.Add(new DownTimeDetail()
-                {
-                    Machine = machine.EQ_ID,
-                    DownTimeName = "Any downtime",
-                    Seconds = sumMachineDownTime.ToString(),
-                    Percent = MachinePercent.ToString()
-                });
-
-            }
-
+                    MachineOee.Add(new MachineOEE(row["EQ_ID"].ToString()));
+                }
         }
 
-
-        public class DownTimeDetail
-        {
-            public string Machine { get; set; }
-            public string DownTimeName{ get; set; }
-            public string Seconds { get; set; }
-            public string Percent{ get; set; }
-        }
 
     }
 }

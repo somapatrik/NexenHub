@@ -1,16 +1,14 @@
 ﻿@model NexenHub.ViewModels.MachineProdListViewModel
-@{
+@{}
 
-}
-
-<div class="card rounded-0">
-    <div class="card-header rounded-0 bg-dark-blue text-light">
-        Latest production
-    </div>
+<div class="card">
+    <div class="card-body">
+        <h5>Latest production</h5>
+    
     <div class="table-responsive">
-        <table id="@Html.Raw(Model.EQ_ID + "_prodLineTable")" class="table table-hover table-borderless table-sm text-center small">
-
+        <table id="@Html.Raw(Model.EQ_ID + "_prodLineTable")" class="table table-hover table-sm table-borderless text-center">
         </table>
+    </div>
     </div>
 </div>
 
@@ -38,35 +36,33 @@
     async function displayprodList(data) {
         var tableCode = document.getElementById(@Html.Raw("'" + Model.EQ_ID + "_prodLineTable'"));
 
-        tableCode.innerHTML = '';
         var row = '';
 
-        data.slice(0, 8).forEach(production => 
+        data.slice(0, 10).forEach(production => 
         {
             
             if (production['USE_YN'] == 'Y')
-            {
-                  row = '<tr>';
-            }
+                row += '<tr>';
             else
-            {
-                  row = '<tr class=\"bg-github-red text-white\">';
-            }
+                row += '<tr class=\"bg-github-red text-white-50\">';
 
-           /* if (production['SAVE_TYPE'] == 'M')
-                fCode = fCode.replace('{{savetype}}', '<span class="badge bg-info text-dark">Manual</span>');
-            else
-                fCode = fCode.replace('{{savetype}}', '');
-*/
+            
 
+            row += '<td>' + production['PROD_DATE'] + '</td>';
             row += '<td><a class=\"link-primary\" href=\"/lot/' + production['LOT_ID'] + '\" target=\"_blank\">' + production['LOT_ID'] + '</a></td>';
-            row += '<td>' + production['PROD_DATE'] + '</td>';            
-            //row += '<td>' + production['ITEM_NAME'] + '</td>';
-            //row += '<td>' + production['QTY'] + '</td>';
+                        
+            row += '<td>' + production['ITEM_NAME'] + '</td>';
+            row += '<td>' + production['QTY'] + '</td>';
 
-            tableCode.innerHTML += row + '</tr>';
+            if (production['SAVE_TYPE'] == 'M')
+                row += '<td><span class="badge bg-info text-dark">Manual</span></td>';
+            else
+                row += '<td><span class="badge bg-github-green text-white">Automatic</span></td>';
 
+            row += '</tr>';
         });
+
+        tableCode.innerHTML = row;
     }
 
 </script>

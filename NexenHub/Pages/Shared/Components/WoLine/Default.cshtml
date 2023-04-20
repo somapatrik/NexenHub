@@ -1,24 +1,14 @@
 ﻿@model NexenHub.ViewModels.WoLineViewModel
 @{
 }
-
-<div id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="list-group-flush p-0 h-100">
-
+<div class="card">
+<div class="card-body">
+    <h5>Workorders</h5>
+    <div class="table-responsive">
+        <table id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="table table-sm table-borderless table-hover text-center">
+        </table>
+    </div>
 </div>
-
-<div id="woListCode" style="position:absolute;display:none;margin:0;padding:0;top:0;left:0">
-
-    <div class="list-group-item border-secondary {{wocardstyle}}">
-           <div class="d-flex">
-                <div class="text-truncate">{{itemname}}</div>
-                <div></div>
-           </div>
-            <div class="d-flex">
-                <div class="flex-grow-1">{{workorder}}</div>
-                <div>{{status}}</div>
-            </div>
-       </div>
-
 </div>
 
 <script type="text/javascript">
@@ -45,61 +35,35 @@ async function getWoList()
 
 async function displayWoList(data)
 {
-    var code = document.getElementById('woListCode').innerHTML;
-    var row = document.getElementById(@Html.Raw("'" + Model.EQ_ID + "_woLineRow'"));
+    var table = document.getElementById(@Html.Raw("'" + Model.EQ_ID + "_woLineRow'"));
+    var innerCode = '';
 
-    row.innerHTML= '';
-
-        data.Waiting.forEach(waiting => {
-            var fCode = '';
-
-            if (waiting['TEST_YN'] == 'Y')
-                fCode = code.replace('{{wocardstyle}}', 'bg-transparent text-light');
-            else
-                fCode = code.replace('{{wocardstyle}}', 'bg-transparent text-light');
-
-             fCode = fCode.replace('{{workorder}}', waiting['WO_NO']);
-             fCode = fCode.replace('{{itemname}}', waiting['ITEM_NAME']);
-             fCode = fCode.replace('{{prodtype}}', waiting['PROD_TYPE']);
-            fCode = fCode.replace('{{status}}', 'Waiting');
+    data.Waiting.forEach(waiting => {
             
-        row.innerHTML += fCode;
+            innerCode += '<tr><td>' +  '<span class="badge bg-warning text-dark">Waiting</span>' + '</td>' ;
+            innerCode += '<td>' + waiting['WO_NO'] + '</td>' ;
+            innerCode += '<td>' +  waiting['ITEM_NAME'] + '</td>' ;
+            innerCode +='<td>' +  waiting['PROD_TYPE'] + '</td></tr>' ;
     });
 
 
     data.Started.forEach(started => {
-
-            var fCode = '';
-
-            if (started['TEST_YN'] == 'Y')
-                fCode = code.replace('{{wocardstyle}}', 'bg-warning text-black');
-            else
-                fCode = code.replace('{{wocardstyle}}', 'bg-github-green text-white');
-
-            fCode = fCode.replace('{{workorder}}', started['WO_NO']);
-            fCode = fCode.replace('{{itemname}}', started['ITEM_NAME']);
-            fCode = fCode.replace('{{prodtype}}', started['PROD_TYPE']);
-            fCode = fCode.replace('{{status}}', 'Active');
-
-            row.innerHTML += fCode;
+        
+            innerCode += '<tr><td>' + '<span class="badge bg-github-green text-white">Running</span>' + '</td>';
+            innerCode += '<td>' + started['WO_NO'] + '</td>';
+            innerCode += '<td>' + started['ITEM_NAME'] + '</td>';
+            innerCode += '<td>' + started['PROD_TYPE'] + '</td></tr>';
     });
 
-        data.Finished.slice(0,8).forEach(finished => {
-            var fCode = '';
-
-            if (finished['TEST_YN'] == 'Y')
-                fCode = code.replace('{{wocardstyle}}', 'bg-transparent text-light text-muted');
-            else
-                fCode = code.replace('{{wocardstyle}}', 'bg-transparent text-muted');
-
-
-            fCode = fCode.replace('{{workorder}}', finished['WO_NO']);
-            fCode = fCode.replace('{{itemname}}', finished['ITEM_NAME']);
-            fCode = fCode.replace('{{prodtype}}', finished['PROD_TYPE']);
-            fCode = fCode.replace('{{status}}', 'Finished');
+    data.Finished.forEach(finished => {
             
-        row.innerHTML += fCode;
+            innerCode += '<tr class="text-muted"><td>' + '<span class="badge bg-secondary text-white">Completed</span>' + '</td>';
+            innerCode += '<td>' + finished['WO_NO'] + '</td>';
+            innerCode += '<td>' + finished['ITEM_NAME'] + '</td>';
+            innerCode += '<td>' + finished['PROD_TYPE'] + '</td></tr>';
     });
+
+    table.innerHTML = innerCode;
 
 }
 
