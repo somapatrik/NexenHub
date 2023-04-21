@@ -73,8 +73,8 @@
 
 
     async function refreshInputPositions() {
-        await readInputRfid(EQ_ID).then(async data => await displayRfid(data));
         await getInputPositions(EQ_ID).then(async data => await displayUsedMaterial(data));
+        await readInputRfid(EQ_ID).then(async data => await displayRfid(data));
     }
 
     async function displayRfid(data) {

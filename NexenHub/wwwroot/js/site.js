@@ -10,14 +10,26 @@
     'rgb(255, 205, 86)',
 ];
 
-const chartOkColor = ['rgb(75, 192, 192,.7)', 'rgb(75, 192, 192,1)'];
+const chartOkColor = ['rgb(75, 192, 192)', 'rgb(75, 192, 192,.7)'];
 const chartBadColor = ['rgb(255, 99, 132,.7)', 'rgb(255, 99, 132,1)'];
-const chartGrayColor = ['rgb(201, 203, 207,.7)', 'rgb(201, 203, 207,1)'];
+
+const chartGrayColor = ['rgb(201, 203, 207)', 'rgb(201, 203, 207,.7)', 'rgb(201, 203, 207,.3)'];
+
 const chartOrangeColor = ['rgb(255, 159, 64,.7)', 'rgb(255, 159, 64,1)'];
 const chartPmColor = ['rgb(255, 193, 7,.7)', 'rgb(255, 193, 7,1)'];
 const chartVioletColor = ['rgb(153, 0, 204,.7)', 'rgb(153, 0, 204)'];
-const chartYellowColor = ['rgb(255, 255, 0,.7)', 'rgb(255, 255, 0)'];
-const chartShitColor = ['rgb(153, 102, 51,.7)', 'rgb(153, 102, 51)'];
+
+const chartCalenderColor = ['rgb(255, 255, 0)', 'rgb(255, 255, 0,.5)', 'rgb(255, 255, 0,.3)'];
+
+const chartShitColor = ['rgb(153, 102, 51)', 'rgb(153, 102, 51,.7)','rgb(153, 102, 51,.3)'];
+
+const chartExtColor = ['rgb(14, 95, 198)', 'rgb(14, 95, 198,.7)', 'rgb(14,95,198,.3)'];
+
+const chartBeadColor = ['rgb(223, 126, 0)', 'rgb(223, 126, 0,.7)', 'rgb(223, 126, 0,.3)'];
+
+//const chartCalenderColor = ['rgb(0, 160, 176)', 'rgb(0, 160, 176,.7)', 'rgb(0, 160, 176,.3)'];
+
+const chartNexenColor = ['rgb(157, 28, 157)', 'rgb(157, 28, 157,.7)', 'rgb(157, 28, 157,.3)'];
 
 async function GetFromAPI(link) {
     return await fetch(window.location.origin + link)
