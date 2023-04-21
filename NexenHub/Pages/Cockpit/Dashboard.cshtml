@@ -273,10 +273,22 @@
         var tbmProc = Math.round((tbmProd / tbmPlan) * 100);
         var tireProc = Math.round((tireProd / tirePlan) * 100);
 
+        tbmProc = minMaxCheck(tbmProc);
+        tireProc = minMaxCheck(tireProc);
+
         todayProdchart.data.datasets[0].data = [tbmProc,100 - tbmProc];
         todayProdchart.data.datasets[1].data = [tireProc,100 - tireProc];
 
         todayProdchart.update();
+    }
+
+    function minMaxCheck(percent){
+        if (percent > 100)
+            return 100;
+        else if (percent < 0)
+            return 0;
+        else
+            return percent;
     }
 
     async function refreshOEE(){
