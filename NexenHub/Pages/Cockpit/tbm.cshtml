@@ -85,12 +85,12 @@
     {
         @foreach(MachineBasicInfo machine in Model.Phase1)
         {
-            @Html.Raw("await TBMmachineDowntime('" + machine.EQ_ID + "');");
+            @Html.Raw("TBMmachineDowntime('" + machine.EQ_ID + "');");
         }
 
          @foreach(MachineBasicInfo machine in Model.Phase2)
         {
-            @Html.Raw("await TBMmachineDowntime('" + machine.EQ_ID + "');");
+            @Html.Raw("TBMmachineDowntime('" + machine.EQ_ID + "');");
         }
     }
 
