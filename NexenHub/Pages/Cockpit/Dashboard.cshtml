@@ -260,7 +260,7 @@
 
     async function refreshProd() {
 
-        var [tbmProd, tbmPlan, tireProd,tirePlan] = await Promise.all([
+        var [tbmProd, tbmPlan, tireProd, tirePlan] = await Promise.all([
                                                             GetFromAPI('/api/prod/CurrentProd/T'),
                                                             GetFromAPI('/api/prod/TBMPlanCurrent/'),
                                                             GetFromAPI('/api/prod/CurrentProd/U'),
