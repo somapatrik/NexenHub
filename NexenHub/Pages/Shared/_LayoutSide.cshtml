@@ -62,8 +62,10 @@
                             <img src="~/images/logo/nxhubBtn.png" class="img-fluid"/>
                         </div>
                         </a>
-                </div>
+                
             </div>
+
+        </div>
 
         <div class="flex-grow-1" style="overflow-y:auto;">
             @RenderBody()
@@ -90,20 +92,18 @@
                                     <button type="button" class="list-group-item list-group-item-action disabled">Bead</button>
                                     <button type="button" class="list-group-item list-group-item-action disabled">Cutting</button>
                                     <a class="list-group-item list-group-item-action" href="~/cockpit/tbm">TBM</a>
-                                    <button type="button" class="list-group-item list-group-item-action disabled">Curing</button>
+                                    <a class="list-group-item list-group-item-action" href="~/cockpit/cure">Curing</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                @*<div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>*@
+
             </div>
         </div>
     </div>
 
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>
