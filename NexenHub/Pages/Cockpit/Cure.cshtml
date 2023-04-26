@@ -5,162 +5,98 @@
     Layout = "_LayoutSide";
 }
 
-<div class="row row-cols rows-cols-xl-8 g-1">
+<div class="container">
 
-    <div class="col">
 
-            <table class="table table-sm table-borderless table-hover">
-                
-                @for (int a = 0; a < 20; a++)
+
+    @*A*@
+    <div class="row mb-2">
+
+        <div class="d-flex w-100" style="height:50px;">
+
+            <div class="d-flex align-items-center justify-content-center h-100 w-100 m-1">
+
+                <div>
+                    <h3>A</h3>
+                </div>
+
+             </div>
+
+                @for (int i = 0; i < 20; i++)
                 {
-                <tr id="@Html.Raw(Model.Phase1[a].EQ_ID + "_downTimeFrame")">
-                    <td class="text-center">
-                        <h6><a href="~/cockpit/machine/@Model.Phase1[a].EQ_ID" class="link-dark">A#@(a + 1)</a></h6>
-                    </td>
-                    <td  class="text-center">
-                      <h6 id="@Html.Raw(Model.Phase1[a].EQ_ID + "_downTimeMsg")" class="text-uppercase text-truncate"></h6>
-                    </td>
-                </tr>
-            }
-                
-            </table>
-    </div>
+                    <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1"></div>
+                }
 
-    <div class="col">
+            
+        </div>
+</div>
 
-        <table class="table table-sm table-borderless table-hover">
+@*B*@
+    <div class="row mb-2">
 
-            @for (int b = 20; b < 40; b++)
-            {
-                <tr id="@Html.Raw(Model.Phase1[b].EQ_ID + "_downTimeFrame")">
-                    <td class="text-center">
-                        <h6><a href="~/cockpit/machine/@Model.Phase1[b].EQ_ID" class="link-dark">B#@((b + 1)-20)</a></h6>
-                    </td>
-                    <td class="text-center">
-                        <h6 id="@Html.Raw(Model.Phase1[b].EQ_ID + "_downTimeMsg")" class="text-uppercase text-truncate"></h6>
-                    </td>
-                </tr>
-            }
+        <div class="d-flex w-100" style="height:50px;">
 
-        </table>
-    </div>
+            <div class="d-flex align-items-center justify-content-center h-100 w-100 m-1">
 
-    <div class="col">
+                <div>
+                    <h3>B</h3>
+                </div>
 
-        <table class="table table-sm table-borderless table-hover">
+                </div>
 
-            @for (int c = 40; c < 60; c++)
-            {
-                <tr id="@Html.Raw(Model.Phase1[c].EQ_ID + "_downTimeFrame")">
-                    <td class="text-center">
-                        <h6><a href="~/cockpit/machine/@Model.Phase1[c].EQ_ID" class="link-dark">C#@((c + 1)-40)</a></h6>
-                    </td>
-                    <td class="text-center">
-                        <h6 id="@Html.Raw(Model.Phase1[c].EQ_ID + "_downTimeMsg")" class="text-uppercase text-truncate"></h6>
-                    </td>
-                </tr>
-            }
+                @for (int i = 20; i < 40; i++)
+                {
+                    <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1"></div>
+                }
 
-        </table>
-    </div>
 
-    <div class="col">
+        </div>
+</div>
 
-        <table class="table table-sm table-borderless table-hover">
+@*C*@
+    <div class="row mb-2">
 
-            @for (int d = 60; d < 80; d++)
-            {
-                <tr id="@Html.Raw(Model.Phase1[d].EQ_ID + "_downTimeFrame")">
-                    <td class="text-center">
-                        <h6><a href="~/cockpit/machine/@Model.Phase1[d].EQ_ID" class="link-dark">D#@((d + 1)-60)</a></h6>
-                    </td>
-                    <td class="text-center">
-                        <h6 id="@Html.Raw(Model.Phase1[d].EQ_ID + "_downTimeMsg")" class="text-uppercase text-truncate"></h6>
-                    </td>
-                </tr>
-            }
+        <div class="d-flex w-100" style="height:50px;">
 
-        </table>
-    </div>
+            <div class="d-flex align-items-center justify-content-center h-100 w-100 m-1">
 
-    <div class="col">
+                <div>
+                    <h3>C</h3>
+                </div>
 
-        <table class="table table-sm table-borderless table-hover">
+                </div>
 
-            @for (int e = 0; e < 20; e++)
-            {
-                <tr id="@Html.Raw(Model.Phase2[e].EQ_ID + "_downTimeFrame")">
+                @for (int i = 40; i < 60; i++)
+                {
+                    <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1"></div>
+                }
 
-                    <td class="text-center">
-                        <h6><a href="~/cockpit/machine/@Model.Phase1[e].EQ_ID" class="link-dark">E#@(e + 1)</a></h6>
-                    </td>
 
-                    <td class="text-center">
-                        <h6 id="@Html.Raw(Model.Phase2[e].EQ_ID + "_downTimeMsg")" class="text-uppercase text-truncate"></h6>
-                    </td>
+        </div>
+</div>
 
-                </tr>
-            }
+@*D*@
+    <div class="row">
 
-        </table>
-    </div>
+        <div class="d-flex w-100" style="height:50px;">
 
-    <div class="col">
+            <div class="d-flex align-items-center justify-content-center h-100 w-100 m-1">
 
-        <table class="table table-sm table-borderless table-hover">
+                <div>
+                    <h3>D</h3>
+                </div>
 
-            @for (int f = 20; f < 40; f++)
-            {
-                <tr id="@Html.Raw(Model.Phase2[f].EQ_ID + "_downTimeFrame")">
-                    <td class="text-center">
-                        <h6><a href="~/cockpit/machine/@Model.Phase2[f].EQ_ID" class="link-dark">F#@((f + 1) - 20)</a></h6>
-                    </td>
-                    <td class="text-center">
-                        <h6 id="@Html.Raw(Model.Phase2[f].EQ_ID + "_downTimeMsg")" class="text-uppercase text-truncate"></h6>
-                    </td>
-                </tr>
-            }
+                </div>
 
-        </table>
-    </div>
+                @for (int i = 60; i < 80; i++)
+                {
+                    <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1"></div>
+                }
 
-    <div class="col">
 
-        <table class="table table-sm table-borderless table-hover">
+        </div>
+</div>
 
-            @for (int h = 40; h < 60; h++)
-            {
-                <tr id="@Html.Raw(Model.Phase2[h].EQ_ID + "_downTimeFrame")">
-                    <td class="text-center">
-                        <h6><a href="~/cockpit/machine/@Model.Phase1[h].EQ_ID" class="link-dark">H#@((h + 1) - 40)</a></h6>
-                    </td>
-                    <td class="text-center">
-                        <h6 id="@Html.Raw(Model.Phase2[h].EQ_ID + "_downTimeMsg")" class="text-uppercase text-truncate"></h6>
-                    </td>
-                </tr>
-            }
-
-        </table>
-    </div>
-
-    <div class="col">
-
-        <table class="table table-sm table-borderless table-hover">
-
-            @for (int i = 60; i < 80; i++)
-            {
-                <tr id="@Html.Raw(Model.Phase2[i].EQ_ID + "_downTimeFrame")">
-                    <td class="text-center">
-                        <h6><a href="~/cockpit/machine/@Model.Phase1[i].EQ_ID" class="link-dark">I#@((i + 1) - 60)</a></h6>
-                    </td>
-                    <td class="text-center">
-                        <h6 id="@Html.Raw(Model.Phase2[i].EQ_ID + "_downTimeMsg")" class="text-uppercase text-truncate"></h6>
-                    </td>
-                </tr>
-            }
-
-        </table>
-    </div>
 
 </div>
 
@@ -178,20 +114,18 @@
                 break;
         }
     });
-            
-
 
     async function refreshCure()
     {
 
         @foreach(MachineBasicInfo machine in Model.Phase1)
         {
-            @Html.Raw("CuremachineDowntime('" + machine.EQ_ID + "');");
+            @Html.Raw("await CuremachineDowntime('" + machine.EQ_ID + "');");
         }
 
         @foreach (MachineBasicInfo machine in Model.Phase2)
         {
-            @Html.Raw("CuremachineDowntime('" + machine.EQ_ID + "');");
+            @Html.Raw("await CuremachineDowntime('" + machine.EQ_ID + "');");
         }
 
     }
@@ -200,30 +134,23 @@
         return await fetch(window.location.origin + '/api/prod/actDowntime/' + eqid)
             .then(response => response.json())
             .then(data => {
-                var msg = '';
-                var msgStyle = 'table-primary';
-                var msgcolor = 'text-dark';
 
-                var msgElement = document.getElementById(eqid + '_downTimeMsg');
                 var frameElement = document.getElementById(eqid + '_downTimeFrame');
 
-                frameElement.classList.remove('table-primary', 'table-warning', 'table-danger');
-                msgElement.classList.remove('text-white', 'text-dark');
+                frameElement.classList.remove('nothing','fine', 'warning', 'danger');
 
                 if (data['Code'] != '') {
                     msg = data['Description'];
-                    if (data['Code'] == 'N016') {
-                        msgStyle = 'table-warning';
-                        msgcolor = 'text-dark';
+                    if (data['Code'] == 'N016') 
+                    {
+                        msgStyle = 'warning';
                     }
                     else {
-                        msgStyle = 'table-danger';
+                        msgStyle = 'danger';
                     }
                 }
-
-                msgElement.innerHTML = msg;
+                    
                 frameElement.classList.add(msgStyle);
-                msgElement.classList.add(msgcolor);
             });
     }
 
