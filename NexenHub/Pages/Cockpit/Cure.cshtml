@@ -6,10 +6,22 @@
 }
 
 <div class="container">
+    <div class="row">
+        <div class="col text-end">
+            <h3 class="m-3 NexenR">Curing</h3>
+        </div>
+    </div>
+</div>
 
+<div class="container">
 
+    <div class="row mb-2">
+        <div class="col">
+            <h4 class="NexenR">Nexen 1</h4>
+        </div>
+    </div>
 
-    @*A*@
+@*A*@
     <div class="row mb-2">
 
         <div class="d-flex w-100" style="height:50px;">
@@ -24,7 +36,7 @@
 
                 @for (int i = 0; i < 20; i++)
                 {
-                    <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1"></div>
+                <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1" onclick="openDetail(this)"></div>
                 }
 
             
@@ -46,7 +58,7 @@
 
                 @for (int i = 20; i < 40; i++)
                 {
-                    <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1"></div>
+                <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1" onclick="openDetail(this)"></div>
                 }
 
 
@@ -68,7 +80,7 @@
 
                 @for (int i = 40; i < 60; i++)
                 {
-                    <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1"></div>
+                <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1" onclick="openDetail(this)"></div>
                 }
 
 
@@ -76,7 +88,7 @@
 </div>
 
 @*D*@
-    <div class="row">
+    <div class="row mb-2">
 
         <div class="d-flex w-100" style="height:50px;">
 
@@ -90,68 +102,224 @@
 
                 @for (int i = 60; i < 80; i++)
                 {
-                    <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1"></div>
+                <div id="@Html.Raw(Model.Phase1[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1" onclick="openDetail(this)"></div>
                 }
 
 
         </div>
 </div>
 
+</div>
 
+
+<div class="container mt-5">
+
+    <div class="row mb-2">
+        <div class="col">
+            <h4 class="NexenR">Nexen 2</h4>
+        </div>
+    </div>
+
+
+    @*E*@
+    <div class="row mb-2">
+
+        <div class="d-flex w-100" style="height:50px;">
+
+            <div class="d-flex align-items-center justify-content-center h-100 w-100 m-1">
+
+                <div>
+                    <h3>E</h3>
+                </div>
+
+            </div>
+
+            @for (int i = 0; i < 20; i++)
+            {
+                <div id="@Html.Raw(Model.Phase2[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1" onclick="openDetail(this)"></div>
+            }
+
+
+        </div>
+    </div>
+
+    @*F*@
+    <div class="row mb-2">
+
+        <div class="d-flex w-100" style="height:50px;">
+
+            <div class="d-flex align-items-center justify-content-center h-100 w-100 m-1">
+
+                <div>
+                    <h3>F</h3>
+                </div>
+
+            </div>
+
+            @for (int i = 20; i < 40; i++)
+            {
+                <div id="@Html.Raw(Model.Phase2[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1" onclick="openDetail(this)"></div>
+            }
+
+
+        </div>
+    </div>
+
+    @*H*@
+    <div class="row mb-2">
+
+        <div class="d-flex w-100" style="height:50px;">
+
+            <div class="d-flex align-items-center justify-content-center h-100 w-100 m-1">
+
+                <div>
+                    <h3>H</h3>
+                </div>
+
+            </div>
+
+            @for (int i = 40; i < 60; i++)
+            {
+                <div id="@Html.Raw(Model.Phase2[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1" onclick="openDetail(this)"></div>
+            }
+
+
+        </div>
+    </div>
+
+    @*J*@
+    <div class="row">
+
+        <div class="d-flex w-100" style="height:50px;">
+
+            <div class="d-flex align-items-center justify-content-center h-100 w-100 m-1">
+
+                <div>
+                    <h3>J</h3>
+                </div>
+
+            </div>
+
+            @for (int i = 60; i < 80; i++)
+            {
+                <div id="@Html.Raw(Model.Phase2[i].EQ_ID + "_downTimeFrame")" class="cureCube nothing m-1" onclick="openDetail(this)"></div>
+            }
+
+
+        </div>
+    </div>
+
+</div>
+
+<div class="container mt-2">
+    <div class="row">
+        <div class="col text-end">
+            <small class="text-muted">Last update</small>
+            <small id="lastUpdate" class="text-muted"></small>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
                 
-    document.addEventListener('readystatechange', event => {
+    document.addEventListener('readystatechange', event => 
+    {
         switch (document.readyState) {
             case "loading":
                 break;
             case "interactive":
-                refreshCure();
                 break;
             case "complete":
-                setInterval(refreshCure, 10000);
+                refreshCure();
+                setInterval(refreshCure, 15000);
                 break;
         }
     });
 
+    function openDetail(btn){
+        var eqid = btn.id.split('_')[0];
+        window.location.href = window.location.origin + "/cockpit/machine/" + eqid;
+    }
+
     async function refreshCure()
     {
 
-        @foreach(MachineBasicInfo machine in Model.Phase1)
+        @foreach (MachineBasicInfo machine1 in Model.Phase1)
         {
-            @Html.Raw("await CuremachineDowntime('" + machine.EQ_ID + "');");
+            if (int.Parse(machine1.EQ_ID) < 10136)
+                @Html.Raw("CuremachineDowntime('" + machine1.EQ_ID + "');");
+        }
+        
+
+        @foreach (MachineBasicInfo machine2 in Model.Phase2)
+        {
+            @Html.Raw("CuremachineDowntime('" + machine2.EQ_ID + "');");
         }
 
-        @foreach (MachineBasicInfo machine in Model.Phase2)
-        {
-            @Html.Raw("await CuremachineDowntime('" + machine.EQ_ID + "');");
-        }
+            document.getElementById("lastUpdate").innerHTML = new Date().toLocaleString();
 
     }
 
     async function CuremachineDowntime(eqid) {
-        return await fetch(window.location.origin + '/api/prod/actDowntime/' + eqid)
-            .then(response => response.json())
-            .then(data => {
+        try
+        {
+            var frameElement = document.getElementById(eqid + '_downTimeFrame');
+            var isPlan = false;
 
-                var frameElement = document.getElementById(eqid + '_downTimeFrame');
+            await fetch(window.location.origin + '/api/prod/actDowntime/' + eqid)
+            .then(response => response.json())
+                .then(data => {
 
                 frameElement.classList.remove('nothing','fine', 'warning', 'danger');
 
-                if (data['Code'] != '') {
+                msgStyle = 'fine';
+                
+
+                if (data['Code'] != '') 
+                {
+
                     msg = data['Description'];
+
                     if (data['Code'] == 'N016') 
                     {
                         msgStyle = 'warning';
                     }
-                    else {
+                    else if (data['Code'] == 'N015' || data['Code'] == 'N215') 
+                    {
+                        msgStyle = 'nothing';
+                        isPlan = true;
+                    }
+                    else 
+                    {
                         msgStyle = 'danger';
                     }
                 }
-                    
-                frameElement.classList.add(msgStyle);
+
+                    frameElement.classList.add(msgStyle);
             });
+
+            if (!isPlan)
+                await GetLastProd(eqid);
+
+        }
+       catch(ex)
+       {
+         //  alert(eqid + ": " + ex);
+       }
+    }
+
+    async function GetLastProd(eq)
+    {
+        var frameElement = document.getElementById(eq + '_downTimeFrame');
+        
+
+        var data = await fetch(window.location.origin + '/api/prod/LastProdTime/' + eq).then(response => response.json());
+        var diff = Math.abs(new Date(data.MesTime) - new Date(data.ProdTime));
+        var minutes = Math.floor((diff / 1000) / 60);
+        if(minutes >= 10)
+            frameElement.classList.add('blinkit');
+        else
+            frameElement.classList.remove('blinkit');
     }
 
 </script>

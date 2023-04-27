@@ -18,6 +18,24 @@ namespace NexenHub.Class
 {
     public class GlobalDatabase
     {
+
+        public void GetLastProdTime(string EQ_ID, out DateTime MES_Time, out DateTime ProdTime)
+        {
+            try
+            {
+                DBOra db = new DBOra("select SYSDATE,MAX(to_date(PROD_TIME,'yyyymmddhh24miss')) from TB_PR_M_PROD where EQ_ID=:eqid and USE_YN='Y'");
+                db.AddParameter("eqid", EQ_ID);
+                DataTable dt = db.ExecTable();
+                MES_Time = DateTime.Parse(dt.Rows[0][0].ToString());
+                ProdTime = DateTime.Parse(dt.Rows[0][1].ToString());
+            }
+            catch
+            {
+                MES_Time = DateTime.MinValue;
+                ProdTime = MES_Time;
+            }
+        }
+
         public DataTable LatestProduction(string EQ_ID)
         {
             try

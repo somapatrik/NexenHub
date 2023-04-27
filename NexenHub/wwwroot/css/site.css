@@ -120,7 +120,6 @@ for details on configuring this project to bundle and minify static web assets. 
     background-color:rgba(255,255,255,.1);
 }
 
-
 .fullscreen {
     position: absolute;
     top: 0;
@@ -133,6 +132,7 @@ for details on configuring this project to bundle and minify static web assets. 
 .cureCube {
     height: 100%;
     width: 100%;
+    cursor:pointer;
 }
 
 .cureCube.nothing {
@@ -149,11 +149,22 @@ for details on configuring this project to bundle and minify static web assets. 
         border-top: 0.3px solid white;
     }
 
-    .cureCube.fine {
-        background-color: white;
-        color: white;
-        border-top: 0.3px solid white;
+.cureCube.fine {
+    background-color: var(--github-green);
+    color: white;
+    opacity:1;
+    border-top: 0.3px solid white;
+}
+
+    .cureCube.blinkit {
+        animation: blinker 2s linear infinite;
     }
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
 
 /* Provide sufficient contrast against white background */
 a {
