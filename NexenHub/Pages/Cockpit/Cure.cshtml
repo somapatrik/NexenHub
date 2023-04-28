@@ -21,6 +21,26 @@
         </div>
     </div>
 
+    @* Numbers *@
+    <div class="row mb-2">
+
+        <div class="d-flex w-100" style="height:50px;">
+
+            @for (int i = 0; i <= 20; i++)
+            {
+                <div class="cureCube text-center h-100 w-100 m-1">
+                    @if (i>0){
+                    <h3>
+                    @i
+                    </h3>
+                    }
+                 </div>
+            }
+
+
+        </div>
+    </div>
+
 @*A*@
     <div class="row mb-2">
 
@@ -120,6 +140,25 @@
         </div>
     </div>
 
+        @* Numbers *@
+    <div class="row mb-2">
+
+        <div class="d-flex w-100" style="height:50px;">
+
+            @for (int i = 0; i <= 20; i++)
+            {
+                <div class="cureCube text-center h-100 w-100 m-1">
+                    @if (i>0){
+                    <h3>
+                    @i
+                    </h3>
+                    }
+                 </div>
+            }
+
+
+        </div>
+    </div>
 
     @*E*@
     <div class="row mb-2">
@@ -250,12 +289,12 @@
                 @Html.Raw("CuremachineDowntime('" + machine1.EQ_ID + "');");
         }
         
-
+        @*
         @foreach (MachineBasicInfo machine2 in Model.Phase2)
         {
             @Html.Raw("CuremachineDowntime('" + machine2.EQ_ID + "');");
         }
-
+        *@
             document.getElementById("lastUpdate").innerHTML = new Date().toLocaleString();
 
     }
@@ -283,6 +322,7 @@
                     if (data['Code'] == 'N016') 
                     {
                         msgStyle = 'warning';
+                        isPlan = true;
                     }
                     else if (data['Code'] == 'N015' || data['Code'] == 'N215') 
                     {
@@ -316,7 +356,7 @@
         var data = await fetch(window.location.origin + '/api/prod/LastProdTime/' + eq).then(response => response.json());
         var diff = Math.abs(new Date(data.MesTime) - new Date(data.ProdTime));
         var minutes = Math.floor((diff / 1000) / 60);
-        if(minutes >= 10)
+        if(minutes >= 15)
             frameElement.classList.add('blinkit');
         else
             frameElement.classList.remove('blinkit');

@@ -81,6 +81,8 @@ namespace NexenHub.Class
                 query.AppendLine("AND (SOFTWARE_ID='ioserver' OR (VER.VERSION_NAME is null AND SOFTWARE_ID is null))");
                 query.AppendLine("AND (VER.VERSION_NAME <> (SELECT MAX(VERSION_NAME) FROM TB_CM_M_VERSION WHERE SOFTWARE_ID='ioserver') OR VER.VERSION_NAME is null)");
 
+                query.AppendLine("AND NMP.FACT_ID != 'NEX2'");
+
                 query.AppendLine("UNION ALL");
 
                 query.AppendLine("SELECT ");
@@ -92,6 +94,8 @@ namespace NexenHub.Class
                 query.AppendLine("WHERE ICS.USE_YN = 'Y'");
                 query.AppendLine("AND (SOFTWARE_ID='ics' OR (SOFTWARE_ID is null and VERSION_NAME is null))");
                 query.AppendLine("AND (VER.VERSION_NAME <> (SELECT MAX(VERSION_NAME) FROM TB_CM_M_VERSION WHERE SOFTWARE_ID='ics') OR VERSION_NAME is null)");
+                
+                query.AppendLine("AND ICS.FACT_ID != 'NEX2'");
 
                 DBOra db = new DBOra(query.ToString());
                 return db.ExecTable();
@@ -1593,9 +1597,12 @@ namespace NexenHub.Class
             try
             {
                 StringBuilder query = new StringBuilder();
-                query.AppendLine("select 'NMP: ' || DESCRIPTION DISPLAYNAME, IP_ADDRESS IP from TB_CM_M_NMP_SETTINGS where USE_YN='Y'");
+                //query.AppendLine("select 'NMP: ' || DESCRIPTION DISPLAYNAME, IP_ADDRESS IP from TB_CM_M_NMP_SETTINGS where USE_YN='Y'");
+                //query.AppendLine("UNION ALL");
+                //query.AppendLine("select 'ICS: ' || DISPLAYNAME DISPLAYNAME, IP from TB_CM_M_MONITORING_CONFIG where USE_YN = 'Y' ");
+                query.AppendLine("select 'NMP: ' || DESCRIPTION DISPLAYNAME, IP_ADDRESS IP from TB_CM_M_NMP_SETTINGS where USE_YN='Y' AND FACT_ID != 'NEX2'");
                 query.AppendLine("UNION ALL");
-                query.AppendLine("select 'ICS: ' || DISPLAYNAME DISPLAYNAME, IP from TB_CM_M_MONITORING_CONFIG where USE_YN = 'Y' ");
+                query.AppendLine("select 'ICS: ' || DISPLAYNAME DISPLAYNAME, IP from TB_CM_M_MONITORING_CONFIG where USE_YN = 'Y' AND FACT_ID != 'NEX2'");
 
                 DBOra db = new DBOra(query.ToString());
 

@@ -162,7 +162,7 @@ for details on configuring this project to bundle and minify static web assets. 
 
 @keyframes blinker {
     50% {
-        opacity: 0;
+        opacity: .5;
     }
 }
 
