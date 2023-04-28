@@ -212,11 +212,12 @@ namespace NexenHub.Controllers
         [HttpGet("LastProdTime/{eqid:maxlength(5)}")]
         public ActionResult<object> GetLastProdTime(string eqid)
         {
-            DateTime MesTime;
-            DateTime ProdTime;
-            dbglob.GetLastProdTime(eqid, out MesTime, out ProdTime);
+            //DateTime MesTime;
+            //DateTime ProdTime;
+            //dbglob.GetLastProdTime(eqid, out MesTime, out ProdTime);
 
-            return new { MesTime, ProdTime };
+            //return new { MesTime, ProdTime };
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
     }

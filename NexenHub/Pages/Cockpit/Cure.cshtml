@@ -338,8 +338,8 @@
                     frameElement.classList.add(msgStyle);
             });
 
-            if (!isPlan)
-                await GetLastProd(eqid);
+            //if (!isPlan)
+            //    await GetLastProd(eqid);
 
         }
        catch(ex)
@@ -348,18 +348,18 @@
        }
     }
 
-    async function GetLastProd(eq)
-    {
-        var frameElement = document.getElementById(eq + '_downTimeFrame');
+    //async function GetLastProd(eq)
+    //{
+    //    var frameElement = document.getElementById(eq + '_downTimeFrame');
         
 
-        var data = await fetch(window.location.origin + '/api/prod/LastProdTime/' + eq).then(response => response.json());
-        var diff = Math.abs(new Date(data.MesTime) - new Date(data.ProdTime));
-        var minutes = Math.floor((diff / 1000) / 60);
-        if(minutes >= 15)
-            frameElement.classList.add('blinkit');
-        else
-            frameElement.classList.remove('blinkit');
-    }
+    //    var data = await fetch(window.location.origin + '/api/prod/LastProdTime/' + eq).then(response => response.json());
+    //    var diff = Math.abs(new Date(data.MesTime) - new Date(data.ProdTime));
+    //    var minutes = Math.floor((diff / 1000) / 60);
+    //    if(minutes >= 15)
+    //        frameElement.classList.add('blinkit');
+    //    else
+    //        frameElement.classList.remove('blinkit');
+    //}
 
 </script>

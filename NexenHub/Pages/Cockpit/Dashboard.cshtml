@@ -204,7 +204,7 @@
 
 </div>
 
-
+@*
 <script type="text/javascript">
 
      document.addEventListener('readystatechange', event => {
@@ -216,8 +216,8 @@
                 refreshOEE();
                 break;
             case "complete":
-                setInterval(refreshProd, 5000);
-                setInterval(refreshOEE, 15000);
+                setInterval(refreshProd, 10000);
+                setInterval(refreshOEE, 60000);
                 break;
         }
     });
@@ -293,7 +293,7 @@
 
     async function refreshOEE(){
         getOEE('NEX1');
-        getOEE('NEX2');
+       // getOEE('NEX2');
     }
 
     async function getOEE(FACTID) {
@@ -449,4 +449,4 @@
             }
         });
 
-</script>
+</script>*@
