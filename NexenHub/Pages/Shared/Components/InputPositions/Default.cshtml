@@ -65,16 +65,17 @@
                 refreshInputPositions();
                 break;
             case "complete":
-                setInterval(refreshInputPositions, 20000);
+                setInterval(refreshInputPositions, 60000);
                 break;
         }
     });
 
 
 
-    async function refreshInputPositions() {
+    async function refreshInputPositions() 
+    {
         await getInputPositions(EQ_ID).then(async data => await displayUsedMaterial(data));
-        await readInputRfid(EQ_ID).then(async data => await displayRfid(data));
+       // await readInputRfid(EQ_ID).then(async data => await displayRfid(data));
     }
 
     async function displayRfid(data) {

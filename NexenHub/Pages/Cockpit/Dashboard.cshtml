@@ -204,7 +204,7 @@
 
 </div>
 
-@*
+
 <script type="text/javascript">
 
      document.addEventListener('readystatechange', event => {
@@ -216,8 +216,8 @@
                 refreshOEE();
                 break;
             case "complete":
-                setInterval(refreshProd, 10000);
-                setInterval(refreshOEE, 60000);
+                setInterval(refreshProd, 60000);
+                //setInterval(refreshOEE, 60000);
                 break;
         }
     });
@@ -449,4 +449,4 @@
             }
         });
 
-</script>*@
+</script>

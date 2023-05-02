@@ -65,7 +65,7 @@
 
 </div>
 
-@*
+
 <script type="text/javascript">
 
     document.addEventListener('readystatechange', event => {
@@ -76,7 +76,7 @@
                 refreshTBM();
                 break;
             case "complete":
-                setInterval(refreshTBM, 10000);
+                setInterval(refreshTBM, 60000);
                 break;
         }
     });
@@ -125,4 +125,4 @@
             });
     }
 
-</script>*@
+</script>
