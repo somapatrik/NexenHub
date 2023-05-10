@@ -76,7 +76,7 @@
                 refreshTBM();
                 break;
             case "complete":
-                setInterval(refreshTBM, 60000);
+                setInterval(refreshTBM, 60 * 1000);
                 break;
         }
     });
@@ -88,10 +88,10 @@
             @Html.Raw("TBMmachineDowntime('" + machine.EQ_ID + "');");
         }
 
-         @foreach(MachineBasicInfo machine in Model.Phase2)
-        {
+        @*         @foreach(MachineBasicInfo machine in Model.Phase2)
+        //{
             @Html.Raw("TBMmachineDowntime('" + machine.EQ_ID + "');");
-        }
+        //}*@
     }
 
     async function TBMmachineDowntime(eqid) {

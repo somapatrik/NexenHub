@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using NexenHub.ViewModels;
 
@@ -17,7 +18,6 @@ namespace NexenHub.Pages
         public void OnGet()
         {
             yearProd = new YearProd();
-
         }
 
         

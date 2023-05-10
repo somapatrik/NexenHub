@@ -33,8 +33,6 @@
 
 </script>
 
-@if (!Model.FuckHim)
-{
 
 <!-- Top bar -->
 <div class="container-fluid">
@@ -370,56 +368,5 @@
 
 </div>
 
-}
-else
-{
-<div class="container text-center align-middle" style="height:80vh;">
 
-        <div class="d-flex justify-content-center align-middle m-5">
-            <div id="myspinner" class="spinner-border text-primary" role="status" style="width: 20rem; height: 20rem;">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
-</div>
-
-    <script type="text/javascript">
-
-        var spinner = document.getElementById("myspinner");
-        var spinWid = 20;
-        var dolu = false;
-        var offset = 30;
-
-        $(function () {
-            setInterval(oneSecondFunction, 1000);
-        });
-
-        function oneSecondFunction() {
-            spinner.style["width"] = spinWid + "rem";
-
-            if (offset > 0){
-                offset--;
-                return;
-            }
-            
-            if (spinWid >= 20 && spinWid <= 30 && !dolu)
-            {
-                spinWid++;
-            }
-            else{
-                dolu = true;
-            }
-
-            if (dolu){
-                spinWid--;
-                dolu = spinWid > 20;
-                if (!dolu)
-                    offset = 60;
-            }
-           
-                
-        }
-
-    </script>
-
-}
 

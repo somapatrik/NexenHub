@@ -23,19 +23,17 @@ namespace NexenHub.Pages
 
         private GlobalDatabase dbglob = new GlobalDatabase();
 
-        public bool FuckHim { get; set; }
+       // public bool FuckHim { get; set; }
 
         public void OnGet()
         {
-            Random rnd = new Random();
-            //string clientIP = HttpContext.Connection.RemoteIpAddress?.ToString();
-
-            string clientIP = "";
-            string header = (HttpContext.Request.Headers["CF-Connecting-IP"].FirstOrDefault() ?? HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault());
-            if (IPAddress.TryParse(header, out IPAddress ip)) {
-                clientIP = ip.ToString();
-                FuckHim = (clientIP == "172.15.9.70" || clientIP == "172.15.9.73"); // && rnd.Next(3) <= 1;
-            }
+            //Random rnd = new Random();
+            //string clientIP = "";
+            //string header = (HttpContext.Request.Headers["CF-Connecting-IP"].FirstOrDefault() ?? HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault());
+            //if (IPAddress.TryParse(header, out IPAddress ip)) {
+            //    clientIP = ip.ToString();
+            //    FuckHim = (clientIP == "172.15.9.70" || clientIP == "172.15.9.73"); // && rnd.Next(3) <= 1;
+            //}
 
 
             if (arglot.Length == 5)

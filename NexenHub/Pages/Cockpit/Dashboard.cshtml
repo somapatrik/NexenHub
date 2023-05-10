@@ -6,17 +6,33 @@
 }
 
 <div class="container">
-    <div class="row mb-1">
-        
-        <div class="col">
 
+    <div class="row g-1 mb-1">
+        
+        <div class="col-md-7">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4>Forecast</h4>
+                    <div class="row">
+                        <div class="col">
+                            <canvas id="forecastChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <!-- Today´s prodaction pie-->
-        <div class="col-5">
-            <div class="card">
+        <div class="col-md-5">
+            <div class="card h-100">
                 <div class="card-body">
                     <h4>Today´s production</h4>
-                    <div class="row">
+                    <div class="row h-100">
+
+                        <div class="col-5 d-flex align-items-center">
+                            <canvas id="pieGTchart"></canvas>
+                        </div>
+
                         <div class="col">
                             <div class="d-flex align-items-center h-100">
                             <table class="table table-hover table-borderless">
@@ -37,9 +53,7 @@
                             </table>
                             </div>
                         </div>
-                        <div class="col-5">
-                            <canvas id="pieGTchart"></canvas>
-                            </div>
+
                     </div>
                 </div>
             </div>
@@ -48,7 +62,7 @@
     </div>
 
     <div class="row g-1">
-        <div class="col-6">
+        <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-body">
                     <div class="row mb-1">
@@ -128,7 +142,7 @@
             </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-body">
                     <div class="row mb-1">
@@ -214,10 +228,12 @@
             case "interactive":
                 refreshProd();
                 refreshOEE();
+                loadFullForecast();
                 break;
             case "complete":
-                setInterval(refreshProd, 60000);
-                //setInterval(refreshOEE, 60000);
+                setInterval(refreshProd, 3 * 60 * 1000);
+                setInterval(refreshOEE, 5 * 60 * 1000);
+                setInterval(loadFullForecast, 5 * 60 * 1000);
                 break;
         }
     });
@@ -257,6 +273,168 @@
              }]
         }
     });
+
+    const nexOneElement = document.getElementById('nexOneAvailability').getContext('2d');
+    const nexOneChart = new Chart(nexOneElement,
+        {
+            type: 'polarArea',
+            options:
+            {
+                responsive: true,
+                plugins:
+                {
+                    legend: {
+                        display: false,
+                        position: 'top',
+                    },
+                    title: {
+                        display: false,
+                        text: ''
+                    }
+                }
+            },
+            data:
+            {
+                labels: ['Mixing', 'Calender', 'Extruding', 'Bead', 'Cutting', 'TBM', 'Curing'],
+                datasets:
+                    [{
+                        label: 'Nexen 1',
+                        data: [0, 0, 0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            chartGrayColor[1],
+                            chartCalenderColor[1],
+                            chartExtColor[1],
+                            chartBeadColor[1],
+                            chartShitColor[1],
+                            chartOkColor[1],
+                            chartNexenColor[1]
+                        ]
+                    }]
+            }
+        });
+
+    const nexTwoElement = document.getElementById('nexTwoAvailability').getContext('2d');
+    const nexTwoChart = new Chart(nexTwoElement,
+        {
+            type: 'polarArea',
+            options:
+            {
+                responsive: true,
+                plugins:
+                {
+                    legend: {
+                        display: false,
+                        position: 'top',
+                    },
+                    title: {
+                        display: false,
+                        text: ''
+                    }
+                }
+            },
+            data:
+            {
+                labels: ['Mixing', 'Extruding', 'Bead', 'Cutting', 'TBM', 'Curing'],
+                datasets:
+                    [{
+                        label: 'Nexen 2',
+                        data: [0, 0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            chartGrayColor[1],
+                            chartExtColor[1],
+                            chartBeadColor[1],
+                            chartShitColor[1],
+                            chartOkColor[1],
+                            chartNexenColor[1]
+                        ]
+                    }]
+            }
+        });
+
+    const forecastchartElement = document.getElementById('forecastChart').getContext('2d');
+    const forecastchart = new Chart(forecastchartElement,
+    {
+            type: 'line',
+            options:
+            {
+                scales:{
+                    x: { grid: { display: false } },
+                    y: { grid: { display: false } }
+                },
+                interaction: {
+                    intersect: false
+                },
+                responsive: true,
+                plugins:
+                {
+                    legend: {
+                        display: false,
+                        position: 'top',
+                    },
+                    title: {
+                        display: false,
+                        text: ''
+                    }
+                }
+            },
+            data:
+            {
+                labels: [],
+                datasets:
+                    [{
+                        label: 'Target',
+                        data: [],
+                        borderColor: chartOrangeColor[1], 
+                        borderWidth: 2,
+                        radius: 0
+                    },
+                    {
+                        label: 'GT',
+                        data: [],
+                        borderColor: 'rgb(75, 192, 192)',
+                        borderWidth: 2,
+                        radius: 0
+                    },
+                    {
+                        label: 'Tire',
+                        data: [],
+                        borderColor: 'rgb(54, 162, 235)',
+                        borderWidth: 2,
+                        radius: 0
+                    }]
+            }
+        });
+
+   
+
+    async function loadFullForecast(){
+        await fetch('http://172.15.2.31:1880/fullForecast')
+                .then(response => response.json())
+                .then(data => 
+                {
+
+                forecastchart.data.labels = [];
+
+                forecastchart.data.datasets[0].data = [];
+                forecastchart.data.datasets[1].data = [];
+                forecastchart.data.datasets[2].data = [];
+
+                    data.forEach(forecast => 
+                    {
+                        // Date to HH:mm
+                        var time = forecast.Time.split('T')[1].split('.')[0].slice(0,5);
+
+                        forecastchart.data.labels.push(time);
+
+                        forecastchart.data.datasets[0].data.push(forecast.Target);
+                        forecastchart.data.datasets[1].data.push(forecast.GT);
+                        forecastchart.data.datasets[2].data.push(forecast.FERT);
+                    });
+
+                    forecastchart.update();
+
+                });
+    }
 
     async function refreshProd() {
 
@@ -372,81 +550,5 @@
         }
     }
 
-    const nexOneElement = document.getElementById('nexOneAvailability').getContext('2d');
-    const nexOneChart = new Chart(nexOneElement,
-        {
-            type: 'polarArea',
-            options:
-            {
-                responsive: true,
-                plugins:
-                {
-                    legend: {
-                        display: false,
-                        position: 'top',
-                    },
-                    title: {
-                        display: false,
-                        text: ''
-                    }
-                }
-            },
-            data:
-            {
-                labels: ['Mixing', 'Calender', 'Extruding', 'Bead', 'Cutting', 'TBM', 'Curing'],
-                datasets:
-                    [{
-                        label: 'Nexen 1',
-                        data: [0, 0, 0, 0, 0, 0, 0],
-                        backgroundColor: [
-                            chartGrayColor[1],
-                            chartCalenderColor[1],
-                            chartExtColor[1],
-                            chartBeadColor[1],
-                            chartShitColor[1],
-                            chartOkColor[1],
-                            chartNexenColor[1]
-                        ]
-                    }]
-            }
-        });
-
-    const nexTwoElement = document.getElementById('nexTwoAvailability').getContext('2d');
-    const nexTwoChart = new Chart(nexTwoElement,
-        {
-            type: 'polarArea',
-            options:
-            {
-                responsive: true,
-                plugins:
-                {
-                    legend: {
-                        display: false,
-                        position: 'top',
-                    },
-                    title: {
-                        display: false,
-                        text: ''
-                    }
-                }
-            },
-            data:
-            {
-                labels: ['Mixing', 'Extruding', 'Bead', 'Cutting', 'TBM', 'Curing'],
-                datasets:
-                    [{
-                        label: 'Nexen 2',
-                        data: [0, 0, 0, 0, 0, 0],
-                        backgroundColor: [
-                            chartGrayColor[1],
-                            chartExtColor[1],
-                            chartBeadColor[1],
-                            chartShitColor[1],
-                            chartOkColor[1],
-                            chartNexenColor[1]
-                        ]
-                    }]
-            }
-        });
 
 </script>

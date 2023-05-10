@@ -31,11 +31,35 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <main role="main" class="d-flex" style="height:100vh;">
+    <div class="bg-dark">
 
-        <div class="bg-dark" style="width:70px;height:100%;">
+        <div class="container-fluid">
+            <div class="row">
+                
+                <div class="col-sm">
+                    <img src="~/images/logo/logo_light.png" class="img-fluid" style="max-width:170px;"/>
+                </div>
+            
+                <div class="col-sm d-flex align-items-center">
+                    <input class="text-center form-control" placeholder="CART / LOT / TIRE" onkeyup="searchMat(event,this)" />
+                </div>
+
+                <div class="col-sm d-flex flex-row-reverse align-items-center text-light">
+                    <button class="btn btn-outline-light">
+                        Sign in
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="d-flex">
+
+        <div class="bg-dark" style="width:70px;">
                
-            <div class="sidebarButton" style="width:70px;">
+            <div class="sidebarButton mb-auto" style="width:70px;min-height:100vh;">
                    
                     <a href="~/cockpit/dashboard">
                         <div class="icon">
@@ -68,10 +92,10 @@
         </div>
 
         <div class="flex-grow-1" style="overflow-y:auto;">
-            @RenderBody()
+                @RenderBody()
         </div>
 
-    </main>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" >
