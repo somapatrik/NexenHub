@@ -5,7 +5,7 @@
 <div class="card-body">
     <h5>Workorders</h5>
     <div class="table-responsive">
-        <table id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class="table table-sm table-borderless table-hover text-center">
+        <table id="@Html.Raw(Model.EQ_ID + "_woLineRow")" class=" table table-sm table-borderless table-hover text-center">
         </table>
     </div>
 </div>
@@ -21,7 +21,7 @@ document.addEventListener('readystatechange', event => {
                 getWoList();
                 break;
             case "complete":
-                setInterval(getWoList, 60000);
+                setInterval(getWoList, 60 * 1000);
                 break;
         }
     });
@@ -41,7 +41,7 @@ async function displayWoList(data)
     data.Waiting.forEach(waiting => {
             
             innerCode += '<tr><td>' +  '<span class="badge bg-warning text-dark">Waiting</span>' + '</td>' ;
-            innerCode += '<td>' + waiting['WO_NO'] + '</td>' ;
+            innerCode += '<td><a class=\"link-primary\" href=\"/workorder/' + waiting['WO_NO'] + '\" target=\"_blank\">' + waiting['WO_NO'] + '</a></td>';
             innerCode += '<td>' +  waiting['ITEM_NAME'] + '</td>' ;
             innerCode +='<td>' +  waiting['PROD_TYPE'] + '</td></tr>' ;
     });
@@ -50,7 +50,7 @@ async function displayWoList(data)
     data.Started.forEach(started => {
         
             innerCode += '<tr><td>' + '<span class="badge bg-github-green text-white">Running</span>' + '</td>';
-            innerCode += '<td>' + started['WO_NO'] + '</td>';
+            innerCode += '<td><a class=\"link-primary\" href=\"/workorder/' + started['WO_NO'] + '\" target=\"_blank\">' + started['WO_NO'] + '</a></td>';
             innerCode += '<td>' + started['ITEM_NAME'] + '</td>';
             innerCode += '<td>' + started['PROD_TYPE'] + '</td></tr>';
     });
@@ -58,7 +58,7 @@ async function displayWoList(data)
     data.Finished.forEach(finished => {
             
             innerCode += '<tr class="text-muted"><td>' + '<span class="badge bg-secondary text-white">Completed</span>' + '</td>';
-            innerCode += '<td>' + finished['WO_NO'] + '</td>';
+            innerCode += '<td><a class=\"link-primary\" href=\"/workorder/' + finished['WO_NO'] + '\" target=\"_blank\">' + finished['WO_NO'] + '</a></td>';
             innerCode += '<td>' + finished['ITEM_NAME'] + '</td>';
             innerCode += '<td>' + finished['PROD_TYPE'] + '</td></tr>';
     });

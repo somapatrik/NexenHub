@@ -1305,6 +1305,13 @@ namespace NexenHub.Class
                 query.AppendLine("to_date(WO_ETIME,'yyyymmddhh24miss') WO_ETIME,");
                 query.AppendLine("to_date(MIXER_PROD_STIME,'YYYYMMDDHH24MISS') PLAN_STIME,");
                 query.AppendLine("to_date(MIXER_PROD_ETIME,'YYYYMMDDHH24MISS') PLAN_ETIME,");
+                query.AppendLine("to_date(OP_PROD_STIME,'yyyymmddhh24miss') OP_PROD_STIME,");
+                query.AppendLine("to_date(OP_PROD_ETIME,'yyyymmddhh24miss') OP_PROD_ETIME,");
+                query.AppendLine("to_date(WU_PROD_STIME,'yyyymmddhh24miss') WU_PROD_STIME,");
+                query.AppendLine("to_date(WU_PROD_ETIME,'yyyymmddhh24miss') WU_PROD_ETIME,");
+                query.AppendLine("WO_PROC_STATE,");
+                query.AppendLine("OP_PROC_STATE,");
+                query.AppendLine("WU_PROC_STATE,");
                 query.AppendLine("PROD_TYPE,");
                 query.AppendLine("ITEM_ID,");
                 query.AppendLine("WO_QTY,");

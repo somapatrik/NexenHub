@@ -1,0 +1,286 @@
+﻿@page "{argWo:length(15)}"
+@model NexenHub.Pages.WorkorderModel
+@{
+    string badStatus = "";
+
+
+    string woStyle = "";
+    string wuStyle = "";
+    string opStyle = "";
+
+    if (Model.WO.OP_PROC_STATE == "S")
+        opStyle = "table-success";
+
+    if (Model.WO.OP_PROC_STATE == "W")
+        opStyle = "table-warning";
+
+    if (Model.WO.WO_PROC_STATE == "S")
+        woStyle = "table-success";
+
+    if (Model.WO.WO_PROC_STATE == "W")
+        woStyle = "table-warning";
+
+
+    if (Model.WO.WU_PROC_STATE == "S")
+        wuStyle = "table-success";
+
+    if (Model.WO.WU_PROC_STATE == "W")
+        wuStyle = "table-warning";
+}
+
+@if (Model.WO.WO_EXISTS)
+{
+    ViewData["pageTitle"] = "WO: " + Model.argWo;
+
+    <div class="container-fluid">
+
+
+        <!-- BAD SCRAP -->
+        @if (Model.WO.DEL_FLAG == "Y" || Model.WO.USE_YN == "N")
+        {
+            <div class="row border-2 border-bottom p-2 bg-danger text-white">
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+
+                        @if (Model.WO.DEL_FLAG == "Y")
+                            badStatus = " DELETED ";
+
+                        @if (Model.WO.USE_YN == "N")
+                            badStatus += "DISABLED";
+
+                        <h5 class="p-2">@badStatus</h5>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- TEST -->
+        @if (Model.WO.TEST_YN == "Y")
+        {
+            <div class="row border-2 border-bottom p-2 bg-warning text-dark">
+                <div class="col">
+                    <div class="d-flex justify-content-center">
+                        <h5>Prototype</h5>
+                    </div>
+                </div>
+            </div>
+
+        }
+
+
+        <!-- Main info -->
+        <div class="row border-bottom border-2 p-3" style="background-color: #f7f7f7;">
+
+            <div class="col-md-4">
+
+                <div class="row">
+                    <div class="col">
+                        <h4>@Model.WO.WO_NO</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex flex-row text-muted">
+
+                            <div class="p-2"></div>
+
+                            <div class="p-2">/</div>
+                            <div class="p-2"></div>
+
+                            <div class="p-2">/</div>
+                            <div class="p-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 text-center">
+
+                <div class="row text-muted">
+                    <div class="col">
+                        <h5>@Model.WO.ITEM_ID</h5>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col">
+                        <h3>@Model.WO.ITEM_NAME</h3>
+                    </div>
+
+                </div>
+
+                @{
+                    if (Model.WO.TEST_YN == "Y")
+                    {
+                        <div class="row mt-1 text-muted">
+                            <div class="col">
+                                <h5>@Model.WO.PROTOTYPE_ID</h5>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col">
+                                <h4>@Model.WO.PROTOTYPE_VER</h4>
+                            </div>
+
+                        </div>
+                    }
+
+                }
+
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex flex-row-reverse">
+                            
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Main content -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 bg-white"></div>
+
+            <div class="col-xl-6 bg-white">
+
+                <div class="row">
+                    <div class="col">
+                        <h4>Status</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-sm text-center">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Workorder</th>
+                                        <th scope="col">Front NMP</th>
+                                        <th scope="col">Winder NMP</th>
+                                    </tr>
+                                <tr>
+                                    <td class="@woStyle">@Model.WO.FORMAT_WO_STATE</td>
+                                        <td class="@opStyle">@Model.WO.FORMAT_OP_STATE</td>
+                                    <td class="@wuStyle">@Model.WO.FORMAT_WU_STATE</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md">
+
+                        </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <h4>Times</h4>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-sm text-center">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Start</th>
+                                        <th scope="col">End</th>
+                                    </tr>
+                                    
+                                    @if (Model.WO.PLAN_STIME_DATE != DateTime.MinValue && Model.WO.PLAN_ETIME_DATE != DateTime.MinValue)
+                                    {
+                                        <tr>
+                                            <td>Plan</td>
+                                            <td>@Model.WO.PLAN_STIME_DATE</td>
+                                            <td>@Model.WO.PLAN_ETIME_DATE</td>
+                                        </tr>
+                                    }
+
+                                    <tr>
+                                        <td>Workorder</td>
+                                        <td>@Model.DateToString(Model.WO.STIME_DATE)</td>
+                                        <td>@Model.DateToString(Model.WO.ETIME_DATE)</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Front NMP</td>
+                                        <td>@Model.WO.OP_PROD_STIME</td>
+                                        <td>@Model.WO.OP_PROD_ETIME</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Winder NMP</td>
+                                        <td>@Model.WO.WU_PROD_STIME</td>
+                                        <td>@Model.WO.WU_PROD_ETIME</td>
+                                    </tr>
+
+                                   
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-xl-3 bg-white"></div>
+        </div>
+    </div>
+}
+else
+{
+    ViewData["pageTitle"] = "Go away";
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-danger my-3" role="alert">
+                    <h4 class="alert-heading">Congratulations! Workorder @Html.Raw(Model.argWo) was not found!</h4>
+                    <p>Try not to worry about it, you didn´t go completely wrong!</p>
+                    <p>What did you do correctly:</p>
+                    <p>
+                        <ul>
+                            <li>You are connected to correct network.</li>
+                            <li>You are on the correct website.</li>
+                            <li>You have entered the correct number of characters, that´s something.</li>
+                        </ul>
+                    </p>
+                    <p>On the other hand, to get here you had to change URL manually. So it is kind of your fault.</p>
+                    <p>
+                        <ul>
+                            <li>Maybe you are just fooling around? Don´t do that here.</li>
+                            <li>Are you sure that you are not looking for LOT istead of workorder? They look the same.</li>
+                            <li>Maybe it is time to go home. Try it tomorrow?</li>
+                        </ul>
+                    </p>
+                    <hr>
+                    <p class="mb-0">Anyway, you spend so much time on this page...it is time to continue. Farewell my friend.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+

@@ -1,4 +1,4 @@
-﻿@page "{arglot}"
+﻿@page "{arglot:length(15)}"
 @model NexenHub.Pages.LotModel
 @{
     ViewData["pageTitle"] = Model.lotitem.LOT_ID;
@@ -113,7 +113,7 @@
 
             </div>
 
-            @{ if (!string.IsNullOrEmpty(Model.lotitem.PROTOTYPE_ID))
+            @if (!string.IsNullOrEmpty(Model.lotitem.PROTOTYPE_ID))
                 {
                     <div class="row mt-1 text-muted">
                         <div class="col">
@@ -130,7 +130,7 @@
                     </div>
                 }
 
-            }
+            
 
         </div>
 

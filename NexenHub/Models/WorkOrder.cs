@@ -25,6 +25,12 @@ namespace NexenHub.Models
         public string PROTOTYPE_VER { get; set; }
         public string XCHPF { get; set; }
         public string WO_PROC_STATE { get; set; }
+        public string OP_PROC_STATE { get; set; }
+        public string OP_PROD_STIME { get; set; }
+        public string OP_PROD_ETIME { get; set; }
+        public string WU_PROC_STATE { get; set; }
+        public string WU_PROD_STIME { get; set; }
+        public string WU_PROD_ETIME { get; set; }
         public string DEL_FLAG { get; set; }
         public string USE_YN { get; set; }
         public bool OE
@@ -68,6 +74,26 @@ namespace NexenHub.Models
             }
         }
 
+
+        public string FORMAT_WO_STATE => FormatState(WO_PROC_STATE); 
+        public string FORMAT_WU_STATE => FormatState(WU_PROC_STATE);
+        public string FORMAT_OP_STATE => FormatState(OP_PROC_STATE);
+
+        private string FormatState(string msg)
+        {
+            switch (msg)
+            {
+                case "S":
+                    return "Running";
+                case "W":
+                    return "Waiting";
+                case "F":
+                    return "Completed";
+                default:
+                    return msg;
+            }
+        }
+
         private GlobalDatabase dbglob = new GlobalDatabase();
 
         public void LoadFromMachine(string eq_id)
@@ -86,6 +112,7 @@ namespace NexenHub.Models
                 PROD_QTY = dt.Rows[0]["PROD_QTY"].ToString();
                 UNIT = dt.Rows[0]["UNIT"].ToString();
 
+                // This is not a mistake
                 if (dt.Rows[0]["TEST_YN"].ToString() == "Y")
                     TEST_YN = "Y";
                 else
@@ -154,6 +181,14 @@ namespace NexenHub.Models
                     PROTOTYPE_ID = dt.Rows[0]["PROTOTYPE_ID"].ToString();
                     PROTOTYPE_VER = dt.Rows[0]["PROTOTYPE_VER"].ToString();
                     DEL_FLAG = dt.Rows[0]["DEL_FLAG"].ToString();
+                    WO_PROC_STATE = dt.Rows[0]["WO_PROC_STATE"].ToString();
+                    WU_PROC_STATE = dt.Rows[0]["WU_PROC_STATE"].ToString();
+                    OP_PROC_STATE = dt.Rows[0]["OP_PROC_STATE"].ToString();
+                    OP_PROD_STIME = dt.Rows[0]["OP_PROD_STIME"].ToString();
+                    OP_PROD_ETIME = dt.Rows[0]["OP_PROD_ETIME"].ToString();
+                    WU_PROD_STIME = dt.Rows[0]["WU_PROD_STIME"].ToString();
+                    WU_PROD_ETIME = dt.Rows[0]["WU_PROD_ETIME"].ToString();
+
                 }
             }
 
