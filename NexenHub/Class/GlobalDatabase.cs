@@ -9,6 +9,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using NetBarcode;
 using NexenHub.Class;
 using NexenHub.Models;
@@ -19,22 +20,43 @@ namespace NexenHub.Class
     public class GlobalDatabase
     {
 
-        //public void GetLastProdTime(string EQ_ID, out DateTime MES_Time, out DateTime ProdTime)
-        //{
-        //    try
-        //    {
-        //        DBOra db = new DBOra("select SYSDATE,MAX(to_date(PROD_TIME,'yyyymmddhh24miss')) from TB_PR_M_PROD where EQ_ID=:eqid and USE_YN='Y'");
-        //        db.AddParameter("eqid", EQ_ID);
-        //        DataTable dt = db.ExecTable();
-        //        MES_Time = DateTime.Parse(dt.Rows[0][0].ToString());
-        //        ProdTime = DateTime.Parse(dt.Rows[0][1].ToString());
-        //    }
-        //    catch
-        //    {
-        //        MES_Time = DateTime.MinValue;
-        //        ProdTime = MES_Time;
-        //    }
-        //}
+        public DataTable GetMachineLots(string EQ_ID, DateTime From, DateTime To)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.AppendLine("SELECT /*+ INDEX(PROD IX_PR_M_PROD_5)*/");
+                query.AppendLine("LOT.LOT_ID LOT_ID, ");
+                query.AppendLine("LOT.ITEM_ID,");
+                query.AppendLine("LOT.ITEM_STATE ITEM_STATE, ");
+                query.AppendLine("LOT.LOT_STATE, ");
+                query.AppendLine("LOT.WO_NO, ");
+                query.AppendLine("LOT.PROD_QTY PROD_QTY,");
+                query.AppendLine("LOT.CURRENT_QTY CURRENT_QTY");
+                query.AppendLine("FROM TB_IN_M_LOT LOT");
+                query.AppendLine("JOIN TB_PR_M_PROD PROD ON PROD.LOT_ID=LOT.LOT_ID AND PROD.EQ_ID=LOT.EQ_ID");
+                query.AppendLine("WHERE LOT.EQ_ID=:eqid");
+                query.AppendLine("AND PROD.PROD_DATE BETWEEN :fromdate AND :todate");
+                query.AppendLine("AND PROD.WC_ID IS NOT NULL");
+                query.AppendLine("AND PROD.SHIFT IS NOT NULL");
+                query.AppendLine("AND PROD.USE_YN = 'Y'");
+                query.AppendLine("AND PROD.PLANT_ID='P500'");
+
+
+                DBOra db = new DBOra(query.ToString());
+                db.AddParameter("eqid", EQ_ID);
+                db.AddParameter("fromdate", From.ToString("yyyyMMdd"));
+                db.AddParameter("todate", To.ToString("yyyyMMdd"));
+                DataTable dt = db.ExecTable();
+                return dt;
+
+
+            }
+            catch
+            {
+                return new DataTable();
+            }
+        }
 
         public DataTable LatestProduction(string EQ_ID)
         {

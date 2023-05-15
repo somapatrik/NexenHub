@@ -43,6 +43,8 @@ namespace NexenHub.Pages
 
         #endregion
 
+        public MachineQuality qualityData;
+
         public MachineProdReport reportData;
 
         public MachineUsedMat reportUsedMaterial;
@@ -93,6 +95,7 @@ namespace NexenHub.Pages
                 !string.IsNullOrEmpty(DateFrom) && DateTime.TryParse(DateFrom, out genFrom) &&
                 !string.IsNullOrEmpty(DateTo) && DateTime.TryParse(DateTo,out genTo))
             {
+                qualityData = new MachineQuality(SelectedMachine, genFrom, genTo);
                 reportData = new MachineProdReport(SelectedMachine, genFrom, genTo);
                 reportUsedMaterial = new MachineUsedMat(SelectedMachine, genFrom, genTo);
                 reportDowntTimes = new MachineDownTime(SelectedMachine, genFrom, genTo);
