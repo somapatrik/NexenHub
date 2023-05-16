@@ -1,16 +1,6 @@
-﻿@model NexenHub.Models.MachineQuality
-
-
+﻿@using static NexenHub.Models.MachineQuality;
+@model NexenHub.Models.MachineQuality
 @{
-    int lotSummary = Model.GoodLots.Count + Model.BadLots.Count + Model.ScrapLots.Count;
-    double prodGoodSummary = Model.GoodLots.Sum(g => g.PROD_QTY); 
-    double prodBadSummary = Model.BadLots.Sum(g => g.PROD_QTY);
-    double prodScrapSummary = Model.ScrapLots.Sum(g => g.PROD_QTY);
-    double prodSummary = prodGoodSummary + prodBadSummary + prodScrapSummary;
-
-    double prodCurrentGoodSummary = Model.GoodLots.Sum(g => g.CURRENT_QTY);
-    double prodCurrentBadSummary = Model.BadLots.Sum(g => g.CURRENT_QTY);
-    double prodCurrentScrapSummary = Model.ScrapLots.Sum(g => g.CURRENT_QTY);
 }
 
 <div class="row mb-1">
@@ -27,12 +17,22 @@
 
                 <div class="card h-100">
                     <div class="card-body">
-                        <H6 class="text-primary fw-bolder">Produced quantity</H6>
-                        <h4>@prodSummary</h4>
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <H6 class="text-primary fw-bolder">Produced quantity</H6>
+                            </div>
+                            <div>
+                                <span class="btn btn-sm text-muted text-end" data-bs-toggle="modal" data-bs-target="#modalAllMaterial">Show all</span>
+                            </div>
+                        </div>
+                        <h4>@Model.prodSummary</h4>
+                        
                     </div>
                 </div>
 
             </div>
+
+
 
             <div class="col-4">
 
@@ -40,10 +40,10 @@
                     <div class="card-body">
                         <H6 class="text-danger fw-bolder">Bad</H6>
                         <div class="d-flex align-items-center">
-                            <h4>@prodCurrentBadSummary</h4>
+                            <h4>@Model.prodCurrentBadSummary</h4>
                             <div class="flex-grow-1 ps-3">
                                 <div class="progress">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 25%;"></div>
+                                    <div class="progress-bar bg-danger" role="progressbar" style="@Html.Raw($"width: {Model.BadPercent}%;")"></div>
                                 </div>
                             </div>
                         </div>
@@ -58,10 +58,10 @@
                     <div class="card-body">
                         <H6 class="text-danger fw-bolder">Scrap</H6>
                         <div class="d-flex align-items-center">
-                            <h4>@prodCurrentScrapSummary</h4>
+                            <h4>@Model.prodCurrentScrapSummary</h4>
                             <div class="flex-grow-1 ps-3">
                                 <div class="progress">
-                                    <div class="progress-bar bg-danger" role="progressbar" style="width: 25%;"></div>
+                                    <div class="progress-bar bg-danger" role="progressbar" style="@Html.Raw($"width: {Model.ScrapPercent}%;")"></div>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                         <H6 class="text-primary fw-bolder">Details</H6>
                         <div class="row text-center mb-3">
                             <div class="col">
-                                <h5>@lotSummary</h5>
+                                <h5>@Model.lotSummary</h5>
                                 <h6>Lot count</h6>
                             </div>
                             <div class="col">
@@ -96,15 +96,15 @@
                         </div>
                         <div class="row text-center">
                             <div class="col">
-                                <h5>@prodCurrentGoodSummary / @prodGoodSummary</h5>
+                                <h5>@Model.prodCurrentGoodSummary / @Model.prodGoodSummary</h5>
                                 <h6>Normal remain</h6>
                             </div>
                             <div class="col">
-                                <h5>@prodCurrentBadSummary / @prodBadSummary</h5>
+                                <h5>@Model.prodCurrentBadSummary / @Model.prodBadSummary</h5>
                                 <h6>Bad remain</h6>
                             </div>
                             <div class="col">
-                                <h5>@prodCurrentScrapSummary / @prodScrapSummary</h5>
+                                <h5>@Model.prodCurrentScrapSummary / @Model.prodScrapSummary</h5>
                                 <h6>Scrap remain</h6>
                             </div>
                         </div>
@@ -123,5 +123,38 @@
     </div>*@
 </div>
 
+<!-- Modal -->
 
+<div class="modal fade" id="modalAllMaterial" tabindex="-1" aria-labelledby="modalAllMaterialLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAllMaterialLabel">List of all lots</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-sm table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">LOT</th>
+                            <th scope="col">Item state</th>
+                            <th scope="col">Production quantity</th>
+                            <th scope="col">Current quantity</th>
+                        </tr>
+                    </thead>
+                    @foreach(LotInfo lot in Model.GoodLots.Union(Model.BadLots.Union(Model.ScrapLots)).OrderBy(l=>l.LOT_ID).ToList())
+                    {
+                        string style = lot.ITEM_STATE != "N" ? "table-danger" : "";
 
+                        <tr>
+                            <td><a class="link" href="~/lot/@lot.LOT_ID" target="_blank">@lot.LOT_ID</a></td>
+                            <td class="@style">@lot.ITEM_STATE</td>
+                            <td>@lot.PROD_QTY</td>
+                            <td>@lot.CURRENT_QTY</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace NexenHub.Models
 {
@@ -15,6 +16,21 @@ namespace NexenHub.Models
         public List<LotInfo> BadLots { get; set; }
         public List<LotInfo> ScrapLots { get; set; }
 
+        // Calculations
+        public double prodGoodSummary => GoodLots.Sum(g => g.PROD_QTY);
+        public double prodBadSummary => BadLots.Sum(g => g.PROD_QTY);
+        public double prodScrapSummary => ScrapLots.Sum(g => g.PROD_QTY);
+        public double prodSummary => prodGoodSummary + prodBadSummary + prodScrapSummary;
+
+        public double prodCurrentGoodSummary => GoodLots.Sum(g => g.CURRENT_QTY);
+        public double prodCurrentBadSummary => BadLots.Sum(g => g.CURRENT_QTY);
+        public double prodCurrentScrapSummary => ScrapLots.Sum(g => g.CURRENT_QTY);
+
+        public int lotSummary => GoodLots.Count + BadLots.Count + ScrapLots.Count;
+
+        public double BadPercent => GetPercent(prodBadSummary, prodSummary);
+        public double ScrapPercent => GetPercent(prodScrapSummary, prodSummary);
+
         private DataTable rawData;
 
         private GlobalDatabase database = new GlobalDatabase();
@@ -26,6 +42,11 @@ namespace NexenHub.Models
             ToDate = toFilter;
 
             LoadFromDb();
+        }
+
+        public double GetPercent(double portion, double full)
+        {
+            return Math.Round((portion / full) * 100, 0);
         }
 
         private void LoadFromDb()
