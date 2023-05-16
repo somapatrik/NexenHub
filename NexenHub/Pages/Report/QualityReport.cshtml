@@ -1,0 +1,48 @@
+﻿@page
+@model NexenHub.Pages.Report.QualityReportModel
+@{
+}
+
+
+<div class="container" style="margin-top:130px;">
+
+    <div class="row">
+
+        <div class="col">
+            
+            <div class="display-6">SF Quality</div>
+            <small class="muted">Quality report for semi-finished production machine monthly production</small>
+        </div>
+
+        <div class="col">
+            <form method="post">
+            <div class="row mb-2">
+
+                <div class="col">
+                    <small>Machine</small>
+                    <select class="form-control" asp-for="selectedMachine" asp-items="Model.machineFilter"></select>
+                </div>
+
+                <div class="col">
+                    <small>Year</small>
+                    <select class="form-control" asp-for="selectedYear" asp-items="Model.yearFilter"></select>
+                </div>
+
+                <div class="col">
+                    <small>Month</small>
+                    <select class="form-control" asp-for="selectedMonth" asp-items="Model.monthFilter"></select>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col text-end">
+                        <button class="btn btn-primary" type="submit" asp-page-handler="GenerateReport">Generate report</button>
+                </div>
+            </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
