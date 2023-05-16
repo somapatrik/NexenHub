@@ -13,6 +13,12 @@
     double prodCurrentScrapSummary = Model.ScrapLots.Sum(g => g.CURRENT_QTY);
 }
 
+<div class="row mb-1">
+    <div class="col text-end">
+        <small class="text-muted">@Html.Raw($"Machine {Model.EQ_ID}. Period: {Model.FromDate.ToShortDateString()} - {Model.ToDate.ToShortDateString()}")</small>
+    </div>
+</div>
+
 <div class="row mb-2 g-2">
     <div class="col">
 

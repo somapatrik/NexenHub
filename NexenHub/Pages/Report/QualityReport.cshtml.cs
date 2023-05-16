@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NexenHub.Class;
+using NexenHub.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,10 +26,13 @@ namespace NexenHub.Pages.Report
         public int selectedMonth { get; set; }
         public SelectList monthFilter { get; set; }
 
+        public bool GeneratorEnabled { get; set; }
+        public MachineQuality QualityModel { get; set; }
+
 
         private List<MachineListObject> Machines { get; set; }
-        List<int> enabledMonths { get; set; }
-            List<int> enabledYears { get; set; }
+        private List<int> enabledMonths { get; set; }
+        private List<int> enabledYears { get; set; }
 
 
         private GlobalDatabase database = new GlobalDatabase();
@@ -54,16 +58,23 @@ namespace NexenHub.Pages.Report
 
         public void Generate()
         {
+            DateTime firstDay = new DateTime(selectedYear, selectedMonth, 1, 0, 0, 0);
+            DateTime lastDay = firstDay.AddMonths(1).AddDays(-1);
 
+            QualityModel = new MachineQuality(selectedMachine, firstDay,lastDay);
         }
 
         private bool ValidSelection()
         {
+            GeneratorEnabled = true;
+
             DateTime now = DateTime.Now;
             if (now.Year == selectedYear && selectedMonth >= now.Month)
-                return false;
+                GeneratorEnabled = false;
+            
 
-            return true;
+            
+            return GeneratorEnabled;
         }
 
         private void SelectLastMonth()

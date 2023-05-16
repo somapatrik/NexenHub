@@ -49,8 +49,6 @@ namespace NexenHub.Pages
 
         public MachineUsedMat reportUsedMaterial;
 
-        public MachineDownTime reportDowntTimes;
-
         private GlobalDatabase dbglobal = new GlobalDatabase();
 
         public void OnGet()
@@ -98,7 +96,7 @@ namespace NexenHub.Pages
                 qualityData = new MachineQuality(SelectedMachine, genFrom, genTo);
                 reportData = new MachineProdReport(SelectedMachine, genFrom, genTo);
                 reportUsedMaterial = new MachineUsedMat(SelectedMachine, genFrom, genTo);
-                reportDowntTimes = new MachineDownTime(SelectedMachine, genFrom, genTo);
+                //reportDowntTimes = new MachineDownTime(SelectedMachine, genFrom, genTo);
                 return true;
             }
 

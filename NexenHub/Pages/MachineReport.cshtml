@@ -63,11 +63,6 @@
 
      @if (Model.IsValid)
         {
-        <div class="row">
-            <div class="col">
-               @await Component.InvokeAsync("MachineQuality", Model.qualityData)
-            </div>
-        </div>
 
         <div class="row mb-3">
 
@@ -75,9 +70,6 @@
                 @await Component.InvokeAsync("MachineReportProd", Model.reportData)
             </div>
 
-            <div class="col"> <!-- "-lg-5"> -->
-                @*@await Component.InvokeAsync("MachineReportDownTime", Model.reportDowntTimes)*@
-            </div>
         </div>
 
         <div class="row">

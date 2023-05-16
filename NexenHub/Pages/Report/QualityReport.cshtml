@@ -4,14 +4,14 @@
 }
 
 
-<div class="container" style="margin-top:130px;">
+<div class="container mb-5" style="margin-top:130px;">
 
     <div class="row">
 
         <div class="col">
             
             <div class="display-6">SF Quality</div>
-            <small class="muted">Quality report for semi-finished production machine monthly production</small>
+            <small class="text-muted">Quality report for semi-finish production machine´s monthly production.</small>
         </div>
 
         <div class="col">
@@ -46,3 +46,29 @@
         </div>
     </div>
 </div>
+
+@if (Model.GeneratorEnabled){
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                @await Component.InvokeAsync("MachineQuality", Model.QualityModel)
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <div class="card">
+                    <div class="card-body text-center p-md-5">
+                        <div class="display-6 text-muted">Choose a machine and a valid time period.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
