@@ -123,7 +123,7 @@
                 refreshGui();
               break;
             case "complete":
-                setInterval(refreshGui, 15000);
+                setInterval(refreshGui, 30 * 1000);
               break;
           }
     });
@@ -131,7 +131,7 @@
      async function refreshGui()
     {
          LoadVersions();
-         await LoadPM();
+         LoadPM();
          LoadOlds();
          LoadUnreachable();  
     }
@@ -212,7 +212,6 @@
     function displayOlds(olds) {
         var cardCode = document.getElementById('oldCard').innerHTML
         var oldRow = document.getElementById("oldRow");
-       // var pmRow = document.getElementById("pmRow");
 
         oldRow.innerHTML = "";
 

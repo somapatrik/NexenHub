@@ -1629,9 +1629,9 @@ namespace NexenHub.Class
                 //query.AppendLine("select 'NMP: ' || DESCRIPTION DISPLAYNAME, IP_ADDRESS IP from TB_CM_M_NMP_SETTINGS where USE_YN='Y'");
                 //query.AppendLine("UNION ALL");
                 //query.AppendLine("select 'ICS: ' || DISPLAYNAME DISPLAYNAME, IP from TB_CM_M_MONITORING_CONFIG where USE_YN = 'Y' ");
-                query.AppendLine("select 'NMP: ' || DESCRIPTION DISPLAYNAME, IP_ADDRESS IP from TB_CM_M_NMP_SETTINGS where USE_YN='Y' AND FACT_ID != 'NEX2'");
+                query.AppendLine("select 'NMP: ' || DESCRIPTION DISPLAYNAME, IP_ADDRESS IP from TB_CM_M_NMP_SETTINGS where USE_YN='Y'");
                 query.AppendLine("UNION ALL");
-                query.AppendLine("select 'ICS: ' || DISPLAYNAME DISPLAYNAME, IP from TB_CM_M_MONITORING_CONFIG where USE_YN = 'Y' AND FACT_ID != 'NEX2'");
+                query.AppendLine("select 'ICS: ' || DISPLAYNAME DISPLAYNAME, IP from TB_CM_M_MONITORING_CONFIG where USE_YN = 'Y'");
 
                 DBOra db = new DBOra(query.ToString());
 
@@ -1831,7 +1831,7 @@ namespace NexenHub.Class
                 query.AppendLine("LEFT JOIN TB_PL_M_WRKORD WRK ON WRK.EQ_ID = EQ.EQ_ID AND WRK.USE_YN = 'Y' AND WRK.DEL_FLAG = 'N' AND WO_PROC_STATE = 'S'");
                 query.AppendLine("WHERE EQ.EQ_TYPE = 'P'");
                 query.AppendLine("AND EQ.USE_YN = 'Y'");
-                query.AppendLine("AND EQ.FACT_ID = 'NEX1'");
+               // query.AppendLine("AND EQ.FACT_ID = 'NEX1'");
                 query.AppendLine("AND EQ.EQ_ID NOT IN ('10004','10005','10006','10007','10017','10024','10032')");
                 if (WC_ID != "")
                     query.AppendLine("AND EQ.WC_ID = :wc");
