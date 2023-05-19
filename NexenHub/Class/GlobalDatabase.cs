@@ -103,7 +103,7 @@ namespace NexenHub.Class
                 query.AppendLine("AND (SOFTWARE_ID='ioserver' OR (VER.VERSION_NAME is null AND SOFTWARE_ID is null))");
                 query.AppendLine("AND (VER.VERSION_NAME <> (SELECT MAX(VERSION_NAME) FROM TB_CM_M_VERSION WHERE SOFTWARE_ID='ioserver') OR VER.VERSION_NAME is null)");
 
-                query.AppendLine("AND NMP.FACT_ID != 'NEX2'");
+               // query.AppendLine("AND NMP.FACT_ID != 'NEX2'");
 
                 query.AppendLine("UNION ALL");
 
@@ -117,7 +117,7 @@ namespace NexenHub.Class
                 query.AppendLine("AND (SOFTWARE_ID='ics' OR (SOFTWARE_ID is null and VERSION_NAME is null))");
                 query.AppendLine("AND (VER.VERSION_NAME <> (SELECT MAX(VERSION_NAME) FROM TB_CM_M_VERSION WHERE SOFTWARE_ID='ics') OR VERSION_NAME is null)");
                 
-                query.AppendLine("AND ICS.FACT_ID != 'NEX2'");
+               // query.AppendLine("AND ICS.FACT_ID != 'NEX2'");
 
                 DBOra db = new DBOra(query.ToString());
                 return db.ExecTable();
