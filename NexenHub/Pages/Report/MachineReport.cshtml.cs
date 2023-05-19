@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using NexenHub.Class;
 using NexenHub.Models;
 
-namespace NexenHub.Pages
+namespace NexenHub.Pages.Report
 {
     public class MachineReportModel : PageModel
     {
