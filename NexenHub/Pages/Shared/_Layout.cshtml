@@ -78,16 +78,9 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
 
             <ul class="navbar-nav text-center">
-
-                <li class="nav-item link-primary dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Production
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/MachineList">Machine list</a>
-                        <a class="dropdown-item" href="/MachineReport">Report generator</a>
-                    </div>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/MachineList">Production</a>
+                    </li>
 
                     <li class="nav-item link-primary dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -95,6 +88,7 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="/Report/QualityReport">SF Quality</a>
+                            <a class="dropdown-item" href="/MachineReport">Production &amp; Used material</a>
                         </div>
                     </li>
 
@@ -107,16 +101,20 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Cockpit</a>
-                </li>
+                    <li class="nav-item link-primary dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Cockpit
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="~/cockpit/tbm">TBM</a>
+                            <a class="dropdown-item" href="~/cockpit/cure">Curing</a>
+                        </div>
+                    </li>
 
                 <li class="nav-item">
                     <a class="nav-link" asp-page="/Rex">ReX</a>
                 </li>
             </ul>
-
-           
 
             </div>
     
@@ -127,31 +125,6 @@
     <div class="bodyContent">
         @RenderBody()
         </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" >
-        <div class="modal-dialog  modal-fullscreen-md-down">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Factory sections</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col">
-                                <div class="list-group list-group-flush text-center">
-                                    <a class="list-group-item list-group-item-action" href="~/cockpit/tbm">TBM</a>
-                                    <a class="list-group-item list-group-item-action" href="~/cockpit/cure">Curing</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
     @RenderSection("Scripts", required: false)
 
