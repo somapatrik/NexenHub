@@ -76,7 +76,7 @@
 
                 <div class="row">
                     <div class="col">
-                        <h4>@Model.WO.WO_NO</h4>
+                        <h4>Workorder: @Model.WO.WO_NO</h4>
                     </div>
                 </div>
 
@@ -84,13 +84,13 @@
                     <div class="col">
                         <div class="d-flex flex-row text-muted">
 
-                            <div class="p-2"></div>
+                            <div class="p-2">@Model.WO.WC_ID</div>
 
                             <div class="p-2">/</div>
-                            <div class="p-2"></div>
+                            <div class="p-2">@Model.WO.PROC_ID</div>
 
                             <div class="p-2">/</div>
-                            <div class="p-2"></div>
+                            <div class="p-2">@Model.machine.Name</div>
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                 <div class="row">
 
                     <div class="col">
-                        <h3>@Model.WO.ITEM_NAME</h3>
+                        <h3>@Model.itemWo.ITEM_NAME</h3>
                     </div>
 
                 </div>

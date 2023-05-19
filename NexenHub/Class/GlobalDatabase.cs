@@ -1342,6 +1342,9 @@ namespace NexenHub.Class
                 query.AppendLine("TEST_YN,");
                 query.AppendLine("PROTOTYPE_ID,");
                 query.AppendLine("PROTOTYPE_VER,");
+                query.AppendLine("WC_ID,");
+                query.AppendLine("PROC_ID,");
+                query.AppendLine("EQ_ID,");
                 query.AppendLine("DEL_FLAG");
                 query.AppendLine("from TB_PL_M_WRKORD");
                 query.AppendLine("where WO_NO = :wo");

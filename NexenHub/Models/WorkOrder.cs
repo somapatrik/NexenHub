@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using NexenHub.Class;
@@ -45,6 +46,10 @@ namespace NexenHub.Models
         public string WO_ChildItemID { get; set; }
         public string WO_ChildItemName { get; set; }
         public string WO_ChildItemCompound { get; set; }
+
+        public string WC_ID { get; set; }
+        public string PROC_ID { get; set; }
+        public string EQ_ID { get; set; }
 
         public DateTime STIME_DATE { 
             get 
@@ -188,6 +193,9 @@ namespace NexenHub.Models
                     OP_PROD_ETIME = dt.Rows[0]["OP_PROD_ETIME"].ToString();
                     WU_PROD_STIME = dt.Rows[0]["WU_PROD_STIME"].ToString();
                     WU_PROD_ETIME = dt.Rows[0]["WU_PROD_ETIME"].ToString();
+                    PROC_ID = dt.Rows[0]["PROC_ID"].ToString();
+                    WC_ID = dt.Rows[0]["WC_ID"].ToString();
+                    EQ_ID = dt.Rows[0]["EQ_ID"].ToString();
 
                 }
             }
