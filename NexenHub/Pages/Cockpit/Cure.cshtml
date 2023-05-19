@@ -289,13 +289,13 @@
                 @Html.Raw("CuremachineDowntime('" + machine1.EQ_ID + "');");
         }
         
-        @*
+        
         @foreach (MachineBasicInfo machine2 in Model.Phase2)
         {
             @Html.Raw("CuremachineDowntime('" + machine2.EQ_ID + "');");
         }
-        *@
-            document.getElementById("lastUpdate").innerHTML = new Date().toLocaleString();
+        
+        document.getElementById("lastUpdate").innerHTML = new Date().toLocaleString();
 
     }
 
