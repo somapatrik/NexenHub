@@ -349,6 +349,13 @@ namespace NexenHub.Class
                 case "N563":
                     group = "Test";
                     break;
+                case "N215":
+                case "N205":
+                    group = "Plan";
+                    break;
+                case "N036":
+                    group = "DC";
+                    break;
                 case "N065":
                     group = "No action";
                     break;
